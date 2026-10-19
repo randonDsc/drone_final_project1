@@ -3,13 +3,28 @@ from isaacsim import SimulationApp
 simulation_app = SimulationApp({"headless": False})
 
 # Isaac Sim imports must come AFTER SimulationApp starts.
-import numpy as np
-import omni.usd
-
 from pathlib import Path
+
+import numpy as np
+import omni.kit.app
+import omni.usd
+import omni.replicator.core as rep
+
 from pxr import UsdPhysics
 from isaacsim.core.api import World
 from isaacsim.core.prims import RigidPrim
+
+# Enable sensor extensions before importing their APIs.
+manager = omni.kit.app.get_app().get_extension_manager()
+
+manager.set_extension_enabled_immediate(
+    "isaacsim.sensors.experimental.physics", True
+)
+manager.set_extension_enabled_immediate(
+    "isaacsim.sensors.rtx.nodes", True
+)
+
+from isaacsim.sensors.experimental.physics import IMUSensor
 
 from motor import MotorModel
 from controller import controller
@@ -20,7 +35,6 @@ from drone_diagnostics import (
 
 
 def main(log_file):
-    # Write to the text file and display in the terminal.
     def log(message):
         print(message, flush=True)
         print(message, file=log_file, flush=True)
@@ -88,8 +102,8 @@ def main(log_file):
     world.reset()
 
     initial_positions, initial_orientations = body.get_world_poses()
-    # initial_positions = initial_positions.copy()
-    # initial_positions[:, 2] += 0.5
+    initial_positions = initial_positions.copy()
+    initial_orientations = initial_orientations.copy()
 
     body.set_default_state(
         positions=initial_positions.copy(),
@@ -149,11 +163,10 @@ def main(log_file):
         reaction_signs=[-1, -1, +1, +1],
     )
 
-    # Body-frame positions relative to the authored body COM.
     rotor_positions = np.array([
-        [ 0.13798545, -0.20671639, 0.023],
-        [-0.12511168,  0.21875414, 0.023],
-        [ 0.13800000,  0.20257577, 0.023],
+        [0.13798545, -0.20671639, 0.023],
+        [-0.12511168, 0.21875414, 0.023],
+        [0.13800000, 0.20257577, 0.023],
         [-0.12415360, -0.22234580, 0.023],
     ])
 
@@ -161,6 +174,10 @@ def main(log_file):
 
     target = {
         "height": 1.0,
+        "xy": (
+            initial_positions[0, :2].astype(float).copy()
+            + np.array([10, 10])
+        ),
         "roll": 0.0,
         "pitch": 0.0,
         "yaw": 0.0,
@@ -169,8 +186,6 @@ def main(log_file):
 
     # ---------- Motor mixer ----------
 
-    # Rows: thrust, roll torque, pitch torque, yaw torque.
-    # Columns: rotor0, rotor1, rotor2, rotor3.
     allocation_matrix = np.vstack([
         np.ones(4),
         rotor_positions[:, 1],
@@ -193,13 +208,9 @@ def main(log_file):
             yaw_torque,
         ], dtype=float)
 
-        # Controller torques are desired about the whole vehicle COM.
-        # The existing allocation matrix uses the body origin.
         com_offset = read_total_com_in_body_frame(body, mass_views)
-
         force = np.array([0.0, 0.0, total_thrust])
 
-        # Convert the requested torque to the body-origin reference.
         desired_wrench[1:] += np.cross(com_offset, force)
 
         if not np.all(np.isfinite(desired_wrench)):
@@ -246,7 +257,7 @@ def main(log_file):
             is_global=False,
         )
 
-    # ---------- Read and record state ----------
+    # ---------- Read drone state ----------
 
     def read_drone_state():
         positions, orientations = body.get_world_poses()
@@ -269,96 +280,203 @@ def main(log_file):
             f"Angular velocity [rad/s]: {state['angular_velocity']}"
         )
 
-    # ---------- Feedback control loop ----------
+    # ---------- Connect sensors once ----------
 
-    elapsed = 0.0
-    step_count = 0
-    reset_requested = False
-
-    log(
-        "Feedback control running.\n"
-        "Stop -> Play resets. Pause -> Play resumes."
+    IMU_PATH = "/World/iris/body/imu"
+    LIDAR_PATH = (
+        "/World/iris/body/HESAI_XT32_SD10/PandarXT_32_10hz"
     )
 
-    while simulation_app.is_running():
-        if world.is_stopped():
-            reset_requested = True
-            simulation_app.update()
-            continue
+    for path in (IMU_PATH, LIDAR_PATH):
+        if not stage.GetPrimAtPath(path).IsValid():
+            raise RuntimeError(f"Sensor not found: {path}")
 
-        if not world.is_playing():
-            simulation_app.update()
-            continue
+    imu_sensor = IMUSensor(IMU_PATH)
 
-        if reset_requested:
-            world.reset()
+    render_product = rep.create.render_product(
+        LIDAR_PATH, (1, 1)
+    )
+    lidar_reader = None
 
-            elapsed = 0.0
-            step_count = 0
-            reset_requested = False
+    try:
+        lidar_reader = rep.AnnotatorRegistry.get_annotator(
+            "IsaacExtractRTXSensorPointCloud",
+            device="cpu",
+        )
+        lidar_reader.attach([render_product.path])
 
-            log("\nSimulation reset.")
+        log(f"IMU connected: {IMU_PATH}")
+        log(f"LiDAR connected: {LIDAR_PATH}")
 
-        # 1. Read current state.
-        state = read_drone_state()
+        # ---------- Read sensor data ----------
 
-        # 2. Calculate corrective thrust and torques.
-        total_thrust, roll_torque, pitch_torque, yaw_torque = controller(
-            positions=state["position"],
-            orientations=state["orientation"],
-            velocities=state["linear_velocity"],
-            angular_velocities=state["angular_velocity"],
-            target=target,
+        def read_sensor_data():
+            imu_data = None
+
+            reading = imu_sensor.get_sensor_reading()
+
+            if reading.is_valid:
+                frame = imu_sensor.get_data()
+
+                imu_data = {
+                    "time": frame["time"],
+                    "acceleration": np.asarray(
+                        frame["linear_acceleration"]
+                    ).copy(),
+                    "angular_velocity": np.asarray(
+                        frame["angular_velocity"]
+                    ).copy(),
+                    "orientation": np.asarray(
+                        frame["orientation"]
+                    ).copy(),
+                }
+
+            lidar_data = lidar_reader.get_data()
+
+            points = (
+                lidar_data.get("data")
+                if isinstance(lidar_data, dict)
+                else lidar_data
+            )
+
+            if points is None:
+                points = np.empty((0, 3), dtype=np.float32)
+            else:
+                points = np.asarray(points).copy()
+
+            return imu_data, points
+
+        def log_sensor_data(imu_data, points):
+            if imu_data is None:
+                log("IMU: no valid reading yet.")
+            else:
+                log(
+                    f"IMU simulation time [s]: {imu_data['time']}\n"
+                    f"IMU acceleration [stage units/s²]: "
+                    f"{imu_data['acceleration']}\n"
+                    f"IMU angular velocity [rad/s]: "
+                    f"{imu_data['angular_velocity']}\n"
+                    f"IMU orientation [w, x, y, z]: "
+                    f"{imu_data['orientation']}"
+                )
+
+            log(f"LiDAR array shape: {points.shape}")
+
+            if points.size:
+                log(f"LiDAR first 3 points:\n{points[:3]}")
+            else:
+                log("LiDAR: no points available yet.")
+
+        # ---------- Feedback control loop ----------
+
+        elapsed = 0.0
+        step_count = 0
+        reset_requested = False
+
+        log(
+            "Feedback control running.\n"
+            "Stop -> Play resets. Pause -> Play resumes."
         )
 
-        # 3. Calculate four motor speeds.
-        speeds, saturated = mix_motor_commands(
-            total_thrust,
-            roll_torque,
-            pitch_torque,
-            yaw_torque,
-        )
+        while simulation_app.is_running():
+            if world.is_stopped():
+                reset_requested = True
+                simulation_app.update()
+                continue
 
-        # 4. Apply forces and advance physics.
-        apply_motor_commands(speeds)
-        world.step(render=True)
+            if not world.is_playing():
+                simulation_app.update()
+                continue
 
-        elapsed += dt
-        step_count += 1
+            if reset_requested:
+                world.reset()
+                elapsed = 0.0
+                step_count = 0
+                reset_requested = False
+                log("\nSimulation reset.")
 
-        # 5. Record the first step, then every 30 steps.
-        if step_count == 1 or step_count % 30 == 0:
-            updated_state = read_drone_state()
+            # 1. Read current state.
+            state = read_drone_state()
 
-            log_drone_state(updated_state, elapsed)
-
-            com_offset, offset_torque = diagnose_thrust_offset(
-                body, mass_views, motors, speeds
+            # 2. Calculate corrective thrust and torques.
+            (
+                total_thrust,
+                roll_torque,
+                pitch_torque,
+                yaw_torque,
+            ) = controller(
+                positions=state["position"],
+                orientations=state["orientation"],
+                velocities=state["linear_velocity"],
+                angular_velocities=state["angular_velocity"],
+                target=target,
             )
 
-            log(
-                f"Vehicle COM relative to body origin [m]: "
-                f"{com_offset}\n"
-                f"Torque from thrust offset [N m]: "
-                f"{offset_torque}"
+            # 3. Calculate four motor speeds.
+            speeds, saturated = mix_motor_commands(
+                total_thrust,
+                roll_torque,
+                pitch_torque,
+                yaw_torque,
             )
 
-            log(
-                f"Target height [m]: {target['height']:.3f}\n"
-                f"Height error [m]: "
-                f"{target['height'] - updated_state['position'][2]:.3f}\n"
-                f"Motor commands [rad/s]: {np.round(speeds, 1)}\n"
-                f"Requested thrust [N]: {total_thrust:.3f}\n"
-                f"Requested torques [N m]: "
-                f"{roll_torque:.3f}, "
-                f"{pitch_torque:.3f}, "
-                f"{yaw_torque:.3f}\n"
-                f"Motor limits reached: {saturated}"
-            )
+            # 4. Apply forces and advance physics.
+            apply_motor_commands(speeds)
+            world.step(render=True)
+
+            elapsed += dt
+            step_count += 1
+
+            # 5. Log the first step, then every 30 steps.
+            if step_count == 1 or step_count % 30 == 0:
+                updated_state = read_drone_state()
+                log_drone_state(updated_state, elapsed)
+
+                imu_data, lidar_points = read_sensor_data()
+                log_sensor_data(imu_data, lidar_points)
+
+                com_offset, offset_torque = diagnose_thrust_offset(
+                    body, mass_views, motors, speeds
+                )
+
+                log(
+                    f"Vehicle COM relative to body origin [m]: "
+                    f"{com_offset}\n"
+                    f"Torque from thrust offset [N m]: "
+                    f"{offset_torque}"
+                )
+
+                log(
+                    f"Target height [m]: {target['height']:.3f}\n"
+                    f"Height error [m]: "
+                    f"{target['height'] - updated_state['position'][2]:.3f}\n"
+                    f"Motor commands [rad/s]: {np.round(speeds, 1)}\n"
+                    f"Requested thrust [N]: {total_thrust:.3f}\n"
+                    f"Requested torques [N m]: "
+                    f"{roll_torque:.3f}, "
+                    f"{pitch_torque:.3f}, "
+                    f"{yaw_torque:.3f}\n"
+                    f"Motor limits reached: {saturated}\n"
+                    f"Target XY [m]: {target['xy']}\n"
+                    f"XY error [m]: "
+                    f"{target['xy'] - updated_state['position'][:2]}\n"
+                    f"Horizontal speed [m/s]: "
+                    f"{np.linalg.norm(updated_state['linear_velocity'][:2]):.3f}"
+                )
+
+    finally:
+        # Release LiDAR resources before closing Isaac Sim.
+        try:
+            if lidar_reader is not None:
+                lidar_reader.detach([render_product.path])
+        finally:
+            render_product.destroy()
 
 
 try:
-    log_path = Path(__file__).resolve().parents[1] / "flight_log.txt"
+    log_path = (
+        Path(__file__).resolve().parents[1] / "flight_log.txt"
+    )
 
     print(f"Saving flight log to: {log_path}", flush=True)
 
