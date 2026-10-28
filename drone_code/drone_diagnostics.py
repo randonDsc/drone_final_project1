@@ -1,3 +1,9 @@
+"""Vehicle COM and torque-reference checks retained from the uploaded project.
+
+Every rigid body contributes mass * world COM. Averaging those contributions
+finds the full vehicle COM; inverse body rotation expresses its offset in body
+axes, which the motor mixer uses to compensate for off-center applied thrust.
+"""
 import numpy as np
 
 
@@ -12,6 +18,8 @@ def rotate_vector(quaternion, vector):
     q = q / norm
     vector = np.asarray(vector, dtype=float).reshape(3)
 
+    # Quaternion rotation: v_rot = v + 2*w*(q_xyz x v)
+    #                                  + 2*q_xyz x (q_xyz x v).
     return (
         vector
         + 2 * q[0] * np.cross(q[1:], vector)
@@ -32,6 +40,8 @@ def read_total_com_in_body_frame(body, mass_views):
         positions, orientations = view.get_world_poses()
         local_coms, _ = view.get_coms()
 
+        # get_coms() returns a LOCAL center of mass; rotate and translate
+        # it before averaging COM locations from different rigid bodies.
         world_com = (
             np.asarray(positions).reshape(3)
             + rotate_vector(
@@ -52,6 +62,7 @@ def read_total_com_in_body_frame(body, mass_views):
     body_position = np.asarray(body_positions).reshape(3)
     body_quaternion = np.asarray(body_orientations).reshape(4)
 
+    # Unit quaternion inverse = conjugate: [w,-x,-y,-z].
     inverse_quaternion = body_quaternion.copy()
     inverse_quaternion[1:] *= -1
 

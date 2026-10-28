@@ -1,3 +1,11 @@
+"""Low-level near-hover flight controller; it does not build maps or run search.
+
+Input state is world position (m), unit quaternion [w,x,y,z], world linear
+velocity (m/s), and world angular velocity (rad/s). The target dictionary holds
+ONE active waypoint. navigation.py chooses that waypoint from the global route.
+Output is body +Z thrust (N) and body roll/pitch/yaw torque (N m).
+The existing PD gains and quaternion convention are retained from your code.
+"""
 import numpy as np
 
 
@@ -14,6 +22,11 @@ def controller(
     angular_velocity_world = np.asarray(
         angular_velocities, dtype=float
     ).reshape(3)
+
+    # Reject bad state before NaNs propagate into forces or rotor commands.
+    if not all(np.all(np.isfinite(v)) for v in
+               (position, quaternion, velocity, angular_velocity_world)):
+        raise ValueError("Drone state contains NaN or infinity.")
 
     # ---------- Quaternion → rotation matrix ----------
 
@@ -58,6 +71,9 @@ def controller(
 
     mass = float(target.get("mass", 1.5))
     gravity = 9.81
+    if (not np.all(np.isfinite([target_height, target_roll, target_pitch,
+                               target_yaw, mass])) or mass <= 0):
+        raise ValueError("Targets must be finite and mass must be positive.")
 
     # ---------- Controller gains ----------
 
@@ -71,16 +87,22 @@ def controller(
 
     height_error = target_height - position[2]
 
-    vertical_force = (
-        mass * gravity
-        + kp_height * height_error
-        - kd_height * velocity[2]
-    )
+    # Rewrite PD as a velocity request, then cap it. With no saturation this
+    # is algebraically the original kp*error - kd*velocity. Capping the request
+    # reduces speed on long segments; it is not a hard guarantee on actual speed.
+    max_z_speed = float(target.get("max_z_speed", 0.4))
+    desired_vz = np.clip(kp_height / kd_height * height_error,
+                         -max_z_speed, max_z_speed)
+    vertical_force = mass * gravity + kd_height * (desired_vz - velocity[2])
 
     # Compensate for the reduced vertical thrust when tilted.
     total_thrust = vertical_force / max(float(R[2, 2]), 0.5)
 
-    max_total_thrust = 4 * 5.84e-6 * 1100.0**2
+    # The simulation supplies its actual configured motor limit. The default
+    # preserves the original controller when this function is used standalone.
+    max_total_thrust = float(target.get(
+        "max_total_thrust", 4 * 5.84e-6 * 1100.0**2
+    ))
 
     total_thrust = float(
         np.clip(total_thrust, 0.0, max_total_thrust)
@@ -99,15 +121,17 @@ def controller(
                 "Target xy must contain two finite world coordinates."
             )
 
-        kp_xy = 0.3
-        kd_xy = 0.9
+        kp_xy = 0.6
+        kd_xy = 1.2
 
         # Position error pulls toward the target.
         # Velocity feedback brakes horizontal motion.
-        acceleration_xy = (
-            kp_xy * (target_xy - position[:2])
-            - kd_xy * velocity[:2]
-        )
+        desired_velocity_xy = kp_xy / kd_xy * (target_xy - position[:2])
+        requested_speed = np.linalg.norm(desired_velocity_xy)
+        max_xy_speed = float(target.get("max_xy_speed", 0.6))
+        if requested_speed > max_xy_speed:
+            desired_velocity_xy *= max_xy_speed / requested_speed
+        acceleration_xy = kd_xy * (desired_velocity_xy - velocity[:2])
 
         # Near-hover controller: limit desired tilt to 10 degrees
         # and horizontal acceleration to 1.5 m/s².
@@ -118,7 +142,7 @@ def controller(
 
         max_acceleration = min(
             1.5,
-            vertical_acceleration * np.tan(np.deg2rad(10.0)),
+            vertical_acceleration * np.tan(np.deg2rad(float(target.get("max_tilt_degrees", 10.0)))),
         )
 
         magnitude = np.linalg.norm(acceleration_xy)
@@ -147,6 +171,9 @@ def controller(
         )
 
     # ---------- Attitude → body-frame torques ----------
+    # This is the original small-angle Euler PD, appropriate near hover. It is
+    # not a large-angle recovery controller. R.T above converts world angular
+    # velocity to the body axes in which these commanded torques are applied.
 
     attitude_error = np.array([
         target_roll - roll,
