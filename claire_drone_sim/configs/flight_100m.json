@@ -1,0 +1,37 @@
+{
+  "environment": "empty",
+  "scene": "scenes/my_world_with_iris_drone.usd",
+  "mission": {
+    "start_height_m": 5.0,
+    "distance_m": 100.0,
+    "altitude_m": 5.0,
+    "max_duration_s": 180.0,
+    "arrival_radius_m": 1.0,
+    "arrival_max_speed_mps": 0.5,
+    "hold_at_goal_s": 2.0,
+    "corridor_half_width_m": 5.0
+  },
+  "simulation": {
+    "physics_hz": 120,
+    "render_hz": 10,
+    "headless": false,
+    "wind_enabled": false
+  },
+  "sensors": {
+    "imu_hz": 60,
+    "rgb_hz": 10,
+    "rgb_width": 320,
+    "rgb_height": 240,
+    "camera_position_body_m": [0.18, 0.0, 0.04],
+    "imu_position_body_m": [0.0, 0.0, 0.0],
+    "imu_filter_width": 1,
+    "sqlite_commit_every_n_imu_samples": 120
+  },
+  "world": {
+    "seed": 42,
+    "ambient_intensity": 300.0,
+    "sun_intensity": 1200.0,
+    "warehouse": {"length_m": 140.0, "width_m": 34.0, "height_m": 16.0, "rack_rows_per_side": 10},
+    "outdoor": {"length_m": 150.0, "width_m": 70.0, "trees_per_side": 16, "rocks_per_side": 7}
+  }
+}

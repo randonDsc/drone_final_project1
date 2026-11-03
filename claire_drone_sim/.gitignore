@@ -1,0 +1,9 @@
+results/
+__pycache__/
+*.pyc
+.venv/
+*.sqlite
+*.db
+*.log
+*.zip
+.DS_Store
