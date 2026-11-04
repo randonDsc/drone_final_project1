@@ -60,7 +60,7 @@ FLIGHT_EVAL = {
     "model": None,
 
     # True: fly PID only, with no model.
-    "pid_only": True,
+    "pid_only": False,
 
     # Use only the first N of EVAL_SEEDS, or None for all.
     "episodes": None,
