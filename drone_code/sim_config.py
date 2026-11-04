@@ -113,6 +113,25 @@ EXCLUDE_ROOTS = (
 # collision APIs to count as obstacles.
 EXTRA_OBSTACLE_ROOTS = ()
 
+# ---------- Motors ----------
+
+# Motor parameters and reaction-sign ordering from the uploaded working
+# project; see motor.py for what each one means.
+MOTOR = {
+    "thrust_coefficient": 5.84e-6,
+    "torque_coefficient": 0.06 * 5.84e-6,
+    "max_speed": 1100.0,
+    "reaction_signs": (-1, -1, +1, +1),
+}
+
+# Rotor application positions in body coordinates [m].
+ROTOR_POSITIONS = (
+    (0.13798545, -0.20671639, 0.023),
+    (-0.12511168, 0.21875414, 0.023),
+    (0.13800000, 0.20257577, 0.023),
+    (-0.12415360, -0.22234580, 0.023),
+)
+
 # ---------- Propeller animation ----------
 
 # Spin the propeller rigid bodies on their revolute joints so the motion
@@ -121,7 +140,7 @@ EXTRA_OBSTACLE_ROOTS = ()
 PROPELLER_SPIN = True
 
 # Revolute joints in motor order: joint i carries rotor i, matching
-# rotor_positions and reaction_signs in motor_physics.py.
+# ROTOR_POSITIONS and MOTOR["reaction_signs"] below.
 ROTOR_JOINT_PATHS = (
     "/World/iris/rotor0/joint0",
     "/World/iris/rotor1/joint1",
@@ -137,11 +156,59 @@ ROTOR_JOINT_PATHS = (
 # not model. 0.05 gives about 40 rad/s at hover.
 PROPELLER_SPIN_SCALE = 0.5
 
+# Rotors really settle at about this speed [rad/s], whatever the scale: iris.usd
+# authors physxRigidBody:maxAngularVelocity = 5729.58 deg/s (100 rad/s), and
+# PhysX clamps the links to it. Measured at hover; used to restart rotors in
+# midair without a clamping transient.
+PROPELLER_SETTLED_SPEED = 110.9
+
 # Torque limit of each spin drive [N m]. Keeps the drive's reaction on the
 # body small (controller torques are of order 0.05 N m) while still
 # reaching the displayed speed in about 0.1 s. for show
 PROPELLER_DRIVE_MAX_TORQUE = 0.1
 
+# ---------- Flight controller ----------
+
+# Gains for controller.PIDController. kp and kd are the previous PD values,
+# unchanged. The integral gains are starting values from stability limits, not
+# from flight: each is well inside its loop's limit, ki < kp * kd for the
+# horizontal loop and ki < kp * kd / mass for height. Fixed for a whole SAC run.
+#
+# integral_limit is in the units the integrator adds to its loop's output.
+# integral_zone is the largest error that still integrates.
+PID = {
+    # Height: error [m] to vertical force [N]. Runs in the world frame.
+    "height": {
+        "kp": 10.0,                # [N/m]
+        "ki": 3.0,                 # [N/(m s)]
+        "kd": 5.0,                 # [N/(m/s)]
+        "integral_limit": 3.0,     # [N]
+        "integral_zone": 0.5,      # [m]
+    },
+
+    # Horizontal: error [m] to acceleration [m/s^2], then to a tilt target.
+    # World frame, because wind acts in world axes. The limit is about 10 m/s
+    # of steady wind by the drag model, and controller.py caps the total at
+    # 1.5 m/s^2.
+    "xy": {
+        "kp": 0.6,                 # [1/s^2]
+        "ki": 0.15,                # [1/s^3]
+        "kd": 1.2,                 # [1/s]
+        "integral_limit": 1.2,     # [m/s^2]
+        "integral_zone": 2.0,      # [m]
+    },
+
+    # Attitude: roll, pitch, yaw error [rad] to body torque [N m]. Roll and
+    # pitch need no integral, since the horizontal loop already trims their
+    # steady error. Yaw has no outer loop, so it has one.
+    "attitude": {
+        "kp": (0.2, 0.2, 0.1),     # [N m/rad]
+        "ki": (0.0, 0.0, 0.02),    # [N m/(rad s)]
+        "kd": (0.05, 0.05, 0.05),  # [N m/(rad/s)]
+        "integral_limit": (0.02, 0.02, 0.02),  # [N m]
+        "integral_zone": 0.35,     # [rad]
+    },
+}
 # ---------- Wind ----------
 
 # Gusting wind with distributed quadratic drag; see wind.py for the model.
@@ -154,16 +221,18 @@ WIND = {
     "enabled": True,
 
     # Mean world-frame wind velocity [m/s] (direction the air moves toward).
-    "mean_wind": (8.0, 0.0, 0.0),
+    # Set to 1.5 m/s while the controller was PD; the integral term now cancels
+    # steady wind. The earlier demo value was 8 m/s with 2 m/s gusts.
+    "mean_wind": (1.5, 0.0, 0.0),
 
     # Shared gust felt by the whole drone: per-axis standard deviation
     # [m/s] and correlation time [s]. Larger timescale = longer gusts.
-    "gust_std": (2.0, 2.0, 0.7),
+    "gust_std": (0.5, 0.5, 0.2),
     "gust_timescale": 2.0,
 
     # Smaller, faster variation across the airframe. Per point and axis the
     # total wind variance is gust_std**2 + local_gust_std**2.
-    "local_gust_std": (0.6, 0.6, 0.3),
+    "local_gust_std": (0.15, 0.15, 0.08),
     "local_gust_timescale": 0.3,
 
     # Distance [m] over which local fluctuations stay correlated:
@@ -184,7 +253,7 @@ WIND = {
 
     # (name, body-frame offset from the body origin [m], area weight).
     # Offsets follow the USD geometry: hull mesh bbox x -0.14..0.16,
-    # z -0.067..0.047; rotor hubs match rotor_positions in motor_physics.py.
+    # z -0.067..0.047; rotor hubs match ROTOR_POSITIONS above.
     # Weights are normalized to sum to 1, so effective_area is split among
     # the points rather than multiplied by their count.
     "sample_points": (
@@ -206,3 +275,13 @@ WIND = {
 # Sensors provide optional logging.
 # Navigation currently uses the USD map and simulator state.
 ENABLE_SENSORS = True
+
+# ---------- Flight mode ----------
+
+# "pid": PID only.
+# "pid_sac": PID plus the trained SAC correction from SAC_MODEL_PATH. If it is
+#     missing or incompatible, the flight reports that and falls back to PID.
+CONTROL_MODE = "pid"
+
+# Relative to the project root.
+SAC_MODEL_PATH = "runs/sac_hover/wind1/final_model.zip"

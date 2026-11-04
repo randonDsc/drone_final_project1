@@ -1,0 +1,32 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    doc = """dij3d_boxes.usd with Iris switched to sim_asset/iris_indoor.usda.
+
+    A thin layer on top; dij3d_boxes.usd stays unchanged. Select it with
+    ACTIVE_SCENE in drone_code/ppo_config.py.
+    """
+    metersPerUnit = 1
+    subLayers = [
+        @./dij3d_boxes.usd@
+    ]
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "iris" (
+        prepend references = @../sim_asset/iris_indoor.usda@
+    )
+    {
+        over "body"
+        {
+            over "HESAI_XT32_SD10"
+            {
+                # dij3d_boxes.usd authors the old mount directly on this prim,
+                # and a scene opinion beats the asset, so it is repeated here.
+                double3 xformOp:translate = (-0.003333740463842383, 0.0014994301249203965, 0.14)
+            }
+        }
+    }
+}

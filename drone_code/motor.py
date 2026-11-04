@@ -15,7 +15,7 @@ class MotorModel:
         self.km = float(torque_coefficient)
         self.max_speed = float(max_speed)  # rad/s, not RPM
         # A rotor's reaction sign determines its contribution to body yaw.
-        # Ordering must match rotor_positions in motor_physics.py.
+        # Ordering must match sim_config.ROTOR_POSITIONS.
         self.reaction_signs = np.asarray(reaction_signs, dtype=float)
         if (self.kf <= 0 or self.km < 0 or self.max_speed <= 0 or
                 self.reaction_signs.shape != (4,) or

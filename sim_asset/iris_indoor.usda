@@ -1,0 +1,80 @@
+#usda 1.0
+(
+    defaultPrim = "vehicle"
+    doc = """Iris with its indoor sensor hardware. Layered over iris.usd, which stays unchanged.
+
+    Sensors only. No prim here has a rigid body, collider, or mass, so the
+    drone's mass, inertia, and collisions all still come from iris.usd.
+    drone_code/check_sensor_assets.py verifies this.
+
+    Body frame: x forward, y left, z up, origin at the body rigid body.
+    Sensor settings must match drone_code/sensor_config.py.
+    """
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "vehicle" (
+    prepend references = @./iris.usd@
+)
+{
+    over "body"
+    {
+        # Body rate and specific force. Same settings as the scenes already use.
+        # At the body origin, axes aligned with the body. Reports every physics
+        # step; the rolling filters are off (width 1). Isaac adds no noise, so
+        # drone_code/sensor_config.IMU_NOISE models it.
+        def IsaacImuSensor "imu"
+        {
+            int angularVelocityFilterWidth = 1
+            bool enabled = 1
+            int linearAccelerationFilterWidth = 1
+            int orientationFilterWidth = 1
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        # Hesai XT32: 32 channels, +15 to -16 degrees, 10 Hz, 0.05 to 120 m, all
+        # set by the vendor asset below and left unchanged.
+        #
+        # Raised from z = 0.0958 m to z = 0.14 m, as if on a short mast. At
+        # 0.0958 the airframe rises to -12.0 degrees and clips the lower channels;
+        # at 0.14 its highest point is below -16 degrees. No mast geometry or mass
+        # is modeled. Neither is the sensor's real weight.
+        def Xform "HESAI_XT32_SD10" (
+            prepend payload = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.1/Isaac/Sensors/HESAI/XT32_SD10/HESAI_XT32_SD10.usd@
+        )
+        {
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (-0.003333740463842383, 0.0014994301249203965, 0.14)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        # Downward rangefinder, in the style of a small laser ToF unit: one ray,
+        # 0.05 to 12 m. Under the hull center, whose lowest point is z = -0.067.
+        #
+        # A PhysX ray, so it needs no rendering and hits colliders only. This
+        # prim has no rate attribute: it fires every physics step, and
+        # drone_code/indoor_sensors.py samples it at the rate and adds the noise
+        # in sensor_config.RANGEFINDER. Hit positions and hit prims are simulator
+        # data: reportHitPrimPaths stays off and the reader uses depths only.
+        def IsaacRaycastSensor "rangefinder"
+        {
+            bool enabled = 1
+            float maxRange = 12
+            float minRange = 0.05
+            uint numRays = 1
+            token outputFrameOfReference = "SENSOR"
+            float3[] rayDirections = [(0, 0, -1)]
+            float3[] rayOrigins = [(0, 0, 0)]
+            bool reportHitPrimPaths = 0
+            quatd xformOp:orient = (1, 0, 0, 0)
+            double3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0, 0, -0.072)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+    }
+}

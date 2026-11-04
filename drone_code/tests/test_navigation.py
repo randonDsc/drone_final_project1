@@ -13,7 +13,7 @@ from grid_map import Box, Plane, GridMap, rasterize, segment_hits_box
 from mapping import SceneGeometry, build_occupancy_map, find_launch_entry, validate_launch_departure
 from navigation import (dijkstra, plan_flight, shorten_path, path_length,
                         line_of_sight, WaypointFollower)
-from controller import controller
+from controller import PIDController
 from motor import MotorModel
 
 try:
@@ -346,12 +346,13 @@ def simulate(follower, start, seconds, mass=1.5):
     p, v, w = np.array(start, float), np.zeros(3), np.zeros(3)
     q = np.array([1., 0., 0., 0.])
     trace = []
+    pid = PIDController()
     for _ in range(int(seconds / dt)):
         cmd = follower.update(p, v, dt)
         target = {'height': cmd[2], 'xy': cmd[:2], 'mass': mass,
                   'max_xy_speed': sim_config.MAX_XY_SPEED, 'max_z_speed': sim_config.MAX_Z_SPEED,
                   'max_tilt_degrees': sim_config.MAX_TILT_DEGREES}
-        thrust, *torque = controller(p, q, v, w, target)
+        thrust, *torque = pid.update(p, q, v, w, target, dt=dt)
         qw, qx, qy, qz = q
         R = np.array([[1-2*(qy*qy+qz*qz), 2*(qx*qy-qw*qz), 2*(qx*qz+qw*qy)],
                       [2*(qx*qy+qw*qz), 1-2*(qx*qx+qz*qz), 2*(qy*qz-qw*qx)],
@@ -431,10 +432,11 @@ class FollowerTests(unittest.TestCase):
 
     def test_controller_hover_and_direction(self):
         target = {'height':1., 'xy':[0,0], 'mass':1.5}
-        result = controller([0,0,1], [1,0,0,0], [0,0,0], [0,0,0], target)
+        pid = PIDController()
+        result = pid.update([0,0,1], [1,0,0,0], [0,0,0], [0,0,0], target)
         np.testing.assert_allclose(result, [1.5*9.81,0,0,0])
         target['xy'] = [10,0]
-        result = controller([0,0,1], [1,0,0,0], [0,0,0], [0,0,0], target)
+        result = pid.update([0,0,1], [1,0,0,0], [0,0,0], [0,0,0], target)
         self.assertGreater(result[2], 0)
         self.assertEqual(result[1], 0)
 

@@ -137,6 +137,10 @@ class GustingWind:
         self.effective_area = float(effective_area)
         self.seed = seed
 
+        # reset_episode() scales from these, so scaling never compounds.
+        self.base_gust_std = self.gust_std.copy()
+        self.base_local_gust_std = self.local_gust_std.copy()
+
         # sample_points: sequence of (name, (x, y, z) body offset, weight).
         self.point_names = [str(name) for name, _, _ in sample_points]
         self.offsets = np.array(
@@ -184,6 +188,14 @@ class GustingWind:
         self.shared_gust = self.gust_std * self.rng.normal(size=3)
         self.local_states = self.rng.normal(size=(len(self.offsets), 3))
         self.point_winds = self._compose()
+
+    def reset_episode(self, seed, mean_wind, gust_scale=1.0):
+        """Start a new wind realization with its own seed and strength."""
+        self.seed = seed
+        self.mean_wind = np.asarray(mean_wind, dtype=float).reshape(3)
+        self.gust_std = float(gust_scale) * self.base_gust_std
+        self.local_gust_std = float(gust_scale) * self.base_local_gust_std
+        self.reset()
 
     def _compose(self):
         local_gusts = self.local_gust_std * (self.mixing @ self.local_states)
