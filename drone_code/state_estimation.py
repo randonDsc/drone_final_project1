@@ -40,7 +40,7 @@ The two errors hide each other. An accelerometer bias looks like a tilt of b / g
 and the filter's "level" pull cancels the horizontal acceleration it would have
 integrated. The estimate stays calm at the target while the real drone drifts
 away, so a steady estimate says nothing about the real position. Only an outside
-position or velocity reference can reveal this. See PPO_RESIDUAL.md.
+position or velocity reference can reveal this. See HOVER_PPO.md.
 """
 import numpy as np
 

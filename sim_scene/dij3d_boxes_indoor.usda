@@ -4,7 +4,7 @@
     doc = """dij3d_boxes.usd with Iris switched to sim_asset/iris_indoor.usda.
 
     A thin layer on top; dij3d_boxes.usd stays unchanged. Select it with
-    ACTIVE_SCENE in drone_code/ppo_config.py.
+    ACTIVE_SCENE in drone_code/hover_ppo_config.py.
     """
     metersPerUnit = 1
     subLayers = [

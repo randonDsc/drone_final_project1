@@ -27,7 +27,7 @@ simulation_app = SimulationApp({"headless": not run["gui"]})
 def main():
     import numpy as np
 
-    import ppo_config
+    import hover_ppo_config
     import sensor_config
 
     from drone_sim import DroneSim
@@ -41,7 +41,7 @@ def main():
 
     sim = DroneSim(
         simulation_app,
-        project_dir / ppo_config.SCENES["indoor"],
+        project_dir / hover_ppo_config.SCENES["indoor"],
     )
     sim.connect_imu(sensor_config.IMU_PATH)
 

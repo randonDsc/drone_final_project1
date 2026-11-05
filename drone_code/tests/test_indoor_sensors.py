@@ -9,7 +9,7 @@ import unittest
 
 import numpy as np
 
-import ppo_config
+import hover_ppo_config
 import sensor_config
 
 from indoor_sensors import RangefinderModel, channel_counts, clean_scan
@@ -142,13 +142,13 @@ class Rangefinder(unittest.TestCase):
 
 class Selection(unittest.TestCase):
     def test_original_scene_stays_the_default(self):
-        self.assertEqual(ppo_config.ACTIVE_SCENE, "original")
-        self.assertEqual(ppo_config.SCENE, "sim_scene/dij3d_boxes.usd")
+        self.assertEqual(hover_ppo_config.ACTIVE_SCENE, "original")
+        self.assertEqual(hover_ppo_config.SCENE, "sim_scene/dij3d_boxes.usd")
 
     def test_both_scenes_exist(self):
         root = os.path.join(os.path.dirname(__file__), "..", "..")
 
-        for scene in ppo_config.SCENES.values():
+        for scene in hover_ppo_config.SCENES.values():
             self.assertTrue(os.path.isfile(os.path.join(root, scene)), scene)
 
 

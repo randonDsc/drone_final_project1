@@ -62,7 +62,7 @@ Set `CONTROL_MODE` in `sim_config.py`.
 | Mode | Meaning |
 | --- | --- |
 | `"pid"` | PID only. The default |
-| `"pid_sac"` | PID plus the correction from `SAC_MODEL_PATH` |
+| `"pid_sac"` | PID plus the correction from `HOVER_SAC_MODEL_PATH` |
 
 In `"pid_sac"`, a missing or incompatible model prints `FALLBACK to PID only` and the
 flight continues on PID. The log's `Control mode:` line shows what is flying.

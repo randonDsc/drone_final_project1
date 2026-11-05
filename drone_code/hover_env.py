@@ -11,7 +11,7 @@ state_source "imu" is the default. Two kinds of state stay separate here:
                     controller or observation.
 
 state_source "ground_truth" sets the control state to truth, explicitly: the
-perfect-state baseline. sac_hover_env.py builds on this class.
+perfect-state baseline. hover_sac_env.py builds on this class.
 
 One drone in one environment. The env never starts or closes SimulationApp;
 the launching script owns it, because it must exist before Isaac imports.
@@ -25,7 +25,7 @@ import numpy as np
 
 import hover_task
 import model_contract
-import ppo_config
+import hover_ppo_config
 import sensor_config
 import sim_config
 
@@ -42,9 +42,9 @@ class SimulationClosed(RuntimeError):
 
 
 def wind_settings(wind_profile):
-    """A ppo_config profile by name, or a settings dict used as it is."""
+    """A hover_ppo_config profile by name, or a settings dict used as it is."""
     if isinstance(wind_profile, str):
-        return ppo_config.WIND_PROFILES[wind_profile]
+        return hover_ppo_config.WIND_PROFILES[wind_profile]
 
     return wind_profile
 
@@ -55,21 +55,21 @@ class DroneHoverEnv(gym.Env):
     def __init__(
         self,
         sim,
-        wind_profile=ppo_config.DEFAULT_WIND_PROFILE,
+        wind_profile=hover_ppo_config.DEFAULT_WIND_PROFILE,
         render_sim=False,
-        task=ppo_config.HOVER,
-        residual_limits=ppo_config.RESIDUAL_LIMITS,
-        reward=ppo_config.REWARD,
-        failure=ppo_config.FAILURE,
-        scales=ppo_config.OBSERVATION_SCALES,
-        gamma=ppo_config.PPO["gamma"],
-        state_source=ppo_config.DEFAULT_STATE_SOURCE,
+        task=hover_ppo_config.HOVER,
+        residual_limits=hover_ppo_config.RESIDUAL_LIMITS,
+        reward=hover_ppo_config.REWARD,
+        failure=hover_ppo_config.FAILURE,
+        scales=hover_ppo_config.OBSERVATION_SCALES,
+        gamma=hover_ppo_config.PPO["gamma"],
+        state_source=hover_ppo_config.DEFAULT_STATE_SOURCE,
         imu_noise=sensor_config.IMU_NOISE,
         estimator=sensor_config.ESTIMATOR,
     ):
         super().__init__()
 
-        if state_source not in ppo_config.STATE_SOURCES:
+        if state_source not in hover_ppo_config.STATE_SOURCES:
             raise ValueError(f"Unknown state source: {state_source}")
 
         self.sim = sim
@@ -426,24 +426,24 @@ def make_hover_sim(simulation_app, profile, log=print):
 
     return DroneSim(
         simulation_app,
-        project_dir / ppo_config.SCENE,
+        project_dir / hover_ppo_config.SCENE,
         log=log,
         wind_config=wind_config,
-        deactivate_prims=ppo_config.DEACTIVATE_PRIMS,
+        deactivate_prims=hover_ppo_config.DEACTIVATE_PRIMS,
     )
 
 
 def make_hover_env(
     simulation_app,
-    wind_profile=ppo_config.DEFAULT_WIND_PROFILE,
+    wind_profile=hover_ppo_config.DEFAULT_WIND_PROFILE,
     render_sim=False,
     log=print,
-    task=ppo_config.HOVER,
-    state_source=ppo_config.DEFAULT_STATE_SOURCE,
+    task=hover_ppo_config.HOVER,
+    state_source=hover_ppo_config.DEFAULT_STATE_SOURCE,
 ):
     """Load the open hover scene once and wrap it in a DroneHoverEnv.
 
-    wind_profile: a ppo_config.WIND_PROFILES name, or a settings dict with the
+    wind_profile: a hover_ppo_config.WIND_PROFILES name, or a settings dict with the
     same keys. A dict with "mean_wind" is fixed; see hover_task.sample_wind.
 
     Call only after SimulationApp has started.

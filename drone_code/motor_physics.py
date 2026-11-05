@@ -133,9 +133,9 @@ def main(log_file):
     residual = None
 
     if sim_config.CONTROL_MODE == "pid_sac":
-        from sac_policy import load_flight_residual
+        from hover_sac_policy import load_hover_residual
 
-        residual = load_flight_residual(project_dir, sim, log)
+        residual = load_hover_residual(project_dir, sim, log)
 
     log(
         "Control mode: "

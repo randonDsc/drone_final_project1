@@ -3,7 +3,7 @@
     C:\\isaacsim\\python.bat -m unittest discover -s tests -p test_hover_task.py -v
 
 No SimulationApp needed: the env runs against a small point-mass stand-in, so
-these check the task logic, not the physics. smoke_ppo_hover.py covers Isaac.
+these check the task logic, not the physics. smoke_hover_ppo.py covers Isaac.
 """
 import unittest
 
@@ -11,7 +11,7 @@ import numpy as np
 
 import hover_task
 import model_contract
-import ppo_config
+import hover_ppo_config
 import sim_config
 
 from drone_diagnostics import rotate_vector
@@ -86,7 +86,7 @@ def make_env(wind_profile="weak", state_source="ground_truth", **overrides):
 
 def hover_state(**overrides):
     state = {
-        "position": np.array(ppo_config.HOVER["target_position"], float),
+        "position": np.array(hover_ppo_config.HOVER["target_position"], float),
         "orientation": np.array([1.0, 0.0, 0.0, 0.0]),
         "linear_velocity": np.zeros(3),
         "angular_velocity": np.zeros(3),
@@ -118,8 +118,8 @@ class Geometry(unittest.TestCase):
 
 
 class Costs(unittest.TestCase):
-    weights = ppo_config.REWARD
-    target = np.array(ppo_config.HOVER["target_position"], float)
+    weights = hover_ppo_config.REWARD
+    target = np.array(hover_ppo_config.HOVER["target_position"], float)
 
     def costs(self, state, action=np.zeros(4), previous=np.zeros(4)):
         return hover_task.step_costs(
@@ -148,8 +148,8 @@ class Costs(unittest.TestCase):
 
 
 class Failure(unittest.TestCase):
-    limits = ppo_config.FAILURE
-    target = np.array(ppo_config.HOVER["target_position"], float)
+    limits = hover_ppo_config.FAILURE
+    target = np.array(hover_ppo_config.HOVER["target_position"], float)
 
     def reason(self, **state):
         return hover_task.failure_reason(
@@ -186,7 +186,7 @@ class Failure(unittest.TestCase):
 
     def test_step_cost_bound_holds_for_random_healthy_states(self):
         rng = np.random.default_rng(0)
-        bound = hover_task.max_step_cost(ppo_config.REWARD, self.limits)
+        bound = hover_task.max_step_cost(hover_ppo_config.REWARD, self.limits)
         checked = 0
 
         for _ in range(20000):
@@ -204,7 +204,7 @@ class Failure(unittest.TestCase):
 
             total = sum(hover_task.step_costs(
                 state, self.target, rng.uniform(-1, 1, 4),
-                rng.uniform(-1, 1, 4), ppo_config.REWARD,
+                rng.uniform(-1, 1, 4), hover_ppo_config.REWARD,
             ).values())
 
             self.assertLessEqual(total, bound)
@@ -213,10 +213,10 @@ class Failure(unittest.TestCase):
         self.assertGreater(checked, 1000)
 
     def test_crashing_never_beats_the_worst_survival(self):
-        gamma = ppo_config.PPO["gamma"]
-        cost = hover_task.max_step_cost(ppo_config.REWARD, self.limits)
+        gamma = hover_ppo_config.PPO["gamma"]
+        cost = hover_task.max_step_cost(hover_ppo_config.REWARD, self.limits)
         penalty = hover_task.failure_penalty(
-            ppo_config.REWARD, self.limits, gamma
+            hover_ppo_config.REWARD, self.limits, gamma
         )
 
         # Worst survival: maximum cost every decision for ever.
@@ -280,7 +280,7 @@ class Env(unittest.TestCase):
 
         np.testing.assert_allclose(
             info["residual"],
-            hover_task.residual_limits_array(ppo_config.RESIDUAL_LIMITS),
+            hover_task.residual_limits_array(hover_ppo_config.RESIDUAL_LIMITS),
         )
 
     def test_invalid_action_rejected(self):
@@ -294,7 +294,7 @@ class Env(unittest.TestCase):
         env = make_env("none")
         env.reset(seed=1)
 
-        for decision in range(ppo_config.HOVER["max_decisions"]):
+        for decision in range(hover_ppo_config.HOVER["max_decisions"]):
             _, _, terminated, truncated, info = env.step(
                 np.zeros(4, dtype=np.float32)
             )
@@ -317,7 +317,7 @@ class Env(unittest.TestCase):
         self.assertEqual(info["failure_reason"], "out_of_bounds")
         self.assertLess(
             reward,
-            -ppo_config.REWARD["scale"] * info["failure_penalty"],
+            -hover_ppo_config.REWARD["scale"] * info["failure_penalty"],
         )
 
     def test_invalid_state_gives_finite_output(self):
@@ -434,7 +434,7 @@ class Env(unittest.TestCase):
 
     def test_configured_target_reaches_controller_and_start(self):
         target = (3.0, -2.0, 1.5)
-        env = make_env(task=dict(ppo_config.HOVER, target_position=target))
+        env = make_env(task=dict(hover_ppo_config.HOVER, target_position=target))
         env.reset(seed=1)
 
         np.testing.assert_array_equal(env.target_position, target)
@@ -446,7 +446,7 @@ class Env(unittest.TestCase):
         )
 
     def test_vecnormalize_paths_match_saved_names(self):
-        path = ppo_config.vecnormalize_path_for
+        path = hover_ppo_config.vecnormalize_path_for
 
         self.assertEqual(
             path("a/final_model.zip").as_posix(),
@@ -628,7 +628,7 @@ class Residual(unittest.TestCase):
             motors.reaction_signs * motors.km / motors.kf,
         ])
 
-        limits = hover_task.residual_limits_array(ppo_config.RESIDUAL_LIMITS)
+        limits = hover_task.residual_limits_array(hover_ppo_config.RESIDUAL_LIMITS)
         hover = 1.618615 * hover_task.GRAVITY / 4
         headroom = min(
             hover, motors.kf * motors.max_speed**2 - hover

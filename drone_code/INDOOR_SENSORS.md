@@ -101,7 +101,7 @@ the rangefinder hits, and rendered boxes are what the LiDAR hits; they match her
 | Drone | `sim_asset/iris.usd` | `sim_asset/iris_indoor.usda` |
 | Scene | `sim_scene/dij3d_boxes.usd` | `sim_scene/dij3d_boxes_indoor.usda` |
 
-`ACTIVE_SCENE` in `ppo_config.py` selects `"original"` (the default) or `"indoor"`.
+`ACTIVE_SCENE` in `hover_ppo_config.py` selects `"original"` (the default) or `"indoor"`.
 The hover env deactivates the warehouse in either case. The navigation demo always
 loads the original.
 

@@ -1,20 +1,20 @@
 """What each script does when you run it. Edit this file, then run the script with
 no arguments, for example:
 
-    /c/isaacsim/python.bat drone_code/train_sac_hover.py
+    /c/isaacsim/python.bat drone_code/train_hover_sac.py
 
 Changes apply the next time a script starts. Paths are relative to the project
 root, or absolute. A path of None uses the run's final files.
 
-Other settings stay where they were: sac_config.py and ppo_config.py for rewards,
+Other settings stay where they were: hover_sac_config.py and hover_ppo_config.py for rewards,
 wind stages, seeds, and checkpoint interval, sim_config.py for PID and flight
 mode, watch_config.py for the viewer.
 """
 
 # ---------- SAC ----------
 
-# train_sac_hover.py
-TRAIN_SAC = {
+# train_hover_sac.py
+TRAIN_HOVER_SAC = {
     # SAC decisions to reach, 10 per simulated second. When resuming, this is the
     # total, counting the steps already in the checkpoint.
     "total_timesteps": 1_000_000,
@@ -34,17 +34,17 @@ TRAIN_SAC = {
     "gui": False,
 }
 
-# eval_sac_hover.py
-EVAL_SAC = {
+# eval_hover_sac.py
+EVAL_HOVER_SAC = {
     "run_name": "wind1",
 
     # Model .zip, or None for the run's final_model.zip.
     "model": "runs/sac_hover/wind1/checkpoints/sac_200000_steps.zip",
 
-    # light, steady, gusty, or strong; see sac_config.WIND_STAGES.
+    # light, steady, gusty, or strong; see hover_sac_config.WIND_STAGES.
     "wind_stage": "gusty",
 
-    # Use only the first N of sac_config.EVAL_SEEDS, or None for all 20.
+    # Use only the first N of hover_sac_config.EVAL_SEEDS, or None for all 20.
     "episodes": None,
 
     # True: fly the baseline alone, which needs no model.
@@ -55,8 +55,8 @@ EVAL_SAC = {
 
 # ---------- PPO ----------
 
-# train_ppo_hover.py
-TRAIN_PPO = {
+# train_hover_ppo.py
+TRAIN_HOVER_PPO = {
     # PPO decisions to reach, 30 per simulated second. When resuming, this is the
     # total, counting the steps already in the checkpoint.
     "total_timesteps": 500_000,
@@ -67,17 +67,17 @@ TRAIN_PPO = {
     # Checkpoint .zip to continue from, or None to start fresh.
     "resume": None,
 
-    # none, weak, or moderate; see ppo_config.WIND_PROFILES.
+    # none, weak, or moderate; see hover_ppo_config.WIND_PROFILES.
     "wind_profile": "weak",
 
-    # "imu" or "ground_truth"; see ppo_config.STATE_SOURCES.
+    # "imu" or "ground_truth"; see hover_ppo_config.STATE_SOURCES.
     "state_source": "imu",
 
     "gui": False,
 }
 
-# eval_ppo_hover.py
-EVAL_PPO = {
+# eval_hover_ppo.py
+EVAL_HOVER_PPO = {
     "run_name": "run1",
 
     # Model .zip and statistics .pkl, or None for the run's final files.
@@ -87,7 +87,7 @@ EVAL_PPO = {
     "wind_profile": "weak",
     "state_source": "imu",
 
-    # Use only the first N of ppo_config.EVAL_SEEDS, or None for all 20.
+    # Use only the first N of hover_ppo_config.EVAL_SEEDS, or None for all 20.
     "episodes": None,
 
     # True: fly the baseline alone, which needs no model.
@@ -96,8 +96,8 @@ EVAL_PPO = {
     "gui": False,
 }
 
-# smoke_ppo_hover.py
-SMOKE_PPO = {
+# smoke_hover_ppo.py
+SMOKE_HOVER_PPO = {
     "state_source": "imu",
     "gui": False,
 }

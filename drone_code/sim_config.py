@@ -279,9 +279,9 @@ ENABLE_SENSORS = True
 # ---------- Flight mode ----------
 
 # "pid": PID only.
-# "pid_sac": PID plus the trained SAC correction from SAC_MODEL_PATH. If it is
+# "pid_sac": PID plus the trained SAC correction from HOVER_SAC_MODEL_PATH. If it is
 #     missing or incompatible, the flight reports that and falls back to PID.
 CONTROL_MODE = "pid"
 
 # Relative to the project root.
-SAC_MODEL_PATH = "runs/sac_hover/wind1/final_model.zip"
+HOVER_SAC_MODEL_PATH = "runs/sac_hover/wind1/final_model.zip"

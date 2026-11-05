@@ -97,7 +97,7 @@ def setting_differences(model_path, imu_noise, estimator):
 def sac_incompatibility(model_path, expected):
     """Why this model cannot be used as this SAC residual, or None.
 
-    expected: sac_config.contract(). Every value must match exactly, because a
+    expected: hover_sac_config.contract(). Every value must match exactly, because a
     SAC policy has no separate normalization to absorb a change.
     """
     path = run_folder(model_path) / FILE_NAME
@@ -106,7 +106,7 @@ def sac_incompatibility(model_path, expected):
         return (
             f"{model_path}\n"
             f"has no {FILE_NAME}, so it is not a SAC residual from "
-            "train_sac_hover.py. PPO models cannot be loaded into SAC."
+            "train_hover_sac.py. PPO models cannot be loaded into SAC."
         )
 
     saved = json.loads(path.read_text(encoding="utf-8"))

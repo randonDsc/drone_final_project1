@@ -28,7 +28,7 @@ IMU_NOISE = {
 }
 
 # Indoor sensor hardware; see INDOOR_SENSORS.md. These exist only in the "indoor"
-# scene (ppo_config.ACTIVE_SCENE). Nothing feeds them to the estimator yet.
+# scene (hover_ppo_config.ACTIVE_SCENE). Nothing feeds them to the estimator yet.
 LIDAR = {
     "path": "/World/iris/body/HESAI_XT32_SD10/PandarXT_32_10hz",
 

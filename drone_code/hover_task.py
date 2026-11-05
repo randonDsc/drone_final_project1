@@ -3,7 +3,7 @@
 NumPy only, so all of it can be tested without Isaac Sim. hover_env.py connects
 these functions to the simulator.
 
-Observation (float32, 23 values, before VecNormalize), scales in ppo_config:
+Observation (float32, 23 values, before VecNormalize), scales in hover_ppo_config:
 
     0:3    target position - position, world frame
     3:6    linear velocity, world frame
@@ -207,7 +207,7 @@ def sample_wind(rng, profile):
 
 
 def sample_stage_wind(rng, stage):
-    """Draw one episode's wind from a sac_config.WIND_STAGES entry.
+    """Draw one episode's wind from a hover_sac_config.WIND_STAGES entry.
 
     Always makes the same draws, so the start state after it does not depend on
     which kind of wind came up. direction_rate turns the mean wind [rad/s].

@@ -1,6 +1,6 @@
-"""Settings for watch_ppo_hover.py. Edit this file, then run:
+"""Settings for watch_hover_ppo.py. Edit this file, then run:
 
-    C:\\isaacsim\\python.bat drone_code\\watch_ppo_hover.py
+    C:\\isaacsim\\python.bat drone_code\\watch_hover_ppo.py
 
 Changes apply the next time the script starts. Only the viewer reads this file:
 training, evaluation, and the navigation demo are not affected.
