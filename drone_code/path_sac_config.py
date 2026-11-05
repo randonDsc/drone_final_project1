@@ -457,8 +457,10 @@ EVAL_WIND_PROFILES = {
 # its main(). Update these together if that destination changes.
 NAVIGATION = {
     "scene": "sim_scene/dij3d_boxes.usd",
-    "goal_offset_xy": (5.93, 1.12),    # from the USD start [m]
-    "goal_height": 1.12,               # world Z [m]
+    # Far end of the warehouse: about 41 m, climbing over the racks to 6.6 m.
+    # The earlier, short destination was (5.93, 1.12) at 1.12 m.
+    "goal_offset_xy": (-2.0, 20.0),    # from the USD start [m]
+    "goal_height": 1.2,                # world Z [m]
 
     "speed": 0.8,                      # [m/s]
     "acceleration": 0.5,               # [m/s^2]

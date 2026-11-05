@@ -82,6 +82,7 @@ def main(log_file):
     sim = DroneSim(
         simulation_app,
         scene_path,
+        wind_config=dict(sim_config.WIND, enabled=sim_config.DEMO_WIND),
         log=log,
     )
 
@@ -93,18 +94,21 @@ def main(log_file):
 
     initial_positions = sim.initial_positions
 
-    # ---------- Final destination: edit this block ----------
+    # Final destination:
 
     target = sim.base_target()
 
     # Absolute world Z, not height above the initial pose.
-    target["height"] = 1.12
+    target["height"] = 1.2
 
     # Final world XY, relative to the initial USD pose:
-    # initial X - 5 m, initial Y + 0 m.
+    # initial X - 2 m, initial Y + 20 m, at the far end of the warehouse.
+    # The planned route is about 41 m: it climbs over the racks to 6.6 m,
+    # runs along the +X side and comes back down.
+    # The earlier, short destination was (+5.93, +1.12) at 1.12 m.
     target["xy"] = (
         initial_positions[0, :2].astype(float).copy()
-        + np.array([5.93, 1.12])
+        + np.array([-2.0, 20.0])
     )
 
     # The mission destination stays unchanged while intermediate

@@ -93,7 +93,7 @@ class DroneSim:
         )
 
         self.dt = PHYSICS_DT
-
+### set up PhysX scene
         self.world = World(
             physics_dt=self.dt,
             rendering_dt=self.dt,
@@ -532,7 +532,7 @@ class DroneSim:
     ):
         """Apply motor thrust plus an extra body-frame wrench.
 
-        extra_torque must be about the body origin (here: wind drag).
+        extra_torque must be about the body origin (wind drag).
         """
         thrusts, reaction_torques = self.motors.calculate(
             speeds
@@ -555,7 +555,8 @@ class DroneSim:
         total_force = total_force + extra_force
         total_torque = total_torque + extra_torque
 
-        # Force and torque are expressed in body coordinates.
+        # Force and torque are expressed in body coordinates, actually push the
+        # drone in physX
         self.body.apply_forces_and_torques_at_pos(
             forces=total_force.astype(
                 np.float32
@@ -584,6 +585,9 @@ class DroneSim:
             joint_indices=self.propeller_dofs,
         )
 
+
+    # physics scene makes PhysX integrate F = m·a, the rotation equations, 
+    # gravity and contacts for one
     def step_command(
         self,
         state,
