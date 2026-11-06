@@ -9934,10 +9934,3 @@ ChatGPT helped explain the simulation results, identify tracking errors, and dis
 I tested the suggested code in Isaac Lab, checked the terminal outputs, and verified the saved data. The navigation experiments reached their target positions, but the current environment does not include obstacle avoidance or complex path planning.
 
 The wind experiment also used a constant external force rather than a complete aerodynamic wind model. These results provide a starting point for future experiments involving environmental disturbances and more advanced drone control.
-
-## AI and Human Contribution Summary
-
-ChatGPT was used as a learning and coding assistant throughout the project. It helped me understand technical concepts, troubleshoot errors, modify Python scripts, and interpret experimental data.
-
-I was responsible for setting up the simulation environment, editing and running the code, testing the drone, collecting data, and verifying the results. I reviewed the suggested changes and tested them in the simulation instead of assuming they would work correctly.
-
