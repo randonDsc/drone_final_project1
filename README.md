@@ -79,8 +79,6 @@ written report is in `evaluation_report.pdf` in the same folder.
 
 ## 3. Setup
 
-### 3.1 Tested environment
-
 | Item | Version used |
 | --- | --- |
 | OS | Windows 11 Pro (10.0.26200) |
@@ -93,49 +91,6 @@ written report is in `evaluation_report.pdf` in the same folder.
 | numpy | 2.3.1 |
 | tensorboard | 2.21.0 |
 
-Everything else (`omni.*`, `pxr` / USD, `isaacsim.core.*`) comes with Isaac Sim.
-
-### 3.2 Install
-
-1. **Install Isaac Sim 6.1.0** by following NVIDIA's standalone install guide. Extract it to `C:\isaacsim` so that
-   `C:\isaacsim\python.bat` and `C:\isaacsim\isaac-sim.bat` exist. If you install it somewhere else, replace
-   `C:\isaacsim` in every command below.
-2. **Check the install** by launching Isaac Sim once:
-   ```bash
-   /c/isaacsim/isaac-sim.bat          # Git Bash
-   C:\isaacsim\isaac-sim.bat          # PowerShell / cmd
-   ```
-   The first launch compiles shaders and can take several minutes.
-3. **Clone this repository**:
-   ```bash
-   git clone <this-repo-url> /c/drone_final_project1
-   cd /c/drone_final_project1
-   ```
-4. **Install the RL packages into Isaac Sim's Python**:
-   ```bash
-   /c/isaacsim/python.bat -m pip install stable-baselines3==2.9.0 gymnasium==1.4.0 tensorboard==2.21.0
-   ```
-   Isaac Sim already includes `torch` and `numpy`. Do not reinstall them, or you may replace its CUDA build.
-5. **(Optional) Get the trained model.** `runs/` is in `.gitignore`, so the trained model is not in this
-   repository. Download the final path-following SAC model from Hugging Face:
-   https://huggingface.co/pcldsc/Iris_drone_residual_correction_SAC
-   and put both files at these paths, or train your own (Section 6):
-   ```
-   runs/flight_sac/flight1/final_model.zip        # path-following SAC (main result)
-   runs/flight_sac/flight1/flight_contract.json   # required next to it
-   ```
-   The hover SAC model is not provided. Train it yourself with `train_hover_sac.py` (Section 6.3).
-
-### 3.3 Shell notes
-
-- Run every command **from the project root** (`C:\drone_final_project1`). The scripts resolve paths such as
-  `sim_scene/...` and `runs/...` from there.
-- In **Git Bash**, use forward slashes: `/c/isaacsim/python.bat drone_code/motor_physics.py`.
-  `C:\isaacsim\...` fails in Git Bash with `command not found`, because bash treats backslashes as escape characters.
-- In **PowerShell / cmd**, use `C:\isaacsim\python.bat drone_code\motor_physics.py`.
-- The commands below are written for Git Bash.
-
----
 
 ## 4. Directory Structure
 
@@ -213,6 +168,25 @@ cd /c/drone_final_project1
 # 3. Compare PID-only vs PID + SAC on all evaluation scenarios (headless, about 45 min on an RTX 4070 SUPER)
 /c/isaacsim/python.bat drone_code/eval_path_sac.py
 ```
+### Notes: The model is not uploaded to the GitHub, please download it from this link: 
+#### https://huggingface.co/pcldsc/Iris_drone_residual_correction_SAC/tree/main 
+
+After downloading, put the files in a `runs/` folder in the project root, exactly like this:
+
+```
+drone_final_project1/
+└── runs/
+    ├── flight_sac/flight1/
+    │   ├── final_model.zip              ← path-following SAC (main model)
+    │   └── flight_contract.json         ← keep next to final_model.zip
+    └── sac_hover/wind1/
+        ├── observation_contract.json    ← keep in wind1/
+        └── checkpoints/
+            └── sac_200000_steps.zip     ← hover SAC
+```
+
+The files on Hugging Face are already in this folder layout, so you can copy the downloaded `runs/` folder straight
+into `drone_final_project1/`. Keep each `.json` file where it is shown: the scripts refuse to load a model without it.
 
 ---
 
@@ -541,10 +515,18 @@ These are the most important parameters. Every file comments every value.
 
 ## 10. AI Usage
 
-_(Add a short description of how AI tools were used in this project: which tools, for which parts (for example
-code generation, debugging, documentation, or report writing), and how the outputs were checked.)_
-
+### Haoshuo Bi
+I used ChatGPT to help understand Isaac Lab, troubleshoot simulation errors, and modify Python scripts for drone sensors, wind disturbances, navigation, and CSV data logging. ChatGPT also helped me understand the simulation results and organize the experimental data.
+Human Contribution:
+I installed and configured Isaac Lab on Windows, modified and tested the drone simulation scripts, collected RGB, Depth, LiDAR, and IMU data, and compared drone behavior under 0 N and 0.1 N external forces. I also tested 2 m, 10 m, and 100 m navigation and verified the results using terminal outputs and CSV files.
+### Colin Tran
 The full log of AI-assisted prompts is in [`AI_USE.md`](AI_USE.md).
+### Cheng-I Lin
+
+### Claire 
+
+### Po-Chen Lin
+
 
 ---
 
