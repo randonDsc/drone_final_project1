@@ -1,0 +1,13 @@
+{
+  "source": "mujoco-project/drone-example/mujoco_menagerie-main/skydio_x2",
+  "copied_sha256": {
+    "x2.xml": "c0b8d6c385c4c2acb9bdcf72b70a45b86d942fd71872fd3be9506e7f80ddc377",
+    "scene.xml": "80c9eae485ac94c854212fed148cd698e2a0a9571f92cfd96e314031ba3f396b",
+    "LICENSE": "d42cae9a0f292b7a713597ba26e1e1e23d50df906c488f0d36fd3538af200bc1",
+    "README.md": "d533e0053e7708becd4de8b42dea234361cc8b8822537a028113c04cd0001dad",
+    "x2.png": "512021031d29096eb793c225331bfbd132488aa5b7b76f652d34587f78aaed9e",
+    "assets/X2_lowpoly.obj": "4d6df3d7b26676a6ade8cbc320599961321ac3e3c52474d7c98dd7adc8152411",
+    "assets/X2_lowpoly_texture_SpinningProps_1024.png": "24153733dd01f9ddd37a3c79fad5e24ac876228812e3a8e95f60ccd8cedb66e1"
+  },
+  "notes": "Original onboard camera and yaw gear signs retained. Runtime disables built-in fluid drag and sets explicit timestep."
+}

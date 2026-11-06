@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "simulator": "mujoco",
+  "mode": "pid",
+  "model_checkpoint": null,
+  "created_utc": "2026-11-05T23:23:23.905042+00:00",
+  "config": {
+    "seed": 17,
+    "physics": {
+      "timestep": 0.01,
+      "controller": "original_literal",
+      "max_xy_speed": 2.0,
+      "max_z_speed": 1.0,
+      "max_tilt_degrees": 10.0
+    },
+    "wind": {
+      "scenario": "calm",
+      "mean_velocity": [
+        0.0,
+        3.0,
+        0.0
+      ],
+      "gust_velocity": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "gust_start": 5.0,
+      "gust_duration": 2.0,
+      "frequency_hz": 0.25,
+      "gust_std": [
+        0.7,
+        0.7,
+        0.25
+      ],
+      "local_gust_std": [
+        0.2,
+        0.2,
+        0.1
+      ],
+      "gust_timescale": 2.0,
+      "local_gust_timescale": 0.3,
+      "correlation_length": 0.4,
+      "speed_range": [
+        0.0,
+        6.0
+      ],
+      "direction_rate": 0.0,
+      "air_density": 1.225,
+      "drag_coefficient": 1.0,
+      "effective_area": 0.03,
+      "enabled": true
+    },
+    "task": {
+      "kind": "hover",
+      "start": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "goal": [
+        4.0,
+        0.0,
+        1.5
+      ],
+      "waypoints": [
+        [
+          0.0,
+          0.0,
+          1.5
+        ],
+        [
+          2.0,
+          0.0,
+          1.5
+        ],
+        [
+          2.0,
+          2.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          1.5
+        ]
+      ],
+      "speed": 0.6,
+      "acceleration": 0.4,
+      "radius": 1.0,
+      "start_hold": 3.0,
+      "end_hold": 8.0,
+      "hover_seconds": 120,
+      "initial_position_range": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "initial_velocity_range": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "initial_angle_range_degrees": [
+        2.0,
+        2.0,
+        3.0
+      ],
+      "initial_angular_velocity_range": [
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    "sensors": {
+      "capture_camera": false,
+      "camera": "drone_camera",
+      "width": 320,
+      "height": 240,
+      "camera_hz": 5.0
+    },
+    "max_seconds": 120.0
+  },
+  "protocol": {
+    "task": {
+      "kind": "hover",
+      "start": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "goal": [
+        4.0,
+        0.0,
+        1.5
+      ],
+      "waypoints": [
+        [
+          0.0,
+          0.0,
+          1.5
+        ],
+        [
+          2.0,
+          0.0,
+          1.5
+        ],
+        [
+          2.0,
+          2.0,
+          2.0
+        ],
+        [
+          0.0,
+          2.0,
+          1.5
+        ]
+      ],
+      "speed": 0.6,
+      "acceleration": 0.4,
+      "radius": 1.0,
+      "start_hold": 3.0,
+      "end_hold": 8.0,
+      "hover_seconds": 120,
+      "initial_position_range": [
+        0.1,
+        0.1,
+        0.1
+      ],
+      "initial_velocity_range": [
+        0.05,
+        0.05,
+        0.05
+      ],
+      "initial_angle_range_degrees": [
+        2.0,
+        2.0,
+        3.0
+      ],
+      "initial_angular_velocity_range": [
+        0.05,
+        0.05,
+        0.05
+      ]
+    },
+    "wind": {
+      "scenario": "calm",
+      "mean_velocity": [
+        0.0,
+        3.0,
+        0.0
+      ],
+      "gust_velocity": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "gust_start": 5.0,
+      "gust_duration": 2.0,
+      "frequency_hz": 0.25,
+      "gust_std": [
+        0.7,
+        0.7,
+        0.25
+      ],
+      "local_gust_std": [
+        0.2,
+        0.2,
+        0.1
+      ],
+      "gust_timescale": 2.0,
+      "local_gust_timescale": 0.3,
+      "correlation_length": 0.4,
+      "speed_range": [
+        0.0,
+        6.0
+      ],
+      "direction_rate": 0.0,
+      "air_density": 1.225,
+      "drag_coefficient": 1.0,
+      "effective_area": 0.03,
+      "enabled": true
+    },
+    "timestep_s": 0.01,
+    "max_seconds": 120.0,
+    "controller_settings": {
+      "timestep": 0.01,
+      "controller": "original_literal",
+      "max_xy_speed": 2.0,
+      "max_z_speed": 1.0,
+      "max_tilt_degrees": 10.0
+    },
+    "initial_state": {
+      "position": [
+        0.06901495855958031,
+        -0.0678053817661786,
+        1.5115489094731385
+      ],
+      "orientation": [
+        0.9999217507780194,
+        -0.004664036136668533,
+        -0.00992242764665721,
+        -0.006023663132459191
+      ],
+      "linear_velocity": [
+        -0.007183550090639157,
+        0.011134310849898056,
+        0.023638587051328652
+      ],
+      "angular_velocity": [
+        -0.048471034340328845,
+        -0.024595908620736073,
+        0.01041458545639301
+      ]
+    },
+    "wind_seed": 17,
+    "completion": {
+      "radius": 0.15,
+      "speed": 0.2,
+      "dwell": 0.5,
+      "require_final_dwell": true
+    },
+    "failure": {
+      "max_position_error": 3.0,
+      "min_height": 0.5,
+      "max_tilt_degrees": 45.0,
+      "max_speed": 7.0,
+      "max_angular_speed": 6.0
+    },
+    "metric_version": 1,
+    "reference": "analytic_quintic_v1"
+  },
+  "protocol_hash": "e8e89a76e810645b44c79ead1163bddb1f0cb9607d0d227e7cdd037b884ab7d6",
+  "initial": {
+    "route_type": "hover",
+    "stage": "controlled_experiment",
+    "wind_seed": 17,
+    "initial_state": {
+      "position": [
+        0.06901495855958031,
+        -0.0678053817661786,
+        1.5115489094731385
+      ],
+      "orientation": [
+        0.9999217507780194,
+        -0.004664036136668533,
+        -0.00992242764665721,
+        -0.006023663132459191
+      ],
+      "linear_velocity": [
+        -0.007183550090639157,
+        0.011134310849898056,
+        0.023638587051328652
+      ],
+      "angular_velocity": [
+        -0.048471034340328845,
+        -0.024595908620736073,
+        0.01041458545639301
+      ]
+    },
+    "route_seconds": 120
+  },
+  "model_audit": {
+    "mass_kg": 1.325,
+    "com_body_m": [
+      0.0,
+      0.0,
+      0.053962264150943406
+    ],
+    "inertia_body_kg_m2": [
+      [
+        0.03665169811320753,
+        0.0,
+        -0.002100000000000001
+      ],
+      [
+        0.0,
+        0.02541169811320754,
+        0.0
+      ],
+      [
+        -0.002100000000000001,
+        0.0,
+        0.06052799999999998
+      ]
+    ],
+    "principal_inertia_kg_m2": [
+      0.06071129484278422,
+      0.036468403270423284,
+      0.02541169811320754
+    ],
+    "rotor_positions_body_m": [
+      [
+        -0.14,
+        -0.18,
+        0.05
+      ],
+      [
+        -0.14,
+        0.18,
+        0.05
+      ],
+      [
+        0.14,
+        0.18,
+        0.08
+      ],
+      [
+        0.14,
+        -0.18,
+        0.08
+      ]
+    ],
+    "control_range_N": [
+      [
+        0.0,
+        13.0
+      ],
+      [
+        0.0,
+        13.0
+      ],
+      [
+        0.0,
+        13.0
+      ],
+      [
+        0.0,
+        13.0
+      ]
+    ],
+    "allocation_about_com": [
+      [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      [
+        -0.18,
+        0.18,
+        0.18,
+        -0.18
+      ],
+      [
+        0.14,
+        0.14,
+        -0.14,
+        -0.14
+      ],
+      [
+        0.0201,
+        -0.0201,
+        0.0201,
+        -0.0201
+      ]
+    ],
+    "hover_controls_N": [
+      3.2495624999999992,
+      3.249562500000001,
+      3.249562499999999,
+      3.2495625000000015
+    ],
+    "timestep_s": 0.01,
+    "integrator": "implicitfast",
+    "builtin_density": 0,
+    "builtin_viscosity": 0,
+    "model_sha256": {
+      "LICENSE": "d42cae9a0f292b7a713597ba26e1e1e23d50df906c488f0d36fd3538af200bc1",
+      "PROVENANCE.json": "cdaf3fc94dad27b0da510ac7eed962994e25bb448d7e7f3e57eb725061ec9264",
+      "README.md": "d533e0053e7708becd4de8b42dea234361cc8b8822537a028113c04cd0001dad",
+      "assets/X2_lowpoly.obj": "4d6df3d7b26676a6ade8cbc320599961321ac3e3c52474d7c98dd7adc8152411",
+      "assets/X2_lowpoly_texture_SpinningProps_1024.png": "24153733dd01f9ddd37a3c79fad5e24ac876228812e3a8e95f60ccd8cedb66e1",
+      "scene.xml": "80c9eae485ac94c854212fed148cd698e2a0a9571f92cfd96e314031ba3f396b",
+      "x2.png": "512021031d29096eb793c225331bfbd132488aa5b7b76f652d34587f78aaed9e",
+      "x2.xml": "c0b8d6c385c4c2acb9bdcf72b70a45b86d942fd71872fd3be9506e7f80ddc377"
+    },
+    "cameras": [
+      "track",
+      "drone_camera"
+    ],
+    "sensors": [
+      "body_gyro",
+      "body_linacc",
+      "body_quat"
+    ]
+  },
+  "versions": {
+    "python": "3.11.17",
+    "platform": "macOS-15.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "mujoco": "3.15.0",
+    "numpy": "2.4.6",
+    "simple-pid": "2.0.1",
+    "gymnasium": "1.4.0",
+    "stable-baselines3": "2.9.2",
+    "torch": "2.15.0"
+  },
+  "source": {
+    "commit": "d40cac3aa11ef4a0e51869df582117afe16a034f",
+    "branch": "alan/mujoco",
+    "sha256": {
+      "drone_code/__init__.py": "3f82e47c3f5cc77d49cf2ec3018613be51462369cb2f619dabb28f1ffcf90f6d",
+      "drone_code/check_sensor_assets.py": "f9b0a48a6197804d3580a08618ec0579f5de0c2546e94f3279789184c9cd5eb1",
+      "drone_code/controller.py": "18062c7ce4f621f2761116bcb9f3428ae6e9050eb1592f83f468230e1bc62f9f",
+      "drone_code/drone_diagnostics.py": "2a3a87bd6c97a773ff0c02f1a95ae87e63505d6c76bf18c340754cfd8e5cb631",
+      "drone_code/drone_sim.py": "97a0f29b4f4f7cbb43cbf42d6c0a85666e3f7f21ac1a6f5007d2a989e2860fa7",
+      "drone_code/eval_hover_ppo.py": "28bfc57b8247be385814e2bf4a2c0f6e6070e32486735c6cbcb27a244c77827e",
+      "drone_code/eval_hover_sac.py": "9b8aec7ac4fa68e6bfa2799f1810dbc4a10588a87f383d8c13622815475c6bac",
+      "drone_code/eval_path_sac.py": "365f8fffab0a4a6edf903851dd1c1b9141b0eb42bf0cfdb6e08865c5ac8c05b2",
+      "drone_code/grid_map.py": "b95312aebdcfdcb516c83ab1b27d42392503b3f7db3223503e0a425bdc8b7c64",
+      "drone_code/hover_env.py": "9a6619307e954939844285cb010655781633f696a667e18f9017f6531ce05d7c",
+      "drone_code/hover_ppo_config.py": "566998f44cbca647ea16e5e2f494b6e175014ecfe6f6e14fabdeaf2398dff9ab",
+      "drone_code/hover_sac_config.py": "2a87dc4ac4c4345c4c2995ab5a922e560abf18faefa87129aea05ab01e164b40",
+      "drone_code/hover_sac_env.py": "c1d382b8292ecc2c7769723f4c0a742bd3f6fcf70a1083c28c387e1053512485",
+      "drone_code/hover_sac_policy.py": "d5937bced13511d08c34d4ede9e3a8931fc06c391a04015f23cfc4495d7ed1db",
+      "drone_code/hover_task.py": "ce600ad1a9715faeff8d7b59550f50d3011368de6b15ac35ce14a5eff63fc22e",
+      "drone_code/indoor_sensors.py": "acfb4a1cec8d558caeab952954f3aa4c046f31e4f6e19c32bd674b8db233653a",
+      "drone_code/inspect_sensors.py": "7d9e84e69c365a9b250d4425ebce20edcf9aded1e25808d8e0db848503eca840",
+      "drone_code/mapping.py": "3df4b58b16536a5942a7a45432aed0e3e17e11f05f854f588061f21dd0f81122",
+      "drone_code/model_contract.py": "771a0ea6c0708ce0e49696d7e7afe7782a85a3dd10543585a28245ad9597877b",
+      "drone_code/motor.py": "3b27b5b028dfc20eab9025eee66f7dab08da325c9729becdebe2093140d72d65",
+      "drone_code/motor_physics.py": "8be0c540e3e573084deba69102e7ff13d62a1fba92630330286af11fd39af302",
+      "drone_code/navigate_path_sac.py": "0b2c76d3556329702bb6f7acf938c4cc105745329d7336990f1d31540d1c0309",
+      "drone_code/navigation.py": "b81d7727df7ccdc442395e11123082f302461172ea6101eaa076defd0ce3d3f7",
+      "drone_code/path_navigation.py": "8304384b0d453360e578e7f72324dc7d7bbcec049d6c36d55f95ad066b261ead",
+      "drone_code/path_reference.py": "2636aa7bd3980e7f7182172a12f0e5274a9d149c115561ab43d42eda8a608ee2",
+      "drone_code/path_sac_config.py": "02cbf758b86caa4c0823d7e0f0fc3599860e3101ffd2619a3f1a11896f170ddd",
+      "drone_code/path_sac_env.py": "09dbac4bacd8daddba1067cd825dce81954ce24a0afe1b0bcc40f75ce222fb58",
+      "drone_code/path_sac_policy.py": "46c9102af57a80470a7297d9d2ae71ef862b12580ca47d1e34247dc8981bc21f",
+      "drone_code/run_config.py": "755e6718531d0055bb295d94343fdc5bfc09e78a7e9357663c6d8d5c6ec8841c",
+      "drone_code/sensor_config.py": "400de321b83d7e3396738bb9869b4adcb2300af2bcdf570531d737e035f023bb",
+      "drone_code/sensors.py": "09c77dd9dd201b1d1afbb43775a7abd06ad05d47e345bb5be1649863315663ac",
+      "drone_code/sim_config.py": "865d69060ce66ee285591f48b97ddb393238e8bc38fe1c2e39f00f1b8e2822c8",
+      "drone_code/smoke_hover_ppo.py": "ed1a73ed61f70e73719e46b6e7e585ac2ac38beda89be8fefb7d18fb346d42f6",
+      "drone_code/state_estimation.py": "43db27d683e93c5f48f930956d9f10eb89b7563bec5386b5abc4cd771b60b9ad",
+      "drone_code/sweep_path_sac.py": "165b6dd634979ebc31bff6a4d1336a13364e8ccd5c8a927cd38a4c7a3f5a39ac",
+      "drone_code/test_visits.py": "3e5ec878a60c68e4c457cfc36c6629721ccc5cbd4ac8205a333cf106ce32f983",
+      "drone_code/train_hover_ppo.py": "ce860bc4df094a80480245154d0471ec5c66345524b6a2a0805b44fe6e45fbce",
+      "drone_code/train_hover_sac.py": "db6ccc9fab6d00af8afc99871a258b82d7ffabf50c493b0a501bdca41de3a56a",
+      "drone_code/train_path_sac.py": "80e2ebf9b66da08e79063428d3c9744f3a5dae03764f40018896ce0f0a003243",
+      "drone_code/watch_config.py": "fff35a6407c4d4511151ddd0624864a44ebb7895050a911b1ae1ccc643331218",
+      "drone_code/watch_hover_ppo.py": "0d7326b452f5c9eca94436e10de3d1fb9a58f8c655ccd94a0c79a307eacac3f2",
+      "drone_code/wind.py": "058329d0ed70d86727d2d962ad0a870e007e275014322114165a25359f9f3fba",
+      "mujoco_drone/__init__.py": "cdfa0d8ed72c187ebd413c708e68f6c728cef79f59773bdf638459e3194922af",
+      "mujoco_drone/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+      "mujoco_drone/cli.py": "055fe0e36a65140613da34b1c815a5789885dd828cf075feeae6cd2c91127c7b",
+      "mujoco_drone/comparison.py": "89683d8595a26b616b662927737aad98f5ab88f1017226647ce60800391e4aa6",
+      "mujoco_drone/config.py": "40624cc2efa4f772db0c8aa5c8422797c25c8765ca3aca7ab9f9f3464ebc43de",
+      "mujoco_drone/controllers.py": "571db11bfae23d48d66d3d984f8f94f3250250675eb948ccdb4b52659d462e21",
+      "mujoco_drone/core.py": "db2c8ae15e9e42d9b80a31d45d87c0e6cc0188c26f14d5d9014bda0134cd7f3d",
+      "mujoco_drone/env.py": "958f601f8bfd0d607bffcd4ddac7abc968a9448a512cb8901f2d873ca35317d3",
+      "mujoco_drone/experiments.py": "43f0f2c838ff1952edbcc92e47dec088b3b7d2ac0f44d449702e63159464c1f7",
+      "mujoco_drone/metrics.py": "2a2d242c9f06857ee32d8fdc82521775c4c045d565e31e9f5d5d771b7b46d512",
+      "mujoco_drone/physics.py": "0954a6c7bc6a84a728271037d12108cc30a570036ba52ea84720240ff9636f2f",
+      "mujoco_drone/plotting.py": "5e6efde8eab327938a6d135747e3e514cf5f0f39f257cd9643369deec37eea94",
+      "mujoco_drone/recording.py": "792844e8837afb45e7a3686cde49f3e28fa0d1f3eb64f04b10df58aabc8dd923",
+      "mujoco_drone/references.py": "a5dd4d19b803954777215f03049fcf8278dd95455a1380d1a9c545c7118eecba",
+      "mujoco_drone/sensors.py": "bd7e8e36630d818d5dde8d7c5c11c7f401298800099e46e845cc3d866478910f",
+      "mujoco_drone/training.py": "5372ea92fdba4c9099f684c05be4cdf325976bc5ee806091e306ccf9ffe51661",
+      "mujoco_drone/weather.py": "cb710a2502a317268fb6e72014f1dfa2a31f2198e0db678dc2a49e562775ef5e"
+    }
+  },
+  "state_source": "ground_truth_body_origin",
+  "sensor_model": "ideal MuJoCo IMU; accelerometer reports site specific force",
+  "residual_limits": [
+    0.5455985075307132,
+    0.03409990672066957,
+    0.020459944032401742,
+    0.013639962688267828
+  ],
+  "residual_scale": 0.6819981344133914,
+  "notes": "No motor speed/RPM inference; controls and actuator forces are in newtons."
+}

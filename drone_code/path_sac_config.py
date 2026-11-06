@@ -11,8 +11,11 @@ import json
 import os
 from pathlib import Path
 
-import model_contract
-import sim_config
+if __package__:
+    from . import model_contract, sim_config
+else:
+    import model_contract
+    import sim_config
 
 
 # Saved files keep this workflow's earlier name, "flight", so runs trained

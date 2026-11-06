@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "capstone-mujoco-drone"
+version = "0.1.0"
+description = "Reproducible Skydio X2 wind and flight experiments for the UCSD capstone"
+requires-python = ">=3.11"
+dependencies = ["numpy>=1.26,<3", "mujoco>=3.3,<4", "simple-pid>=2,<3", "gymnasium>=1.0,<2"]
+
+[project.optional-dependencies]
+rl = ["stable-baselines3>=2.5,<3"]
+plot = ["matplotlib>=3.8", "Pillow>=10"]
+test = ["pytest>=8"]
+
+[project.scripts]
+mujoco-drone = "mujoco_drone.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["mujoco_drone*", "drone_code"]
+
+[tool.setuptools.package-data]
+mujoco_drone = ["models/skydio_x2/*", "models/skydio_x2/assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests_mujoco"]
+pythonpath = ["."]

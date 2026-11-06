@@ -1,0 +1,21 @@
+{
+  "pairs": 6,
+  "difference": "right minus left; negative error differences favor the right input",
+  "interpretation": "Measured differences only. Different airframes, model parameters or controllers prevent attribution solely to the simulator.",
+  "position_rmse_right_minus_left_mean": -0.0001958056168206238,
+  "position_rmse_right_minus_left_std": 0.0017387409909829508,
+  "cross_track_rmse_right_minus_left_mean": -0.0001567513947462578,
+  "cross_track_rmse_right_minus_left_std": 0.0016957408039096288,
+  "max_deviation_right_minus_left_mean": -0.01608964630919903,
+  "max_deviation_right_minus_left_std": 0.006974439940367866,
+  "altitude_rmse_right_minus_left_mean": 7.685286242348702e-05,
+  "altitude_rmse_right_minus_left_std": 8.190736669952833e-05,
+  "saturation_rate_right_minus_left_mean": 0.0,
+  "saturation_rate_right_minus_left_std": 0.0,
+  "completed_rate_left": 1.0,
+  "completed_rate_right": 1.0,
+  "failed_rate_left": 0.0,
+  "failed_rate_right": 0.0,
+  "crashed_rate_left": 0.0,
+  "crashed_rate_right": 0.0
+}

@@ -32,13 +32,18 @@ from collections import deque
 
 import numpy as np
 
-import path_sac_config
-import hover_task
-import sim_config
-
-from controller import PIDController
-from state_estimation import quaternion_multiply
-from wind import quaternion_to_matrix
+if __package__:
+    from . import path_sac_config, hover_task, sim_config
+    from .controller import PIDController
+    from .state_estimation import quaternion_multiply
+    from .wind import quaternion_to_matrix
+else:
+    import path_sac_config
+    import hover_task
+    import sim_config
+    from controller import PIDController
+    from state_estimation import quaternion_multiply
+    from wind import quaternion_to_matrix
 
 
 FRAME_SIZE = 32
@@ -128,8 +133,8 @@ class ReferencePID:
     discarded. Saturation still reaches them.
     """
 
-    def __init__(self, base_target, mass):
-        self.pid = PIDController()
+    def __init__(self, base_target, mass, gains=None):
+        self.pid = PIDController(gains=gains)
         self.base_target = dict(base_target)
         self.mass = float(mass)
 
@@ -610,7 +615,10 @@ class PathTrace:
             the time. Falling behind on the line adds nothing to it.
         max_deviation: largest time-indexed error.
         """
-        from path_reference import distances_to_path
+        if __package__:
+            from .path_reference import distances_to_path
+        else:
+            from path_reference import distances_to_path
 
         errors = np.array(self.errors, dtype=float)
         finite = errors[np.isfinite(errors)]

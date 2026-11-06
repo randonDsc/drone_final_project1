@@ -18,7 +18,10 @@ The wind is deliberately not observed; the policy must infer it from motion.
 """
 import numpy as np
 
-from wind import quaternion_to_matrix
+if __package__:
+    from .wind import quaternion_to_matrix
+else:
+    from wind import quaternion_to_matrix
 
 
 OBSERVATION_SIZE = 23

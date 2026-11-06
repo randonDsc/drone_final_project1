@@ -1,0 +1,12 @@
+# Direct dependency versions measured on Apple Silicon with Python 3.11.17.
+# For the editable project: python -m pip install -r requirements-macos-tested.txt
+# Then: python -m pip install --no-deps -e .
+numpy==2.4.6
+mujoco==3.15.0
+simple-pid==2.0.1
+gymnasium==1.4.0
+stable-baselines3==2.9.2
+torch==2.15.0
+matplotlib==3.11.2
+Pillow==12.3.0
+pytest==9.2.0

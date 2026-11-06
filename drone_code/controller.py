@@ -11,7 +11,10 @@ attitude, and each one is kept in the units of the output it adds to.
 """
 import numpy as np
 
-import sim_config
+if __package__:
+    from . import sim_config
+else:
+    import sim_config
 
 
 def integrate(integral, error, ki, limit, zone, dt, blocked):

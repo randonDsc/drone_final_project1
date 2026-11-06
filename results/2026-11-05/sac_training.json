@@ -1,0 +1,6 @@
+{
+  "timesteps": 20000,
+  "gradient_updates": 15000,
+  "final_model": "mujoco_output/sac_review_20261105/final_model.zip",
+  "note": "Training execution does not establish convergence or robustness; use independent paired evaluation."
+}

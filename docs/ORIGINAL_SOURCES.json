@@ -1,0 +1,12 @@
+{
+  "source_root": "mujoco-project/drone-example",
+  "sha256": {
+    "main.py": "14dd9afdcdf22b11919a0e6c1b0d1f1d952ccb915536b50220cd78007da6d146",
+    "point_to_point_wind.py": "675c217734815280ec9247f8f489ff258f15fe5bbe3f5f6dbf4087c12992b01f",
+    "main_sensors.py": "99e264eee5fad71a5e1208ded534f08a7d684c17995ac60752c2a008d1f9c6f0",
+    "weather.py": "b4ae202bc0eb8881801d9a86b467248b002abac7cc0d3cb6210bb1ded91f3c79",
+    "mujoco_menagerie-main/skydio_x2/x2.xml": "c0b8d6c385c4c2acb9bdcf72b70a45b86d942fd71872fd3be9506e7f80ddc377",
+    "mujoco_menagerie-main/skydio_x2/scene.xml": "80c9eae485ac94c854212fed148cd698e2a0a9571f92cfd96e314031ba3f396b"
+  },
+  "baseline": "main.py, per user clarification; corrected wind script excluded"
+}

@@ -1,0 +1,94 @@
+{
+  "pid_flights.csv": {
+    "source": "mujoco_output/pid_review_20261105/flights.csv",
+    "sha256": "68502a0e9403c475b0c188c6073055c34111d8e31e2935033f7ef5fa20157d3f"
+  },
+  "pid_summary.csv": {
+    "source": "mujoco_output/pid_review_20261105/summary.csv",
+    "sha256": "145bbf7c73ab768ed323aafb494ab3b2a25ddd95daabc9abae080e0cd88eaba6"
+  },
+  "pid_suite.json": {
+    "source": "mujoco_output/pid_review_20261105/suite.json",
+    "sha256": "16035d68faf69fbd1851ce771a282e3e0c40b9ab36c31e260059f02702337b1a"
+  },
+  "pid_aggregate.json": {
+    "source": "mujoco_output/pid_review_20261105/aggregate.json",
+    "sha256": "8d8528dc8e9cd9e28e10b0f4787ba0876db9444815067f3662fa32c74506bd20"
+  },
+  "pid_summary.png": {
+    "source": "mujoco_output/pid_review_20261105/summary.png",
+    "sha256": "901923b2478d3848f8ee9cbc8e32f9e21b6fe692667d1413b4e87a84104641d2"
+  },
+  "paired_flights.csv": {
+    "source": "mujoco_output/paired_review_20261105/flights.csv",
+    "sha256": "e6002fb0de33c11e8576e95c539f636134a6a6f3678be13c9b5ef0224463d684"
+  },
+  "paired_summary.csv": {
+    "source": "mujoco_output/paired_review_20261105/summary.csv",
+    "sha256": "c1125003197f88ba69d25f40b200b7885529cacc66d306108f1dfd97c070873f"
+  },
+  "paired_suite.json": {
+    "source": "mujoco_output/paired_review_20261105/suite.json",
+    "sha256": "f6bcc22a8ca01ab986075fdb6443dde9b51e774a9f13072000a84fbcfea20505"
+  },
+  "paired_aggregate.json": {
+    "source": "mujoco_output/paired_review_20261105/aggregate.json",
+    "sha256": "537ab454ff2ea68222bb21c9d093485035027a2c8a2d4625fd51fee1b1f9a2d3"
+  },
+  "paired_summary.png": {
+    "source": "mujoco_output/paired_review_20261105/summary.png",
+    "sha256": "07088ad3b2534bbeb0ecd511a85b6a39ee0ad02746f0ffb85869aa9e802e7a97"
+  },
+  "paired_deltas.csv": {
+    "source": "mujoco_output/paired_review_20261105/paired/paired.csv",
+    "sha256": "73f909dceb43398543780e52eae5ed9075fe35fb251f79c054949404e5f4b6cd"
+  },
+  "paired_comparison.json": {
+    "source": "mujoco_output/paired_review_20261105/paired/comparison.json",
+    "sha256": "f3e361f799642cd179a38914e736f938f76b7404c0b00e61334707a19d801ca1"
+  },
+  "stress_flights.csv": {
+    "source": "mujoco_output/stress_review_20261105/flights.csv",
+    "sha256": "2da50701aeeb370fe319f86bde781a4dbf71541288fe839ad63eec88c326680d"
+  },
+  "stress_summary.csv": {
+    "source": "mujoco_output/stress_review_20261105/summary.csv",
+    "sha256": "d08ece7bfc0cb5392718bdf35cc0076b556639550c49a55b420f4629ee795fb8"
+  },
+  "stress_suite.json": {
+    "source": "mujoco_output/stress_review_20261105/suite.json",
+    "sha256": "f285851f5063bcd1496062b223078a217522c74128b73b5d02488337109bb55b"
+  },
+  "stress_aggregate.json": {
+    "source": "mujoco_output/stress_review_20261105/aggregate.json",
+    "sha256": "5e328523575096d41341c1bc8642a593956329f978f52c5b15089f8cf05b6e6b"
+  },
+  "stress_summary.png": {
+    "source": "mujoco_output/stress_review_20261105/summary.png",
+    "sha256": "2620b9a24b56afdc287c01480092da484a44a439c67ced41e346425184cee892"
+  },
+  "stress_deltas.csv": {
+    "source": "mujoco_output/stress_review_20261105/paired/paired.csv",
+    "sha256": "95f85c67e77807a95b22e8b0321c4ef6a392a0d27480763f626db949f5a7d34e"
+  },
+  "stress_comparison.json": {
+    "source": "mujoco_output/stress_review_20261105/paired/comparison.json",
+    "sha256": "4f26f715c4ede6083649d92179b2ad70a8dc3241ddadbefa0aed3392bf5b22c9"
+  },
+  "sac_training.json": {
+    "source": "mujoco_output/sac_review_20261105/training_result.json",
+    "sha256": "675a58cd372353f69782c21880ed4fe55539cd583b2eb782aa7cbb080a89092e"
+  },
+  "sac_run.json": {
+    "source": "mujoco_output/sac_review_20261105/run.json",
+    "sha256": "40fa5143e63d16970fa9cb337406e993dd3f79ee9a6f5313c271ae16782c1282"
+  },
+  "original_pid_metrics.json": {
+    "source": "mujoco_output/original_review_20261105/metrics.json",
+    "sha256": "1ea2b55a03f7c1ac98248baced46e9db0ea2b026ddf4264bb537e4869c383ee9"
+  },
+  "original_pid_metadata.json": {
+    "source": "mujoco_output/original_review_20261105/metadata.json",
+    "sha256": "b40b7db2bd0c54269c3d17aa4461227eab56dbd1cbb0e213de71e146f77f0ad7"
+  }
+}

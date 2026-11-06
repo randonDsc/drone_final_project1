@@ -44,7 +44,10 @@ position or velocity reference can reveal this. See HOVER_PPO.md.
 """
 import numpy as np
 
-from wind import quaternion_to_matrix
+if __package__:
+    from .wind import quaternion_to_matrix
+else:
+    from wind import quaternion_to_matrix
 
 
 def quaternion_multiply(a, b):
