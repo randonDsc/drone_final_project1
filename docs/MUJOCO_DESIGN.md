@@ -4,6 +4,10 @@ This branch (`alan/mujoco`, starting at `d40cac3`) adds a local experimental
 backend. The original `mujoco-project` is an input only. No Isaac checkpoint is
 assumed transferable, and no changes are pushed.
 
+The initial backend phases below are complete. The subsequent navigation
+extension is described in [its implementation plan](MUJOCO_NAVIGATION_PLAN.md)
+and [current usage/fidelity guide](MUJOCO_NAVIGATION.md).
+
 ## Audit
 
 * `drone_code/drone_sim.py` owns Isaac/PhysX, USD loading, geometry, and rotor
@@ -81,7 +85,8 @@ to the airframe as in the source model, not an advected meteorological field.
 Baseline control uses ground truth. IMU and rendered cameras are simulated ideal
 measurements; they do not establish sensor-based autonomy. Rotor lag, ground
 effect, battery, rotor gyros, blade aerodynamics and real-world validation remain
-outside this model. Obstacle navigation is deferred until the earlier phases are
-validated. macOS camera capture and GUI must be tested separately from headless
+outside this model. Static obstacle navigation was added after validating the
+earlier phases; dynamic obstacles remain unsupported. macOS camera capture and
+GUI must be tested separately from headless
 physics. A short SAC run proves learning/save/load plumbing only; convergence
 requires longer training and independent evaluation.

@@ -13,7 +13,7 @@ def smooth_phase(u):
 
 
 class TaskReference:
-    def __init__(self, config):
+    def __init__(self, config, vertical_speed=None):
         self.config = config
         self.start = np.array(config.start, dtype=float)
         self.kind = config.kind
@@ -24,8 +24,9 @@ class TaskReference:
             self.path = self.start[None, :]
             self.final_position = self.start.copy()
             return
-        if self.kind in ("straight", "waypoints"):
-            points = np.array([config.start, config.goal] if self.kind == "straight" else config.waypoints, dtype=float)
+        if self.kind in ("straight", "altitude", "waypoints"):
+            goal = config.goal if self.kind != "altitude" else (config.start[0], config.start[1], config.goal[2])
+            points = np.array([config.start, goal] if self.kind in ("straight", "altitude") else config.waypoints, dtype=float)
             keep = np.r_[True, np.linalg.norm(np.diff(points, axis=0), axis=1) > 1e-8]
             self.points = points[keep]
             self.start = self.points[0]
@@ -33,6 +34,8 @@ class TaskReference:
             # Quintic max first/second derivatives: 1.875 and ~5.774.
             self.segment_durations = np.maximum(1.875*lengths/config.speed,
                                                np.sqrt(5.774*lengths/config.acceleration))
+            if vertical_speed is not None:
+                self.segment_durations = np.maximum(self.segment_durations, 1.875*abs(np.diff(self.points[:, 2]))/vertical_speed)
             self.times = self.hold + np.r_[0.0, np.cumsum(self.segment_durations)]
             self.motion_end = float(self.times[-1])
             self.path = self.points.copy()
@@ -61,7 +64,7 @@ class TaskReference:
         if self.kind == "hover" or time <= self.hold or time >= self.motion_end:
             point = self.final_position if time >= self.motion_end else self.start
             return ReferenceSample(point.copy(), np.zeros(3), np.zeros(3), time >= self.motion_end)
-        if self.kind in ("straight", "waypoints"):
+        if self.kind in ("straight", "altitude", "waypoints"):
             i = int(np.searchsorted(self.times, time, side="right") - 1)
             duration = self.segment_durations[i]
             p, v, a = smooth_phase((time-self.times[i])/duration)

@@ -37,6 +37,7 @@ class FlightMetrics:
         self.saturated_steps = 0
         self.saturated_motors = 0
         self.max_tilt = 0.0
+        self.navigation_rows = []
 
     def record(self, env, state, sample):
         self.times.append(float(env.sim.data.time))
@@ -47,6 +48,8 @@ class FlightMetrics:
         self.saturated_motors += int(np.count_nonzero(np.abs(env.sim.last["requested"]-env.sim.last["controls"]) > 1e-10))
         R = env.sim.data.xmat[env.sim.body_id].reshape(3, 3)
         self.max_tilt = max(self.max_tilt, float(np.rad2deg(np.arccos(np.clip(R[2, 2], -1, 1)))))
+        if env.navigation:
+            self.navigation_rows.append(dict(env.navigation.snapshot))
 
     def summarize(self, env):
         if not self.times:
@@ -64,7 +67,7 @@ class FlightMetrics:
         if wind.scenario == "gust":
             recovery = recovery_time(self.times, errors, self.velocity_errors,
                                      wind.gust_start+wind.gust_duration)
-        return dict(metric_version=METRIC_VERSION, seconds=self.times[-1], samples=len(self.times),
+        result = dict(metric_version=METRIC_VERSION, seconds=self.times[-1], samples=len(self.times),
                     position_rmse=float(np.sqrt(np.mean(errors**2))),
                     cross_track_rmse=float(np.sqrt(np.mean(cross**2))),
                     cross_track_max=float(np.max(cross)), max_deviation=float(np.max(errors)),
@@ -79,6 +82,18 @@ class FlightMetrics:
                     maximum_tilt_degrees=self.max_tilt, gust_recovery_seconds=recovery,
                     gust_recovery_observed=recovery is not None if wind.scenario == "gust" else None,
                     episode_return=env.total_reward)
+        if env.navigation:
+            eligible = [r for r in self.navigation_rows if not r["launch_active"]]
+            result.update(clearance_violation_rate=sum(r["clearance_violated"] for r in eligible)/max(len(eligible), 1),
+                    occupancy_violation_rate=sum(r["occupancy_violated"] for r in eligible)/max(len(eligible), 1),
+                    minimum_clearance_m=min((r["clearance_m"] for r in eligible), default=None),
+                    navigation_checked_steps=len(eligible),
+                    launch_steps=len(self.navigation_rows)-len(eligible),
+                    envelope_tilt_exceeded_rate=sum(r["envelope_tilt_exceeded"] for r in self.navigation_rows)/max(len(self.navigation_rows), 1),
+                    planned_distance_m=env.navigation.plan.distance,
+                    planner_expanded_nodes=env.navigation.plan.expanded,
+                    reference_mode=env.navigation.reference_mode)
+        return result
 
 
 def aggregate(rows):
@@ -98,4 +113,11 @@ def aggregate(rows):
     result["gust_recovery_rate"] = len(recovered)/len(applicable) if applicable else None
     result["gust_recovery_seconds_mean"] = float(np.mean(recovered)) if recovered else None
     result["gust_recovery_unobserved_flights"] = len(applicable)-len(recovered)
+    navigation = [r for r in rows if "clearance_violation_rate" in r]
+    if navigation:
+        result["navigation_flights"] = len(navigation)
+        for key in ("clearance_violation_rate", "occupancy_violation_rate", "envelope_tilt_exceeded_rate"):
+            result[key+"_mean"] = float(np.mean([r[key] for r in navigation]))
+        clearances = [r["minimum_clearance_m"] for r in navigation if r["minimum_clearance_m"] is not None]
+        result["minimum_clearance_m"] = min(clearances) if clearances else None
     return result

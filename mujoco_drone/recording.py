@@ -58,6 +58,12 @@ class FlightRecorder:
         for i, name in enumerate(sim.wind.point_names):
             columns(row, f"wind_{name}_world_m_s", last["wind"][i])
             columns(row, f"drag_{name}_world_N", last["point_forces"][i])
+        if env.navigation:
+            for name, value in env.navigation.snapshot.items():
+                row["navigation_"+name] = int(value) if isinstance(value, (bool, np.bool_)) else value
+            row["navigation_contact_pairs"] = len(sim.contacts())
+            if env.navigation.reference_mode == "isaac_waypoints":
+                row["navigation_waypoint_index"] = env.navigation.reference.follower.index
         if self.writer is None:
             self.writer = csv.DictWriter(self.file, fieldnames=list(row))
             self.writer.writeheader()

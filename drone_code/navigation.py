@@ -51,9 +51,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
-import sim_config
-
-from mapping import find_launch_entry
+if __package__:
+    from . import sim_config
+    from .mapping import find_launch_entry
+else:
+    import sim_config
+    from mapping import find_launch_entry
 
 
 # All 26 neighbor offsets, in a fixed order shared by every lookup table.
@@ -377,6 +380,10 @@ def plan_flight(
     initial_position,
     goal,
     progress=None,
+    *,
+    max_expanded=None,
+    safety_margin=None,
+    support_roots=None,
 ):
     """
     Plan from the actual USD starting pose to the exact destination.
@@ -405,12 +412,15 @@ def plan_flight(
         grid_map,
         geometry,
         initial_position,
+        safety_margin=safety_margin,
+        support_roots=support_roots,
     )
 
     cells, grid_distance, expanded = dijkstra(
         grid_map,
         entry,
         goal,
+        max_expanded=max_expanded,
         progress=progress,
     )
 

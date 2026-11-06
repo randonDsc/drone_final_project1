@@ -6,7 +6,8 @@ import mujoco
 import numpy as np
 
 from drone_code.wind import quaternion_to_matrix
-from .config import PhysicsConfig, WindConfig
+from .config import PhysicsConfig, WindConfig, SceneConfig
+from .scenes import build_model
 from .weather import ScenarioWind
 
 
@@ -14,9 +15,11 @@ MODEL_DIR = Path(__file__).parent / "models" / "skydio_x2"
 
 
 class DroneSimulation:
-    def __init__(self, physics=None, wind=None, seed=0):
+    def __init__(self, physics=None, wind=None, seed=0, scene=None):
         self.config = physics or PhysicsConfig()
-        self.model = mujoco.MjModel.from_xml_path(str(MODEL_DIR / "scene.xml"))
+        self.scene_config = scene or SceneConfig()
+        self.model, self.scene_manifest, sources = build_model(self.scene_config)
+        self.geom_sources = {self.model.geom(name).id: path for name, path in sources.items()}
         self.model.opt.timestep = self.config.timestep
         # Only our explicit distributed drag is active, including in still air.
         self.model.opt.density = 0
@@ -42,8 +45,10 @@ class DroneSimulation:
 
     def _allocation(self):
         model = self.model
-        if model.nv != 6 or model.nq != 7 or model.nu != 4 or model.nbody != 2:
-            raise ValueError("Backend expects the audited single free-body X2 model")
+        if (model.nv != 6 or model.nq != 7 or model.nu != 4 or model.njnt != 1
+                or model.jnt_bodyid[0] != self.body_id
+                or any(model.body_weldid[i] != 0 for i in range(1, model.nbody) if i != self.body_id)):
+            raise ValueError("Backend expects one free-body X2 and a static environment")
         gear = model.actuator_gear[self.rotor_ids]
         if (not np.all(model.actuator_ctrllimited[self.rotor_ids])
                 or not np.all(model.actuator_trntype[self.rotor_ids] == mujoco.mjtTrn.mjTRN_SITE)
@@ -149,11 +154,16 @@ class DroneSimulation:
                          interval_start=start_time, interval_end=float(self.data.time))
         return controls, saturated, force, torque
 
-    def collided(self):
+    def contacts(self):
+        """Active inter-body contact pairs; positive-distance margins excluded."""
+        result = []
         for contact in self.data.contact[:self.data.ncon]:
-            if self.model.geom_bodyid[contact.geom1] != self.model.geom_bodyid[contact.geom2]:
-                return True
-        return False
+            if contact.dist <= 0 and self.model.geom_bodyid[contact.geom1] != self.model.geom_bodyid[contact.geom2]:
+                result.append((int(contact.geom1), int(contact.geom2)))
+        return result
+
+    def collided(self, allowed_supports=()):
+        return any(a not in allowed_supports and b not in allowed_supports for a, b in self.contacts())
 
     def audit(self):
         axes = quaternion_to_matrix(self.model.body_iquat[self.body_id])

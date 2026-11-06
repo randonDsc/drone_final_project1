@@ -1,0 +1,22 @@
+...............................F...                                      [100%]
+=================================== FAILURES ===================================
+___________ FollowerTests.test_sloped_segment_tracked_close_to_line ____________
+
+self = <test_navigation.FollowerTests testMethod=test_sloped_segment_tracked_close_to_line>
+
+    def test_sloped_segment_tracked_close_to_line(self):
+        waypoints = np.array([[0., 0., 1.], [4., 3., 3.5], [6., 0., 1.5]])
+        for guided in (True, False):
+            f = WaypointFollower(waypoints, guided=guided)
+            trace = simulate(f, waypoints[0], 150.)
+            dev = max_route_deviation(trace, waypoints)
+            if guided:
+                self.assertTrue(f.done)
+                self.assertLess(np.linalg.norm(trace[-1] - waypoints[-1]), sim_config.WAYPOINT_RADIUS)
+>               self.assertLess(dev, sim_config.SAFETY_MARGIN)
+E               AssertionError: np.float64(1.1648501510249272) not less than 0.01
+
+drone_code/tests/test_navigation.py:409: AssertionError
+=========================== short test summary info ============================
+FAILED drone_code/tests/test_navigation.py::FollowerTests::test_sloped_segment_tracked_close_to_line
+1 failed, 34 passed in 1.32s

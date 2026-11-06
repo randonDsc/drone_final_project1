@@ -13,6 +13,7 @@ dependencies = ["numpy>=1.26,<3", "mujoco>=3.3,<4", "simple-pid>=2,<3", "gymnasi
 rl = ["stable-baselines3>=2.5,<3"]
 plot = ["matplotlib>=3.8", "Pillow>=10"]
 test = ["pytest>=8"]
+usd = ["usd-core>=24.11"]
 
 [project.scripts]
 mujoco-drone = "mujoco_drone.cli:main"
@@ -21,7 +22,7 @@ mujoco-drone = "mujoco_drone.cli:main"
 include = ["mujoco_drone*", "drone_code"]
 
 [tool.setuptools.package-data]
-mujoco_drone = ["models/skydio_x2/*", "models/skydio_x2/assets/*"]
+mujoco_drone = ["models/skydio_x2/*", "models/skydio_x2/assets/*", "models/scenes/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests_mujoco"]

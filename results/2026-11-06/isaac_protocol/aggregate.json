@@ -1,0 +1,22 @@
+{
+  "flights": 54,
+  "completed": 38,
+  "completion_rate": 0.7037037037037037,
+  "failure_rate": 0.09259259259259259,
+  "crash_rate": 0.0,
+  "position_rmse_mean": 0.30115262431271456,
+  "position_rmse_std": 0.4258224960987174,
+  "cross_track_rmse_mean": 0.15867607633003514,
+  "cross_track_rmse_std": 0.19309264033171566,
+  "max_deviation_mean": 0.6630075622507243,
+  "max_deviation_std": 0.9498990580207848,
+  "altitude_rmse_mean": 0.007326699304357109,
+  "altitude_rmse_std": 0.005019083958851035,
+  "saturation_rate_mean": 0.0,
+  "saturation_rate_std": 0.0,
+  "motor_saturation_rate_mean": 0.0,
+  "motor_saturation_rate_std": 0.0,
+  "gust_recovery_rate": null,
+  "gust_recovery_seconds_mean": null,
+  "gust_recovery_unobserved_flights": 0
+}

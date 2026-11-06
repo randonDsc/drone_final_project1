@@ -10,3 +10,4 @@ torch==2.15.0
 matplotlib==3.11.2
 Pillow==12.3.0
 pytest==9.2.0
+# Optional scene regeneration only: usd-core==26.11 (not needed at runtime).

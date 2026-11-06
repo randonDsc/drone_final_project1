@@ -1,0 +1,8 @@
+{
+  "boxes_compared": 3491,
+  "maximum_bounds_difference_m": 2.53107687746279e-06,
+  "largest_difference_path": "/World/Cube",
+  "maximum_non_support_difference_m": 4.906619999189843e-08,
+  "source_report_sha256": "ac52e1a4932898e4d7bf0bfda9aa86dae5e38013a1b78f2d9c7d7aa7970f8509",
+  "manifest_sha256": "66a9b4033db6750e3b0743ca57d45ef4805f785f5b04af0c80d25a55d8ccfc43"
+}

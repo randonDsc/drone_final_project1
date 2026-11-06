@@ -169,6 +169,10 @@ code for traceability. Controlled evaluation uses analytic quintic references;
 curves use an analytic phase law and waypoints stop at corners. This difference
 is recorded in training/run metadata. Obstacle clearance guarantees from the
 Isaac Dijkstra pipeline are not transferred to these open-space experiments.
+The later [navigation extension](MUJOCO_NAVIGATION.md) ports the shared planner
+and static warehouse with an X2-derived envelope, a 15 cm reserve and explicit
+contact/clearance metrics. Its source-reference modes remain separate from the
+analytic controlled baseline; no nominal route guarantees disturbed flight safety.
 
 ## Sources and comparison limits
 

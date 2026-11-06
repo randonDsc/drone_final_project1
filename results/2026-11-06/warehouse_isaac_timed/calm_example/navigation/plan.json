@@ -1,0 +1,37 @@
+{
+  "algorithm": "source 26-connected Dijkstra, no corner cutting, farthest-visible shortening",
+  "reference_mode": "isaac_timed",
+  "position_error_semantics": "time-indexed reference",
+  "planning_seconds": 3.067850708961487,
+  "expanded_nodes": 521941,
+  "grid_distance_m": 45.862017646802364,
+  "shortened_distance_m": 42.85618218225081,
+  "grid_shape": [
+    105,
+    164,
+    55
+  ],
+  "grid_resolution_m": 0.25,
+  "blocked_cells": 314590,
+  "vehicle_half_size_m": [
+    0.42672443181191305,
+    0.42672443181191305,
+    0.16138608788546085
+  ],
+  "tracking_reserve_m": 0.15,
+  "boxes": 3491,
+  "planes": 1,
+  "has_launch": true,
+  "launch_end_s": 2.7190485919911653,
+  "reference_duration_s": 62.92060724368005,
+  "start": [
+    -2.299999952316284,
+    0.0,
+    0.12845000624656677
+  ],
+  "goal": [
+    -4.299999952316284,
+    20.0,
+    1.2
+  ]
+}

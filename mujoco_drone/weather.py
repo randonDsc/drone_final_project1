@@ -14,7 +14,7 @@ class ScenarioWind(GustingWind):
             speed = rng.uniform(*config.speed_range)
             direction = rng.uniform(-np.pi, np.pi)
             self.requested_mean = speed * np.array([np.cos(direction), np.sin(direction), 0])
-        noisy = self.scenario in ("turbulence", "randomized", "curriculum")
+        noisy = self.scenario in ("turbulence", "randomized", "curriculum", "training_range", "unseen_gusts", "outside_range")
         points = [("hull", (0, 0, 0.04), 0.4), ("lower_hull", (0, 0, 0.0), 0.1)]
         points += [(f"rotor{i+1}", tuple(p), 0.125) for i, p in enumerate(rotor_positions)]
         super().__init__(

@@ -24,7 +24,9 @@ def policy_contract(env):
                 "drone_code/controller.py", "drone_code/hover_task.py", "drone_code/wind.py",
                 "drone_code/path_sac_policy.py", "drone_code/path_sac_config.py",
                 "drone_code/state_estimation.py", "drone_code/path_reference.py"]
-    return dict(simulator="mujoco", algorithm="sac_residual", version=1,
+    required += ["mujoco_drone/scenes.py", "mujoco_drone/planning.py", "drone_code/navigation.py",
+                 "drone_code/mapping.py", "drone_code/grid_map.py"]
+    return dict(simulator="mujoco", algorithm="sac_residual", version=2,
                 state_source="ground_truth_body_origin", observation_size=128,
                 action_size=4, history_length=4, rl_rate_hz=10,
                 physics=env.config.to_dict()["physics"],

@@ -1,0 +1,7 @@
+{
+  "protocol": "isaac_path",
+  "max_seconds": 60,
+  "wind": {
+    "scenario": "training_range"
+  }
+}

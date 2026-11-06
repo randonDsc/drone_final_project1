@@ -56,7 +56,7 @@ class WindConfig:
     enabled: bool = True
 
     def __post_init__(self):
-        if self.scenario not in ("calm", "constant", "gust", "periodic", "turbulence", "randomized", "curriculum"):
+        if self.scenario not in ("calm", "constant", "gust", "periodic", "turbulence", "randomized", "curriculum", "training_range", "unseen_gusts", "outside_range"):
             raise ValueError(f"Unknown wind scenario: {self.scenario}")
         for name in ("mean_velocity", "gust_velocity", "gust_std", "local_gust_std"):
             vector(name, getattr(self, name))
@@ -91,7 +91,7 @@ class TaskConfig:
     initial_angular_velocity_range: tuple = (0.05, 0.05, 0.05)
 
     def __post_init__(self):
-        if self.kind not in ("hover", "straight", "waypoints", "circle", "figure_eight"):
+        if self.kind not in ("hover", "straight", "altitude", "waypoints", "circle", "figure_eight", "dijkstra"):
             raise ValueError(f"Unknown task: {self.kind}")
         for name in ("start", "goal", "initial_position_range", "initial_velocity_range", "initial_angle_range_degrees", "initial_angular_velocity_range"):
             vector(name, getattr(self, name))
@@ -125,15 +125,69 @@ class SensorConfig:
 
 
 @dataclass
+class SceneConfig:
+    name: str = "open"
+    manifest: str | None = None
+
+    def __post_init__(self):
+        if self.name not in ("open", "blocks", "warehouse", "custom"):
+            raise ValueError("Unknown scene; use open, blocks, warehouse or custom")
+        if self.name == "custom" and not self.manifest:
+            raise ValueError("A custom scene needs a manifest path")
+        if self.name != "custom" and self.manifest is not None:
+            raise ValueError("Set scene.name=custom when providing a manifest")
+
+
+@dataclass
+class NavigationConfig:
+    resolution: float = 0.25
+    safety_margin: float = 0.15
+    max_grid_cells: int = 2_000_000
+    max_expanded_nodes: int = 1_000_000
+    bounds: tuple | None = None
+    reference_mode: str = "quintic_stops"
+    corner_radius: float = 0.4
+    spacing: float = 0.05
+    vertical_speed: float = 0.5
+    lateral_acceleration: float = 0.5
+    max_position_error: float = 1.0
+    support_paths: tuple = ("/World/Cube",)
+    residual_after_launch: bool = True
+
+    def __post_init__(self):
+        for name in ("resolution", "spacing", "vertical_speed", "lateral_acceleration", "max_position_error"):
+            positive(name, getattr(self, name))
+        for name in ("safety_margin", "corner_radius"):
+            positive(name, getattr(self, name), allow_zero=True)
+        for name in ("max_grid_cells", "max_expanded_nodes"):
+            if not isinstance(getattr(self, name), int) or getattr(self, name) < 1:
+                raise ValueError(f"{name} must be a positive integer")
+        if self.reference_mode not in ("quintic_stops", "isaac_timed", "isaac_waypoints"):
+            raise ValueError("Unknown navigation reference mode")
+        if self.bounds is not None:
+            if len(self.bounds) != 2:
+                raise ValueError("Navigation bounds need lower and upper XYZ corners")
+            for corner in self.bounds:
+                vector("bounds", corner)
+            if any(b <= a for a, b in zip(*self.bounds)):
+                raise ValueError("Navigation upper bounds must exceed lower bounds")
+
+
+@dataclass
 class ExperimentConfig:
     seed: int = 0
     physics: PhysicsConfig = field(default_factory=PhysicsConfig)
     wind: WindConfig = field(default_factory=WindConfig)
     task: TaskConfig = field(default_factory=TaskConfig)
     sensors: SensorConfig = field(default_factory=SensorConfig)
+    scene: SceneConfig = field(default_factory=SceneConfig)
+    navigation: NavigationConfig = field(default_factory=NavigationConfig)
+    protocol: str = "controlled"
     max_seconds: float = 120.0
 
     def __post_init__(self):
+        if self.protocol not in ("controlled", "isaac_path"):
+            raise ValueError("protocol must be controlled or isaac_path")
         if not isinstance(self.seed, int) or self.seed < 0:
             raise ValueError("seed must be a nonnegative integer")
         positive("max_seconds", self.max_seconds)
@@ -146,7 +200,7 @@ class ExperimentConfig:
     @classmethod
     def from_dict(cls, value):
         value = dict(value)
-        for key, factory in (("physics", PhysicsConfig), ("wind", WindConfig), ("task", TaskConfig), ("sensors", SensorConfig)):
+        for key, factory in (("physics", PhysicsConfig), ("wind", WindConfig), ("task", TaskConfig), ("sensors", SensorConfig), ("scene", SceneConfig), ("navigation", NavigationConfig)):
             if key in value:
                 value[key] = factory(**value[key])
         return cls(**value)

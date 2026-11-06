@@ -1,5 +1,8 @@
 # Measured MuJoCo validation — 2026-11-05
 
+This is the historical open-scene report. The subsequent warehouse/Dijkstra and
+original-protocol measurements are in [MUJOCO_NAVIGATION_RESULTS.md](MUJOCO_NAVIGATION_RESULTS.md).
+
 The implemented framework supports repeatable environmental experiments on the
 Skydio X2, using an adaptation of the original `main.py` PID. The measured runs
 below establish a stable simulated baseline over the tested tasks and wind

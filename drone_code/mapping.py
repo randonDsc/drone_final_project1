@@ -16,14 +16,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
-import sim_config
-
-from grid_map import (
-    Box,
-    Plane,
-    rasterize,
-    segment_hits_box,
-)
+if __package__:
+    from . import sim_config
+    from .grid_map import Box, Plane, rasterize, segment_hits_box
+else:
+    import sim_config
+    from grid_map import Box, Plane, rasterize, segment_hits_box
 
 
 @dataclass
@@ -314,6 +312,10 @@ def build_occupancy_map(
     start,
     goal,
     bounds=None,
+    *,
+    resolution=None,
+    safety_margin=None,
+    max_cells=None,
 ):
     """
     Choose finite planning bounds and build the 3D NumPy grid.
@@ -324,6 +326,11 @@ def build_occupancy_map(
     The resulting map describes where the drone's body origin may go.
     """
 
+    resolution = sim_config.CELL_SIZE if resolution is None else float(resolution)
+    safety_margin = sim_config.SAFETY_MARGIN if safety_margin is None else float(safety_margin)
+    max_cells = sim_config.MAX_GRID_CELLS if max_cells is None else int(max_cells)
+    if not np.isfinite(resolution) or resolution <= 0 or not np.isfinite(safety_margin) or safety_margin < 0:
+        raise ValueError("Resolution must be positive and safety margin nonnegative.")
     points = [
         np.asarray(start, dtype=float),
         np.asarray(goal, dtype=float),
@@ -372,18 +379,18 @@ def build_occupancy_map(
 
     # Align map edges to global voxel boundaries.
     origin = (
-        np.floor(origin / sim_config.CELL_SIZE)
-        * sim_config.CELL_SIZE
+        np.floor(origin / resolution)
+        * resolution
     )
 
     upper = (
-        np.ceil(upper / sim_config.CELL_SIZE)
-        * sim_config.CELL_SIZE
+        np.ceil(upper / resolution)
+        * resolution
     )
 
     clearance = (
         geometry.drone_half_size
-        + sim_config.SAFETY_MARGIN
+        + safety_margin
     )
 
     expanded_boxes = [
@@ -408,10 +415,10 @@ def build_occupancy_map(
     return rasterize(
         origin,
         upper,
-        sim_config.CELL_SIZE,
+        resolution,
         expanded_boxes,
         expanded_planes,
-        sim_config.MAX_GRID_CELLS,
+        max_cells,
     )
 
 
@@ -419,6 +426,9 @@ def validate_launch_departure(
     geometry,
     start,
     entry,
+    *,
+    safety_margin=None,
+    support_roots=None,
 ):
     """
     Check an initial upward exit from launch clearance.
@@ -446,9 +456,11 @@ def validate_launch_departure(
         + geometry.drone_bottom_offset
     )
 
+    safety_margin = sim_config.SAFETY_MARGIN if safety_margin is None else float(safety_margin)
+    support_roots = sim_config.LAUNCH_SUPPORT_ROOTS if support_roots is None else support_roots
     clearance = (
         geometry.drone_half_size
-        + sim_config.SAFETY_MARGIN
+        + safety_margin
     )
 
     for box in geometry.boxes:
@@ -459,7 +471,7 @@ def validate_launch_departure(
 
         named_support = any(
             _under(box.path, root)
-            for root in sim_config.LAUNCH_SUPPORT_ROOTS
+            for root in support_roots
         )
 
         # For the confirmed small launch stand, compare its top
@@ -522,6 +534,9 @@ def find_launch_entry(
     grid_map,
     geometry,
     start,
+    *,
+    safety_margin=None,
+    support_roots=None,
 ):
     """
     Connect the actual initial pose to the free voxel graph.
@@ -559,6 +574,8 @@ def find_launch_entry(
             geometry,
             start,
             entry,
+            safety_margin=safety_margin,
+            support_roots=support_roots,
         )
 
         return entry

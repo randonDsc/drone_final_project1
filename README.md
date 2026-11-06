@@ -44,11 +44,62 @@ Output directories must be new: runs refuse to overwrite existing results.
 Moving tasks follow their complete reference and end hold unless that maximum
 cuts them short. Successful arrival does not stop collection early. Failures do.
 
-Supported tasks: `hover`, `straight`, `waypoints`, `circle`, `figure_eight`.
+Supported tasks: `hover`, `straight`, `altitude`, `waypoints`, `circle`,
+`figure_eight`, and obstacle navigation with `dijkstra`.
 The new controlled references have analytic, consistent position/velocity/
 acceleration. Waypoints stop smoothly at each corner. All default paths start
 at 1.5 m; waypoints include an altitude change. These are airborne-start
-experiments, not validated takeoff or landing programs.
+experiments. Warehouse navigation additionally validates an upward departure
+from the source launch area; landing is not implemented.
+
+## Dijkstra and the original Isaac experiments
+
+The warehouse collision scene and original 3D Dijkstra algorithm now run in
+MuJoCo. The runtime includes all 3,491 converted boxes and the ground plane;
+it does not require USD, Isaac Sim, or an external scene download.
+
+```sh
+python -m mujoco_drone plan --scene warehouse --output mujoco_output/warehouse_plan
+python -m mujoco_drone plot mujoco_output/warehouse_plan
+python -m mujoco_drone navigate --scene warehouse --output mujoco_output/warehouse
+python -m mujoco_drone plot mujoco_output/warehouse
+```
+
+`plan` saves a checked route without flying. `navigate` flies it with the
+original adapted PID. The default `quintic_stops` reference stops smoothly at
+each shortened waypoint. Two explicit configs reproduce the source navigation
+reference/follower logic:
+
+```sh
+python -m mujoco_drone navigate --config configs/warehouse_dijkstra_isaac_timed.json \
+  --output mujoco_output/warehouse_timed
+python -m mujoco_drone navigate --config configs/warehouse_dijkstra_isaac_waypoints.json \
+  --wind unseen_gusts --seed 300000 --output mujoco_output/warehouse_feedback
+```
+
+Use `--scene blocks` for a fast, small diagnostic course. Each navigation run
+saves its occupancy grid, raw colliders, Dijkstra cells, shortened waypoints,
+launch audit, native contacts and clearance/voxel metrics, alongside flight
+logs. Plotting adds `navigation.png` and `clearance.png`.
+
+The original open-scene route sampler and evaluation wind profiles are also
+available. This runs hover, straight, altitude, waypoints, circle and figure-eight
+with `training_range`, `unseen_gusts` and `outside_range` winds:
+
+```sh
+python -m mujoco_drone suite --config configs/isaac_path_evaluation.json \
+  --seeds 300000 300001 300002 --output mujoco_output/isaac_protocol
+python -m mujoco_drone run --config configs/altitude.json --output mujoco_output/altitude
+bash scripts/reproduce_mujoco_navigation.sh mujoco_output/navigation_reproduction
+```
+
+The X2 envelope and a 15 cm tracking reserve replace the source Iris envelope
+and 1 cm margin. The source launch stand is explicitly frozen. These are
+documented experiment changes, so results are not identical Isaac reproductions.
+The original wind distributions can exceed the controller's ability; inspect
+failures and completion as well as RMSE. See
+[navigation usage and fidelity](docs/MUJOCO_NAVIGATION.md) and
+[measured navigation results](docs/MUJOCO_NAVIGATION_RESULTS.md).
 
 Supported weather: `calm`, `constant`, `gust`, `periodic`, `turbulence`,
 `randomized`. JSON inputs configure velocity vectors, onset/duration, frequency,
@@ -127,10 +178,17 @@ For an interactive viewer on macOS, launch with MuJoCo's `mjpython` executable:
 mjpython -m mujoco_drone run --task straight --wind gust --viewer --output mujoco_output/viewer
 ```
 
-The viewer displays simulation steps without real-time pacing. Offscreen RGB/
-depth capture was tested; interactive viewer behavior was not validated in this
-session. A fresh MuJoCo installation supplies `mjpython`; if using a venv with
-inherited packages, install MuJoCo in that venv to obtain its launcher.
+The viewer follows the drone and paces simulation to wall time when computation
+permits. Interactive warehouse viewing and offscreen RGB/depth capture have been
+tested. A fresh MuJoCo installation supplies `mjpython`; for this development
+venv's inherited installation, the verified launcher is:
+
+```sh
+.venv/bin/python /opt/anaconda3/envs/mujoco-env/bin/mjpython -m mujoco_drone \
+  navigate --scene warehouse --viewer --output mujoco_output/warehouse_viewer
+```
+
+Physics and file capture can run slower than real time on a large scene.
 
 ## Train and evaluate residual SAC
 
@@ -177,6 +235,11 @@ controller, observations, normalization scales, residual bounds, aerodynamic
 parameters, reward/curriculum/settings, and training state. Unknown checkpoints,
 including Isaac weights, are rejected. Changing even a guarded source file
 requires a new compatible checkpoint. No silent fallback to PID occurs.
+The navigation extension uses contract version 2: checkpoints from the earlier
+open-scene implementation must be retrained. The policy still learns tracking
+in open space; Dijkstra supplies the obstacle route. It does not learn a map or
+perform obstacle avoidance from camera images. Navigation keeps the residual
+zero during its validated launch departure by default.
 
 The original 500,000-transition buffer occupies about 0.52 GB, and each replay
 snapshot has similar disk cost. Snapshots are retained for review. Long runs
@@ -194,6 +257,9 @@ Each flight saves:
   forces; per-rotor saturation; PID and residual; each sample-point wind and drag;
   and the interval during which those controls/forces were applied.
 * `reference.npz`, `metrics.json`, and optional camera frames.
+* For Dijkstra, `navigation/` with the occupancy map, geometry, waypoints and
+  initial/final planner audit. The CSV also records clearance, launch, occupancy
+  status, envelope limits and native contact counts.
 * `error.json` if execution fails. Such a run is not silently counted as a
   completed trial. A suite stops so the execution error can be investigated.
 
@@ -210,6 +276,9 @@ horizon and a final dwell of 0.5 s within 0.15 m at speed <=0.2 m/s. A failure i
 a collision, invalid simulation, height <0.5 m, tracking error >3 m, tilt >45°,
 speed >7 m/s, or angular speed >6 rad/s. A threshold failure is not automatically
 called a physical crash; `crashed` specifically records detected contact.
+Navigation uses a 1 m error limit and separately validates its launch exception.
+For `isaac_waypoints`, error to the active feedback target is not timed tracking
+lag; compare geometric cross-track and clearance between follower types.
 
 Gust recovery is the delay after gust end until the start of a confirmed 1 s
 period with position error <=0.15 m and velocity error <=0.2 m/s. `null` means no
@@ -257,6 +326,7 @@ checks the untouched `HEAD` version separately. Isaac itself was not executed.
 | `weather.py` | Named velocity profiles around the shared OU/drag model |
 | `controllers.py`, `core.py` | Original PID adaptation, diagnostic replay, Isaac PID option, residual loop |
 | `references.py` | Analytic hover, lines, smooth waypoints and curves |
+| `scenes.py`, `planning.py` | Packaged static scenes, compiled geometry, shared Dijkstra and reference adapters |
 | `sensors.py`, `recording.py` | Simulated IMU, RGB/depth and synchronized CSV |
 | `env.py`, `training.py` | Gymnasium, SAC training, save/resume/contracts |
 | `experiments.py`, `metrics.py` | Repeated experiments and evaluation |
@@ -265,7 +335,7 @@ checks the untouched `HEAD` version separately. Isaac itself was not executed.
 [Design/audit](docs/MUJOCO_DESIGN.md),
 [implementation differences](docs/MUJOCO_DIFFERENCES.md), and
 [measured results and limitations](docs/MUJOCO_RESULTS.md) describe the research
-scope. Obstacle/Dijkstra environments, sensor-based control, rotor dynamics,
+scope. Sensor-based control, dynamic obstacles, rotor dynamics,
 ground effect, battery effects, identified aerodynamics, and real-flight
 validation remain future work. No such results are implied by stable simulation.
 

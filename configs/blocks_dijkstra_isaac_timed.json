@@ -1,0 +1,62 @@
+{
+  "seed": 0,
+  "scene": {
+    "name": "blocks",
+    "manifest": null
+  },
+  "task": {
+    "kind": "dijkstra",
+    "start": [
+      0,
+      0,
+      1.5
+    ],
+    "goal": [
+      6,
+      0,
+      1.5
+    ],
+    "speed": 0.6,
+    "acceleration": 0.4,
+    "start_hold": 3,
+    "end_hold": 8,
+    "initial_position_range": [
+      0,
+      0,
+      0
+    ],
+    "initial_velocity_range": [
+      0,
+      0,
+      0
+    ],
+    "initial_angle_range_degrees": [
+      0,
+      0,
+      0
+    ],
+    "initial_angular_velocity_range": [
+      0,
+      0,
+      0
+    ]
+  },
+  "navigation": {
+    "resolution": 0.25,
+    "safety_margin": 0.15,
+    "max_grid_cells": 2000000,
+    "max_expanded_nodes": 1000000,
+    "bounds": null,
+    "reference_mode": "isaac_timed",
+    "corner_radius": 0.4,
+    "spacing": 0.05,
+    "vertical_speed": 0.5,
+    "lateral_acceleration": 0.5,
+    "max_position_error": 1.0,
+    "support_paths": [
+      "/World/Cube"
+    ],
+    "residual_after_launch": true
+  },
+  "max_seconds": 120
+}

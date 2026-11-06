@@ -1,0 +1,2538 @@
+{
+  "artifacts": {
+    "isaac_protocol/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/flights.csv",
+      "sha256": "01ba2d1a71e3f973cbe5ed0c08bffda649f2c59ccba049215555a122092e7646"
+    },
+    "isaac_protocol/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/summary.csv",
+      "sha256": "35f66300447d5fcf21ebe4f24dcce8ec99d6b1c6bc49a09c3ce19559ac0f0c28"
+    },
+    "isaac_protocol/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/aggregate.json",
+      "sha256": "b32bd158818340a5758cdd8b0ae6e7bf1b5d05ecfe56da36cb7cbeaad907bae3"
+    },
+    "isaac_protocol/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/suite.json",
+      "sha256": "70b1b5b4d370fe9da397e6f8995d34d3b83b2e855299f9dbee5f39ecb59694b6"
+    },
+    "isaac_protocol/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/summary.png",
+      "sha256": "6b0c3d4c8711b5aed47b54f6bbd9a84d55999537bd32d98eaea7c0422ddaac71"
+    },
+    "navigation_paired/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/flights.csv",
+      "sha256": "0b735b2a1b7e9884ab80b3beb0505407ad103a8b14660907205e7f76eb6fac67"
+    },
+    "navigation_paired/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/summary.csv",
+      "sha256": "8ff5622348180d10ab2af5a0de1e214e9f1908ddb6a44297f81fd5029768346c"
+    },
+    "navigation_paired/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/aggregate.json",
+      "sha256": "c8f702b87025b37724b717499e26b5cb71ed92029666fc7bb486e9e10b56c668"
+    },
+    "navigation_paired/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/suite.json",
+      "sha256": "f2e650571a206f1dc2f42918f711d0ec1c9e5d4678d7961147473403b51d32a1"
+    },
+    "navigation_paired/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/summary.png",
+      "sha256": "229f25fd24e2652c5cada721e9c1472d3b2cadbe1162e27433cb47d06277644b"
+    },
+    "navigation_paired/paired/paired.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/paired/paired.csv",
+      "sha256": "7f6643942c851f5950755a578e1323d4ad9fe57b25ca76277df4bac385b55d96"
+    },
+    "navigation_paired/paired/comparison.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/paired/comparison.json",
+      "sha256": "03bdf270f7d393865e933e3a1200dfb9d09596f588f149e62679e8bfc98b5164"
+    },
+    "warehouse_quintic_stops/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/flights.csv",
+      "sha256": "e9eb8260eeddd2a53c2651a42ac88357f8ba21f67394418c4a3bedb7e908a236"
+    },
+    "warehouse_quintic_stops/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/summary.csv",
+      "sha256": "a9aee15ae9c10c7785785ea0bbfd4046a790eb150e1fbc9c0c8723b517964d62"
+    },
+    "warehouse_quintic_stops/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/aggregate.json",
+      "sha256": "aca47cbca72babf1c50611540d9f25c1333067beaf1834a5df4f77354afcde50"
+    },
+    "warehouse_quintic_stops/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/suite.json",
+      "sha256": "4b95e09b36a32acfa3fe7a03b1762aa511d3215e360995f58e9565717c62cf34"
+    },
+    "warehouse_quintic_stops/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/summary.png",
+      "sha256": "5a0441cf187d84b4d6eeedbf4a99fc7d23172534392f967df4a2f75e988e92bf"
+    },
+    "warehouse_quintic_stops/calm_example/metadata.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/metadata.json",
+      "sha256": "27bf0d89727da08e9d861f274522785dd434c7103a3c891cf00632a82c725a62"
+    },
+    "warehouse_quintic_stops/calm_example/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/metrics.json",
+      "sha256": "c4f4d392e3de5e13e1588a5ceddbe6469eb15d183af22986f42beef0db5994bf"
+    },
+    "warehouse_quintic_stops/calm_example/navigation.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/navigation.png",
+      "sha256": "c593c1d0fc3fdb96abae235a9240db116564bc109ca69d63eb3df760d83ca710"
+    },
+    "warehouse_quintic_stops/calm_example/clearance.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/clearance.png",
+      "sha256": "e355ac7471bda54b1ed797dace82456b0cff407a2135ef9df58c8334b4691b5f"
+    },
+    "warehouse_quintic_stops/calm_example/flight.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/flight.png",
+      "sha256": "916ae24921627e933efca7c4846b3aab93ef25551d3d7275e13bac50c5fb98c3"
+    },
+    "warehouse_quintic_stops/calm_example/navigation/plan.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/navigation/plan.json",
+      "sha256": "4c3bd4518798e6eae1efab081b98573fd50ab45f204476fea22426377788c837"
+    },
+    "warehouse_quintic_stops/calm_example/navigation/final_navigation.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/navigation/final_navigation.json",
+      "sha256": "4c3bd4518798e6eae1efab081b98573fd50ab45f204476fea22426377788c837"
+    },
+    "warehouse_quintic_stops/calm_example/navigation/waypoints_world.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/navigation/waypoints_world.csv",
+      "sha256": "50545ce1412bd490e28ed2fc0581062f73adbecf84de971517d2cda4f287411c"
+    },
+    "blocks_quintic_stops/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/flights.csv",
+      "sha256": "2f2abc851779bf524df616f09175a847cf8d53483098455ec8feb9f6ed5d464a"
+    },
+    "blocks_quintic_stops/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/summary.csv",
+      "sha256": "43425767cd79463743c3fd6854887d60970f119e028584fc4cdff7360966c9b6"
+    },
+    "blocks_quintic_stops/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/aggregate.json",
+      "sha256": "8b19cf8ac4e848af4910ece8d15a52bea907caea5ff44e7bebfb9e1b3cddc70f"
+    },
+    "blocks_quintic_stops/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/suite.json",
+      "sha256": "b2812eda9a3ee38f658b1253a99d5333277b76c05940be17c18af12eb535a79e"
+    },
+    "blocks_quintic_stops/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/summary.png",
+      "sha256": "99e2095f37fa512118b6fe3c3a49d2754e9c8559ccc5a61097a7b44244e4d682"
+    },
+    "blocks_quintic_stops/calm_example/metadata.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/metadata.json",
+      "sha256": "0755d68eb0ccc5cea5edb7631bf3cdc5757a8f8ab28de3a70fe168e7ef439b87"
+    },
+    "blocks_quintic_stops/calm_example/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/metrics.json",
+      "sha256": "74f321f093f7e957d0b1ed079354f4cfa16bc13aa0d91eeecca804d1df5dae12"
+    },
+    "blocks_quintic_stops/calm_example/navigation.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/navigation.png",
+      "sha256": "eea63a4555499ab8d0f708fb432357871d48bc7843a5d08a6373a805cb81101d"
+    },
+    "blocks_quintic_stops/calm_example/clearance.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/clearance.png",
+      "sha256": "791cf5af16962638448110805a5cb5420dcd131084dba4a82c2d7af3f3c7c414"
+    },
+    "blocks_quintic_stops/calm_example/flight.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/flight.png",
+      "sha256": "10ff29d1daacb5e6ba50e26f594e5e7ab55578b34447c609b9ac29d0b9e7da8d"
+    },
+    "blocks_quintic_stops/calm_example/navigation/plan.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/navigation/plan.json",
+      "sha256": "ec9a8a4f3f07eb0ceaee1ca5d9a6226e7315ac0df83d8a3454eb1c24b1ef6f3c"
+    },
+    "blocks_quintic_stops/calm_example/navigation/final_navigation.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/navigation/final_navigation.json",
+      "sha256": "ec9a8a4f3f07eb0ceaee1ca5d9a6226e7315ac0df83d8a3454eb1c24b1ef6f3c"
+    },
+    "blocks_quintic_stops/calm_example/navigation/waypoints_world.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/navigation/waypoints_world.csv",
+      "sha256": "791190e2795bdb7d0091623d04d60b87bc43c9afb221bfbdc147de5a012c1ed3"
+    },
+    "warehouse_isaac_timed/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/flights.csv",
+      "sha256": "e814a57a9338fb9d18793ec4b92f9711063967931676be4e9410f76eb3975afd"
+    },
+    "warehouse_isaac_timed/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/summary.csv",
+      "sha256": "93cc0054e21f38729670565a5e20ba68de72cc3345af00cd672863a0816a0e6a"
+    },
+    "warehouse_isaac_timed/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/aggregate.json",
+      "sha256": "e88ee010ef2b6076c8245b2ac7aac2639e5cc23291bf8b0f93e3c50e3ce7d37c"
+    },
+    "warehouse_isaac_timed/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/suite.json",
+      "sha256": "0bf1fec6a2da85e533f41a3d1b11a3cd37466bfce3105509eb092bdea383d656"
+    },
+    "warehouse_isaac_timed/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/summary.png",
+      "sha256": "14e8a4b5173d8d75f4efd61c5fd6db83403d7738ba7b92fda04796ee12db1bd1"
+    },
+    "warehouse_isaac_timed/calm_example/metadata.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/metadata.json",
+      "sha256": "bee636f641d4ff560efa7ab866b41af6bd1e15867db2bd777dcb2d0980d7b2ae"
+    },
+    "warehouse_isaac_timed/calm_example/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/metrics.json",
+      "sha256": "947f3f6e65628de928217b41bbda6fffd05e76cf0b5dc4a2ac369d73ba763def"
+    },
+    "warehouse_isaac_timed/calm_example/navigation.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/navigation.png",
+      "sha256": "d8ad895cd4da1dc2bc28656b731de7050ee1d8627f52c5f13e9f387e60834810"
+    },
+    "warehouse_isaac_timed/calm_example/clearance.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/clearance.png",
+      "sha256": "ba32947bf3a9b5594445173751a26cd30e7da4dbb9dd108c60b9774e1d31845f"
+    },
+    "warehouse_isaac_timed/calm_example/flight.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/flight.png",
+      "sha256": "0272e3011964c07a937fe589f28d1cfaddd5a2bd20cb5ed5f31b11168806fc72"
+    },
+    "warehouse_isaac_timed/calm_example/navigation/plan.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/navigation/plan.json",
+      "sha256": "cecb2bbde206b09f71943df9bc583410000921ef7c4dfae9008fd5a0fed559cd"
+    },
+    "warehouse_isaac_timed/calm_example/navigation/final_navigation.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/navigation/final_navigation.json",
+      "sha256": "cecb2bbde206b09f71943df9bc583410000921ef7c4dfae9008fd5a0fed559cd"
+    },
+    "warehouse_isaac_timed/calm_example/navigation/waypoints_world.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/navigation/waypoints_world.csv",
+      "sha256": "50545ce1412bd490e28ed2fc0581062f73adbecf84de971517d2cda4f287411c"
+    },
+    "blocks_isaac_timed/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/flights.csv",
+      "sha256": "d9fb7f1c22c829b3797640f084802768c42218cebd5e5c3e00bb14f0f0c3e017"
+    },
+    "blocks_isaac_timed/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/summary.csv",
+      "sha256": "2df4c150e00ac9defd275d66393aa7b2a005a0f7df170aaf9f7ba741c89a7f6c"
+    },
+    "blocks_isaac_timed/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/aggregate.json",
+      "sha256": "e2d5eec6fb4767a190151f19ed4d3dfef6897fd93971d0d9cd1c46221f920c4e"
+    },
+    "blocks_isaac_timed/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/suite.json",
+      "sha256": "5008683ea60ca61b8c75b3ffea7435be969cdfbb4d478bc8dd56aff0b1efd6c0"
+    },
+    "blocks_isaac_timed/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/summary.png",
+      "sha256": "54c1153d273c23de3b3c56f18029df2ac8ddecfc180d28f312c0baf60f980c5c"
+    },
+    "blocks_isaac_timed/calm_example/metadata.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/metadata.json",
+      "sha256": "a11f01942f115432385c5fa1c00ac5faf48990f14396a9e6b46befc321fd6de4"
+    },
+    "blocks_isaac_timed/calm_example/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/metrics.json",
+      "sha256": "b4fbbe4e5e2b871598e75281a07d93fcc601fc7adb1dc86a516ee5a54c65c491"
+    },
+    "blocks_isaac_timed/calm_example/navigation.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/navigation.png",
+      "sha256": "0d6b4af48eff658e743e8f69a2d9d380c3e73c43292e0724779eab1b32b1b779"
+    },
+    "blocks_isaac_timed/calm_example/clearance.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/clearance.png",
+      "sha256": "9025686cf6368608a2cad6b83962af37fe1590d5cd52ddc315aae5bb3d632597"
+    },
+    "blocks_isaac_timed/calm_example/flight.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/flight.png",
+      "sha256": "99633593df4dac9b3febd7fc207e64b054e02644b99da5df2c7160f1f23b8f8e"
+    },
+    "blocks_isaac_timed/calm_example/navigation/plan.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/navigation/plan.json",
+      "sha256": "df0fa26cd6baa5ca3917841945905a1dae2c95d77cda01ef03af7b65f78ff1be"
+    },
+    "blocks_isaac_timed/calm_example/navigation/final_navigation.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/navigation/final_navigation.json",
+      "sha256": "df0fa26cd6baa5ca3917841945905a1dae2c95d77cda01ef03af7b65f78ff1be"
+    },
+    "blocks_isaac_timed/calm_example/navigation/waypoints_world.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/navigation/waypoints_world.csv",
+      "sha256": "791190e2795bdb7d0091623d04d60b87bc43c9afb221bfbdc147de5a012c1ed3"
+    },
+    "warehouse_isaac_waypoints/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/flights.csv",
+      "sha256": "eabe1534fb2d964eb2ef96b65a4ae480dd90a0a1b5827d3ab2d8957b25dea519"
+    },
+    "warehouse_isaac_waypoints/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/summary.csv",
+      "sha256": "7c6531851917c8f80b37aa507ece1cf479731ce8485cf82773d2f86ada3bcafc"
+    },
+    "warehouse_isaac_waypoints/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/aggregate.json",
+      "sha256": "5695b6a43b5e5c36fde30fcdc0177081e4c4fb6d9fef60a96eed35b06926748c"
+    },
+    "warehouse_isaac_waypoints/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/suite.json",
+      "sha256": "e2ba0df202ac9114b82504a2b865fbac6ac69b94e3d5c244f9456644a351be8c"
+    },
+    "warehouse_isaac_waypoints/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/summary.png",
+      "sha256": "6687f8a790520dcda02307be5da1e28c33d30cf74523d460ab190d6bffa9604a"
+    },
+    "warehouse_isaac_waypoints/calm_example/metadata.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/metadata.json",
+      "sha256": "c8e5e3de37cba4362e6eeab9df7c60f30e45c09370d3c379b79650046739501a"
+    },
+    "warehouse_isaac_waypoints/calm_example/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/metrics.json",
+      "sha256": "4938b7c407118fce457ca5982f3f0357f66b2b4b138c1f4b6bbe35a4341ca96f"
+    },
+    "warehouse_isaac_waypoints/calm_example/navigation.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/navigation.png",
+      "sha256": "3d6923e9d6670d12202d9e1465be330045fdfeabfa47b27c62e06ba1712b175d"
+    },
+    "warehouse_isaac_waypoints/calm_example/clearance.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/clearance.png",
+      "sha256": "e0b3b7ae7f624de7b634e37326348a08cccef43f104c73f1644a9b66db77e137"
+    },
+    "warehouse_isaac_waypoints/calm_example/flight.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/flight.png",
+      "sha256": "852c26105d9f39e935dc9fc47d35f5436c9c26c5b3b82b8c0b7a69e4f8fc2105"
+    },
+    "warehouse_isaac_waypoints/calm_example/navigation/plan.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/navigation/plan.json",
+      "sha256": "954951358801368c1995f352354bfb26e0646f6e6128efa318c560865e03c2a2"
+    },
+    "warehouse_isaac_waypoints/calm_example/navigation/final_navigation.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/navigation/final_navigation.json",
+      "sha256": "0383bc2d46b686b5755a6348f9a643c73307e1387b6681cfafb163d1e5e172cd"
+    },
+    "warehouse_isaac_waypoints/calm_example/navigation/waypoints_world.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/navigation/waypoints_world.csv",
+      "sha256": "50545ce1412bd490e28ed2fc0581062f73adbecf84de971517d2cda4f287411c"
+    },
+    "blocks_isaac_waypoints/flights.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/flights.csv",
+      "sha256": "01beedf19784d0a803d062279006bf350fec528282f3e43c788889abb39ac4cb"
+    },
+    "blocks_isaac_waypoints/summary.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/summary.csv",
+      "sha256": "ba94d81d4f7e03afaaafc5095a060f281dca976cf8ce42757e9820792109b4d4"
+    },
+    "blocks_isaac_waypoints/aggregate.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/aggregate.json",
+      "sha256": "69e2f91d9d1ba8b9ba6feb091dda9d088614faf4f6d57113a5f2cd3a2737bfd4"
+    },
+    "blocks_isaac_waypoints/suite.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/suite.json",
+      "sha256": "56513d04a439bf637895ab7f3d41ba38dd14ebecf6ff0abe99f13afc2afd65a2"
+    },
+    "blocks_isaac_waypoints/summary.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/summary.png",
+      "sha256": "a688707cb6bd4949610a29bc18f338f71eab755daccb1b6ad12a6854388cd68d"
+    },
+    "blocks_isaac_waypoints/calm_example/metadata.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/metadata.json",
+      "sha256": "f76dd6ecb59b7221ab1e040c23a8bdc92ec1968383025d58a933342ec5431109"
+    },
+    "blocks_isaac_waypoints/calm_example/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/metrics.json",
+      "sha256": "4e49df4c56d98564844e454d6db3e69763b657e41faf8b2281484ef78206a0d0"
+    },
+    "blocks_isaac_waypoints/calm_example/navigation.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/navigation.png",
+      "sha256": "ae90dd0e729a5e9fd6156726e531d45eeb4b07c09e617ac7caef7fd599214142"
+    },
+    "blocks_isaac_waypoints/calm_example/clearance.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/clearance.png",
+      "sha256": "77de6e01c5fa01f04eca41d58940bcf4e4e786f7d82b6cee470f048fc6f09919"
+    },
+    "blocks_isaac_waypoints/calm_example/flight.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/flight.png",
+      "sha256": "403ca10c352a6e5e2dde72730528568992aa33e61914d23db742c0295c444f10"
+    },
+    "blocks_isaac_waypoints/calm_example/navigation/plan.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/navigation/plan.json",
+      "sha256": "b4a0ed33938a4613605f86f3815ddebee73a1b1c985bb20d615ec720fc3ddfbb"
+    },
+    "blocks_isaac_waypoints/calm_example/navigation/final_navigation.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/navigation/final_navigation.json",
+      "sha256": "b4a0ed33938a4613605f86f3815ddebee73a1b1c985bb20d615ec720fc3ddfbb"
+    },
+    "blocks_isaac_waypoints/calm_example/navigation/waypoints_world.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/navigation/waypoints_world.csv",
+      "sha256": "791190e2795bdb7d0091623d04d60b87bc43c9afb221bfbdc147de5a012c1ed3"
+    },
+    "sac_short/run.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_sac_short_20261106/run.json",
+      "sha256": "fee3f5860dc46fa6fe7abc951a978161cd5251d9e2d4d12a3e8124dfcc5bc64f"
+    },
+    "sac_short/training_result.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_sac_short_20261106/training_result.json",
+      "sha256": "fe6c9c360ffc62b825bb0d71e306677cf4f45d00f040188b371a87d39af248be"
+    },
+    "sac_short/episodes.csv.monitor.csv": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_sac_short_20261106/episodes.csv.monitor.csv",
+      "sha256": "70392b1a9783e43546c792fc1b4e82b39812df1c80cc597ccec0ace4670996bf"
+    },
+    "tests/headless.txt": {
+      "source": "/private/tmp/mujoco_navigation_all_tests.txt",
+      "sha256": "6c2d9561a661dc893abeae5cef7d9a1680f05d25063d7e67e2fdb871c4d0d50b"
+    },
+    "tests/render.txt": {
+      "source": "/private/tmp/mujoco_navigation_render_test.txt",
+      "sha256": "4237eb8d30ab4e25d028ca343d50bfba364b7f76a907b73390b9601a16e46fe1"
+    },
+    "tests/original_navigation.txt": {
+      "source": "/private/tmp/original_navigation_tests.txt",
+      "sha256": "c42daa037af2fce9cc796834ebeff90bb35388708ab9b52e2763c2873d719e56"
+    },
+    "tests/original_navigation_unchanged_head.txt": {
+      "source": "/private/tmp/original_navigation_unchanged_tests.txt",
+      "sha256": "5619d5bebc57a28798fec25e4e2b99009114824b05a032481c8bb42d05b2c031"
+    },
+    "open_regression_trace.npz": {
+      "source": "/private/tmp/mujoco_open_before_navigation.npz",
+      "sha256": "084bbee5b1eba35d3b7888f0efb56ea8f685befaa949da9c8e660ed2d0da9ba2"
+    },
+    "graphics/metrics.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/warehouse_graphics_20261106/metrics.json",
+      "sha256": "fab20e3052ce02b93faa7e37af046be4cc5ed51f65018819db18969db7bf3546"
+    },
+    "graphics/camera.json": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/warehouse_graphics_20261106/camera/camera.json",
+      "sha256": "d829f34fcff583904bde2a348da4a74e91e98210ef78a6506f86eeb882d44151"
+    },
+    "graphics/preview.png": {
+      "source": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/warehouse_graphics_20261106/camera/preview.png",
+      "sha256": "b9c93ef4f6d9cbd6f77d97dd8180fc0572fb380980ce67da9fdf57d9a8864aee"
+    },
+    "verification.json": {
+      "source": "local verification records",
+      "sha256": "2014ef9e6ee3aaf6ac298e59e3f75f1c51954965674210cc6e31301b936c2b27"
+    },
+    "geometry_audit.json": {
+      "source": "comparison of exported bounds with original saved occupancy report",
+      "sha256": "0d5d5a6e1193258b6d1a58ff90e5cf3d5c0364e6058b52042ef7249a9cfbd829"
+    }
+  },
+  "raw_flights": {
+    "isaac_protocol/altitude_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300000_pid/flight.csv",
+        "sha256": "333017b6cbd66ff83ae32f0e95ca6f6775b599dcca86057595038209e1e69fe8"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300000_pid/metadata.json",
+        "sha256": "595a14ecc425d5f56b9c26e16556e4f73e2e7176b37a634481d4c5b889dbdc3a"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300000_pid/reference.npz",
+        "sha256": "3f44527a1054981aa1e9de3fbd419014778549b3d73be95ff2a73ad24523f0d4"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300000_pid/metrics.json",
+        "sha256": "2952fa138d79774d1ccb4a7d6abf6f5a1b23ea449bed4519fad4787b8779902b"
+      }
+    },
+    "isaac_protocol/altitude_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300001_pid/flight.csv",
+        "sha256": "24f8e3c31d2c13eb9cc952d10bd63232c23899ed70a6378166c77dad650d4224"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300001_pid/metadata.json",
+        "sha256": "4015e105daff17557b88f945939da8ceeba8787e078f868488f01e0f8a5bfd3c"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300001_pid/reference.npz",
+        "sha256": "442d411c7d508d0225d742fbd1ca852015f35a824ac64edc94300fcadf070130"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300001_pid/metrics.json",
+        "sha256": "a09f5f1d2d4e9672d17495f62db52f48c0554a75f4f8dc5e2140e27df4c07e7b"
+      }
+    },
+    "isaac_protocol/altitude_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300002_pid/flight.csv",
+        "sha256": "db592626358aa6248c039a65c9ff9f34cf4081c8d80b1910ad8ef5fcbe545d9a"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300002_pid/metadata.json",
+        "sha256": "2fae393282231f93859da7754e672f4c95ec644c9ad8d965508f360dc82d1be2"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300002_pid/reference.npz",
+        "sha256": "c2e23228e6d3bd9247e115b89409137e9511f81503b7c06a8ec559bf7368152f"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_outside_range_300002_pid/metrics.json",
+        "sha256": "103580025f6c08f7150261a9cdca428ae81a34e24c38b1c140903fc7c527139b"
+      }
+    },
+    "isaac_protocol/altitude_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300000_pid/flight.csv",
+        "sha256": "466b038e961fe480b6d56d894560cf3e38455685f1948355038c75cfe2e51e31"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300000_pid/metadata.json",
+        "sha256": "8e99f74d1325668700247f91a6a2f01e02020518ae221ad6f9c51ad711206d9c"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300000_pid/reference.npz",
+        "sha256": "3f44527a1054981aa1e9de3fbd419014778549b3d73be95ff2a73ad24523f0d4"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300000_pid/metrics.json",
+        "sha256": "5cfba234fbf1cf2d5664b2b5ba4dd29abe2e5b03d82bdbd039daa4944baa48f8"
+      }
+    },
+    "isaac_protocol/altitude_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300001_pid/flight.csv",
+        "sha256": "25dc1700563b7c24af4e145bdcb711e4082e39659cd490831b2e9e0abacc9e65"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300001_pid/metadata.json",
+        "sha256": "355525752fd67a89237c5f628d841958d8af3bd88eaa0529bdc5ce33dd4aad9b"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300001_pid/reference.npz",
+        "sha256": "442d411c7d508d0225d742fbd1ca852015f35a824ac64edc94300fcadf070130"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300001_pid/metrics.json",
+        "sha256": "ec1abb2601952148212d118937a34a9199875a495db9ed776ab3fd571a27ab94"
+      }
+    },
+    "isaac_protocol/altitude_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300002_pid/flight.csv",
+        "sha256": "b6710f0b1c29f1f77813e172b1bfcbef145017824cf98d0b389f81dcc12246fd"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300002_pid/metadata.json",
+        "sha256": "6712d2bb979ff8a14284b0d8e5ce909ba6835092fe03c4e38f6c9e8d0bb4a1cb"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300002_pid/reference.npz",
+        "sha256": "c2e23228e6d3bd9247e115b89409137e9511f81503b7c06a8ec559bf7368152f"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_training_range_300002_pid/metrics.json",
+        "sha256": "982093551c99982c9355b196804d746c3d82b3a379ee1a3a6555e66f27c3f07f"
+      }
+    },
+    "isaac_protocol/altitude_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "bf900c2c8136a8f866a4b3eff57e32651f32a6ec3b5bc1626515a140f5891cb5"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "47865a997097da74994385ca08f3d8ea3899bbf474223305ba2c4af2bdafa303"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "3f44527a1054981aa1e9de3fbd419014778549b3d73be95ff2a73ad24523f0d4"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "39032dd5543d8803571626cf343a6493dcf0856012ff8768c190df2c9687d0c5"
+      }
+    },
+    "isaac_protocol/altitude_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "d62e73b9b22f579dd92ae7e7c19b655c09c156dbb8a3310a3f6da00ea9e9e3b1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "cef2478fc1236ffc696b85dc53f66a8c85891cb421f4d6c76c66afc00e01243a"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "442d411c7d508d0225d742fbd1ca852015f35a824ac64edc94300fcadf070130"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "96d4e83aacfdc597389743deb80a02657c7f6794c39436cb7081f3bd1413b4c1"
+      }
+    },
+    "isaac_protocol/altitude_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "5efab1ca0f316121309f838c66a0295180105ebd569e6fa817f8946cdfbe454f"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "41bd04c4a98d5763fa2732e7280cfd47871fcf216c164a0e6a1a149104ab52a8"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "c2e23228e6d3bd9247e115b89409137e9511f81503b7c06a8ec559bf7368152f"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/altitude_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "be96289aa989de1160109fc0554350246e6eb0b57f52b2235aaa741430dee825"
+      }
+    },
+    "isaac_protocol/circle_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300000_pid/flight.csv",
+        "sha256": "5cf6cfa778e0a0aafe5ca328d3a64512e69172adc0e2a10fe780f5047bc2945a"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300000_pid/metadata.json",
+        "sha256": "83c686c0f9e31c5647ecccc2b6e1f996656d58fe640f32854fb2210aec0ab111"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300000_pid/reference.npz",
+        "sha256": "fcdad4975e71ac478abdd7b6279023e19f7a7db96a0d3434e382fe2a16c00755"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300000_pid/metrics.json",
+        "sha256": "ba7f8afb8e4f660b50a500e9b318ac30e15e5007fa5972a6c83227cc19c06749"
+      }
+    },
+    "isaac_protocol/circle_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300001_pid/flight.csv",
+        "sha256": "c733e67086153ec50c94b1135b0802a1d1439514ce2a6356790a192876d7cc04"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300001_pid/metadata.json",
+        "sha256": "91ec41715d3d86d451c232462f0330ef04530849880732f2fcb2874dc44f5328"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300001_pid/reference.npz",
+        "sha256": "d5d8c6005cb889f2f5bb8cb69709790bf01f7c4aca9084931b5b14f14cdeb43e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300001_pid/metrics.json",
+        "sha256": "845d97f43d7dba95789316598822440fe9694779f81485de6030c0404cb67d14"
+      }
+    },
+    "isaac_protocol/circle_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300002_pid/flight.csv",
+        "sha256": "516d2b7960518c6a9f5aa8367355a04be34a119a3f1ffe2bc12a782d56de69ed"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300002_pid/metadata.json",
+        "sha256": "9beb69332754aab8669ce0574e69d089a8dce6100b1357812ba2ab7afb29a43b"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300002_pid/reference.npz",
+        "sha256": "dea84e41baedd58df7ee1587737a325260bad5c2edbec01c968d3f918b6d60a9"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_outside_range_300002_pid/metrics.json",
+        "sha256": "8fd76c0af850e07938426d637c6cad4fce8d81c37b421c2a975d6c99c02f9641"
+      }
+    },
+    "isaac_protocol/circle_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300000_pid/flight.csv",
+        "sha256": "bdb69342419e757ceb3151f61381dd5a11ed65fcf7d095aec7f53889c73837aa"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300000_pid/metadata.json",
+        "sha256": "db14da9378196de3ed8c4c829a3ea0bc9482fc3d7f46cffe1bbe6d3bd489b815"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300000_pid/reference.npz",
+        "sha256": "fcdad4975e71ac478abdd7b6279023e19f7a7db96a0d3434e382fe2a16c00755"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300000_pid/metrics.json",
+        "sha256": "97aa4f2d42bb4dc3002cf28275ee9aebaa3d4f5440d6e750ed0d396383f444c0"
+      }
+    },
+    "isaac_protocol/circle_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300001_pid/flight.csv",
+        "sha256": "ebd9bcf0c6492f86c7b4535f9014562b9c742c829e3f284ef7e22f5cb7a54093"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300001_pid/metadata.json",
+        "sha256": "145262a35e7e0fa5f0a5582ef848b2658eb4e75c0e20d1f201b189fb3898a4be"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300001_pid/reference.npz",
+        "sha256": "d5d8c6005cb889f2f5bb8cb69709790bf01f7c4aca9084931b5b14f14cdeb43e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300001_pid/metrics.json",
+        "sha256": "7361b8f4f87a6ae0d3f8c173052653a85c37fbb389404975382deccc21aef648"
+      }
+    },
+    "isaac_protocol/circle_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300002_pid/flight.csv",
+        "sha256": "fe057a5856b1e39f011ea6db1aaca7c4bef787095f6bf7b65919be2b70eff723"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300002_pid/metadata.json",
+        "sha256": "34553c308fb71e827020e1fbf8d2404e4a077293e80b60636e17dcc21bd3d676"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300002_pid/reference.npz",
+        "sha256": "dea84e41baedd58df7ee1587737a325260bad5c2edbec01c968d3f918b6d60a9"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_training_range_300002_pid/metrics.json",
+        "sha256": "50e95d72c08b477a860764a0d98002f01458046bceb80cf415a9695f19cda610"
+      }
+    },
+    "isaac_protocol/circle_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "5432d8b7f0436abc1e9258b07c2be4e49386742c195ab753de8f9ac8493f9463"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "2189474211a683a44562cad00abdd54988ceb315cea048f2c33ac64366bea0d5"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "fcdad4975e71ac478abdd7b6279023e19f7a7db96a0d3434e382fe2a16c00755"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "5ce636b79cf0d06c71ef14aac17a03bb50269ef7409e2e7b034501031a8a3a20"
+      }
+    },
+    "isaac_protocol/circle_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "4bdbfc5928635998f9c213ec48020e296c58c0144948dc2f9212b5ec5355e323"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "140811ebfdfc0f6dca30387044c92615dad8c36e7f7b6c93ed5fd7d15bfb79e6"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "d5d8c6005cb889f2f5bb8cb69709790bf01f7c4aca9084931b5b14f14cdeb43e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "fa6a8aec8738ee4c1d61f5b656a8af64dde795f8c1443df68cf9eff2c686b7bd"
+      }
+    },
+    "isaac_protocol/circle_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "36a826c51aaabe98e1f0c04a4dc09f649f311f7966ad1e1ba4f4305174e7fbdf"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "92c6cd0a820fac3b7de410e79e88f6fb7529522832f02cc31f950abc130842ef"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "dea84e41baedd58df7ee1587737a325260bad5c2edbec01c968d3f918b6d60a9"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/circle_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "bc36994311d3d07b4b382c23b1ef9678939bd0dd4d3c295b7a743d2a2914401f"
+      }
+    },
+    "isaac_protocol/figure_eight_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300000_pid/flight.csv",
+        "sha256": "6a5b7f76f4969c4a08d334640fe8bc5fb997c16aa5cdb36c59672c666223f968"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300000_pid/metadata.json",
+        "sha256": "322143c9d257ce9681f56d715f05914ce4de96380a13a18fe42813af925e5603"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300000_pid/reference.npz",
+        "sha256": "dcdf99c7bfed0fd7120195ae05bb3f3c89136d2f8530b4d743f76c21c5a32b24"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300000_pid/metrics.json",
+        "sha256": "4098a2b41802bcd8d232ecfe31951ee46bac420a1dfd27f6cb70bff6c3d39932"
+      }
+    },
+    "isaac_protocol/figure_eight_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300001_pid/flight.csv",
+        "sha256": "51f0b8f89970040445351f46ad69bc8266df0084da8905936692a2cdf4e29f3b"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300001_pid/metadata.json",
+        "sha256": "12d2cbf1bc9b4c671e3b56e9f397d798f61a2f4888af100a59da788439ca89e5"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300001_pid/reference.npz",
+        "sha256": "8783a96d89ccf52360f2e8b619e673dd8ae80026f15ce10240f861955de82f69"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300001_pid/metrics.json",
+        "sha256": "8a63c7b2add7f9fbde82419152ff979ade53cfe14803043cd0b9ec771f4ce5f2"
+      }
+    },
+    "isaac_protocol/figure_eight_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300002_pid/flight.csv",
+        "sha256": "8f3c70579a06383fdfe51d4172cf3a751c6b2f2c7add98b1895244a7cd77e654"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300002_pid/metadata.json",
+        "sha256": "b231653233d657a903e80bf62fc6cbc0ffab96da4e8934d1c868305cd234957f"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300002_pid/reference.npz",
+        "sha256": "e8511a1f85b1e89eee25b72dfb312f915b2af14e443ccf5dcf02106a6086f1be"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_outside_range_300002_pid/metrics.json",
+        "sha256": "963f52a1f8f24d994b4f4a056f09eaa8e9f2a1d3d8575fab448811e84075b5e3"
+      }
+    },
+    "isaac_protocol/figure_eight_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300000_pid/flight.csv",
+        "sha256": "ac3bfe68a20c5468ac163617dff5d9214d931e197ee46401e342a3b057bc2b79"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300000_pid/metadata.json",
+        "sha256": "f3bf76cd462dd7ace1ca60f61690efda73208a07be602856f2d82cfb9be14fee"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300000_pid/reference.npz",
+        "sha256": "dcdf99c7bfed0fd7120195ae05bb3f3c89136d2f8530b4d743f76c21c5a32b24"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300000_pid/metrics.json",
+        "sha256": "871d6e73dfd71e29a0a4e957b844f8a0d5adb69efe20b1c3df79f3ce677ec022"
+      }
+    },
+    "isaac_protocol/figure_eight_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300001_pid/flight.csv",
+        "sha256": "c22231ddf5ce4e83ae460338ed76fbe1d2559a2df8d0a52c287c11f9c89e9e61"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300001_pid/metadata.json",
+        "sha256": "f09a5bdefaa3e88205993ddc75f862b7d48e206a6b41196e872772578dff98d6"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300001_pid/reference.npz",
+        "sha256": "8783a96d89ccf52360f2e8b619e673dd8ae80026f15ce10240f861955de82f69"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300001_pid/metrics.json",
+        "sha256": "4a8a85ad4eadd51ab816f5f05479b1d4dd344a40fce5d6f22c4c738be5c9b67d"
+      }
+    },
+    "isaac_protocol/figure_eight_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300002_pid/flight.csv",
+        "sha256": "41338a95f7be070063fe9059c32deda601c931ce35515458edc2ed4175c48148"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300002_pid/metadata.json",
+        "sha256": "e1a1e582d5402b3280dc77da160dc8ba662f87e424cb81510427783063dac771"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300002_pid/reference.npz",
+        "sha256": "e8511a1f85b1e89eee25b72dfb312f915b2af14e443ccf5dcf02106a6086f1be"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_training_range_300002_pid/metrics.json",
+        "sha256": "1a87ea8cb9a02c99b3d76cfc551da30c165c59fb8df695d7a996fe7914cc130c"
+      }
+    },
+    "isaac_protocol/figure_eight_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "6e90e26a345e148ede193036ac8542438c358e2afb679602147ab44f40d686b9"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "3a92ba3fe78729fca1cbc1f2245a00fea1434fb0d80a8c2f9ffda7e5b2b2438c"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "dcdf99c7bfed0fd7120195ae05bb3f3c89136d2f8530b4d743f76c21c5a32b24"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "15b6e6a8b918b3b69ea54f61db8dc0128bb79ce182d69c092dd10ea80c8d7789"
+      }
+    },
+    "isaac_protocol/figure_eight_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "608dc13f55bd52975325f93f7885db4f37375039edb54785d57b41b9d502a10e"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "b3fa6dfcb091f3b3a179d52423dd294dbe081a98d1206e1e9a803f8899160cd7"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "8783a96d89ccf52360f2e8b619e673dd8ae80026f15ce10240f861955de82f69"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "658d83cd7264e6a43931d6241fdc5a8e9bfe8f9d13d979e7059bde627c5996a6"
+      }
+    },
+    "isaac_protocol/figure_eight_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "24baad363b98205044c1b69de01f4db98e6442ef24211c6b43db95e33061ef9d"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "f6301143dbac9fffd692f37d42b333cff69d85de1a8949adcb8c801f75436509"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "e8511a1f85b1e89eee25b72dfb312f915b2af14e443ccf5dcf02106a6086f1be"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/figure_eight_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "f857679d1c17cf631419ab07968e7d6957af07674234db43a02fdd4f5db68578"
+      }
+    },
+    "isaac_protocol/hover_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300000_pid/flight.csv",
+        "sha256": "44c950afbf547ead6b3693f7dd14edc05b183d7b9154bebe0fc69a12fd68d6c9"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300000_pid/metadata.json",
+        "sha256": "a754c6b067bde963ce81962465a396f61c82a33972a7df8b5b024f3c67bc62bf"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300000_pid/reference.npz",
+        "sha256": "807ccb986d162b14bffe257a42b1071f985155a3eff57992ac46c0b60b010e35"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300000_pid/metrics.json",
+        "sha256": "f7872f1eba5fa047e5b50fce30f1beda08cb9f3cf50c0a9705d69971ecab7c67"
+      }
+    },
+    "isaac_protocol/hover_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300001_pid/flight.csv",
+        "sha256": "0c4db2f69c0c6eed080816ad13b568956d035a08d65f7ade17c3fa682f599e77"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300001_pid/metadata.json",
+        "sha256": "adac00c2daebf10833e999f6a6ca7edac0de8ead02be7528a154a29d230995f8"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300001_pid/reference.npz",
+        "sha256": "ef9f889031d893f5feccd61197d16b56eeb0be5f89c48ae05676a168af2349db"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300001_pid/metrics.json",
+        "sha256": "0ac1b8c870baa6609f90108c1ea1343d26d7f34a658244805c5102c793df4d7b"
+      }
+    },
+    "isaac_protocol/hover_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300002_pid/flight.csv",
+        "sha256": "3d843f8b1978ed819844703c90383b79b0f5e7a23b6aa5baaf6a0ec05c0428a1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300002_pid/metadata.json",
+        "sha256": "7faed6fed3510e52a5d8d65c4ab57dd1ea74c9e655b8e41131bab06cc5a755e8"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300002_pid/reference.npz",
+        "sha256": "f1a2670ef99c6d908681bfa443c65b05f31e56066650eca1c2440b4b1ded3ae0"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_outside_range_300002_pid/metrics.json",
+        "sha256": "7f2efafb960ad85550bb0fb3de6c9ce8d002b33c4ff15f4f352700f6d75500dc"
+      }
+    },
+    "isaac_protocol/hover_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300000_pid/flight.csv",
+        "sha256": "7ba4350d126a3aca44af93ba65c981bd6ab6990d555fa8d98a07be0069593c5f"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300000_pid/metadata.json",
+        "sha256": "6a28f4ec4ed396601e49444cea982c891abdd5f82a69c593eb2652cdaa9df97a"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300000_pid/reference.npz",
+        "sha256": "807ccb986d162b14bffe257a42b1071f985155a3eff57992ac46c0b60b010e35"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300000_pid/metrics.json",
+        "sha256": "8ae03d85428b7c314ccdd375a829e763c8fc46e6635987ba91f1885d29ba737d"
+      }
+    },
+    "isaac_protocol/hover_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300001_pid/flight.csv",
+        "sha256": "daa411e5c8888d5c598c30c2f98a5265505082c9b80c8fec497e10c00ce6d767"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300001_pid/metadata.json",
+        "sha256": "0d6814159656155f9a28ea70346fab20fe61b8fdb555836be3893ac41c57b368"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300001_pid/reference.npz",
+        "sha256": "ef9f889031d893f5feccd61197d16b56eeb0be5f89c48ae05676a168af2349db"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300001_pid/metrics.json",
+        "sha256": "a286717f690fbf12605c6f52a2275ed078beb0992e7925e661b752bfdecf199b"
+      }
+    },
+    "isaac_protocol/hover_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300002_pid/flight.csv",
+        "sha256": "6afb7232beea33a8d5c6c15b9ffad10f47536afce90d71055b4e62815af5b818"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300002_pid/metadata.json",
+        "sha256": "5c5de30ee3400f960e439df5a58d8034144dd5f91d0a558e62e835c15f0ff8ed"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300002_pid/reference.npz",
+        "sha256": "f1a2670ef99c6d908681bfa443c65b05f31e56066650eca1c2440b4b1ded3ae0"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_training_range_300002_pid/metrics.json",
+        "sha256": "8521f7ac08500b08610be7e13843617b35b239c837bc5ea2e91f1f4c24f54ed3"
+      }
+    },
+    "isaac_protocol/hover_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "18bee6598c809252822e8086d696a14da1b4db0fdcd395b6b7f02ab18c112d70"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "3b2a7dcab29a863a34ee5f4f24619205b79b5117adb88f04fb2cf4b33877baf3"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "807ccb986d162b14bffe257a42b1071f985155a3eff57992ac46c0b60b010e35"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "00a57f101ac3ec4cf076ce166a06ac5524d51ceb2191fa5462d5970492947df9"
+      }
+    },
+    "isaac_protocol/hover_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "8a0d5b5781f455dc2ff6e9857e90e12e521ec4e55336ac2582d89e90876b4f76"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "1ba179181e969e397803237c8245c297767f52aa13f1d3159b0f6d1c35121bd1"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "ef9f889031d893f5feccd61197d16b56eeb0be5f89c48ae05676a168af2349db"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "4ffeab94e5302ed83db73c85047bd2c4419b696b1ae69ec5cd848275673c48e0"
+      }
+    },
+    "isaac_protocol/hover_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "b155def308b5082bba3ef067af6650534c0afbf303607c8dac883bb06105e7d9"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "49071e4033b2a09b151e53aeed60dc54d698a671258e7a43916e66ebb4f06fe5"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "f1a2670ef99c6d908681bfa443c65b05f31e56066650eca1c2440b4b1ded3ae0"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/hover_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "4abca3d8e9db67e04fec704e89ed13452e0cb2fa3de3726bc9a370876e990fe8"
+      }
+    },
+    "isaac_protocol/straight_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300000_pid/flight.csv",
+        "sha256": "8fb5e8165ac9f5b816fef57bb7fb3c91021979526a14a76e5c3b6b7de1ed2599"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300000_pid/metadata.json",
+        "sha256": "df7fe0fdf5babfe3fe89e988df9386203efa1da337e53ca82202a81ceacf595b"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300000_pid/reference.npz",
+        "sha256": "aa73527ceff71e6f9e27e322f16a193027585c7f42b208170d7988d1217cd543"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300000_pid/metrics.json",
+        "sha256": "9514a197d49d2d2a5fada526e402d4dc1c65d684886c6257a18a905ad3cca50e"
+      }
+    },
+    "isaac_protocol/straight_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300001_pid/flight.csv",
+        "sha256": "facb2c6549cbf2f712ced59db6c4506ae0e45d5c226c7e79b5b4b2a87292a37e"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300001_pid/metadata.json",
+        "sha256": "6e064432127cdff91e80a26b7896c2fc668549fb858bc12bf0d973dd18659cde"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300001_pid/reference.npz",
+        "sha256": "f804d661363b1a1b7ecee268957fe2e32c4965c1a1e2e529cece408b81c7033e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300001_pid/metrics.json",
+        "sha256": "c5c0143a0f316a8eee227af4ab6b3a5d847d4563c6ae9a522e3714f94c32c736"
+      }
+    },
+    "isaac_protocol/straight_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300002_pid/flight.csv",
+        "sha256": "8d2e05111fc95b12d29251fee217990313fc01bb1d9b580f6ca5d58dfae01107"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300002_pid/metadata.json",
+        "sha256": "4da5bff19d311859366554307f64fd2c73acec44886786ba2330b81db6f9d24a"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300002_pid/reference.npz",
+        "sha256": "b2fb5a9a518a2434dc8338e6950570f2f4268a650f7a834fbbdb85a12944590e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_outside_range_300002_pid/metrics.json",
+        "sha256": "6eecfe781cab06b1ebfa4afd68ae8923eb7b018580fada97bab5da9b695ca7dd"
+      }
+    },
+    "isaac_protocol/straight_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300000_pid/flight.csv",
+        "sha256": "64d22c81344856c9b8e1e5c10a80a0c7ecdb1b341b863bd7c2792f0de56bf24b"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300000_pid/metadata.json",
+        "sha256": "d169d6abba825d4b152f5e76e450061ba0e4c3d43ea421fe77f6697c75fca6a4"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300000_pid/reference.npz",
+        "sha256": "aa73527ceff71e6f9e27e322f16a193027585c7f42b208170d7988d1217cd543"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300000_pid/metrics.json",
+        "sha256": "f63442c6ed0d6c024322af765f32e4344c61521d681b8f8fffdd844368294fd4"
+      }
+    },
+    "isaac_protocol/straight_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300001_pid/flight.csv",
+        "sha256": "658020c008830ef998396b45f198ff6c698aaf6404a0d6d65990265b962d8fd1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300001_pid/metadata.json",
+        "sha256": "b2c948c5f6d90fbbc33404571c7ab33dca02736bdbbca30abfa072c255e88c41"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300001_pid/reference.npz",
+        "sha256": "f804d661363b1a1b7ecee268957fe2e32c4965c1a1e2e529cece408b81c7033e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300001_pid/metrics.json",
+        "sha256": "8a97ffd306c2fcd6e276d45962d269f114e5956f7cf7e279f95275ecf838598b"
+      }
+    },
+    "isaac_protocol/straight_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300002_pid/flight.csv",
+        "sha256": "a78df943a13a0faa391717c8cd6d41e9e29096e562d44d1cc6f5dd5987e67201"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300002_pid/metadata.json",
+        "sha256": "31583f66d2a90f57b48f7398cc4342969298bdc3bba9c62eeea9f13b6de29945"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300002_pid/reference.npz",
+        "sha256": "b2fb5a9a518a2434dc8338e6950570f2f4268a650f7a834fbbdb85a12944590e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_training_range_300002_pid/metrics.json",
+        "sha256": "069dc45d30ce49bc7513b43b08d2074bc2ae84f82e60e4852173041f90896596"
+      }
+    },
+    "isaac_protocol/straight_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "5268a8dffb4df3aee0c370b07a6e6f55f961ef07dedfb4dac26a03f07e6dc558"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "3299ae6e38d3616fd55624529980436592dc9b9b86498efdf13adbf9d7251446"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "aa73527ceff71e6f9e27e322f16a193027585c7f42b208170d7988d1217cd543"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "b4c5e8faf18435676311bb4b2d628032bd6b3bc415fbf963921ccdcf1696db7f"
+      }
+    },
+    "isaac_protocol/straight_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "4d887691df04fa292de508c7f0607f06a0e2df794d4491d045b0575d347dbfcc"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "9986f85bc69f25e18ffb92c45743db783f275c398a37675782dca511af2ddaf5"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "f804d661363b1a1b7ecee268957fe2e32c4965c1a1e2e529cece408b81c7033e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "219588a0b383ca69e7a5a0694ee2116a9823ac5818e65b728d058f98a437c4c3"
+      }
+    },
+    "isaac_protocol/straight_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "8e6f156c61d12ebc835f063deab49f01093e96c4082cd2ce698accbc504a81da"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "f48a99f48298bace44b69f6e2787a9da2d1ae0faca247e3ae79227840c23040e"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "b2fb5a9a518a2434dc8338e6950570f2f4268a650f7a834fbbdb85a12944590e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/straight_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "e5bae488e180b9a9b35c47ef2a8b451b020cc93fa2ecd3475643ce7a33728629"
+      }
+    },
+    "isaac_protocol/waypoints_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300000_pid/flight.csv",
+        "sha256": "f06414f8fa2c81432f4a5361eccf9327d90f513e38b46e5586c1e3d7d18634a1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300000_pid/metadata.json",
+        "sha256": "dc19bb114974b996bac8f77b4890ed05f0d13f2a4791929de7f3ca0ed535e724"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300000_pid/reference.npz",
+        "sha256": "f4ea78614491b763c91834be92b3ece2a8071b17c54ed8111a14af7ec2ff4df0"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300000_pid/metrics.json",
+        "sha256": "16946e0d11138b11562a5a49c288a9171e8ea57b920e5398bbd1761b28305c17"
+      }
+    },
+    "isaac_protocol/waypoints_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300001_pid/flight.csv",
+        "sha256": "593375d4fb3bd9df952ba0499c6c0c26c65a0d33b31e7816185f6af1a8524ab0"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300001_pid/metadata.json",
+        "sha256": "2805bd0a7ff5f206202645703c9cc763a2036d26ffd488badfda885f8c9072d6"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300001_pid/reference.npz",
+        "sha256": "f464a3f872af822c17029225e69a78d690dcdda1f6e914683b06302863eda05e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300001_pid/metrics.json",
+        "sha256": "393c7cc9b3c4e98d2c772eeb9fed2ce9fcfb44bde41c7803d5185b4b397d1188"
+      }
+    },
+    "isaac_protocol/waypoints_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300002_pid/flight.csv",
+        "sha256": "f95604661f8c785e371db15e2aca7075deae40af843e5260b8fb1abea682a0d8"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300002_pid/metadata.json",
+        "sha256": "25d6ff133e2790a7bc03e035eead767d309e286fad06e3f8644928e8707b3dc6"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300002_pid/reference.npz",
+        "sha256": "3560b711aa5d6964eae45b3a700dbcc5a6f9365db596d652c27421c768f20acb"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_outside_range_300002_pid/metrics.json",
+        "sha256": "2aac001ca3cb26bb5f2a5e00ff346e154c029a808504e95f4d9bca19d7caa81f"
+      }
+    },
+    "isaac_protocol/waypoints_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300000_pid/flight.csv",
+        "sha256": "34ef22e99109d87c9dfdbc02b7e0260e29bf7a296c1e3d90c33cca434481b87d"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300000_pid/metadata.json",
+        "sha256": "eeae710e30713b3961acc03f29f3d78731d584a30b0cdc0b7611a9720c9b1480"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300000_pid/reference.npz",
+        "sha256": "f4ea78614491b763c91834be92b3ece2a8071b17c54ed8111a14af7ec2ff4df0"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300000_pid/metrics.json",
+        "sha256": "0e6d73edd5bdc7d00a4bafa746c50d50ebbca5f6ddb93951a5fe994a1f88701d"
+      }
+    },
+    "isaac_protocol/waypoints_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300001_pid/flight.csv",
+        "sha256": "5ef02a2344d62d86d7eb0bb6effefb3d619860304afc71ea573071d053285864"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300001_pid/metadata.json",
+        "sha256": "8303623ffd0467fef6c63d4fb183fe2cb24fd58ec6958a3c18a7d136532baefe"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300001_pid/reference.npz",
+        "sha256": "f464a3f872af822c17029225e69a78d690dcdda1f6e914683b06302863eda05e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300001_pid/metrics.json",
+        "sha256": "668c6796d6ebbc7dd41610bd61ab3db09088a38f8a4386f74bd8d814bcdbd6bb"
+      }
+    },
+    "isaac_protocol/waypoints_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300002_pid/flight.csv",
+        "sha256": "c1dcaeea618c447cb36cfb8c55ef98f04bde851bb745fe0c1db27f2b3b3f42bf"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300002_pid/metadata.json",
+        "sha256": "1caa925453cc39b73aee3f2ee91e9b37d632c8b0ce9215efc7c14adff1d32aa3"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300002_pid/reference.npz",
+        "sha256": "3560b711aa5d6964eae45b3a700dbcc5a6f9365db596d652c27421c768f20acb"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_training_range_300002_pid/metrics.json",
+        "sha256": "a03e489d9dd7479ae0bfc67d8f9deed88aba9edfeceddf5df945d0ba10607b1f"
+      }
+    },
+    "isaac_protocol/waypoints_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "0be796ce5a8374e4cb4eb025365fb1106bde0612098a8991b02cf3fca8dcd3d4"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "980c0c5e99844cede4071f4db509ba216a215536a867aff91834ad2f7910c7ce"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "f4ea78614491b763c91834be92b3ece2a8071b17c54ed8111a14af7ec2ff4df0"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "bdf6b22f9d952bcc2f2198948403e7ef356c28ef8865c0884dce9549a05af3e0"
+      }
+    },
+    "isaac_protocol/waypoints_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "edf412c80b610cce251c7741fc33501a8bb8807556f87ccf35eaa0ba32e76e46"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "5f35b15a277d558dd504ad97a9922bb60ba6aed026a7743e0e20d030aec4e557"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "f464a3f872af822c17029225e69a78d690dcdda1f6e914683b06302863eda05e"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "b10ace216907c13c2a6fe6ff243f2a3a2b45e4e6a624a192a9a4c8547d2d983c"
+      }
+    },
+    "isaac_protocol/waypoints_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "c119c22527ebd443f53bd14dd52766bfbaf0ba2dd108a27e51b3ab3a53b1e7d6"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "5d4852bf712393dfb5365f8c2d6ab79fe83227419836c1fc03c5cd5be996aab3"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "3560b711aa5d6964eae45b3a700dbcc5a6f9365db596d652c27421c768f20acb"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/isaac_protocol_pid_20261106/waypoints_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "b7b09af8d7cabf83bf0a9872f4b2de737cdfac586f0e76b33bd3a5b636288c70"
+      }
+    },
+    "navigation_paired/dijkstra_calm_400000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid/flight.csv",
+        "sha256": "8b8aaa5feeab8e7d8d97d8a7c67b841fa88d936ee468cd374d7f032ae42486b1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid/metadata.json",
+        "sha256": "2beba468094a63e4bd1f7bd441087005aadd23c65ac7e47c186c36a8356ec4f9"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid/metrics.json",
+        "sha256": "6c85e04ce9b0c347fd1b711e8383666f351d9eb4f0759892fff56ca8bd75c9d1"
+      }
+    },
+    "navigation_paired/dijkstra_calm_400000_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid_sac/flight.csv",
+        "sha256": "0bb07a519c5860d91a0008807ac03cf542918492bdc721a5e9bbe346404877d1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid_sac/metadata.json",
+        "sha256": "e235eb407834e5d1d10530fae24bd83020e7a2303fab309e1a3bc265dbd59e45"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400000_pid_sac/metrics.json",
+        "sha256": "d42cd26916aefff0d094283e5bdc0e6c589f25e9a286ae007b67a67706755d50"
+      }
+    },
+    "navigation_paired/dijkstra_calm_400001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid/flight.csv",
+        "sha256": "4e39d748088f73f41d01165953389f9bdc0dd52edc87a2319ec7125a42307de8"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid/metadata.json",
+        "sha256": "062ec3c229df86208b2d7c09117bd4c23cd10c5b472398d9f80219b08391b128"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid/metrics.json",
+        "sha256": "bb9fcc1e94cbaf7521e3df36a9ae5b3436272300ea2e23cfcded4f863d5501fc"
+      }
+    },
+    "navigation_paired/dijkstra_calm_400001_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid_sac/flight.csv",
+        "sha256": "b6bc257b8348d879b269e9a7e2dc530f28c27a09e44424199c743b7ad3d7a62d"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid_sac/metadata.json",
+        "sha256": "9398b35ae594e1930624c7ab6926473db4e80eae8d126726cf5e48ae1f1f4c7d"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400001_pid_sac/metrics.json",
+        "sha256": "1613353a4b1a13515d873a77e3caa8a7ebf154393855682896db55e195c0edfa"
+      }
+    },
+    "navigation_paired/dijkstra_calm_400002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid/flight.csv",
+        "sha256": "e821057ec5bbe3cd08ce5f380bfc46b1dd40ec280f8e24ab5469ab6c4afa2f13"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid/metadata.json",
+        "sha256": "89e1bd45a890f88d2bd0e92a1d17f5673f838fd92161d635384454180a502642"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid/metrics.json",
+        "sha256": "dd78fffe568376f5f729c0c317919bcc67ffa4b71e4061e52866d834923bd648"
+      }
+    },
+    "navigation_paired/dijkstra_calm_400002_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid_sac/flight.csv",
+        "sha256": "cf8371713250f086d547ff266ba1e35afeb9bfcc3bce8c6fd84090c387c45ec1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid_sac/metadata.json",
+        "sha256": "9a0dedd4e0640667537117f8144948962352c0ee51d9be8af6eddc8b98ad2bda"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_calm_400002_pid_sac/metrics.json",
+        "sha256": "41c6393983452d1300090a39eae39f1f0ad55ccefb13ce6a3ce8b9c8b95cfb88"
+      }
+    },
+    "navigation_paired/dijkstra_outside_range_400000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid/flight.csv",
+        "sha256": "911a48289d85b39928180657409ebd7909f932553eb0ad7f161f0fb8bde0dee7"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid/metadata.json",
+        "sha256": "245f2e7bf6f882d10d59627c28a92f8239cf2c8143079b072d5f562bf7ae61c3"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid/metrics.json",
+        "sha256": "2922ae6f527107c815049d0fae1a5d04fe6f89301b2acd8a0c288146ee430644"
+      }
+    },
+    "navigation_paired/dijkstra_outside_range_400000_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid_sac/flight.csv",
+        "sha256": "b2a4ffefa404a67dfb0a4c15baf284826b6d9e2a7ff7fa9c187aba192fec50d6"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid_sac/metadata.json",
+        "sha256": "6f30c7358e980829fe47219bfe5338cb8b7768b60117ce48bf972cda67d675a1"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400000_pid_sac/metrics.json",
+        "sha256": "d0c5b1feaa376beb14b9edc841c20d44f4bc9512fb7731cc3b5b7892a5fed893"
+      }
+    },
+    "navigation_paired/dijkstra_outside_range_400001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid/flight.csv",
+        "sha256": "3d856fe9ecf74d97a3dedab939f986ac8d93dc760ec689e4fa0bb4957b69b691"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid/metadata.json",
+        "sha256": "a3cdf1973d9e8b652736216bac5eea4f7c5e7d056096dbc71c8731e7aac2c01d"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid/metrics.json",
+        "sha256": "7c0aaf741e66635793c4fa418a522899ee4aa45affc49d1586a75fbb6e569bd0"
+      }
+    },
+    "navigation_paired/dijkstra_outside_range_400001_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid_sac/flight.csv",
+        "sha256": "921e8819177bf52032214188840fce6423259ed9dedadccf7c7b56d0caaccb36"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid_sac/metadata.json",
+        "sha256": "4f7661a7b4563aa1d273a3c94e575155c8eef3e8b119f779b9b47e866de0257b"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400001_pid_sac/metrics.json",
+        "sha256": "b7352d606071721ecafa3c4cda22c0c71a24d571d636758d9e718205c0baceaf"
+      }
+    },
+    "navigation_paired/dijkstra_outside_range_400002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid/flight.csv",
+        "sha256": "6ef211083ca2aae0b211a3d8aca42b981c7506cbac21acfe712a61ebcfba071a"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid/metadata.json",
+        "sha256": "8f2e90b8b2264e6be6148d0bd99cb6eb9d7850764803aa35522f233b8af626c2"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid/metrics.json",
+        "sha256": "8c7037e8458d200dff68de67a6a7043f10b54382faa049955a746a76bdf56cfb"
+      }
+    },
+    "navigation_paired/dijkstra_outside_range_400002_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid_sac/flight.csv",
+        "sha256": "8515911213bcce4f3dd6c845c731355ad776c4b01232911b3d57f9fe52a01ede"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid_sac/metadata.json",
+        "sha256": "6cf73cba3eb868d7b70acab025c152c53e1a7c2cc4bcce5cd8657bbed4fee3dd"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_outside_range_400002_pid_sac/metrics.json",
+        "sha256": "4b00d3cb95738cdbe4b206e92ce28437d2cccedcafd778fb1b26e66b82c60eb7"
+      }
+    },
+    "navigation_paired/dijkstra_unseen_gusts_400000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid/flight.csv",
+        "sha256": "4920e6eac36442c60a0451da76302d6b0d322c557fab387dd83170a40b49541e"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid/metadata.json",
+        "sha256": "0f860d6e127372179084931200f0d93e4d385721ed6509bc39a43f7c37a0dbe5"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid/metrics.json",
+        "sha256": "23769f43ec4e81e039bf85d2465a0bbf540fc0ccd01734d14d51ce8807a5a8f6"
+      }
+    },
+    "navigation_paired/dijkstra_unseen_gusts_400000_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid_sac/flight.csv",
+        "sha256": "7510144462d375c388cf87e410102f3b99dc0da8252dcb050ff3335c9b6644f4"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid_sac/metadata.json",
+        "sha256": "32387f66fb765594853c150e250ba037cd7fd0ef4436015886aa833bad87d7f3"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400000_pid_sac/metrics.json",
+        "sha256": "345af5ec13bed610ac5595ed4c049453b0e0f3bc0e63270ce15b91c83dbdae45"
+      }
+    },
+    "navigation_paired/dijkstra_unseen_gusts_400001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid/flight.csv",
+        "sha256": "a4988a1b4ea56f3d6e805edbe2cb96232cd46c9b115ac39c21469fa48e20d9d3"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid/metadata.json",
+        "sha256": "81d764153a2c8987a5e1fd41d0bf577d8fa21b2b1289bd0e9d7c5a29c665dfd1"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid/metrics.json",
+        "sha256": "28dc261b7b4b330c255c43db2cc78fedaca502f37b3ac15c600bfbdb0eba26d3"
+      }
+    },
+    "navigation_paired/dijkstra_unseen_gusts_400001_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid_sac/flight.csv",
+        "sha256": "29dced6c26c05d977ff88bdc5f739d06e81fa64f719fa3de5f014a67cafe81ec"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid_sac/metadata.json",
+        "sha256": "2b822b5b4f0d093614dd9f2bf4f2bc3e323997181d8c7073349a74c45ba282b2"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400001_pid_sac/metrics.json",
+        "sha256": "4e73559a9c883ffb72f5263178074e476f91477ced74419135f84e21dbe159d3"
+      }
+    },
+    "navigation_paired/dijkstra_unseen_gusts_400002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid/flight.csv",
+        "sha256": "2214ff2aac00619edab89f8ecc8b00c57a89fd82c986502b838ab1cb75130ff9"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid/metadata.json",
+        "sha256": "cad6bc7aa86d5da297366d9189b5bb01a6fc27d562f88e53544cde7d9aaab512"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid/metrics.json",
+        "sha256": "52588028463a358ba6fb5bc08abe7c96c316997e7b2ea53fd65cb238e0a6e503"
+      }
+    },
+    "navigation_paired/dijkstra_unseen_gusts_400002_pid_sac": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid_sac/flight.csv",
+        "sha256": "4a4484a2f30b4ed4d7087737b66023f683feb25c340a683bf71947a853680170"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid_sac/metadata.json",
+        "sha256": "e547f82455a5ec6f307c804d61d983339a0990e823dcb7473f5fcde181201c19"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid_sac/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_paired_20261106/dijkstra_unseen_gusts_400002_pid_sac/metrics.json",
+        "sha256": "c894bde8c4816cc43e895013608a8cfc85d6c992adeb48b23ce9bf83220888c6"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_calm_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/flight.csv",
+        "sha256": "8c068fadbcc394a2917f57b469c8b264250ff2cf03bababd26e01ab428583588"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/metadata.json",
+        "sha256": "27bf0d89727da08e9d861f274522785dd434c7103a3c891cf00632a82c725a62"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300000_pid/metrics.json",
+        "sha256": "c4f4d392e3de5e13e1588a5ceddbe6469eb15d183af22986f42beef0db5994bf"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_calm_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300001_pid/flight.csv",
+        "sha256": "9b6ff7a5aee2dac067caf731c718e1861b56cd798bfa29c48a470d2f703cba26"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300001_pid/metadata.json",
+        "sha256": "459ac6555d7ea850a69b8ecb50661554b34b99ff70b7598b10ddc969e1554e87"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300001_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300001_pid/metrics.json",
+        "sha256": "17a6a37c89753e93cd8859e92295e7ce46ec9a9b7780af0ab28142151b79f372"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_calm_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300002_pid/flight.csv",
+        "sha256": "f70c3d4dd2ca25abf5f35892e678ea56d474b619024cfab944c9438014b14234"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300002_pid/metadata.json",
+        "sha256": "440a938e32230319b8133e4e853479249b09807ae4121c9851b8f6c1c7ceb413"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300002_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_calm_300002_pid/metrics.json",
+        "sha256": "72f08df8e5fa93c01d68c9dfbed3557ab055878747abc79ec4cffff4131b4a33"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300000_pid/flight.csv",
+        "sha256": "656d4d3940d4cd59a71c3dba8c8f2dd6bd2b57d3a97e53935617598e2aca9eb4"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300000_pid/metadata.json",
+        "sha256": "3054a5609f41ecef4946041b0fbe08907397cc4e47cbe32fd8a8e4d688662a83"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300000_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300000_pid/metrics.json",
+        "sha256": "0f80351110653db575c0b59b1bf4def23dbc67b4486eb4049cbaeb1d0cb27e3c"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300001_pid/flight.csv",
+        "sha256": "51ab25fdf609e44c29a6599c42b9bc703602dac53ea6ddd1daf40c8dde69e0bd"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300001_pid/metadata.json",
+        "sha256": "8979c3dd1bc3eca1119b88b660747e45b5ca869613d32362dde90cee39f99fea"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300001_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300001_pid/metrics.json",
+        "sha256": "9de373cce2597861fbd3783d96b722d791ab2d7c691e748244b06a0a61f97571"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300002_pid/flight.csv",
+        "sha256": "63a7439f9a5fbb3b830ae315e9d57f6bedbc79435d5d095c6d3bc9de45ed5911"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300002_pid/metadata.json",
+        "sha256": "3903f80afe23a17394546541ab7ea3afbe8fabcba9e650d0cc57fb5f5c134edc"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300002_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_outside_range_300002_pid/metrics.json",
+        "sha256": "26bcecfb468153920520b7ec5861223f2bbab7ffe5b64ff1fcdd8821788b4d2c"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300000_pid/flight.csv",
+        "sha256": "8f9aa4a2cc250270981ab1854ff627d987a2dfaac41a1a42d62cdaeaeb63ab36"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300000_pid/metadata.json",
+        "sha256": "33fde24669c14700e933e2e6761e3122a197ccc9262676debeb5d6a9a8842860"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300000_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300000_pid/metrics.json",
+        "sha256": "f44e49e8e89c63dd42c28f17678475fbbebefcb2b4fad56fb967cc1a9caed578"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300001_pid/flight.csv",
+        "sha256": "b5acc8e333bb0b3af509a1aa563509936d9fe64703dc8619afce6b241f582fea"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300001_pid/metadata.json",
+        "sha256": "9419d14cc506d17ab6d499b8c3b19095bdd2da80810cfb64635cda91e9dd69ab"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300001_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300001_pid/metrics.json",
+        "sha256": "24c2243ee8bdd09dd46c77dddbb353c78eb1a039b7fe3388c73ea7258163f980"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300002_pid/flight.csv",
+        "sha256": "35a4c1289a32d05a1914dc5d8fff1e2505f3d873547bed84c224cd03f33bd0f6"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300002_pid/metadata.json",
+        "sha256": "77b26f426a42561de4176cafba1e69ddfd1e232ebc1c5896de90b459dd1c9b38"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300002_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_training_range_300002_pid/metrics.json",
+        "sha256": "7e31405773f68c33b04897107c23a21d2ac3db6585c6fc081b7f3273a327ae5c"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "e85d1f039e9847ed9235392ec37a1c4dabfdb7270cb4c0078080fe07c699e4d4"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "3da11329eeac43d75c534941125d3af7ecd9d8495ab30e39348424e4b90979b7"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "3cc2190282663bdbb4d0c3bee8a33344f79ff9b714bd571258da26078acd72ce"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "2e4333ef792064f9c49ee4058ce61d4fc262388720c5e738e37b0137ad981f33"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "fa98064afa51e4acb37adeb44004c9d06b330d8418ae7ba6067fb7ca32e93546"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "f4b2e842a6dc0bae5a72437f3144428d387066a118d1cbc522f8888c7ceef24a"
+      }
+    },
+    "warehouse_quintic_stops/dijkstra_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "248796412cc5939217aa2481939e82974e5af5365e9514fa7a78da810662ae4b"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "a5dcc304ef74057f575440d0511898f091d9765eb36ef745a9aa648a6ae88aa1"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "a2a95c500120ef38461a01dd23e06bb67c4526529013ef30738ef28db7cd7606"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_quintic_stops/dijkstra_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "95733d8de1bfd99e8562db6516c17fc4d3ad4b397eeed21e27147b1d9930ebda"
+      }
+    },
+    "blocks_quintic_stops/dijkstra_calm_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/flight.csv",
+        "sha256": "e659f47fb45d4091838ae0eb01f492f3d129cf0085c66c6bfbb0a2efe16df080"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/metadata.json",
+        "sha256": "0755d68eb0ccc5cea5edb7631bf3cdc5757a8f8ab28de3a70fe168e7ef439b87"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/reference.npz",
+        "sha256": "9e424b7867bef8e33dc49f248d692eafe120de7b8f6d72dfc2a3518fda1a4034"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_calm_300000_pid/metrics.json",
+        "sha256": "74f321f093f7e957d0b1ed079354f4cfa16bc13aa0d91eeecca804d1df5dae12"
+      }
+    },
+    "blocks_quintic_stops/dijkstra_gust_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_gust_300000_pid/flight.csv",
+        "sha256": "fe724493c765fd49569dfd7e45525fdacf9b812fe8c8e922886e8a9d59ec9d63"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_gust_300000_pid/metadata.json",
+        "sha256": "5661eb7d07841285d005783eb0dfddfc087e54ffa12f9794700e0f49930bfcc1"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_gust_300000_pid/reference.npz",
+        "sha256": "9e424b7867bef8e33dc49f248d692eafe120de7b8f6d72dfc2a3518fda1a4034"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_gust_300000_pid/metrics.json",
+        "sha256": "f7735118a77b893e4abd8658cdeeea09667ba6f4f2c6a46f851422752650adff"
+      }
+    },
+    "blocks_quintic_stops/dijkstra_turbulence_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_turbulence_300000_pid/flight.csv",
+        "sha256": "a5fc4bd071c229d316a5d87ba48079b4cd9cd977023eb04000354c7d6f5e7e46"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_turbulence_300000_pid/metadata.json",
+        "sha256": "03dbc94090566446058e5263626e225493d1066b743793c8a3a902d261ab9a12"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_turbulence_300000_pid/reference.npz",
+        "sha256": "9e424b7867bef8e33dc49f248d692eafe120de7b8f6d72dfc2a3518fda1a4034"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_quintic_stops/dijkstra_turbulence_300000_pid/metrics.json",
+        "sha256": "b28f506ca36f61452316adad1556130665e423dc637a65ba6ebe640427fc44c3"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_calm_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/flight.csv",
+        "sha256": "18b1558f9de21913573ba4cf514179bb0b3ea9b4669ab78f7483340fbcb0a86a"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/metadata.json",
+        "sha256": "bee636f641d4ff560efa7ab866b41af6bd1e15867db2bd777dcb2d0980d7b2ae"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300000_pid/metrics.json",
+        "sha256": "947f3f6e65628de928217b41bbda6fffd05e76cf0b5dc4a2ac369d73ba763def"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_calm_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300001_pid/flight.csv",
+        "sha256": "f9e199d2253a88c6c87d6ffd6ee3b0ce028e2da12b4290d381ca828692b1a82d"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300001_pid/metadata.json",
+        "sha256": "cca14230e0e31f616f1447337a3dafc489c5ed4b27245fa8e0264c28675633ca"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300001_pid/metrics.json",
+        "sha256": "489733901b7f226181a2771cf75030f406ad77922020c23477ce06431fc668bc"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_calm_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300002_pid/flight.csv",
+        "sha256": "416296689199dcec58d94099382085141e1ae9a3ec58d316289f21c7b3b7f318"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300002_pid/metadata.json",
+        "sha256": "ddec4314fbd37e38a742442ce8a182081b3df9a1c99f63976adb6e481e2b66a3"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_calm_300002_pid/metrics.json",
+        "sha256": "f3a297e43d1d5719ef4da2479d1496b0d7f85bc4a9fcad6a5ccf35cc8cc58e67"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300000_pid/flight.csv",
+        "sha256": "68bb19725f9d2ecfc9bad1de1bb35957bd54f011141cba6ccb50609181ad39b5"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300000_pid/metadata.json",
+        "sha256": "840e168ced850c0efbeaf17b9f85e4cd96b0c1e03bcecb61a2f9caecc10b2d23"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300000_pid/metrics.json",
+        "sha256": "941c5f3d1cedfe1299104679939aaea5574571377acb4aa89a29294c54e4c2b5"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300001_pid/flight.csv",
+        "sha256": "ce396caf9a88d55849eaca2215a36b5b06218421e393487157ebdd45960dd287"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300001_pid/metadata.json",
+        "sha256": "0f3a87252821022460d665f9e650117486b8d1350a31df4be6daa8d6f088c37f"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300001_pid/metrics.json",
+        "sha256": "d2c00aa371008b454a00b07989c964e4083b9c7b0b6cf2ca5f89887876af3909"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300002_pid/flight.csv",
+        "sha256": "a491e99e3bc42ac287f32a06c886f10305ff8edc7b6a1ff0e1c09c70b09d7025"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300002_pid/metadata.json",
+        "sha256": "1172e8097a8549199e9d4ffb61a99cdc40f19e7c58686b33fd22f61762c8a1ac"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_outside_range_300002_pid/metrics.json",
+        "sha256": "b531450b9e394a2ab5d679e481755340d8c0ddcd3518550f29e66d333e1b6761"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300000_pid/flight.csv",
+        "sha256": "121c136067f8781838ffb9c60fd2f0c0b56cc87b1c337aa0004a2e2dc29182bb"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300000_pid/metadata.json",
+        "sha256": "9661b3725965c319ebe9b6fbae882933a627e5b6e66913c5f9987573e2d33d47"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300000_pid/metrics.json",
+        "sha256": "c94a7f9f4b1f7ce4865d0f1183684ed0be20f85c25aa7a44b56d34dc4c548e13"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300001_pid/flight.csv",
+        "sha256": "10a0eaebec75fe446900ff975eab855207fa1393c2ac5e55987143a17a9b3671"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300001_pid/metadata.json",
+        "sha256": "dcdaa1c2037120a4add5b2ba7a2f30db4943d0c012ace3d985cb33a15a1dd0b6"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300001_pid/metrics.json",
+        "sha256": "bf769e0c5a070a9a04cbc055b12e7b5e6c12f3a4037d6ce1f4db7cfc5c22c631"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300002_pid/flight.csv",
+        "sha256": "6d9e232dbc54b31eca6c2b5ed02c9d1120e23b5a6cebb5686670895efc6d242d"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300002_pid/metadata.json",
+        "sha256": "4e724b1ae2b8a7236a4f9b78af921fbfde078259daaccc45f690f4a862e86df2"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_training_range_300002_pid/metrics.json",
+        "sha256": "8a11971d281c7a2337c05148b8359c95ee267245b342fb0e024c4e43b7a2d645"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "a0645ab5408871cc164afb713872e1d3f91afcf57c85fd8e4bf221a4988b3541"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "410606ef3d6a46f2c8fd8c0852350ede959df6e31272b2d31e0fa490450dc6a5"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "eefaf36b68eab58c3dbab9964228fdcb67729bba95bf8da1cc182d89bfb6ea52"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "a8a388b1c4c8b127e06671660b977ffd70759797414e82efb603ac5a5daab353"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "0b39fe9f943c35465bacc99313f6eea2d2b24da33ef75b036ed01936682e783f"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "5f493e20322803765af92f8c0d9acfc5eb29f35dcaacc1d0f36e54e2a2b20593"
+      }
+    },
+    "warehouse_isaac_timed/dijkstra_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "8a559fb9c8e7de33451ef5c1a1d56cb3a4d7f7545b27c9e6beb53c9e4906d3b4"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "cdca50650338febef6c185e10f5e06edba032579c908ce15d10dd53a77d52711"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "cdaa241eb045c26ce8dd88571596bf9b8ecc514e41905d4a1151e8fcde2a4732"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_timed/dijkstra_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "a6208412d11158393a10b061b50d8946cf45b10d096f8f5c005cfb337aacaca6"
+      }
+    },
+    "blocks_isaac_timed/dijkstra_calm_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/flight.csv",
+        "sha256": "a818d66a9bd9c7ec0a8020066ff74df7e593f33a26ae2c4ca75deb4abd5c613c"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/metadata.json",
+        "sha256": "a11f01942f115432385c5fa1c00ac5faf48990f14396a9e6b46befc321fd6de4"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/reference.npz",
+        "sha256": "f428e021ca183132f9bb8fd0f66fdce5c8b477ba359c27b7336ba7920300ca71"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_calm_300000_pid/metrics.json",
+        "sha256": "b4fbbe4e5e2b871598e75281a07d93fcc601fc7adb1dc86a516ee5a54c65c491"
+      }
+    },
+    "blocks_isaac_timed/dijkstra_gust_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_gust_300000_pid/flight.csv",
+        "sha256": "c67829ba82a54fa1b6625f79dbd6180e93c5bf30bc8d6019fef642c814a2a368"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_gust_300000_pid/metadata.json",
+        "sha256": "a519ab0746945639e8dd27a5f81388f57f073dc4df9836542a0e0fd1062143f0"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_gust_300000_pid/reference.npz",
+        "sha256": "f428e021ca183132f9bb8fd0f66fdce5c8b477ba359c27b7336ba7920300ca71"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_gust_300000_pid/metrics.json",
+        "sha256": "bcd4695f8a6452a02283170d8a9f68830831a433b1c0c2ee870288db8c6d68fc"
+      }
+    },
+    "blocks_isaac_timed/dijkstra_turbulence_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_turbulence_300000_pid/flight.csv",
+        "sha256": "26bccc3cb65bd8bb6ed6a64faec5d752aac1d7a7eb0d664b80005efbedeaf4fa"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_turbulence_300000_pid/metadata.json",
+        "sha256": "71bcb50473ac17381a362a161b495a1ab13b68be6421b66afcedc03475795d79"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_turbulence_300000_pid/reference.npz",
+        "sha256": "f428e021ca183132f9bb8fd0f66fdce5c8b477ba359c27b7336ba7920300ca71"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_timed/dijkstra_turbulence_300000_pid/metrics.json",
+        "sha256": "66816150d120aebb6ceb0b5d87428bb0ef6a96aeba21d17f2f806423e23d0e49"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_calm_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/flight.csv",
+        "sha256": "5bf9d3d00a00b4bba79851a86c13a7cd5f72b6125ce25487a0f96cafd3a33bfb"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/metadata.json",
+        "sha256": "c8e5e3de37cba4362e6eeab9df7c60f30e45c09370d3c379b79650046739501a"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300000_pid/metrics.json",
+        "sha256": "4938b7c407118fce457ca5982f3f0357f66b2b4b138c1f4b6bbe35a4341ca96f"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_calm_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300001_pid/flight.csv",
+        "sha256": "4ea7d469fcd16d6f8dd70454dc445014330c3e11cbe1ec24815dc2b5e8ee28e1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300001_pid/metadata.json",
+        "sha256": "f050fc4ef11d98ef073fde9ba1a7c95196b5c14e68415abe0213df90f7a5503f"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300001_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300001_pid/metrics.json",
+        "sha256": "ce0e7fbd10ac3cfe55605cf2c114ffc6879455484c049015484c6911e1d271c9"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_calm_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300002_pid/flight.csv",
+        "sha256": "bb11b238655315a9c3bf3ffcdded51e895a7fef693312263fa03e0a2eb8356c2"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300002_pid/metadata.json",
+        "sha256": "5cdff3f26d78b3f5580d4d83845ba5c9de88652157c112b51aaf045d032f44fa"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300002_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_calm_300002_pid/metrics.json",
+        "sha256": "6a4dbda1fa25381a52088cf423244a398ee19b57f33c8ed43d9d6999e2903af7"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_outside_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300000_pid/flight.csv",
+        "sha256": "5803c8d4e399722a3ca4a939a2c4c42f8533875014925f75cf137e190ecca767"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300000_pid/metadata.json",
+        "sha256": "a74805e7861d22da3fc4bb2dbfb2f209e3478b888a6145452f03a91df5cfda77"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300000_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300000_pid/metrics.json",
+        "sha256": "9ccce701dc6c6dff62cf6222005f4d9e27187fbff67ff6668207a92fa498d0c2"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_outside_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300001_pid/flight.csv",
+        "sha256": "c3039c4466fc7db1b67cfde206f67dd676cc98f3a17261d57df722c000b4dd5c"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300001_pid/metadata.json",
+        "sha256": "00b4e42358a116e9df624531c0f027d51ab5819cec275dd4b3052ea318b09eae"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300001_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300001_pid/metrics.json",
+        "sha256": "2693fa435b6b31cc56fe01d958d685456fffc928abe422525fb664b892abd318"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_outside_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300002_pid/flight.csv",
+        "sha256": "81396ac77ee7ff85f6579e1e68d28629b97965212255499eb429fdd98d2f2700"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300002_pid/metadata.json",
+        "sha256": "a0b36f055f95b1be55875e8ba5edd25ea3306bd0cbd89d4de4a58d42e3ce91de"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300002_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_outside_range_300002_pid/metrics.json",
+        "sha256": "a4d0d44ed310ccc91414b1322fa7fd20822d28b2f370876ace151eaa46da1480"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_training_range_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300000_pid/flight.csv",
+        "sha256": "d4d4943f1921d03978f7095cf1743a08c89d61620c848023b9180f9dc87285da"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300000_pid/metadata.json",
+        "sha256": "573330ea0fcccce802e09fda1bd0e8c03c06ed17d21031f61f6e440d079d25d7"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300000_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300000_pid/metrics.json",
+        "sha256": "893d66ed37149c7f4a0aa116f4fb6395e8fb5ebe7b84f5f75acefd264de4fc24"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_training_range_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300001_pid/flight.csv",
+        "sha256": "4f8f144c260571f572a962981f2e7d003d0b776751778276486c6da36cdbcad1"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300001_pid/metadata.json",
+        "sha256": "76470764261e5335ddac058a467bdc9790e8a6bc83f3b469e8600ad4613804f0"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300001_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300001_pid/metrics.json",
+        "sha256": "ccdb724ad097932d9c9e51fe2bf91d039270e9b4997e7770acc08049bf69cd2b"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_training_range_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300002_pid/flight.csv",
+        "sha256": "4a1d502424fc1fddfd039955bda3f5199928e5f64ec737e2952dbf5b09651e95"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300002_pid/metadata.json",
+        "sha256": "ce97e866b1cd474e857d00927092a0e0db1d32a80255a8662861b17217e65ce2"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300002_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_training_range_300002_pid/metrics.json",
+        "sha256": "7f9c542bd74787ea8b0495977de40526311a236bc437703322d4dde640ba3148"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_unseen_gusts_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300000_pid/flight.csv",
+        "sha256": "e64b076e8b47b2101cb93abf61a1fd7e03e14fa2e3b3e3a007c5f6aea10e0699"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300000_pid/metadata.json",
+        "sha256": "bd414037d2126386aca78bc901babad1bb2327b6aa9b56cf701b02df32f95d43"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300000_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300000_pid/metrics.json",
+        "sha256": "7f74e4b1c5ffecde0700405607c90f98160e230abeca337d883f64f0a1f21759"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_unseen_gusts_300001_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300001_pid/flight.csv",
+        "sha256": "132600543c9ad5225a3b60f7fca4e4e717f400447e638e6b1fb68d32babf3bb4"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300001_pid/metadata.json",
+        "sha256": "c11b3bc3775571ccb155556c6273d2293ce25887d47643d70fe49b9f4a742cdb"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300001_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300001_pid/metrics.json",
+        "sha256": "0ecbe1b1315d2a6774a1f35ff72eec69e8e9655f1ec81ed3e3814975b72a45f0"
+      }
+    },
+    "warehouse_isaac_waypoints/dijkstra_unseen_gusts_300002_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300002_pid/flight.csv",
+        "sha256": "3f51ccf9f8bfa4525ca5d1c49989a0886356386bb9f683c7d0f1024275d72968"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300002_pid/metadata.json",
+        "sha256": "d9975905f4140fa7712090322291bc973dcb39bc548f963e6c47d8cbb4d95bbe"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300002_pid/reference.npz",
+        "sha256": "39fe69047a47399002f1079f45836f1b3e5431ae5c1c3e369235d45ba2d5d934"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/warehouse_isaac_waypoints/dijkstra_unseen_gusts_300002_pid/metrics.json",
+        "sha256": "3c77ad781f47ac3ca765aca6569b736db9da670135aaaa45ddbf3204f48c9ff1"
+      }
+    },
+    "blocks_isaac_waypoints/dijkstra_calm_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/flight.csv",
+        "sha256": "a471f7111bc94f4e86cf6e72300a7dae1312c0acfa47df7e41c36e02b4c78077"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/metadata.json",
+        "sha256": "f76dd6ecb59b7221ab1e040c23a8bdc92ec1968383025d58a933342ec5431109"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/reference.npz",
+        "sha256": "295a7d007aa8a8574a05b22a82f7995138e6edc3ef32626cdd0eb39314e926bc"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_calm_300000_pid/metrics.json",
+        "sha256": "4e49df4c56d98564844e454d6db3e69763b657e41faf8b2281484ef78206a0d0"
+      }
+    },
+    "blocks_isaac_waypoints/dijkstra_gust_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_gust_300000_pid/flight.csv",
+        "sha256": "d0f693a95de03a0892db56678715e7cdbb65149df2e636f627d5bbf3b899cd08"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_gust_300000_pid/metadata.json",
+        "sha256": "6ad19beb9cec3a0185f434150a2ac8c225c5cf9d9b538040b381c30afac19958"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_gust_300000_pid/reference.npz",
+        "sha256": "295a7d007aa8a8574a05b22a82f7995138e6edc3ef32626cdd0eb39314e926bc"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_gust_300000_pid/metrics.json",
+        "sha256": "58346a0039f755321425791d5cbb522f1df5977a8de3240b50a4a7b4d459a090"
+      }
+    },
+    "blocks_isaac_waypoints/dijkstra_turbulence_300000_pid": {
+      "flight.csv": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_turbulence_300000_pid/flight.csv",
+        "sha256": "183f5f239bd02d788a3bb73d0cbf832e2f008acbf058cf06a20f43246d122ec0"
+      },
+      "metadata.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_turbulence_300000_pid/metadata.json",
+        "sha256": "dce0f92f11d289d6c66a978880c50b9a37c187284d89a1370741aaa51d5cfe8c"
+      },
+      "reference.npz": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_turbulence_300000_pid/reference.npz",
+        "sha256": "295a7d007aa8a8574a05b22a82f7995138e6edc3ef32626cdd0eb39314e926bc"
+      },
+      "metrics.json": {
+        "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_validation_20261106/blocks_isaac_waypoints/dijkstra_turbulence_300000_pid/metrics.json",
+        "sha256": "af5c2c70dc9b77ff39c4266d7755848a703af733f90b58957f9097c1cc3dade9"
+      }
+    }
+  },
+  "checkpoint": {
+    "final_model.zip": {
+      "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_sac_short_20261106/final_model.zip",
+      "sha256": "db14e33f8685c7a71dae1030fac894a1ade609def5467cb87db05742bdbacf59"
+    },
+    "final_model.contract.json": {
+      "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_sac_short_20261106/final_model.contract.json",
+      "sha256": "5c5d555f7198319451146499447c0b740f71464f0c8793c1027d294d2c8daffc"
+    },
+    "final_model.replay.pkl": {
+      "path": "/Users/alanlin/Desktop/drone_final_project1/mujoco_output/navigation_sac_short_20261106/final_model.replay.pkl",
+      "sha256": "dcfe086a2bda06c31d12cfbbe6e8401c1456a57f249793ee7b993509fae96185"
+    }
+  }
+}

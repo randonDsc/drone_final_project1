@@ -1,0 +1,62 @@
+{
+  "seed": 0,
+  "scene": {
+    "name": "warehouse",
+    "manifest": null
+  },
+  "task": {
+    "kind": "dijkstra",
+    "start": [
+      -2.299999952316284,
+      0.0,
+      0.12845000624656677
+    ],
+    "goal": [
+      -4.299999952316284,
+      20.0,
+      1.2
+    ],
+    "speed": 0.8,
+    "acceleration": 0.5,
+    "start_hold": 1,
+    "end_hold": 5,
+    "initial_position_range": [
+      0,
+      0,
+      0
+    ],
+    "initial_velocity_range": [
+      0,
+      0,
+      0
+    ],
+    "initial_angle_range_degrees": [
+      0,
+      0,
+      0
+    ],
+    "initial_angular_velocity_range": [
+      0,
+      0,
+      0
+    ]
+  },
+  "navigation": {
+    "resolution": 0.25,
+    "safety_margin": 0.15,
+    "max_grid_cells": 2000000,
+    "max_expanded_nodes": 1000000,
+    "bounds": null,
+    "reference_mode": "quintic_stops",
+    "corner_radius": 0.4,
+    "spacing": 0.05,
+    "vertical_speed": 0.5,
+    "lateral_acceleration": 0.5,
+    "max_position_error": 1.0,
+    "support_paths": [
+      "/World/Cube"
+    ],
+    "residual_after_launch": true
+  },
+  "max_seconds": 600
+}

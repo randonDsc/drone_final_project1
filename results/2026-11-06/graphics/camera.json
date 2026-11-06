@@ -1,0 +1,25 @@
+{
+  "camera": "drone_camera",
+  "width": 320,
+  "height": 240,
+  "fovy_degrees": 75.0,
+  "fx_px": 156.38704474094467,
+  "fy_px": 156.38704474094467,
+  "cx_px": 159.5,
+  "cy_px": 119.5,
+  "mount_position_body_m": [
+    0.2,
+    0.0,
+    0.06
+  ],
+  "mount_quaternion_wxyz": [
+    -0.5,
+    -0.5,
+    0.5,
+    0.5
+  ],
+  "depth": "MuJoCo metric optical-axis depth in metres, not Euclidean range",
+  "rgb": "uint8 sRGB renderer output; ideal simulated camera",
+  "clip_near_m": 0.01000000052154064,
+  "clip_far_m": 100.00000305175782
+}
