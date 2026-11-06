@@ -9800,8 +9800,631 @@ Read the Pegasus Simulator paper and explain its architecture, NVIDIA Isaac Sim 
 Discuss how its simulation framework could support drone flight experiments, environmental disturbances, and sensor-data collection.
 
 ## Colin Tran
+# AI Use Development Log — Isaac Lab Drone Simulation
 
-<!-- Add Colin Tran's AI-use prompts here. -->
+**Course:** DSC 180A  
+**Contributor:** Colin Tran  
+**Project:** Autonomous drone hovering, controller comparisons, and future disturbance-resistant reinforcement learning  
+**Period represented:** October–November 2026  
+**AI tools:** ChatGPT and Codex
+
+## How this log is organized
+
+This is an extended development journal using **original user wording whenever it is directly available**. Unlike a raw transcript, prompts are grouped into technical work sessions. Each session includes the development objective, what the assistant contributed, what was tested locally, and the status of that work. This keeps the actual questions visible while showing the student's experimental decisions and observed results.
+
+**Completeness and quotations:** This is a *selected, organized record*, not an exhaustive export of every ChatGPT session. Several early conversations are available only as partial extracts or summaries; entries that rely on summaries are explicitly identified and are not represented as verbatim. Console output is labeled as such rather than presented as a prompt. Exact individual timestamps are unavailable in the Codex export, so its entries use the November 4–6 date window. Original spelling and capitalization are retained for true quotations. Full source exports should accompany this log if the instructor requires **every** prompt.
+
+---
+
+## 01. October 4, 2026 — Getting familiar with reinforcement learning
+
+**Tool:** ChatGPT  
+**Development objective:** Interpret the first Stable-Baselines3 PPO experiments before moving to Isaac Lab.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> diff between timesteps and n_updates?
+
+**Original user prompt:**
+
+> need to write some observations
+
+**Original user prompt:**
+
+> what are the diff parts -- rollout, train time
+
+
+**Original user prompt:**
+
+> wait so why did we increase it from 100k to one million steps can you explain the differences?
+
+**Original user prompt:**
+
+> how do i say that the movement mimicked or looked more like a cheetah with more timesteps
+
+**Original user prompt:**
+
+> any other possible observations that I can take into account
+
+**Original user prompt:**
+
+> can you explain how it works more in depth
+
+**Original user prompt:**
+
+> what are the other policies i can use for this program
+
+**AI assistance:** Explained rollout and optimization metrics, training timesteps and policy behavior, and how to interpret changes from a shorter to a longer PPO run.
+
+**Testing and outcome:** Ran HalfCheetah-v5 with approximately 100k and later one million training timesteps. Used training statistics and playback to compare behavior; this was preliminary RL practice, not evidence of successful drone flight.
+
+**Associated code/files:** Stable-Baselines3 training/playback scripts (separate from the later Isaac Lab hover tests).
+
+<small>Source basis: ChatGPT conversation excerpts from earlier reinforcement-learning practice.</small>
+
+---
+
+## 02. October 5–7, 2026 — Installing the simulator on Windows
+
+**Tool:** ChatGPT  
+**Development objective:** Get Isaac Sim/Isaac Lab running despite WSL and extraction issues.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> I'm getting an error where it is saying permission is denied? Do I have to run this program in admin mode?
+
+
+**Original user prompt:**
+
+> on different wifi network but says waiting for headers
+
+
+**Original user prompt:**
+
+> what is the chmod for
+
+**Original user prompt:**
+
+> how big should the zip be
+
+**Original user prompt:**
+
+> how do i check what version of linux i have in wsl
+
+**Original user prompt:**
+
+> what does the inflating mean when unzipping
+
+
+**AI assistance:** Helped troubleshoot unsuccessful WSL installation attempts and transition to the native Windows installation.
+
+**Testing and outcome:** The WSL attempt ran into download, permissions and startup problems. Switched to Windows Isaac Sim and proceeded with Isaac Lab. Errors in the failed WSL path were not counted as completed tasks.
+
+**Associated code/files:** Windows Isaac Sim installation; local IsaacLab checkout.
+
+<small>Source basis: Earlier ChatGPT setup conversation excerpts.</small>
+
+---
+
+## 03. October 19–21, 2026 (approximate window) — Running and configuring Isaac Lab examples
+
+**Tool:** ChatGPT  
+**Development objective:** Understand the simulation workflow before applying it to a drone.
+
+### Relevant user messages
+
+**Prior-history phrase (not verified verbatim):**
+
+> what is the command to start isaacsim again?
+
+**Prior-history phrase (not verified verbatim):**
+
+> what is the goal of cartpole?
+
+**Prior-history phrase (not verified verbatim):**
+
+> why 4 envs on screen?
+
+**Prior-history phrase (not verified verbatim):**
+
+> how to change max_iterations?
+
+**Prior-history phrase (not verified verbatim):**
+
+> RGB vs depth difference unclear.
+
+**AI assistance:** Walked through training and playback commands and the distinction between state-based control and camera-based observations.
+
+**Testing and outcome:** Trained the standard Cartpole successfully. Camera-based Cartpole variants were harder to train and displayed lower success rates; outputs were inspected to understand the difference.
+
+**Associated code/files:** Isaac Lab built-in Cartpole scripts and RSL-RL configurations.
+
+<small>Source basis: Prior ChatGPT project-history summaries; prompts in this block are remembered wording rather than independently verified verbatim transcripts.</small>
+
+---
+
+## 04. October 19–28, 2026 (approximate window) — Setting up a standalone drone project
+
+**Tool:** ChatGPT  
+**Development objective:** Move away from modifying only the bundled Isaac Lab examples.
+
+### Relevant user messages
+
+
+**Prior-history phrase (not verified verbatim):**
+
+> can i just create a seperate project for the drone?
+
+**Prior-history phrase (not verified verbatim):**
+
+> is this a script
+
+**Prior-history phrase (not verified verbatim):**
+
+> how could i describe this whole system i have --> simpler to better understand the underlying systems / scripts / file setups / etc
+
+**AI assistance:** Explained how an external Isaac Lab project can register custom Gymnasium tasks and keep configuration, scripts and models in a separate repository.
+
+**Testing and outcome:** Created `IsaacLab_Drone_Project`, registered `MyDrone-TrackPosition-v0` and later used its custom scripts to launch the drone. Confirmed use of `uv run --extra isaacsim` for its local environment.
+
+**Associated code/files:** `pyproject.toml`, `src/IsaacLab_Drone_Project/tasks/`, `scripts/drone_control.py`.
+
+<small>Source basis: Earlier conversation excerpts and project history; the standalone-project question is a descriptive reconstruction, not an exact quote.</small>
+
+---
+
+## 05. October 28, 2026 — Capturing and inspecting sensor data
+
+**Tool:** ChatGPT  
+**Development objective:** Check how the camera, depth sensor and IMU information could be used later in model development.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> can you give me the command to open the imu data and rgb front camera images
+
+**Original user prompt:**
+
+> is there a way to include the interal configuration // current state of the drone (ie velocity, current thrust being added, and other possibly important infomration)?
+
+**AI assistance:** Provided commands for opening recorded files and described how additional articulation state and thrust values can be captured.
+
+**Testing and outcome:** Obtained RGB images, depth `.npy` arrays and an IMU CSV. Later debug scripts logged velocity, position, tilt and propeller forces separately. Full sensor-to-policy integration was not demonstrated.
+
+**Associated code/files:** `src/IsaacLab_Drone_Project/sensor_recorder.py`, sensor output folders, inspection commands.
+
+<small>Source basis: Original prompts visible in the October 28 ChatGPT conversation.</small>
+
+---
+
+## 06. October 28–November 2, 2026 — Evaluating the initial PPO drone policy
+
+**Tool:** ChatGPT  
+**Development objective:** Understand whether the drone was learning flight control or just producing reward.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> is it normal for the drone to basically fall immediately within the first 100 iterations?
+
+**Original user prompt:**
+
+> can we see the last iteration of the 1000 (basically skip the in between and see results)? what is the command to see the result of training?
+
+**Later related Codex prompt (not from this date):**
+
+> what is with the reinforcement learning aspect? how is this incorporated with the baseline controllers?
+
+**AI assistance:** Explained rollout behavior and why reward, episode length and crash termination should all be checked.
+
+**Testing and outcome:** A preliminary direct-PPO run showed approximately 91.7% crash termination. The saved checkpoint was not considered a reliable hover model.
+
+**Associated code/files:** `checkpoints/drone_ppo.pt`, existing RSL-RL training logs.
+
+<small>Source basis: Original October 28 prompts and project-history context; the final line reflects a later Codex question and is not dated to this period.</small>
+
+---
+
+## 07. November 3–4, 2026 — Separating PPO failure from lift/actuator behavior
+
+**Tool:** ChatGPT  
+**Development objective:** Determine whether the drone failed because it had insufficient thrust or because no feedback controller was stabilizing it.
+
+### Relevant user messages
+
+
+**Original user prompt:**
+
+> My drone drops straight down without really moving or tilting.
+
+
+**Original user prompt:**
+
+> rises for a bit then crashes. is there any way to debug or see specific internal configs that might be causing it to not hover?
+
+**Original user prompt:**
+
+> hovers for less than a second then starts to move to crash
+
+
+**AI assistance:** Suggested running the drone with zero policy actions and comparing temporary thrust offsets. Described how constant motor commands differ from position-and-attitude feedback.
+
+**Testing and outcome:** Offset 3.0 produced a fall; 4.0 caused ascent then a crash; 3.5 briefly hovered but then drifted. Simplifying initial conditions did not materially fix the instability.
+
+**Associated code/files:** `position_tracking_env_cfg.py`, zero-agent diagnostic command.
+
+<small>Source basis: Original prompts recorded in the ChatGPT hover-debugging conversation.</small>
+
+---
+
+## 08. November 3–4, 2026 — Using the SAC hybrid-control paper to guide the project
+
+**Tool:** ChatGPT  
+**Development objective:** Decide whether a classical control baseline would simplify the RL problem.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> how can this paper relate to the work we are doing now and how can it helps us improve our hover stability model
+
+**Original user prompt:**
+
+> how can we incorporate ideas from this paper -- reinforcement learning -- into our current drone simulation to improve hovering stability and overall flight performance?
+
+**AI assistance:** Compared direct PPO motor control with residual RL, where a conventional controller supplies stabilizing thrust and an RL agent learns bounded corrections.
+
+**Testing and outcome:** The paper influenced the decision to establish a conventional hover baseline before attempting new residual policy training. The full hybrid SAC/PPO controller was not implemented at this stage.
+
+**Associated code/files:** Paper review notes, planned `controllers/` package.
+
+<small>Source basis: Original prompts from the ChatGPT paper discussion.</small>
+
+---
+
+## 09. November 4, 2026 — Measuring mass and creating an altitude controller
+
+**Tool:** ChatGPT  
+**Development objective:** Replace guessed thrust offsets with physically grounded values.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> how do we get the drone's mass and other measurements to see the required force / thrust?
+
+**Original console output (excerpt):**
+
+```text
+========== DRONE HOVER DATA ==========
+Total mass: 1.2400 kg
+Gravity: 9.81 m/s^2
+Required total thrust: 12.1644 N
+Estimated thrust per motor: 3.0411 N
+======================================
+```
+
+**Original user prompt:**
+
+> doesnt hover prefectly even with the adjustments to thrust
+
+**AI assistance:** Generated an inspection script and an altitude PD controller using position error and vertical speed.
+
+**Testing and outcome:** The simulator reported **1.24 kg** total mass and **3.0411 N per motor** theoretical steady-state hover thrust. The altitude-only controller corrected collective thrust but could not arrest roll/pitch and horizontal drift.
+
+**Associated code/files:** `scripts/inspect_hover.py`, `controllers/hover_controller.py`, `scripts/test_hover.py`.
+
+<small>Source basis: Original user messages and diagnostic output from the current ChatGPT conversation.</small>
+
+---
+
+## 10. November 4, 2026 — Inspecting tilt and motor thrust
+
+**Tool:** ChatGPT  
+**Development objective:** Find why the altitude-only controller keeps losing stability.
+
+### Relevant user messages
+
+**Original short clarification:**
+
+> here?
+
+**Original console output (excerpt):**
+
+```text
+Individual motor thrusts: [2.1058404445648193, 1.8375957012176514, 1.6977518796920776, 1.9811122417449951]
+```
+
+**Original console output (excerpt):**
+
+```text
+=== DRONE MOTOR CONFIGURATION ===
+Motor order: ['back_left_prop', 'back_right_prop', 'front_left_prop', 'front_right_prop']
+```
+
+**AI assistance:** Added diagnostic instructions for logging all four applied motor thrust values, orientation tilt and the ARL motor allocation matrix.
+
+**Testing and outcome:** Found that motor thrusts were nearly equal after startup while the drone still tilted dramatically, in one run approaching **177°**. Confirmed the four-motor order and mapping to collective thrust and torques.
+
+**Associated code/files:** `scripts/test_hover.py`.
+
+<small>Source basis: Original short user messages and excerpts of longer pasted diagnostic logs; the pasted log excerpts are not reformulated as questions.</small>
+
+---
+
+## 11. November 4, 2026 — First full position-and-attitude controller test
+
+**Tool:** ChatGPT  
+**Development objective:** Test a Lee controller rather than sending equal thrust to all four motors.
+
+### Relevant user messages
+
+**Original console output (excerpt):**
+
+```text
+=== LEE HOVER TEST ===
+Target: [0.0, 0.0, 1.5, 0.0]
+```
+
+**Original user prompt:**
+
+> “Create a handoff for Codex covering the project goal, current progress, decisions, files/code, known errors, and next steps.”
+
+**AI assistance:** Suggested `LeePosController` with four motor commands derived from its wrench via the allocation matrix; generated a Codex handoff.
+
+**Testing and outcome:** The first Lee test reduced horizontal drift and tilt relative to altitude-only PD, but altitude dropped far below the 1.5 m target and some motor commands clipped at **0** or **6 N**. Prepared a handoff before continuing in Codex.
+
+**Associated code/files:** `scripts/test_lee_hover.py`, Codex handoff.
+
+<small>Source basis: Original user outputs and handoff request; simulator-output text is not a standalone AI question.</small>
+
+---
+
+## 12. November 4–6, 2026 (exact Codex prompt times unavailable) — Reviewing the existing code and benchmarking control rates
+
+**Tool:** Codex  
+**Development objective:** Continue the Lee experiment directly in the local repository.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> where do i go from here? what are some of the next steps i can take to involving our overall project goal (wind gusts and other environmental distrubances)
+
+**Original user prompt:**
+
+> ok great now whenever changes are made can you add a bit of an explanation as well as methodology on how to reproduce or see the results on my own (in my terminal or wherever)?
+
+**AI assistance:** Inspected local Isaac Lab and Isaac Lab Contrib source, added structured JSONL logging, fixed a Hydra parsing conflict, and benchmarked control frequencies.
+
+**Testing and outcome:** In matched five-second tests, 10 Hz produced minimum altitude **0.253 m**, peak tilt **29.4°**, and **28%** clipped commands. At 50 Hz, minimum altitude improved to **1.123 m**, peak tilt was **2.95°**, and clipping was **0%**.
+
+**Associated code/files:** `scripts/test_lee_hover.py`, `scripts/summarize_lee_hover.py`, `outputs/lee_hover_findings.md`.
+
+<small>Source basis: Verbatim user prompts in exported Codex conversation.</small>
+
+---
+
+## 14. November 4–6, 2026 (exact Codex prompt times unavailable) — Preparing a personal GitHub repository
+
+**Tool:** Codex  
+**Development objective:** Publish the independently developed simulator so group members can review it.
+
+### Relevant user messages
+
+**Original prompt excerpt:**
+
+> how can i compile this to a github repository now so it is easily accessible 
+
+**Original prompt excerpt:**
+
+> this is a new one just for my code --> but eventually we do want to combine the different repos we all have so that it is better to combine our parallel work into one giant repo
+
+**AI assistance:** Explained branch and repository workflows and helped troubleshoot a `git push` performed before configuring the `origin` remote.
+
+**Testing and outcome:** Created an initial Git commit for the project. The first remote push failed, and Codex provided the corrected remote/push procedure. Later a separate group checkpoint branch was completed.
+
+**Associated code/files:** Git repository, README, source and test scripts.
+
+<small>Source basis: Verbatim Codex user prompts; first quote is the opening line of a longer multipart request.</small>
+
+---
+
+## 15. November 4–6, 2026 (exact Codex prompt times unavailable) — Designing fair non-RL baseline comparisons
+
+**Tool:** Codex  
+**Development objective:** Add a second stabilizing controller before introducing wind or training residual RL.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> ok so far we have this model that we've used on it is there another baseline we could add (for example not having a reinforcement leanring training algorithm and instead depending on other baseline alogirthms?
+
+**Original user prompt:**
+
+> i want to have multiple things we can compare this with so what are some other potential baselines
+
+**Original user prompt:**
+
+> -- also eventually we want to incorporate wind and other environmental conditions (not just stable hovering, stable hovering with wind conditions added)
+
+**Original user prompt:**
+
+> for now can we just add this other pid controller model
+
+**AI assistance:** Proposed conventional cascaded PID alongside Lee and shared evaluation metrics; kept residual PPO/SAC as a future controlled comparison.
+
+**Testing and outcome:** Implemented and unit-tested a cascaded PID baseline. Initial PID offset tracking exposed a coordinate/quaternion issue that was corrected before reliable matched runs.
+
+**Associated code/files:** `controllers/cascaded_pid.py`, `tests/test_cascaded_pid.py`, `scripts/test_lee_hover.py`.
+
+<small>Source basis: Original prompts from Codex export.</small>
+
+
+---
+
+## 17. November 4–6, 2026 (exact Codex prompt times unavailable) — Correcting orientation and comparing Lee against PID
+
+**Tool:** Codex  
+**Development objective:** Determine whether differing controller performance came from control design or incorrect state conversion.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> after every change can you give me a rundown what happened -- as well as changes made and a commit messaage i can attach to any git puhses/commits
+
+**Original user prompt:**
+
+> always add a summary to what we did first so that I know where we are --> then when i need to git commit / puhs something give me a small commit message so my repo understands also what bascialyl happened at a higher level
+
+**AI assistance:** Corrected quaternion handling to the XYZW convention of the installed library, then logged matched controller results and added change summaries.
+
+**Testing and outcome:** For an initial five-second target offset, **PID** recorded 8.45 cm position RMSE and 3.31° maximum tilt; **Lee** recorded 8.69 cm and 2.21°. Both had zero clipping. One test condition is insufficient to rank the controllers generally.
+
+**Associated code/files:** `scripts/test_lee_hover.py`, `controllers/cascaded_pid.py`, reproduction notes.
+
+<small>Source basis: Verbatim Codex user prompts.</small>
+
+---
+
+## 18. November 4–6, 2026 (exact Codex prompt times unavailable) — Deciding where reinforcement learning fits
+
+**Tool:** Codex  
+**Development objective:** Prevent the new baselines from being mistaken for a fully trained RL solution.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> what is with the reinforcement leanring aspect --> it looks like we aren't training anymore it is just two baselines (PID and Lee) ?
+
+**Original user prompt:**
+
+> wait so can you give me a next steps portion to explain what might happen
+
+**AI assistance:** Clarified the difference between tested classical baselines and the unimplemented residual RL approach, and planned training-safe resets and bounded corrective actions.
+
+**Testing and outcome:** No new residual PPO policy was trained during baseline validation. Direct PPO remained an earlier unsuccessful preliminary checkpoint.
+
+**Associated code/files:** RL project planning notes and existing PPO checkpoint.
+
+<small>Source basis: Original Codex prompts.</small>
+
+---
+
+## 19. November 4–6, 2026 (exact Codex prompt times unavailable) — Running repeated calm-flight validation
+
+**Tool:** Codex  
+**Development objective:** Determine whether performance generalized beyond a single ideal five-second hover.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> ok lets validate it more now
+
+**AI assistance:** Implemented a seeded validation suite covering Lee and PID, level hover, initial position error, and combined position/attitude/velocity errors. Fixed test-harness behavior when identical initial states were not being reconstructed.
+
+**Testing and outcome:** All **18 of 18** calm-flight episodes passed over three seeds, three scenarios and two controllers (20 seconds each). Tests used ideal simulator state and a hover-start override. This does **not** demonstrate wind robustness or stable normal takeoff.
+
+**Associated code/files:** `scripts/validate_hover.py`, `tests/test_hover_validation.py`, validation results.
+
+<small>Source basis: Verbatim Codex prompt.</small>
+
+---
+
+## 20. November 4–6, 2026 (exact Codex prompt times unavailable) — Preparing the group checkpoint
+
+**Tool:** Codex  
+**Development objective:** Show independent, reviewable progress without overwriting teammates’ work.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> after this i want to compile all my code and push it to the group repo in another branch -- is that a good idea? -- for now it is to prove that basically i have been working on some code on my end (for a checkpoint submission) even though our code together neccessarily isnt the same
+
+**Original user prompt:**
+
+> can you also simplify the codebase i have now so it is just a bit easier to digest and undestand what everything does? (i mean in terms of when we push make it easier to understand generally)
+
+**Original user prompt:**
+
+> can you just edit the readme to have a very simply outline of what we've done -- at a very high level and basic so its very easy to digest and understand
+
+**AI assistance:** Prepared a checkpoint branch with the simulation code, tests, compact results, and a readable README. After review, removed extra Markdown guides from the branch. The last request for further README simplification hit a Codex usage limit.
+
+**Testing and outcome:** The Codex transcript reports a push to `colin-drone-simulator-isaac-lab` and a later documentation cleanup commit. The group contribution was a checkpoint, not a claim that the two drone systems had already been merged.
+
+**Associated code/files:** Group repository branch `colin-drone-simulator-isaac-lab`, `README.md`, validation JSON.
+
+<small>Source basis: Original Codex user prompts.</small>
+
+---
+
+## 21. November 6, 2026 — Documenting AI involvement for the checkpoint
+
+**Tool:** ChatGPT  
+**Development objective:** Prepare an honest AI-use report with prompts, code contributions and independently observed results.
+
+### Relevant user messages
+
+**Original user prompt:**
+
+> can you give a sort of prompt list formatted in a certain way to see over time the changes we made alongside AI usage?
+
+**Original user prompt:**
+
+> can you alsof or tsome of them include the outputs?
+
+
+**Original user prompt:**
+
+> it needs to be longer i think -- include even more prompts bnecause i had a lot of prompts
+
+**AI assistance:** Helped organize the original prompt history and Codex export into a source-labeled development record that distinguishes direct quotations from summaries.
+
+**Testing and outcome:** The AI_USE documentation was prepared as a Markdown artifact; this documentation step did not change or validate drone-controller code.
+
+**Associated code/files:** `AI_USE.md` draft and the exported Codex transcript.
+
+<small>Source basis: Original prompts from current ChatGPT conversation.</small>
+
+---
+
+## Overall project progress represented by these records
+
+| Stage | What was actually achieved | What was not established |
+|---|---|---|
+| RL preparation | PPO practice and preliminary direct-PPO drone training | Reliable direct-PPO hover |
+| Sensor exploration | Example RGB, depth and IMU captures | End-to-end sensor-driven controller evaluation |
+| Physical debugging | Measured mass, applied thrust, motor order, allocation matrix | Automatic motor startup was not initially reliable |
+| Conventional control | Altitude PD prototype; then Lee and cascaded PID baselines | Full wind or hardware performance |
+| Baseline testing | Matched 10/50 Hz checks and 18/18 calm-flight 20-second validation episodes | Residual-RL superiority or robustness on unseen wind |
+| Collaboration | Separate controller contribution pushed to a group GitHub branch | Fully merged group simulator |
+
+## Human and AI contributions
+
+ChatGPT supported conceptual understanding, candidate code, debugging procedures, literature discussion and interpretation of logs. Codex additionally examined the local repository, edited source files, executed available tests and simulator comparisons, corrected implementation issues and helped prepare a checkpoint contribution. Those code and testing contributions are identified in the session entries instead of being attributed entirely to the student.
+
+The student defined the research direction and comparison questions, ran or commissioned the experiments in the local environment, supplied error logs and observed behavior, chose which results were useful, and determined which code to retain or share. Observed simulator results are not interchangeable with deployment validation.
+
+## Evidence and limits
+
+- Original ChatGPT messages quoted above come from the accessible chat history and supplied historical excerpts; early sessions with only summaries are marked.
+- Codex text is based on the uploaded `Pasted text(20261106-214419).txt`; the second Nov. 6 upload was a duplicate.
+- The November 4–6 Codex section preserves sequence but cannot assign an individual date to each user prompt from the export alone.
+- Some submissions and tests described in the source are checkpoints only; no claim is made that a residual PPO/SAC policy was trained in the validated Lee/PID runs.
+- This document deliberately omits acknowledgments like “ok” from the bulk of the main record **but does not claim those messages never occurred**. If the instructor literally requires all prompts, attach unedited exports separately.
+
 
 ## Claire (please replace with official name you use in class)
 
