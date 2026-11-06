@@ -9807,6 +9807,137 @@ Discuss how its simulation framework could support drone flight experiments, env
 
 <!-- Add AI-use prompts here. -->
 
-## Nate (please replace with official name you use in class)
+## Haoshuo Bi
 
-<!-- Add AI-use prompts here. -->
+## 1. Isaac Lab Setup
+
+**Prompt 1 — Understanding Isaac Lab**
+
+"What is Isaac Lab, and why do we need it for our drone project? Explain how Isaac Lab, Isaac Sim, and reinforcement learning are related."
+
+**Prompt 2 — Installation and Troubleshooting**
+
+"Help me install and configure Isaac Lab on Windows. How can I check whether it works correctly? I am getting errors when launching Isaac Lab. Help me find the problem."
+
+**How AI Helped:**
+
+ChatGPT explained the simulation environment, provided installation guidance, and helped troubleshoot Python environment conflicts and startup errors.
+
+**My Contribution:**
+
+I installed and configured Isaac Lab on Windows, ran example simulations, checked the terminal output, and verified that the environment worked.
+
+## 2. Drone Sensors and Data Collection
+
+**Prompt 3 — Adding an IMU Sensor**
+
+"I have a working ARL Robot 1 simulation using the Lee Position Controller. How can I add an IMU sensor and collect acceleration and angular velocity data?"
+
+**Prompt 4 — Saving Sensor Data**
+
+"Help me save RGB camera images, depth data, LiDAR measurements, and IMU readings every 100 frames. I also want to organize the output files for later analysis."
+
+**How AI Helped:**
+
+ChatGPT explained the different sensors and suggested Python code changes for collecting and saving sensor data.
+
+**My Contribution:**
+
+I modified the Python scripts, ran the simulations, checked the saved images and NumPy files, and verified that the sensor data was recorded.
+
+## 3. Wind Disturbance Experiment
+
+**Prompt 5 — Applying External Forces**
+
+"How can I simulate wind by applying a horizontal external force to my drone in Isaac Lab? I want to see how it affects the drone's position and stability."
+
+**Prompt 6 — Fixing Wind Simulation Errors**
+
+"I am getting an error when applying external forces to the drone. Help me understand the error and fix the code."
+
+**Prompt 7 — Comparing Wind Conditions**
+
+"I want to compare the drone's behavior under 0 N and 0.1 N horizontal forces. Help me record the positions and analyze the differences."
+
+**How AI Helped:**
+
+ChatGPT suggested ways to apply external forces, helped troubleshoot tensor dimension errors, and explained how to compare results under different force conditions.
+
+**My Contribution:**
+
+I ran the experiments using 0 N and 0.1 N external forces, collected position data, and compared the results. I observed that the horizontal force caused a small position change while the drone maintained approximately the same height.
+
+## 4. Normal Navigation
+
+**Prompt 8 — Point-to-Point Navigation**
+
+"My drone can hover at a height of 1 meter. How can I make it fly from point A to point B using the Lee Position Controller?"
+
+**Prompt 9 — Smooth Navigation**
+
+"I want the drone to move smoothly toward the target instead of changing its target position immediately. Help me modify the Python code to create a smooth flight trajectory."
+
+**Prompt 10 — Increasing Navigation Distance**
+
+"My drone successfully reached a target 2 meters away. Can we increase the distance to 10 meters and 50 meters? Help me modify the settings and check whether the drone reaches the destination."
+
+**Prompt 11 — Adjusting Navigation Speed**
+
+"The drone is moving too slowly during the 50-meter navigation test. Can we increase the speed? Explain how to adjust the navigation duration and how this might affect flight stability."
+
+**How AI Helped:**
+
+ChatGPT suggested smooth interpolation for the target position, explained the navigation parameters, and helped interpret the drone's position and velocity data.
+
+**My Contribution:**
+
+I modified and ran the navigation script and tested distances of 2 meters, 10 meters, and 50 meters. I checked the final position and velocity values to verify that the drone reached the target and became nearly stationary.
+
+## 5. CSV Data Logging
+
+**Prompt 12 — Recording Navigation Data**
+
+"How can I automatically save the drone's target position, actual position, and velocity into a CSV file during navigation? I want to record the data every 100 simulation steps."
+
+**Prompt 13 — Optional Save Function**
+
+"I do not want the program to save data every time I run it. Can we add a --save parameter so that I can choose whether to save the experiment results?"
+
+**Prompt 14 — Checking Saved Data**
+
+"I ran the navigation simulation using --save and opened the CSV file in Excel. Help me check whether the recorded time, target position, actual position, and velocity values are correct."
+
+**How AI Helped:**
+
+ChatGPT suggested Python CSV logging code, helped check code indentation, and explained how to add an optional `--save` argument. It also helped interpret the saved navigation data.
+
+**My Contribution:**
+
+I added the logging code, ran the simulation with `--save`, opened the CSV file in Excel, and checked the recorded values. I also compared the target position with the actual position to understand tracking errors during flight.
+
+## 6. Verification and Limitations
+
+**Prompt 15 — Verifying the Results**
+
+"How can I tell whether my drone navigation experiment was successful? Help me understand the position and velocity outputs and check whether the drone reached its target."
+
+**Prompt 16 — Understanding the Limitations**
+
+"My drone successfully completed the navigation tests, but the simulation environment is simple. What can these results prove, and what are the limitations of the current experiments?"
+
+**How AI Helped:**
+
+ChatGPT helped explain the simulation results, identify tracking errors, and distinguish successful point-to-point navigation from more advanced autonomous navigation.
+
+**My Contribution:**
+
+I tested the suggested code in Isaac Lab, checked the terminal outputs, and verified the saved data. The navigation experiments reached their target positions, but the current environment does not include obstacle avoidance or complex path planning.
+
+The wind experiment also used a constant external force rather than a complete aerodynamic wind model. These results provide a starting point for future experiments involving environmental disturbances and more advanced drone control.
+
+## AI and Human Contribution Summary
+
+ChatGPT was used as a learning and coding assistant throughout the project. It helped me understand technical concepts, troubleshoot errors, modify Python scripts, and interpret experimental data.
+
+I was responsible for setting up the simulation environment, editing and running the code, testing the drone, collecting data, and verifying the results. I reviewed the suggested changes and tested them in the simulation instead of assuming they would work correctly.
+
