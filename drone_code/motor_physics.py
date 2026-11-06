@@ -98,7 +98,7 @@ def main(log_file):
 
     target = sim.base_target()
 
-    # Absolute world Z, not height above the initial pose.
+    # Absolute world Z
     target["height"] = 1.2
 
     # Final world XY, relative to the initial USD pose:
