@@ -272,16 +272,5 @@ P40 — November 6 — Compile prompt log — EXACT
 |Research / writing    |Requested paper explanations, assignment feedback, grammar edits, and checkpoint assessment|Identify any AI-authored sentences adopted, cite original research papers independently                 |
 |Team integration      |Separate teammate branches and simulators were inspected/discussed                         |Each teammate’s own AI prompts, generated code, edits and tests                                         |
 
-For each AI-generated code change, complete this record
-
-Date:
-Relevant original prompt ID(s):
-Chat/transcript URL or export reference:
-File / function changed:
-What AI suggested or generated:
-What the human changed or rejected:
-How the final code was run/tested:
-Actual outcome, logs, and remaining limitations:
-
 
 
