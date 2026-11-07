@@ -534,7 +534,7 @@ AI contribution: I used ChatGPT to first understand how to install Isaac Sim on 
 Human Contribution: Given the outline of the coding structure, I experimented with the simulation and looked at the resulting outputs, debugging sensor readings (camera orientations), testing motor failures during certain simulated runs, and implementing different values to test wind conditions to see how results vary.
 
 ### Claire Tu
-
+I used AI in helping set up issac sim, giving me a overall quick implementaion methods for different theories. I used AI To assist me on coding which includes de-bugging, adding features to a section and explaining how they work. I also used AI to research about the topic and further understand the key ideas that will be useful in future research and deepen current understanding.
 ### Po-Chen Lin
 AI contribution: I use ChatGPT to learn to install Isaac Sim and Isaac lab, learn about reinforcemnet learning, learn the physics, explain the approach of the paper we want to copy, and explain the raw data of the sensors. I also used it to discuss the possible approach to actually implement things like wind and navigation algorithm. Then, from the method I discussed with ChatGPT, I used Claude to do the actual implementation. 
 
