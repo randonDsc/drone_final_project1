@@ -524,7 +524,7 @@ AI contribution: I used ChatGPT to help understand Isaac Lab, troubleshoot simul
 Human Contribution:
 I installed and configured Isaac Lab on Windows, modified and tested the drone simulation scripts, collected RGB, Depth, LiDAR, and IMU data, and compared drone behavior under 0 N and 0.1 N external forces. I also tested 2 m, 10 m, and 100 m navigation and verified the results using terminal outputs and CSV files.
 ### Colin Tran
-
+I used ChatGPT and Codex to assist with understanding Isaac Lab, troubleshooting simulation errors, and developing drone control algorithms. AI also helped me explore different approaches, interpret training results, and improve hovering stability through interactive testing and evaluation.
 ### Cheng-I Lin
 AI contribution: I used ChatGPT to first understand how to install Isaac Sim on my MacBook, which is not possible since I need Linux to run the simulation platform. Therefore, I switched to the MacBook friendly platform MuJoCo, which is another physics based simulator. Using AI, I learned how to navigate through the codes of certain example GitHub repositories to create testing experiments of drone flights, such as generating wind forces, incorporating camera, and capturing sensory data. 
 
