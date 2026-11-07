@@ -10417,14 +10417,6 @@ ChatGPT supported conceptual understanding, candidate code, debugging procedures
 
 The student defined the research direction and comparison questions, ran or commissioned the experiments in the local environment, supplied error logs and observed behavior, chose which results were useful, and determined which code to retain or share. Observed simulator results are not interchangeable with deployment validation.
 
-## Evidence and limits
-
-- Original ChatGPT messages quoted above come from the accessible chat history and supplied historical excerpts; early sessions with only summaries are marked.
-- Codex text is based on the uploaded `Pasted text(20261106-214419).txt`; the second Nov. 6 upload was a duplicate.
-- The November 4–6 Codex section preserves sequence but cannot assign an individual date to each user prompt from the export alone.
-- Some submissions and tests described in the source are checkpoints only; no claim is made that a residual PPO/SAC policy was trained in the validated Lee/PID runs.
-- This document deliberately omits acknowledgments like “ok” from the bulk of the main record **but does not claim those messages never occurred**. If the instructor literally requires all prompts, attach unedited exports separately.
-
 
 ## Claire (please replace with official name you use in class)
 
