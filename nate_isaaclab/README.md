@@ -4,9 +4,9 @@
 
 ## Overview
 
-This project contains my drone simulation experiments using Isaac Lab, ARL Robot 1, and the Lee Position Controller.
+My main goal is to test basic drone hovering and navigation, collect sensor data, and study how external disturbances affect flight performance.
 
-My main goal was to test basic hovering, collect sensor data, and study how a constant horizontal external force affects the drone's position.
+The experiments include sensor integration, constant-force disturbance testing, and point-to-point navigation using the Lee Position Controller.
 
 ## Completed Work
 
@@ -27,6 +27,20 @@ My main goal was to test basic hovering, collect sensor data, and study how a co
 - Recorded drone position at Frames 100, 200, 300, and 400.
 - Saved the results as CSV files.
 
+### 4. Normal Navigation
+- Implemented point-to-point navigation using the Lee Position Controller.
+- Tested navigation distances of 2 m, 10 m, and 50 m.
+- Used smooth interpolation to gradually change the target position.
+- Maintained a target altitude of 1 m during navigation.
+- Verified the final positions and velocities through simulation output.
+
+### 5. Navigation CSV Data Logging
+- Added CSV logging to record simulation time, target position, actual position, and velocity.
+- Recorded data every 100 simulation steps.
+- Added an optional `--save` argument to enable data logging only when needed.
+- Opened and checked the saved CSV file in Excel.
+- Compared the target and actual positions to observe tracking error.
+
 ## Code Files
 
 | File | Description |
@@ -35,6 +49,7 @@ My main goal was to test basic hovering, collect sensor data, and study how a co
 | `arl_robot_1_camera.py` | RGB, Depth, and LiDAR integration |
 | `arl_robot_1_imu.py` | IMU integration and multi-frame sensor data collection |
 | `arl_robot_1_wind.py` | Constant-force disturbance experiment with CSV logging |
+| `arl_robot_1_navigation.py` | Point-to-point navigation with smooth trajectory and optional CSV logging |
 
 ## Experiment Results
 
@@ -46,11 +61,24 @@ The drone's height stayed close to the 1 m target in both conditions.
 
 These are preliminary results from two runs, not a statistical evaluation across repeated trials.
 
+### Navigation Results
+
+The drone successfully reached target positions of 2 m, 10 m, and 50 m along the X direction while maintaining an altitude close to 1 m.
+
+In the 50 m experiment, the final X position was approximately 50.00002 m, showing a very small final position error.
+
+During navigation, the actual position sometimes lagged behind the moving target. This tracking error can be analyzed using the saved CSV data.
+
+The uploaded `navigation_50m.csv` contains a partial flight record from a test run rather than a complete 50 m trajectory.
+
+These experiments were performed in a simple environment without obstacles or wind disturbances during navigation.
+
 ## Project Structure
 
 - `code/` — Python experiment files
 - `result/sensor_samples/` — Sample RGB, Depth, LiDAR, and IMU data
 - `result/wind_experiment/` — CSV results for 0 N and 0.1 N
+- `result/navigation_50m.csv` — Partial 50 m navigation data
 - `docs/` — Additional documentation
 
 ## Environment and Notes
@@ -65,8 +93,9 @@ The disturbance is modeled as a constant horizontal force, not a full aerodynami
 
 ## Next Steps
 
-1. Implement normal navigation between two positions.
-2. Test navigation with and without external disturbances.
-3. Collect sensor and position data during navigation.
-4. Evaluate position error, trajectory deviation, and flight stability.
-5. Study SAC and reward functions for future reinforcement learning experiments.
+1. Test longer navigation distances, including 100 m.
+2. Combine normal navigation with external wind disturbances.
+3. Collect position, velocity, and sensor data during navigation.
+4. Compare navigation performance with and without disturbances.
+5. Evaluate tracking error, trajectory deviation, and flight stability.
+6. Study SAC and reward functions for future reinforcement learning experiments.
