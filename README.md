@@ -6,6 +6,9 @@ Po-Chen Lin, Cheng-I Lin, Colin Tran, Haoshuo Bi, and Claire(Please Replace your
 
 Since our project involves sensors and Isaac Sim and drones that majority of us never encounter before, in the first couple weeks, we each work individually and parallelly so all of us can stand on the same page regarding how everything actually works and learn the workflow of Isaac Sim and . Not until recently we integrate the whole project into a full pipeline of training and evaluation. As a result, the other 4 branches in the repository are the codebase for team members' approach in the last couple weeks. Thus, the contribution according to Github is not accurate.
 
+### Link to the full repository for all the branches:
+https://github.com/randonDsc/drone_final_project1
+
 ## 1. Overview
 
 A quadrotor flown by a classic cascaded **PID controller** drifts and overshoots in gusting wind. We keep the PID
