@@ -2,6 +2,9 @@
 
 Po-Chen Lin, Cheng-I Lin, Colin Tran, Haoshuo Bi, and Claire(Please Replace your name)· UCSD DSC 180A Capstone · Advised by Tauhidur Rahman
 
+## Notes for reading the github repo:
+
+Since our project involves sensors and Isaac Sim and drones that majority of us never encounter before, in the first couple weeks, we each work individually and parallelly so all of us can stand on the same page regarding how everything actually works and learn the workflow of Isaac Sim and . Not until recently we integrate the whole project into a full pipeline of training and evaluation. As a result, the other 4 branches in the repository are the codebase for team members' approach in the last couple weeks. Thus, the contribution according to Github is not accurate.
 
 ## 1. Overview
 
@@ -517,17 +520,22 @@ These are the most important parameters. Every file comments every value.
 
 ### Haoshuo Bi
 I used ChatGPT to help understand Isaac Lab, troubleshoot simulation errors, and modify Python scripts for drone sensors, wind disturbances, navigation, and CSV data logging. ChatGPT also helped me understand the simulation results and organize the experimental data.
+
 Human Contribution:
 I installed and configured Isaac Lab on Windows, modified and tested the drone simulation scripts, collected RGB, Depth, LiDAR, and IMU data, and compared drone behavior under 0 N and 0.1 N external forces. I also tested 2 m, 10 m, and 100 m navigation and verified the results using terminal outputs and CSV files.
 ### Colin Tran
-The full log of AI-assisted prompts is in [`AI_USE.md`](AI_USE.md).
+
 ### Cheng-I Lin
 
-### Claire 
+### Claire(to name u use in class)
 
 ### Po-Chen Lin
+AI contribution: I use ChatGPT to learn to install Isaac Sim and Isaac lab, learn about reinforcemnet learning, learn the physics, explain the approach of the paper we want to copy, and explain the raw data of the sensors. I also used it to discuss the possible approach to actually implement things like wind and navigation algorithm. Then, from the method I discussed with ChatGPT, I used Claude to do the actual implementation. 
+
+Human Contribution: Giving the idea such as implementation of wind, alternate reward function, reduce the size of lidar data and other sensor data, construct the tested scene for Isaac sim, tested the result, debugged the code, and verify whether the approach is applicable with ChatGPT.
 
 
+The full log of AI-assisted prompts of everyone is in [`AI_USE.md`](AI_USE.md).
 ---
 
 ## 11. License
