@@ -1,0 +1,54 @@
+@inproceedings{jacinto2024pegasus,
+  title     = {{Pegasus Simulator}: An {Isaac Sim} Framework for Multiple Aerial Vehicles Simulation},
+  author    = {Jacinto, Marcelo and
+               Pinto, Jo{\~a}o and
+               Patrikar, Jay and
+               Keller, John and
+               Cunha, Rita and
+               Scherer, Sebastian and
+               Pascoal, Ant{\'o}nio},
+  booktitle = {2024 International Conference on Unmanned Aircraft Systems (ICUAS)},
+  month     = apr,
+  year      = {2024},
+  publisher = {IEEE},
+  url       = {https://doi.org/10.1109/ICUAS60882.2024.10556959},
+  doi       = {10.1109/ICUAS60882.2024.10556959},
+  pages     = {917--922},
+  abstract  = {Developing and testing novel control and motion planning algorithms for aerial vehicles can be a challenging task, with the robotics community relying more than ever on 3D simulation technologies to evaluate the performance of new algorithms in a variety of conditions and environments. In this work, we introduce the Pegasus Simulator, a modular framework implemented as an NVIDIA Isaac Sim extension that enables real-time simulation of multiple multirotor vehicles in photo-realistic environments, while providing out-of-the-box integration with the widely adopted PX4-Autopilot and ROS2 through its modular implementation and intuitive graphical user interface. To demonstrate some of its capabilities, a nonlinear controller was implemented and simulation results for two drones performing aggressive flight maneuvers are presented. Code and documentation for this framework are also provided as supplementary material.}
+}
+
+@inproceedings{heo2026sac,
+  title     = {{SAC}-Assisted Hybrid Control for Quadrotor Path Following under Wind Disturbances},
+  author    = {Heo, D.-H. and
+               Kwon, U.-S. and
+               Nam, S.-B. and
+               Jie, M.-S. and
+               Choi, W.-H.},
+  booktitle = {2026 5th International Symposium on Aerospace Engineering and Systems (ISAES)},
+  month     = jul,
+  year      = {2026},
+  publisher = {IEEE},
+  url       = {https://doi.org/10.1109/ISAES70982.2026.11669113},
+  doi       = {10.1109/ISAES70982.2026.11669113},
+  pages     = {225--230},
+  abstract  = {Quadrotor path-following performance can be degraded by wind disturbances, especially when a fixed-gain baseline controller cannot sufficiently compensate for residual tracking errors. This paper proposes a hybrid residual control scheme that augments a conventional P-PD-based quadrotor controller with a Soft Actor-Critic (SAC)-based auxiliary thrust controller. The baseline controller provides the nominal stabilizing action, while the SAC agent generates bounded auxiliary thrust commands at the rotor thrust level. A Huber-loss-based reward function is designed using position, velocity, attitude, and angular-rate error terms to train the residual policy under wind disturbance conditions. The proposed controller was evaluated in four simulation scenarios, including hovering, line-segment tracking, circular path following, and figure-eight path following. Under the main OU-type stochastic wind disturbance condition, the SAC-assisted controller reduced the three-dimensional position RMSE by 31.82%, 13.15%, 11.75%, and 26.29% in the four scenarios, respectively, compared with the baseline controller without reinforcement learning assistance. Compared with DDPG- and TD3-assisted controllers, SAC showed the most consistent improvement among the tested RL-based auxiliary controllers. Additional evaluations under multi-harmonic sinusoidal wind disturbance, reward-weight variations, thrust saturation constraints, and inference-time measurement further supported the robustness and feasibility of the proposed residual control structure. These results indicate that SAC-based residual reinforcement learning can improve quadrotor path-following performance under wind disturbances while preserving the stabilizing role of the conventional baseline controller.}
+}
+
+@misc{ishihara2023wind,
+  title     = {Improving Wind Resistance Performance of Cascaded {PID} Controlled Quadcopters using Residual Reinforcement Learning},
+  author    = {Ishihara, Yu and
+               Hazama, Yuichi and
+               Suzuki, Kousuke and
+               Yokono, Jerry Jun and
+               Sabe, Kohtaro and
+               Kawamoto, Kenta},
+  month     = aug,
+  year      = {2023},
+  eprint    = {2308.01648},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.RO},
+  url       = {https://arxiv.org/abs/2308.01648},
+  doi       = {10.48550/arXiv.2308.01648},
+  abstract  = {Wind resistance control is an essential feature for quadcopters to maintain their position to avoid deviation from target position and prevent collisions with obstacles. Conventionally, cascaded PID controller is used for the control of quadcopters for its simplicity and ease of tuning its parameters. However, it is weak against wind disturbances and the quadcopter can easily deviate from target position. In this work, we propose a residual reinforcement learning based approach to build a wind resistance controller of a quadcopter. By learning only the residual that compensates the disturbance, we can continue using the cascaded PID controller as the base controller of the quadcopter but improve its performance against wind disturbances. To avoid unexpected crashes and destructions of quadcopters, our method does not require real hardware for data collection and training. The controller is trained only on a simulator and directly applied to the target hardware without extra finetuning process. We demonstrate the effectiveness of our approach through various experiments including an experiment in an outdoor scene with wind speed greater than 13 m/s. Despite its simplicity, our controller reduces the position deviation by approximately 50% compared to the quadcopter controlled with the conventional cascaded PID controller. Furthermore, trained controller is robust and preserves its performance even though the quadcopter's mass and propeller's lift coefficient is changed between 50% to 150% from original training time.
+}
+}
