@@ -4,8 +4,10 @@
 
 Takes no arguments: set path_sac_config.PATH_TRAIN first. mode "fresh" starts a new
 randomly initialized model and refuses a folder that already has one. mode "resume"
-continues resume_model, and refuses a missing or incompatible one. When resuming,
-total_timesteps is the total to reach.
+continues resume_model, and refuses a missing or incompatible one. mode "finetune"
+continues resume_model's weights, replay buffer, and step count in a new run folder
+under the current curriculum; only the policy contract must match. When resuming or
+fine-tuning, total_timesteps is the total to reach.
 
 Saves under runs/flight_sac/<run_name>/: checkpoints/, final_* or interrupted_* or
 crashed_*, TensorBoard logs, logs/progress_<time>.csv, logs/log_<time>.txt,
@@ -26,16 +28,16 @@ project_dir = Path(__file__).resolve().parents[1]
 run_dir = project_dir / path_sac_config.RUN_DIR / run["run_name"]
 checkpoint_dir = run_dir / "checkpoints"
 
-if run["mode"] not in ("fresh", "resume"):
-    raise SystemExit('PATH_TRAIN mode must be "fresh" or "resume".')
+if run["mode"] not in ("fresh", "resume", "finetune"):
+    raise SystemExit('PATH_TRAIN mode must be "fresh", "resume", or "finetune".')
 
 checkpoint = None
 buffer_path = None
 
 # Report these now, not after Isaac Sim has started.
-if run["mode"] == "resume":
+if run["mode"] in ("resume", "finetune"):
     if not run["resume_model"]:
-        raise SystemExit('Mode "resume" needs resume_model in PATH_TRAIN.')
+        raise SystemExit(f'Mode "{run["mode"]}" needs resume_model in PATH_TRAIN.')
 
     checkpoint = project_dir / run["resume_model"]
     buffer_path = path_sac_config.replay_buffer_path_for(checkpoint)
@@ -43,7 +45,11 @@ if run["mode"] == "resume":
     if not checkpoint.is_file():
         raise SystemExit(f"Checkpoint not found: {checkpoint}")
 
-    problem = path_sac_config.incompatibility(checkpoint, check_training=True)
+    # Fine-tuning changes the training settings on purpose, so only the policy
+    # (observations, residual limits, PID) has to match.
+    problem = path_sac_config.incompatibility(
+        checkpoint, check_training=run["mode"] == "resume"
+    )
 
     if problem:
         raise SystemExit(problem)
@@ -55,7 +61,7 @@ if run["mode"] == "resume":
             "empty one."
         )
 
-else:
+if run["mode"] in ("fresh", "finetune"):
     existing = [
         *run_dir.glob("*_model.zip"),
         *checkpoint_dir.glob("flight_sac_*.zip"),
@@ -204,8 +210,12 @@ def main():
             # Generators are not saved, so draw from a new stream, not a repeat.
             model.set_random_seed(run["seed"] + model.num_timesteps + 1)
 
+            action = "Fine-tuning" if run["mode"] == "finetune" else "Resumed"
+            stage = path_sac_config.stage_for_step(model.num_timesteps)["name"]
+
             print(
-                f"Resumed {checkpoint} at {model.num_timesteps} steps.",
+                f"{action} {checkpoint} at {model.num_timesteps} steps, "
+                f"curriculum stage {stage}.",
                 flush=True,
             )
         else:

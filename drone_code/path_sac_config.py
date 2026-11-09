@@ -32,18 +32,23 @@ PATH_TRAIN = {
     # "fresh": a new randomly initialized model. Refuses a run folder that already
     #     holds a model. Never loads hover weights or a hover replay buffer.
     # "resume": continues resume_model. Refuses a missing or incompatible one.
-    "mode": "resume",
+    # "finetune": continues resume_model's weights, replay buffer, and step count
+    #     in a new run folder, under the current curriculum and reward. Only the
+    #     policy contract must match. Use it when CURRICULUM has changed since
+    #     that model was trained, which "resume" refuses.
+    "mode": "finetune",
     "resume_model": "runs/flight_sac/flight1/final_model.zip",
 
     # True: resume with an empty replay buffer if its .pkl is missing.
     "allow_empty_replay_buffer": False,
 
     # Saved under runs/flight_sac/<run_name>/.
-    "run_name": "flight1",
+    "run_name": "flight2",
 
-    # SAC decisions to reach, 10 per simulated second. About 24 hours at the 17
-    # decisions per second the hover run reached.
-    "total_timesteps": 2_000_000,
+    # SAC decisions to reach, 10 per simulated second, counted from the start of
+    # flight1. flight1 ended at 1,500,000, so this is 1,000,000 more: about 16
+    # hours at 17 decisions per second.
+    "total_timesteps": 2_500_000,
 
     "seed": 0,
     "checkpoint_interval": 50_000,      # [decisions], about 50 minutes
@@ -260,11 +265,41 @@ BASE_WIND = {
 }
 
 # controller.py caps horizontal demand at 1.5 m/s^2, and drag is 0.018 * v^2 N on
-# 1.62 kg. In the last stage: 2 m/s into 7 m/s wind is 0.9 m/s^2 of drag, and
+# 1.62 kg. In the "full" stage: 2 m/s into 7 m/s wind is 0.9 m/s^2 of drag, and
 # accelerating or turning at 0.6 m/s^2 still fits under the cap.
+#
+# Past the cap, only SAC holds the drone: the PID's 1.5 m/s^2 is about 8.7 degrees
+# of tilt, cancelling about 11.5 m/s of steady wind, and the residual's pitch
+# torque (0.03 N m against the PID's 0.2 N m/rad) adds about 8.6 degrees more.
+# Together that cancels about 16 m/s with no margin, so the strong-wind stages
+# stop at 14 m/s mean. These are estimates from the settings, not measurements.
+#
+# flight1 trained through "full" (1,500,000 steps). The strong-wind stages were
+# added after it and are reached with PATH_TRAIN mode "finetune". They keep the
+# full route mix, and their uniform speed range still covers the old 2 to 7 m/s,
+# so the earlier wind is not forgotten.
 #
 # A stage applies until the total training step reaches until_step. direction_rate
 # is how fast the mean wind turns [rad/s].
+# Route limits of the last three stages, which differ only in wind.
+FULL_ROUTE = {
+    "weights": {
+        "hover": 0.05, "straight": 0.15, "altitude": 0.15,
+        "waypoints": 0.3, "circle": 0.175, "figure_eight": 0.175,
+    },
+    "speed_range": (1.0, 2.0),
+    "acceleration_range": (0.5, 0.6),
+    "lateral_acceleration": 0.6,
+    "vertical_speed": 1.0,
+    "length_range": (4.0, 16.0),
+    "height_change_range": (0.0, 2.5),
+    "waypoint_count_range": (3, 6),
+    "turn_degrees_range": (30.0, 150.0),
+    "corner_radius_range": (0.0, 1.0),
+    "loop_radius_range": (2.0, 4.0),
+    "hover_seconds_range": (2.0, 5.0),
+}
+
 CURRICULUM = (
     {
         "name": "short_slow",
@@ -349,27 +384,34 @@ CURRICULUM = (
     },
     {
         "name": "full",
-        "until_step": None,
-        "route": {
-            "weights": {
-                "hover": 0.05, "straight": 0.15, "altitude": 0.15,
-                "waypoints": 0.3, "circle": 0.175, "figure_eight": 0.175,
-            },
-            "speed_range": (1.0, 2.0),
-            "acceleration_range": (0.5, 0.6),
-            "lateral_acceleration": 0.6,
-            "vertical_speed": 1.0,
-            "length_range": (4.0, 16.0),
-            "height_change_range": (0.0, 2.5),
-            "waypoint_count_range": (3, 6),
-            "turn_degrees_range": (30.0, 150.0),
-            "corner_radius_range": (0.0, 1.0),
-            "loop_radius_range": (2.0, 4.0),
-            "hover_seconds_range": (2.0, 5.0),
-        },
+        "until_step": 1_500_000,
+        "route": FULL_ROUTE,
         "wind": {
             "no_wind_probability": 0.1,
             "mean_speed_range": (2.0, 7.0),
+            "gust_scale_range": (0.5, 1.0),
+            "direction_rate_range": (0.0, 0.2),
+        },
+    },
+    {
+        # Step up first, so the model meets 10 m/s before 14.
+        "name": "strong_ramp",
+        "until_step": 1_800_000,
+        "route": FULL_ROUTE,
+        "wind": {
+            "no_wind_probability": 0.05,
+            "mean_speed_range": (2.0, 10.0),
+            "gust_scale_range": (0.5, 1.0),
+            "direction_rate_range": (0.0, 0.2),
+        },
+    },
+    {
+        "name": "strong",
+        "until_step": None,
+        "route": FULL_ROUTE,
+        "wind": {
+            "no_wind_probability": 0.05,
+            "mean_speed_range": (2.0, 14.0),
             "gust_scale_range": (0.5, 1.0),
             "direction_rate_range": (0.0, 0.2),
         },
@@ -425,9 +467,12 @@ EVAL_SCENARIOS = {
 
 EVAL_ROUTE_STAGE = "full"
 
-# training_range: new seeds from the final training distribution.
+# The first three are flight1's, unchanged so its results stay comparable.
+# training_range: new seeds from flight1's final ("full") training distribution.
 # unseen_gusts: faster, stronger gusts than training ever used.
-# outside_range: mean wind above anything in training.
+# outside_range: mean wind above anything flight1 trained on (inside flight2's).
+# strong_range: the top of the "strong" stage, on new seeds.
+# beyond_strong: mean wind above anything in the "strong" stage.
 EVAL_WIND_PROFILES = {
     "training_range": {
         "no_wind_probability": 0.0,
@@ -446,6 +491,18 @@ EVAL_WIND_PROFILES = {
     "outside_range": {
         "no_wind_probability": 0.0,
         "mean_speed_range": (8.0, 10.0),
+        "gust_scale_range": (0.5, 1.0),
+        "direction_rate_range": (0.0, 0.2),
+    },
+    "strong_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (10.0, 14.0),
+        "gust_scale_range": (0.5, 1.0),
+        "direction_rate_range": (0.0, 0.2),
+    },
+    "beyond_strong": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (14.0, 16.0),
         "gust_scale_range": (0.5, 1.0),
         "direction_rate_range": (0.0, 0.2),
     },
