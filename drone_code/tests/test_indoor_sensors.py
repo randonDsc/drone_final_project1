@@ -10,6 +10,7 @@ import unittest
 import numpy as np
 
 import hover_ppo_config
+import path_sac_config
 import sensor_config
 
 from indoor_sensors import RangefinderModel, channel_counts, clean_scan
@@ -150,6 +151,17 @@ class Selection(unittest.TestCase):
 
         for scene in hover_ppo_config.SCENES.values():
             self.assertTrue(os.path.isfile(os.path.join(root, scene)), scene)
+
+    def test_every_scene_names_its_obstacles(self):
+        self.assertEqual(
+            set(hover_ppo_config.OBSTACLE_PRIMS), set(hover_ppo_config.SCENES)
+        )
+
+    def test_navigation_scenes_exist(self):
+        root = os.path.join(os.path.dirname(__file__), "..", "..")
+
+        for name, route in path_sac_config.NAVIGATION_SCENES.items():
+            self.assertTrue(os.path.isfile(os.path.join(root, route["scene"])), name)
 
 
 if __name__ == "__main__":

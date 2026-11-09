@@ -16,20 +16,30 @@ SCENES = {
     # The same scene with sim_asset/iris_indoor.usda: raised LiDAR, rangefinder.
     # Physics is identical; see drone_code/check_sensor_assets.py.
     "indoor": "sim_scene/dij3d_boxes_indoor.usda",
+
+    # Flat outdoor forest: trees with branches, fallen logs, rocks. Same drone,
+    # pad and physics. Built by sim_scene/build_forest_scene.py.
+    "forest": "sim_scene/forest.usd",
 }
 
 ACTIVE_SCENE = "original"
 SCENE = SCENES[ACTIVE_SCENE]
 
-# Disabled in the loaded stage only, leaving the open ground plane.
+# Each scene's obstacles. Hover PPO, hover SAC and path SAC all fly in open air,
+# so these and the launch pad are disabled in the loaded stage only, leaving the
+# open ground plane. The forest therefore trains like the original scene; it is
+# for the obstacle route (path_sac_config.NAVIGATION_SCENE).
 #
 # With the warehouse gone, LiDAR can only see the floor, which gives height but
 # no x, y, or yaw. LiDAR odometry needs it active, and then the hover target must
 # move: (0, 0, 2) is 0.24 m from structure, inside the 0.34 m rotor reach.
-DEACTIVATE_PRIMS = (
-    "/World/BoxWarehouse",
-    "/World/Cube",
-)
+OBSTACLE_PRIMS = {
+    "original": ("/World/BoxWarehouse",),
+    "indoor": ("/World/BoxWarehouse",),
+    "forest": ("/World/Forest",),
+}
+
+DEACTIVATE_PRIMS = OBSTACLE_PRIMS[ACTIVE_SCENE] + ("/World/Cube",)
 
 # ---------- Control state ----------
 

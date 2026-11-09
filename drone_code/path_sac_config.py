@@ -453,14 +453,30 @@ EVAL_WIND_PROFILES = {
 
 # ---------- Dijkstra route ----------
 
-# Same scene, destination, and height as motor_physics.py, which keeps them inside
-# its main(). Update these together if that destination changes.
+# Scene and destination of the obstacle route. motor_physics.py flies the same
+# one. Results are saved as scenario "dijkstra" whichever scene is chosen, so
+# keep warehouse and forest evaluations in separate run folders.
+NAVIGATION_SCENES = {
+    "original": {
+        "scene": "sim_scene/dij3d_boxes.usd",
+        # Far end of the warehouse: about 41 m, climbing over the racks to 6.6 m.
+        # The earlier, short destination was (5.93, 1.12) at 1.12 m.
+        "goal_offset_xy": (-2.0, 20.0),    # from the USD start [m]
+        "goal_height": 1.2,                # world Z [m]
+    },
+    "forest": {
+        # Built by sim_scene/build_forest_scene.py. Straight through the trees:
+        # about 20.7 m, weaving between trunks and branches at 1.2 m.
+        "scene": "sim_scene/forest.usd",
+        "goal_offset_xy": (20.0, 0.0),
+        "goal_height": 1.2,
+    },
+}
+
+NAVIGATION_SCENE = "original"
+
 NAVIGATION = {
-    "scene": "sim_scene/dij3d_boxes.usd",
-    # Far end of the warehouse: about 41 m, climbing over the racks to 6.6 m.
-    # The earlier, short destination was (5.93, 1.12) at 1.12 m.
-    "goal_offset_xy": (-2.0, 20.0),    # from the USD start [m]
-    "goal_height": 1.2,                # world Z [m]
+    **NAVIGATION_SCENES[NAVIGATION_SCENE],
 
     "speed": 0.8,                      # [m/s]
     "acceleration": 0.5,               # [m/s^2]

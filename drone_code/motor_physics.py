@@ -69,13 +69,14 @@ def main(log_file):
 
     # ---------- Load scene, drone, motors, and wind ----------
 
+    # Scene and destination come from path_sac_config.NAVIGATION_SCENE.
+    import path_sac_config
+
+    route = path_sac_config.NAVIGATION
+
     project_dir = Path(__file__).resolve().parents[1]
 
-    scene_path = (
-        project_dir
-        / "sim_scene"
-        / "dij3d_boxes.usd"
-    )
+    scene_path = project_dir / route["scene"]
 
     log(f"Running script: {Path(__file__).resolve()}")
 
@@ -99,16 +100,12 @@ def main(log_file):
     target = sim.base_target()
 
     # Absolute world Z
-    target["height"] = 1.2
+    target["height"] = route["goal_height"]
 
-    # Final world XY, relative to the initial USD pose:
-    # initial X - 2 m, initial Y + 20 m, at the far end of the warehouse.
-    # The planned route is about 41 m: it climbs over the racks to 6.6 m,
-    # runs along the +X side and comes back down.
-    # The earlier, short destination was (+5.93, +1.12) at 1.12 m.
+    # Final world XY, relative to the initial USD pose.
     target["xy"] = (
         initial_positions[0, :2].astype(float).copy()
-        + np.array([-2.0, 20.0])
+        + np.array(route["goal_offset_xy"], dtype=float)
     )
 
     # The mission destination stays unchanged while intermediate

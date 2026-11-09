@@ -1,4 +1,4 @@
-# AI Use Documentation
+ # AI Use Documentation
 
 Project: DSC 180A
 
