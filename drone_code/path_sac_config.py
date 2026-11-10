@@ -39,7 +39,7 @@ PATH_TRAIN = {
     "mode": "resume",
     # flight2 was fine-tuned from runs/flight_sac/flight1/final_model.zip, then
     # stopped without saving interrupted_*; this is its newest checkpoint.
-    "resume_model": "runs/flight_sac/flight2/checkpoints/flight_sac_2250000_steps.zip",
+    "resume_model": "runs/flight_sac/flight2/checkpoints/flight_sac_2450000_steps.zip",
 
     # True: resume with an empty replay buffer if its .pkl is missing.
     "allow_empty_replay_buffer": False,
