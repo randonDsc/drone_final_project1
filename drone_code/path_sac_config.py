@@ -36,8 +36,10 @@ PATH_TRAIN = {
     #     in a new run folder, under the current curriculum and reward. Only the
     #     policy contract must match. Use it when CURRICULUM has changed since
     #     that model was trained, which "resume" refuses.
-    "mode": "finetune",
-    "resume_model": "runs/flight_sac/flight1/final_model.zip",
+    "mode": "resume",
+    # flight2 was fine-tuned from runs/flight_sac/flight1/final_model.zip, then
+    # stopped without saving interrupted_*; this is its newest checkpoint.
+    "resume_model": "runs/flight_sac/flight2/checkpoints/flight_sac_2250000_steps.zip",
 
     # True: resume with an empty replay buffer if its .pkl is missing.
     "allow_empty_replay_buffer": False,
