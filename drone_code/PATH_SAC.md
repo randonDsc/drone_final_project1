@@ -12,7 +12,7 @@ It is separate from the hover and PPO workflows and changes none of their files.
 The scripts take no arguments. Edit `path_sac_config.py`, then run from
 `/c/drone_final_project1`:
 
-    # Train, fresh or resuming, from PATH_TRAIN.
+    # Train TRAIN_RUN, one of TRAIN_RUNS; RESUME continues it.
     /c/isaacsim/python.bat drone_code/train_path_sac.py
 
     # Compare PID-only with PID + SAC, from PATH_EVAL.
@@ -29,12 +29,17 @@ The scripts take no arguments. Edit `path_sac_config.py`, then run from
 
 | Goal | Setting |
 | --- | --- |
-| Start a new model | `PATH_TRAIN`: `mode = "fresh"`, a new `run_name` |
-| Resume | `PATH_TRAIN`: `mode = "resume"`, `resume_model` = newest model |
+| Train or reproduce a model | `TRAIN_RUN` = its name in `TRAIN_RUNS`, `RESUME = None` |
+| Resume after a stop | `RESUME = "latest"`, or a model path |
+| A new kind of run | Add an entry to `TRAIN_RUNS` (mode, curriculum, steps, optionally `net_arch` and `continual_backprop`) |
 | Baseline with no model | `PATH_EVAL`: `pid_only = True` |
 | PID-only or SAC navigation | `PATH_NAV`: `mode = "pid"` or `"pid_sac"` |
 
 No new packages are needed: stable-baselines3, gymnasium, and NumPy are already used.
+
+Every run trained so far, with its exact settings, history, and results, is in
+`TRAINING_RUNS.md`. The curriculum and SAC tables below describe flight1; the
+named curricula in `CURRICULA` add flight2's strong-wind stages.
 
 ## Layers
 

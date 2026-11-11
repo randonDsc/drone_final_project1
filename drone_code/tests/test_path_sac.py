@@ -84,7 +84,7 @@ class ReferenceTests(unittest.TestCase):
         self.assertEqual(reference.duration, 3.0)
 
     def test_every_route_type_builds_inside_height_range(self):
-        stage = path_sac_config.CURRICULUM[-1]
+        stage = path_sac_config.curriculum()[-1]
         episode = path_sac_config.EPISODE
         rng = np.random.default_rng(0)
 
@@ -101,7 +101,7 @@ class ReferenceTests(unittest.TestCase):
                 self.assertTrue(np.all(np.isfinite(reference.accelerations)))
 
     def test_same_seed_gives_the_same_route(self):
-        stage = path_sac_config.CURRICULUM[-1]
+        stage = path_sac_config.curriculum()[-1]
 
         first = sample_reference(
             np.random.default_rng(3), stage["route"], path_sac_config.EPISODE

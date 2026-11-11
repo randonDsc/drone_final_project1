@@ -207,7 +207,7 @@ script. Changes take effect the next time the script starts.
 | --- | --- |
 | `motor_physics.py` | `sim_config.py` (`CONTROL_MODE`, `DEMO_WIND`, `HOVER_SAC_MODEL_PATH`); destination inside `motor_physics.py` |
 | `train_hover_sac.py`, `eval_hover_sac.py` | `run_config.py` (`TRAIN_HOVER_SAC`, `EVAL_HOVER_SAC`); learning details in `hover_sac_config.py` |
-| `train_path_sac.py`, `eval_path_sac.py`, `navigate_path_sac.py`, `sweep_path_sac.py` | `path_sac_config.py` (`PATH_TRAIN`, `PATH_EVAL`, `PATH_NAV`, `PATH_SWEEP`) |
+| `train_path_sac.py`, `eval_path_sac.py`, `navigate_path_sac.py`, `sweep_path_sac.py` | `path_sac_config.py` (`TRAIN_RUN`, `RESUME`, `PATH_EVAL`, `PATH_NAV`, `PATH_SWEEP`) |
 | `train_hover_ppo.py`, `eval_hover_ppo.py`, `smoke_hover_ppo.py` | `run_config.py`; details in `hover_ppo_config.py` |
 | `watch_hover_ppo.py` | `watch_config.py` |
 | `inspect_sensors.py` | `run_config.INSPECT_SENSORS`, `sensor_config.py` |
@@ -309,20 +309,21 @@ is in `path_sac_config.py`.
 /c/isaacsim/python.bat drone_code/train_path_sac.py
 ```
 
-| `path_sac_config.PATH_TRAIN` key | Meaning |
+| `path_sac_config.py` setting | Meaning |
 | --- | --- |
-| `mode` | `"fresh"` = new model (refuses a folder that already has one); `"resume"` = continue `resume_model` |
-| `resume_model` | e.g. `runs/flight_sac/flight1/final_model.zip` or `checkpoints/flight_sac_N_steps.zip` |
-| `run_name` | Output folder `runs/flight_sac/<run_name>/` |
-| `total_timesteps` | Total decisions to reach, including resumed ones (our model: 1.5M) |
-| `seed`, `checkpoint_interval` | Training seed; save every N decisions (50,000 ≈ 50 min) |
-| `keep_replay_buffers` | Older replay buffers (~520 MB each) beyond this many are deleted |
-| `gui` | Show the window |
+| `TRAIN_RUN` | Which `TRAIN_RUNS` entry to train; its name is the output folder `runs/flight_sac/<name>/` |
+| `TRAIN_RUNS[name]["mode"]` | `"fresh"` = new model (refuses a folder that already has one); `"finetune"` = continue `resume_model` in a new folder under a new curriculum |
+| `TRAIN_RUNS[name]["curriculum"]` | A name from `CURRICULA`: `base` (flight1) or `strong_wind` (flight2) |
+| `TRAIN_RUNS[name]["total_timesteps"]` | Total decisions to reach, including the model's earlier ones (flight1: 1.5M, flight2: 2.5M) |
+| `TRAIN_RUNS[name]["net_arch"]`, `["continual_backprop"]` | Optional layer sizes and Continual Backprop |
+| `RESUME` | `None`; `"latest"` = continue `TRAIN_RUN` from its newest model; or a model path |
+| `TRAIN_COMMON` | Seed, checkpoint interval (50,000 ≈ 50 min), replay buffers kept (~520 MB each), `gui` |
 
-- The curriculum (`CURRICULUM`) moves through 4 stages by training step: `short_slow` (<150k) → `turns` (<400k)
+- The `base` curriculum moves through 4 stages by training step: `short_slow` (<150k) → `turns` (<400k)
   → `climbs_loops` (<800k) → `full`. Each stage makes the routes longer and faster and the wind stronger.
-- A resumed run checks `flight_contract.json` and refuses to continue if the observation, PID, reward, or
-  curriculum settings changed since the model was trained.
+  `strong_wind` adds `strong_ramp` (2–10 m/s, from 1.5M) and `strong` (2–14 m/s, from 1.8M).
+- A resumed run checks `flight_contract.json` and refuses to continue if the observation, PID, reward,
+  curriculum, network, or Continual Backprop settings changed since the model was trained.
 - Logs: `runs/flight_sac/<run>/logs/`, TensorBoard at `runs/flight_sac/<run>/tensorboard/`, plus a
   `config_snapshot_<time>.json` for each launch.
 
@@ -423,11 +424,11 @@ identical routes and wind.
 
 **A. Path-following SAC (Section 2 table)**
 
-1. In `path_sac_config.py`, set `PATH_TRAIN`: `mode = "fresh"`, `run_name = "flight1"`,
-   `total_timesteps = 1_500_000`, `seed = 0`, `gui = False`. Leave every other section unchanged.
+1. In `path_sac_config.py`, set `TRAIN_RUN = "flight1"` and `RESUME = None`. Leave every other section unchanged.
+   Each model we trained or planned (`flight1`, `flight2`, `flight3_cbp`, `flight3_nocbp`) is a `TRAIN_RUNS` entry;
+   `drone_code/TRAINING_RUNS.md` records each one's exact settings, history, and results.
 2. Train: `/c/isaacsim/python.bat drone_code/train_path_sac.py`. Our run took about 30 hours on an RTX 4070 SUPER.
-   You can stop with Ctrl+C at any time. To resume, set `mode = "resume"` and `resume_model` to the newest file in
-   `runs/flight_sac/flight1/checkpoints/` (or `interrupted_model.zip`), then rerun.
+   Stop with Ctrl+C (not by closing the window). To resume, set `RESUME = "latest"` and rerun.
 3. Evaluate: in `PATH_EVAL`, set `run_name = "flight1"`, `model = None`, `pid_only = False`, `episodes = None`,
    `include_dijkstra = True`, then run `/c/isaacsim/python.bat drone_code/eval_path_sac.py`.
 4. Compare your `runs/flight_sac/flight1/evaluation/final_model/summary.csv` with ours.
@@ -483,7 +484,9 @@ These are the most important parameters. Every file comments every value.
 | `REWARD` | `lambda_v` 1, `lambda_a` 1, `scale` 0.1, `cost_cap` 10 | Huber tracking costs (position, speed, direction, attitude, rate) + action, smoothness, and saturation costs |
 | `FAILURE` | 3 m error, 0.5 m min height, 45° tilt, 7 m/s, 6 rad/s | Any of these ends the episode as a crash |
 | `COMPLETION` | 0.15 m, 0.2 m/s, 0.5 s | Arrival at the final point |
-| `CURRICULUM` | 4 stages | Route mix, speeds, lengths, and wind ranges per training stage |
+| `TRAIN_RUNS`, `TRAIN_RUN`, `RESUME` | `flight3_cbp`, `None` | Every training run by name; which one to train; resume it |
+| `CURRICULA` | `base` (4 stages), `strong_wind` (6) | Route mix, speeds, lengths, and wind ranges per training stage |
+| `CONTINUAL_BACKPROP` | rate 1e-4, maturity 50, decay 0.99 | Neuron replacement for runs that enable it |
 | `SAC` | lr 3e-4, γ 0.99, τ 0.005, batch 256, buffer 500k, net [256, 256] | stable-baselines3 SAC hyperparameters |
 | `EVAL_SEEDS` | 300000–300009 | Fixed evaluation seeds |
 | `NAVIGATION` | goal (−2, 20) m offset at 1.2 m, 0.8 m/s | Warehouse Dijkstra route for eval / navigate |
@@ -513,6 +516,7 @@ These are the most important parameters. Every file comments every value.
 | `drone_code/CONTROL.md` | Controller design, PID loops, how the residual is added |
 | `drone_code/HOVER_SAC.md` | Hover SAC: action, observation, reward, wind curriculum |
 | `drone_code/PATH_SAC.md` | Path SAC: reference adapter, observation, reward, metrics |
+| `drone_code/TRAINING_RUNS.md` | Every path SAC run: exact settings, history, results, how to reproduce |
 | `drone_code/HOVER_PPO.md` | PPO baseline and IMU state estimation |
 | `drone_code/INDOOR_SENSORS.md` | Rangefinder and LiDAR sensor models |
 | `papers/` | Reference papers: SAC-assisted hybrid control, PID + RL |

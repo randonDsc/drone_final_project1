@@ -27,30 +27,80 @@ VERSION = 1
 
 # ---------- What to run ----------
 
-# train_path_sac.py
-PATH_TRAIN = {
-    # "fresh": a new randomly initialized model. Refuses a run folder that already
-    #     holds a model. Never loads hover weights or a hover replay buffer.
-    # "resume": continues resume_model. Refuses a missing or incompatible one.
-    # "finetune": continues resume_model's weights, replay buffer, and step count
-    #     in a new run folder, under the current curriculum and reward. Only the
-    #     policy contract must match. Use it when CURRICULUM has changed since
-    #     that model was trained, which "resume" refuses.
-    "mode": "resume",
-    # flight2 was fine-tuned from runs/flight_sac/flight1/final_model.zip, then
-    # stopped without saving interrupted_*; this is its newest checkpoint.
-    "resume_model": "runs/flight_sac/flight2/checkpoints/flight_sac_2450000_steps.zip",
+# train_path_sac.py trains TRAIN_RUN, one of TRAIN_RUNS. Every model this project
+# has trained or plans to train is listed, so any of them can be reproduced by
+# changing TRAIN_RUN alone. TRAINING_RUNS.md records what each one produced.
+#
+# Each entry:
+#   mode: "fresh" starts a new randomly initialized model, and refuses a run
+#       folder that already holds one. "finetune" continues resume_model's
+#       weights, replay buffer, and step count in this run's own folder, under
+#       this run's curriculum; only the policy contract must match.
+#   resume_model: the model "finetune" starts from, or None.
+#   curriculum: a name from CURRICULA.
+#   total_timesteps: decisions to reach, 10 per simulated second, counted from
+#       the first step of the model's history (so a fine-tune's count includes
+#       the model it started from).
+#   net_arch: hidden layer sizes; optional, SAC's policy_kwargs otherwise.
+#   continual_backprop: True runs CONTINUAL_BACKPROP; optional, False otherwise.
+#
+# The folder is runs/flight_sac/<name>/. To train a second copy beside an
+# existing one, copy its entry under a new name.
+TRAIN_RUNS = {
+    # Path following in 0 to 7 m/s wind. Trained 2026-11-01 to 11-03.
+    "flight1": {
+        "mode": "fresh",
+        "resume_model": None,
+        "curriculum": "base",
+        "total_timesteps": 1_500_000,
+    },
 
+    # flight1 continued into 2 to 14 m/s wind. Trained 2026-11-08 to 11-10.
+    "flight2": {
+        "mode": "finetune",
+        "resume_model": "runs/flight_sac/flight1/final_model.zip",
+        "curriculum": "strong_wind",
+        "total_timesteps": 2_500_000,
+    },
+
+    # flight1's wind and schedule, with different layer sizes and Continual
+    # Backprop. Not trained yet.
+    "flight3_cbp": {
+        "mode": "fresh",
+        "resume_model": None,
+        "curriculum": "base",
+        "total_timesteps": 1_500_000,
+        "net_arch": {"pi": [64, 128, 256, 64], "qf": [128, 256, 256, 128]},
+        "continual_backprop": True,
+    },
+
+    # flight3_cbp without Continual Backprop: the control for it. Comparing the
+    # two separates the effect of CBP from the effect of the layer sizes.
+    "flight3_nocbp": {
+        "mode": "fresh",
+        "resume_model": None,
+        "curriculum": "base",
+        "total_timesteps": 1_500_000,
+        "net_arch": {"pi": [64, 128, 256, 64], "qf": [128, 256, 256, 128]},
+        "continual_backprop": False,
+    },
+}
+
+TRAIN_RUN = "flight3_cbp"
+
+# To continue TRAIN_RUN after a stop: "latest" picks the newest of its
+# interrupted_*, crashed_*, final_*, and checkpoints that still has a replay
+# buffer; or give a model path such as
+# "runs/flight_sac/flight3_cbp/checkpoints/flight_sac_400000_steps.zip".
+# None starts TRAIN_RUN as its entry says. A resume must match the run's saved
+# contract exactly. Stop training with Ctrl+C, which saves interrupted_*;
+# closing the window loses everything since the last checkpoint.
+RESUME = None
+
+# The same for every run.
+TRAIN_COMMON = {
     # True: resume with an empty replay buffer if its .pkl is missing.
     "allow_empty_replay_buffer": False,
-
-    # Saved under runs/flight_sac/<run_name>/.
-    "run_name": "flight2",
-
-    # SAC decisions to reach, 10 per simulated second, counted from the start of
-    # flight1. flight1 ended at 1,500,000, so this is 1,000,000 more: about 16
-    # hours at 17 decisions per second.
-    "total_timesteps": 2_500_000,
 
     "seed": 0,
     "checkpoint_interval": 50_000,      # [decisions], about 50 minutes
@@ -104,6 +154,11 @@ PATH_NAV = {
 # test what training on those weights does.
 PATH_SWEEP = {
     "base_run_name": "sweep",
+
+    # The TRAIN_RUNS entry whose curriculum, layers, and CBP setting every
+    # variant uses. Its mode and model are not used: variants always start fresh.
+    "train_run": "flight1",
+
     "total_timesteps": 500_000,
     "variants": {
         "nominal": {"lambda_v": 1.0, "lambda_a": 1.0},
@@ -277,12 +332,13 @@ BASE_WIND = {
 # stop at 14 m/s mean. These are estimates from the settings, not measurements.
 #
 # flight1 trained through "full" (1,500,000 steps). The strong-wind stages were
-# added after it and are reached with PATH_TRAIN mode "finetune". They keep the
-# full route mix, and their uniform speed range still covers the old 2 to 7 m/s,
-# so the earlier wind is not forgotten.
+# added after it and reached by fine-tuning (flight2). They keep the full route
+# mix, and their uniform speed range still covers the old 2 to 7 m/s, so the
+# earlier wind is not forgotten.
 #
 # A stage applies until the total training step reaches until_step. direction_rate
-# is how fast the mean wind turns [rad/s].
+# is how fast the mean wind turns [rad/s]. CURRICULA, below the stages, says
+# which stages each run uses.
 # Route limits of the last three stages, which differ only in wind.
 FULL_ROUTE = {
     "weights": {
@@ -302,7 +358,7 @@ FULL_ROUTE = {
     "hover_seconds_range": (2.0, 5.0),
 }
 
-CURRICULUM = (
+STAGES = (
     {
         "name": "short_slow",
         "until_step": 150_000,
@@ -420,6 +476,16 @@ CURRICULUM = (
     },
 )
 
+# Named in TRAIN_RUNS. Saved contracts store the stages in full, so changing one
+# here makes resuming a run trained on it refuse; add a new curriculum instead.
+CURRICULA = {
+    # flight1, flight3_*: the first four stages, and "full" never ends.
+    "base": STAGES[:3] + ({**STAGES[3], "until_step": None},),
+
+    # flight2: all six. "full" ends at 1,500,000, where flight1 stopped.
+    "strong_wind": STAGES,
+}
+
 # ---------- SAC ----------
 
 # stable-baselines3 SAC: twin critics, target networks, automatic temperature.
@@ -445,10 +511,41 @@ SAC = {
     "ent_coef": "auto",
     "target_entropy": -4.0,            # minus the action size, SAC's usual choice
 
+    # Hidden layers. A TRAIN_RUNS entry may replace net_arch; nothing else here
+    # changes per run.
     "policy_kwargs": {"net_arch": {"pi": [256, 256], "qf": [256, 256]}},
 
     # The RTX 4070 SUPER. The simulator's own load is what limits the rate.
     "device": "auto",
+}
+
+# Continual Backprop (Dohare et al., Nature 2024), for runs that set
+# continual_backprop. continual_backprop.py runs it after every gradient update,
+# on every hidden layer of the actor and both critics:
+#
+#   utility = decay * utility + (1 - decay) * mean|h| * sum|outgoing weights|
+#
+# measured on the training batches. A neuron older than maturity updates is
+# eligible; each update, replacement_rate of a layer's eligible neurons (counted
+# fractionally until one is due) with the lowest utility are replaced: incoming
+# weights and bias redrawn as at initialization, outgoing weights zeroed, Adam's
+# moments for those weights zeroed, age and utility reset. The target critics
+# receive the same reset.
+CONTINUAL_BACKPROP = {
+    # Share of eligible neurons per layer per update. At 256 neurons that is one
+    # neuron about every 40 updates.
+    "replacement_rate": 1e-4,
+
+    # Updates a new neuron is protected for.
+    "maturity": 50,
+
+    # Utility running average, per update.
+    "decay": 0.99,
+
+    # True: before zeroing a replaced neuron's outgoing weights, add its mean
+    # contribution to the next layer's bias, so the network's average output does
+    # not jump. As in the paper's version.
+    "bias_correction": True,
 }
 
 # ---------- Evaluation ----------
@@ -577,23 +674,59 @@ def physics_steps_per_decision():
     return int(round(steps))
 
 
+def train_run():
+    """The active TRAIN_RUNS entry's name: the sweep's while a sweep runs."""
+    name = PATH_SWEEP["train_run"] if sweep_variant() is not None else TRAIN_RUN
+
+    if name not in TRAIN_RUNS:
+        raise ValueError(
+            f"Unknown training run {name}; choose from {', '.join(TRAIN_RUNS)}."
+        )
+
+    return name
+
+
+def curriculum():
+    """The active run's stages."""
+    return CURRICULA[TRAIN_RUNS[train_run()]["curriculum"]]
+
+
+def sac_settings():
+    """SAC with the active run's net_arch."""
+    entry = TRAIN_RUNS[train_run()]
+    settings = dict(SAC)
+
+    if "net_arch" in entry:
+        settings["policy_kwargs"] = {"net_arch": entry["net_arch"]}
+
+    return settings
+
+
+def continual_backprop_settings():
+    """CONTINUAL_BACKPROP if the active run uses it, otherwise None."""
+    if TRAIN_RUNS[train_run()].get("continual_backprop", False):
+        return dict(CONTINUAL_BACKPROP)
+
+    return None
+
+
 def stage_by_name(name):
-    for stage in CURRICULUM:
+    for stage in curriculum():
         if stage["name"] == name:
             return stage
 
-    names = ", ".join(stage["name"] for stage in CURRICULUM)
+    names = ", ".join(stage["name"] for stage in curriculum())
     raise ValueError(f"Unknown curriculum stage {name}; choose from {names}.")
 
 
 def stage_for_step(step):
-    for stage in CURRICULUM:
+    for stage in curriculum():
         limit = stage["until_step"]
 
         if limit is None or step < limit:
             return stage
 
-    return CURRICULUM[-1]
+    return curriculum()[-1]
 
 
 def sweep_variant():
@@ -607,8 +740,18 @@ def sweep_variant():
 
 
 def train_settings():
-    """PATH_TRAIN, or its sweep version: fresh, with its own run folder."""
-    settings = dict(PATH_TRAIN)
+    """What train_path_sac.py runs: TRAIN_RUN with TRAIN_COMMON and RESUME
+    applied, or a sweep variant, which is always fresh in its own folder."""
+    name = train_run()
+    entry = TRAIN_RUNS[name]
+
+    settings = {
+        **TRAIN_COMMON,
+        "mode": entry["mode"],
+        "resume_model": entry["resume_model"],
+        "run_name": name,
+        "total_timesteps": entry["total_timesteps"],
+    }
     variant = sweep_variant()
 
     if variant is not None:
@@ -618,8 +761,48 @@ def train_settings():
             run_name=f"{PATH_SWEEP['base_run_name']}_{variant}",
             total_timesteps=PATH_SWEEP["total_timesteps"],
         )
+    elif RESUME is not None:
+        model = RESUME
+
+        if RESUME == "latest":
+            model = latest_model(Path(RUN_DIR) / name)
+
+            if model is None:
+                raise ValueError(
+                    f'RESUME is "latest", but {RUN_DIR}/{name} has no model '
+                    "with its replay buffer."
+                )
+
+        settings.update(mode="resume", resume_model=str(model))
 
     return settings
+
+
+def latest_model(run_dir):
+    """The newest resumable model in a run folder, relative to the project
+    folder, or None. A model counts only if its replay buffer exists."""
+    root = Path(__file__).resolve().parents[1]
+    folder = root / run_dir
+
+    candidates = [
+        *(folder / f"{prefix}_model.zip"
+          for prefix in ("interrupted", "crashed", "final")),
+        *(folder / "checkpoints").glob("flight_sac_*_steps.zip"),
+    ]
+    candidates = [
+        path for path in candidates
+        if path.is_file() and replay_buffer_path_for(path).is_file()
+    ]
+
+    if not candidates:
+        return None
+
+    newest = max(candidates, key=lambda path: path.stat().st_mtime)
+
+    try:
+        return newest.relative_to(root).as_posix()
+    except ValueError:
+        return newest.as_posix()
 
 
 def eval_settings():
@@ -666,14 +849,22 @@ def policy_contract():
 
 
 def training_contract():
-    """What must also stay the same for training to continue."""
-    return {
+    """What must also stay the same for training to continue. A run without
+    Continual Backprop has no "continual_backprop" entry, so the contracts of
+    runs trained before it existed still match."""
+    contract = {
         "reward": reward_settings(),
         "failure": FAILURE,
         "episode": EPISODE,
-        "curriculum": CURRICULUM,
-        "sac": SAC,
+        "curriculum": curriculum(),
+        "sac": sac_settings(),
     }
+    cbp = continual_backprop_settings()
+
+    if cbp is not None:
+        contract["continual_backprop"] = cbp
+
+    return contract
 
 
 def write_contract(run_dir):
@@ -709,10 +900,12 @@ def incompatibility(model_path, check_training=False):
         expected = json.loads(json.dumps(expected))
         stored = saved.get(group, {})
 
+        # Both ways, so a setting the model has and the config lacks (such as
+        # continual_backprop) also counts.
         different += sorted(
             f"{group}.{name}"
-            for name, value in expected.items()
-            if stored.get(name) != value
+            for name in set(expected) | set(stored)
+            if stored.get(name) != expected.get(name)
         )
 
     if different:
