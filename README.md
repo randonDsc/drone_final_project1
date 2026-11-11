@@ -425,7 +425,7 @@ identical routes and wind.
 **A. Path-following SAC (Section 2 table)**
 
 1. In `path_sac_config.py`, set `TRAIN_RUN = "flight1"` and `RESUME = None`. Leave every other section unchanged.
-   Each model we trained or planned (`flight1`, `flight2`, `flight3_cbp`, `flight3_nocbp`) is a `TRAIN_RUNS` entry;
+   Each model we trained or planned (`flight1`, `flight2`, `flight6_cbp`, `flight6_nocbp`) is a `TRAIN_RUNS` entry;
    `drone_code/TRAINING_RUNS.md` records each one's exact settings, history, and results.
 2. Train: `/c/isaacsim/python.bat drone_code/train_path_sac.py`. Our run took about 30 hours on an RTX 4070 SUPER.
    Stop with Ctrl+C (not by closing the window). To resume, set `RESUME = "latest"` and rerun.
@@ -484,7 +484,7 @@ These are the most important parameters. Every file comments every value.
 | `REWARD` | `lambda_v` 1, `lambda_a` 1, `scale` 0.1, `cost_cap` 10 | Huber tracking costs (position, speed, direction, attitude, rate) + action, smoothness, and saturation costs |
 | `FAILURE` | 3 m error, 0.5 m min height, 45° tilt, 7 m/s, 6 rad/s | Any of these ends the episode as a crash |
 | `COMPLETION` | 0.15 m, 0.2 m/s, 0.5 s | Arrival at the final point |
-| `TRAIN_RUNS`, `TRAIN_RUN`, `RESUME` | `flight3_cbp`, `None` | Every training run by name; which one to train; resume it |
+| `TRAIN_RUNS`, `TRAIN_RUN`, `RESUME` | `flight6_cbp`, `None` | Every training run by name; which one to train; resume it |
 | `CURRICULA` | `base` (4 stages), `strong_wind` (6) | Route mix, speeds, lengths, and wind ranges per training stage |
 | `CONTINUAL_BACKPROP` | rate 1e-4, maturity 50, decay 0.99 | Neuron replacement for runs that enable it |
 | `SAC` | lr 3e-4, γ 0.99, τ 0.005, batch 256, buffer 500k, net [256, 256] | stable-baselines3 SAC hyperparameters |

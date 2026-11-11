@@ -26,8 +26,8 @@ Every run is an entry in `path_sac_config.TRAIN_RUNS`. Nothing else needs editin
 | --- | --- | --- |
 | `flight1` | nothing | 30 h |
 | `flight2` | `runs/flight_sac/flight1/final_model.zip` and `final_replay_buffer.pkl`, from training flight1 or a copy of ours | 19 h |
-| `flight3_cbp` | nothing | about 30 h, not yet run |
-| `flight3_nocbp` | nothing | about 30 h, not yet run |
+| `flight6_cbp` | nothing | about 30 h, not yet run |
+| `flight6_nocbp` | nothing | about 30 h, not yet run |
 
 `runs/` is not in git, so a fresh clone has no models. A run folder that already
 holds a model refuses a fresh start. To train a second copy beside it, copy the
@@ -238,12 +238,12 @@ checkpoint, about 3,600 and 10,800, were redone. Wall time totals 19.2 h.
 three are unchanged, so they compare directly with flight1. `strong_range` (10–14
 m/s) and `beyond_strong` (14–16 m/s) are new.
 
-## flight3_cbp and flight3_nocbp (planned)
+## flight6_cbp and flight6_nocbp (planned)
 
 Both runs use flight1's wind and schedule (curriculum `base`, 1,500,000 steps,
-fresh, seed 0) with different layer sizes. Only `flight3_cbp` adds Continual
+fresh, seed 0) with different layer sizes. Only `flight6_cbp` adds Continual
 Backprop. Comparing the two separates the effect of CBP from the effect of the
-layer sizes. Comparing `flight3_nocbp` with flight1 shows the effect of the layer
+layer sizes. Comparing `flight6_nocbp` with flight1 shows the effect of the layer
 sizes alone.
 
 | Network | Hidden layers | Parameters |

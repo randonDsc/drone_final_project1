@@ -88,11 +88,11 @@ class Layers(unittest.TestCase):
         self.assertEqual(incoming.out_features, 8)
         self.assertEqual(outgoing[0].out_features, 1)
 
-    def test_flight3_layer_sizes_are_found(self):
+    def test_flight6_layer_sizes_are_found(self):
         model = ContinualBackpropSAC(
             "MlpPolicy", TinyEnv(), device="cpu",
             policy_kwargs={"net_arch": path_sac_config.TRAIN_RUNS[
-                "flight3_cbp"]["net_arch"]},
+                "flight6_cbp"]["net_arch"]},
         )
         model.attach_continual_backprop(SETTINGS)
         sizes = [
@@ -230,11 +230,11 @@ class Presets(unittest.TestCase):
                     "continual_backprop", path_sac_config.training_contract()
                 )
 
-    def test_flight3_runs_differ_only_in_continual_backprop(self):
-        with using_run("flight3_cbp"):
+    def test_flight6_runs_differ_only_in_continual_backprop(self):
+        with using_run("flight6_cbp"):
             cbp = path_sac_config.training_contract()
 
-        with using_run("flight3_nocbp"):
+        with using_run("flight6_nocbp"):
             plain = path_sac_config.training_contract()
 
         self.assertEqual(cbp.pop("continual_backprop"),
@@ -269,7 +269,7 @@ class Presets(unittest.TestCase):
                 )
 
     def test_a_cbp_model_is_refused_without_cbp(self):
-        with using_run("flight3_cbp"):
+        with using_run("flight6_cbp"):
             contract = path_sac_config.training_contract()
 
         with tempfile.TemporaryDirectory() as folder:
@@ -282,7 +282,7 @@ class Presets(unittest.TestCase):
             )
             model = Path(folder) / "final_model.zip"
 
-            with using_run("flight3_nocbp"):
+            with using_run("flight6_nocbp"):
                 problem = path_sac_config.incompatibility(
                     model, check_training=True
                 )

@@ -65,7 +65,7 @@ TRAIN_RUNS = {
 
     # flight1's wind and schedule, with different layer sizes and Continual
     # Backprop. Not trained yet.
-    "flight3_cbp": {
+    "flight6_cbp": {
         "mode": "fresh",
         "resume_model": None,
         "curriculum": "base",
@@ -74,9 +74,9 @@ TRAIN_RUNS = {
         "continual_backprop": True,
     },
 
-    # flight3_cbp without Continual Backprop: the control for it. Comparing the
+    # flight6_cbp without Continual Backprop: the control for it. Comparing the
     # two separates the effect of CBP from the effect of the layer sizes.
-    "flight3_nocbp": {
+    "flight6_nocbp": {
         "mode": "fresh",
         "resume_model": None,
         "curriculum": "base",
@@ -86,12 +86,12 @@ TRAIN_RUNS = {
     },
 }
 
-TRAIN_RUN = "flight3_cbp"
+TRAIN_RUN = "flight6_cbp"
 
 # To continue TRAIN_RUN after a stop: "latest" picks the newest of its
 # interrupted_*, crashed_*, final_*, and checkpoints that still has a replay
 # buffer; or give a model path such as
-# "runs/flight_sac/flight3_cbp/checkpoints/flight_sac_400000_steps.zip".
+# "runs/flight_sac/flight6_cbp/checkpoints/flight_sac_400000_steps.zip".
 # None starts TRAIN_RUN as its entry says. A resume must match the run's saved
 # contract exactly. Stop training with Ctrl+C, which saves interrupted_*;
 # closing the window loses everything since the last checkpoint.
@@ -479,7 +479,7 @@ STAGES = (
 # Named in TRAIN_RUNS. Saved contracts store the stages in full, so changing one
 # here makes resuming a run trained on it refuse; add a new curriculum instead.
 CURRICULA = {
-    # flight1, flight3_*: the first four stages, and "full" never ends.
+    # flight1, flight6_*: the first four stages, and "full" never ends.
     "base": STAGES[:3] + ({**STAGES[3], "until_step": None},),
 
     # flight2: all six. "full" ends at 1,500,000, where flight1 stopped.
