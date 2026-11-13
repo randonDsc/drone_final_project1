@@ -2,4 +2,4 @@
 __pycache__/
 
 # Full Isaac Sim console logs (large, machine-specific); commit summaries/snapshots instead
-results/*.log
+results/**/*.log

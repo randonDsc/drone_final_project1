@@ -1,0 +1,436 @@
+{
+  "created_at": "2026-11-13T06:00:21+00:00",
+  "purpose": "M2.1 headless speed measurement (no training)",
+  "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+  "protocol": {
+    "version": "eval-v1",
+    "protocol_file_sha256": "69c3c95c26576e2bf51d543de9e19052c3a58510e3b0737c8e936ee11f148d46",
+    "eval_seeds": [
+      300000,
+      300029,
+      30
+    ],
+    "validation_seeds": [
+      400000,
+      400009,
+      10
+    ],
+    "route_stage": "full",
+    "scenarios": {
+      "hover": "hover",
+      "straight": "straight",
+      "turns": "waypoints",
+      "altitude": "altitude",
+      "circle": "circle",
+      "figure_eight": "figure_eight"
+    },
+    "team_profiles": {
+      "training_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      },
+      "unseen_gusts": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          2.0,
+          6.0
+        ],
+        "gust_scale_range": [
+          1.2,
+          1.5
+        ],
+        "direction_rate_range": [
+          0.1,
+          0.3
+        ],
+        "gust_timescale": 0.7,
+        "local_gust_timescale": 0.15
+      },
+      "outside_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          8.0,
+          10.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    },
+    "our_profiles": {
+      "still_air": {
+        "no_wind_probability": 1.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    }
+  },
+  "registered_profiles": {
+    "still_air": {
+      "no_wind_probability": 1.0,
+      "mean_speed_range": [
+        2.0,
+        7.0
+      ],
+      "gust_scale_range": [
+        0.5,
+        1.0
+      ],
+      "direction_rate_range": [
+        0.0,
+        0.2
+      ]
+    }
+  },
+  "python": "3.12.14",
+  "packages": {
+    "numpy": "2.3.1",
+    "gymnasium": "1.2.3",
+    "stable_baselines3": "2.7.0",
+    "torch": "2.14.1+cpu"
+  },
+  "torch_cuda_available": false,
+  "sb3_auto_device": "cpu",
+  "hardware": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+    "cpu_wmic": "unavailable: [WinError 2] The system cannot find the file specified",
+    "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+  },
+  "startup_s": {
+    "simulation_app": 7.182971000001999,
+    "env_build": 1.3246027999848593
+  },
+  "settings": {
+    "warmup": 200,
+    "repeats": 3,
+    "decisions_per_repeat": 2000,
+    "route_stage": "full",
+    "action": "zero",
+    "headless": true
+  },
+  "throughput": {
+    "training_range": {
+      "repeats": [
+        {
+          "decisions": 2000,
+          "seconds": 40.86654139999882,
+          "decisions_per_s": 48.939791122134395,
+          "physics_steps_per_s": 587.2774934656127,
+          "episodes_ended": 12,
+          "failures": 0,
+          "resets": 13,
+          "reset_mean_s": 0.003973530768864573,
+          "reset_max_s": 0.008009400014998391
+        },
+        {
+          "decisions": 2000,
+          "seconds": 40.65943909998168,
+          "decisions_per_s": 49.189070097154904,
+          "physics_steps_per_s": 590.2688411658589,
+          "episodes_ended": 12,
+          "failures": 0,
+          "resets": 13,
+          "reset_mean_s": 0.003934438465736234,
+          "reset_max_s": 0.007637600007001311
+        },
+        {
+          "decisions": 2000,
+          "seconds": 40.65628870000364,
+          "decisions_per_s": 49.192881690645336,
+          "physics_steps_per_s": 590.314580287744,
+          "episodes_ended": 11,
+          "failures": 0,
+          "resets": 12,
+          "reset_mean_s": 0.00395228333218256,
+          "reset_max_s": 0.008844399999361485
+        }
+      ],
+      "decisions_per_s_mean": 49.10724763664488,
+      "decisions_per_s_min": 48.939791122134395,
+      "decisions_per_s_max": 49.192881690645336,
+      "relative_spread": 0.0051538333075315775,
+      "within_10pct": true
+    },
+    "still_air": {
+      "repeats": [
+        {
+          "decisions": 2000,
+          "seconds": 40.544229899998754,
+          "decisions_per_s": 49.328844201331385,
+          "physics_steps_per_s": 591.9461304159765,
+          "episodes_ended": 13,
+          "failures": 0,
+          "resets": 14,
+          "reset_mean_s": 0.0026487357141117434,
+          "reset_max_s": 0.007769199990434572
+        },
+        {
+          "decisions": 2000,
+          "seconds": 40.61951079999562,
+          "decisions_per_s": 49.237422130652924,
+          "physics_steps_per_s": 590.849065567835,
+          "episodes_ended": 10,
+          "failures": 0,
+          "resets": 11,
+          "reset_mean_s": 0.0035461272742726246,
+          "reset_max_s": 0.008382500003790483
+        },
+        {
+          "decisions": 2000,
+          "seconds": 40.80618869999307,
+          "decisions_per_s": 49.01217348927124,
+          "physics_steps_per_s": 588.1460818712549,
+          "episodes_ended": 13,
+          "failures": 0,
+          "resets": 14,
+          "reset_mean_s": 0.0027936857098081547,
+          "reset_max_s": 0.008668199996463954
+        }
+      ],
+      "decisions_per_s_mean": 49.19281327375185,
+      "decisions_per_s_min": 49.01217348927124,
+      "decisions_per_s_max": 49.328844201331385,
+      "relative_spread": 0.006437336899150522,
+      "within_10pct": true
+    }
+  },
+  "policy_inference_s_per_decision": 2.718948000110686e-05,
+  "eval_caps_per_scenario": {
+    "hover": [
+      77,
+      57,
+      64,
+      76,
+      75,
+      79,
+      67,
+      73,
+      53,
+      57,
+      72,
+      57,
+      51,
+      64,
+      73,
+      52,
+      60,
+      53,
+      51,
+      69,
+      75,
+      51,
+      66,
+      75,
+      78,
+      69,
+      70,
+      60,
+      56,
+      60
+    ],
+    "straight": [
+      160,
+      198,
+      162,
+      90,
+      143,
+      163,
+      146,
+      118,
+      132,
+      169,
+      118,
+      152,
+      100,
+      100,
+      146,
+      98,
+      203,
+      155,
+      130,
+      94,
+      115,
+      136,
+      172,
+      90,
+      140,
+      156,
+      98,
+      98,
+      119,
+      127
+    ],
+    "turns": [
+      184,
+      231,
+      187,
+      103,
+      206,
+      231,
+      177,
+      132,
+      190,
+      213,
+      170,
+      193,
+      134,
+      131,
+      200,
+      165,
+      237,
+      202,
+      178,
+      127,
+      178,
+      156,
+      205,
+      113,
+      182,
+      204,
+      120,
+      138,
+      134,
+      156
+    ],
+    "altitude": [
+      90,
+      97,
+      91,
+      69,
+      83,
+      95,
+      93,
+      77,
+      81,
+      91,
+      83,
+      90,
+      71,
+      74,
+      85,
+      77,
+      102,
+      89,
+      87,
+      73,
+      77,
+      85,
+      94,
+      73,
+      87,
+      92,
+      70,
+      80,
+      83,
+      82
+    ],
+    "circle": [
+      197,
+      207,
+      173,
+      208,
+      240,
+      226,
+      224,
+      223,
+      237,
+      172,
+      212,
+      191,
+      219,
+      220,
+      186,
+      198,
+      224,
+      214,
+      212,
+      188,
+      190,
+      224,
+      238,
+      215,
+      196,
+      173,
+      201,
+      181,
+      199,
+      284
+    ],
+    "figure_eight": [
+      286,
+      296,
+      243,
+      304,
+      344,
+      336,
+      319,
+      319,
+      332,
+      244,
+      306,
+      272,
+      320,
+      328,
+      270,
+      278,
+      317,
+      312,
+      303,
+      261,
+      268,
+      320,
+      347,
+      306,
+      275,
+      253,
+      284,
+      254,
+      287,
+      398
+    ]
+  },
+  "eval_caps_total_per_profile": 28920,
+  "rng_consistency_still_vs_training": {
+    "ok": true,
+    "mismatches": []
+  },
+  "estimates": {
+    "training_decisions": 2000000,
+    "ppo_rollouts": 977,
+    "env_hours": 11.313107174448687,
+    "policy_inference_hours": 0.015105266667281588,
+    "ppo_update_hours": "unmeasured (needs a gradient step; M3 smoke run)",
+    "eval_flights": 720,
+    "eval_hours_upper_bound": 0.655045079012278,
+    "eval_hours_per_10_seeds": 0.21834835967075933,
+    "eval_minutes_per_seed": 1.310090158024556,
+    "basis": "training_range mean decisions/s; zero action; reset time added per flight"
+  }
+}

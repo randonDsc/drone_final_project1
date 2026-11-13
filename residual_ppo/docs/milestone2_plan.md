@@ -44,7 +44,7 @@ JSON/CSV committed, full Isaac logs not). Each step ends with a STOP and a repor
 |---|---|---|
 | D1 | Add `still_air` without editing shared files | **Yes.** Our evaluation module registers it **in memory at startup** (`EVAL_WIND_PROFILES.setdefault`, asserting no existing key is overwritten). The still-air definition is written into the protocol (E2) **and into every snapshot/results file**. |
 | D2 | Dijkstra scenario | **Excluded from protocol v1** (needs `path_navigation.py` + another scene, outside the M1 closure). **Any comparison with the team's published results drops their Dijkstra (warehouse) rows.** |
-| D3 | Seed count | **Provisional: 30 seeds `300000..300029`** (first 10 = team `EVAL_SEEDS`). **Confirm or reduce after M2.1**, using its eval wall-clock estimate. Never fewer than the team's 10. |
+| D3 | Seed count | **Decided (2026-11-13): 30 seeds `300000..300029`** (first 10 = team `EVAL_SEEDS`). D3 was deferred to M2.1 **only for cost**; M2.1 measured ≤ 0.66 h per controller for 720 flights, so cost does not justify a change and the pre-registered 30 stand. Not increased either (that would be a post-hoc change). |
 | D4 | `strong_range` / `beyond_strong` | **Deferred until after M2.4.** Not part of protocol v1 for now; if added later they are labelled as our eval-only profiles. |
 | D5 | Wall-clock estimates | **Yes:** training estimate for 2,000,000 decisions, **plus eval wall-clock per 720 flights**. (Budget open issue: team docs say SAC trained 1.5M, config says 2M; see E9.) |
 | D6 | Equivalence tolerance | **Pre-registered:** tolerance = the M2.2 noise floor; **bit-exact required if the floor is 0**. The floor is measured and the tolerance written to `results\m2\zero_residual_tolerance.json` **before** the A-vs-B comparison runs. The comparison script refuses to run without that file. Never loosened afterwards. |
@@ -77,6 +77,23 @@ JSON/CSV committed, full Isaac logs not). Each step ends with a STOP and a repor
 Outputs: `results\m2\speed.json`, `results\m2\speed_summary.txt`.
 **Pass:** 3 repeats within ±10% of each other; both estimates written down with their assumptions; D3 re-decided.
 
+**M2.1 run 1 finding (2026-11-12, Confirmed):** throughput completed, then building SB3's `ActorCriticPolicy` failed:
+its Adam optimizer imports `torch._dynamo`, which after SimulationApp mixes in the stale torch from
+`extsDeprecated\omni.isaac.ml_archive\pip_prebundle` (`ImportError: _EvalFrameOverride`). A probe showed that
+importing `torch` + `torch._dynamo` **before** `SimulationApp` avoids it. M2.1 now times a plain torch MLP of the
+same actor shape (forward only, a lower bound for SB3 `predict`). **M3 requirement:** the training script imports
+torch (and `torch._dynamo`) before SimulationApp and the M3 smoke run confirms an SB3 PPO update works.
+
+**M2.1 result (run 2, 2026-11-12, Confirmed): PASS.** Checks 21/21 before Isaac. Zero residual, route stage `full`:
+training_range 49.11 decisions/s (48.94–49.19), still_air 49.19 (49.01–49.33), ≈ 590 physics steps/s; all repeats
+within ±10% (in fact < 1%); 0 failures in 12,000 timed decisions; reset 2.6–4.0 ms; startup 7.2 s (SimulationApp) +
+1.3 s (env). Policy forward 0.027 ms/decision (plain MLP, lower bound); SB3 `get_device("auto")` = cpu.
+Eval caps (30 seeds × 6 scenarios): 28,920 decisions per profile; still_air and training_range had identical
+route/start/caps and zero still-air wind on all 180 cases.
+**Estimates:** training 2M decisions = env 11.3 h + inference 0.02 h + 977 × `t_update` (M3). Eval 720 flights
+≤ 0.66 h per controller (0.22 h per 10 seeds). → D3 decided: 30 seeds (see M2.0).
+Files: `results\m2\speed.json`, `results\m2\speed_summary.txt`.
+
 ## M2.2 Zero residual equals PID (identical seeds)
 
 **Why:** every residual-RL result is "PID + residual" minus "PID". If zero residual through the env is not exactly
@@ -106,6 +123,65 @@ Runs (in this order; D6):
 Outputs: `results\m2\zero_residual.json` and a summary.
 **Pass:** the pre-registered D6 tolerance met on every run; the guard test differs; same termination step and reason everywhere.
 
+## Pre-registered before any M2.3 run (Claire, 2026-11-12)
+
+**H1.** *On the team's open-scene routes, PID-only RMSE in still air is close to its RMSE in `training_range`, i.e.
+most of PID's error is reference-tracking lag, not wind.*
+
+- **Motivation (Documented, team README §2, open scene, 10 seeds):** PID-only position RMSE is 0.502 m in
+  `training_range` and 0.497 m in `unseen_gusts`, almost identical although `unseen_gusts` has 1.2–1.5× gusts that
+  are also faster and turn more quickly. That suggests gust strength explains little of PID's error. It is indirect:
+  the team never flew still air, and `outside_range` (8–10 m/s mean) does hurt PID (1.653 m, 62% failures).
+- **Primary test: wind share on mean squared error (approved by Claire, 2026-11-12).** Per flight,
+  `MSE = position_rmse²` (time-indexed, over what was flown). Per seed `s` and profile `p`:
+  `M_p(s)` = mean of flight MSE across the 6 scenarios. For a set of seeds `S`:
+
+      wind_share_MSE(S) = Σ_s [M_training_range(s) − M_still_air(s)] / Σ_s M_training_range(s)
+
+  i.e. paired on seeds, computed as a ratio of sums over seeds (more stable than averaging per-seed ratios when one
+  seed's MSE is small). 95% percentile bootstrap CI: resample seeds with replacement (each seed keeps all 6 scenarios
+  in both profiles), recompute the statistic, 10,000 resamples, RNG seed 0.
+- **Decision rule (approved):** H1 is *supported* if the upper 95% CI bound of `wind_share_MSE` is below 0.5
+  (wind explains less than half of PID's training_range MSE), *rejected* if the lower bound is above 0.5,
+  *inconclusive* otherwise.
+- **Failures (approved).** List every failed flight in `still_air` or `training_range` (scenario, seed, profile,
+  `failure_reason`, decisions flown). The **primary verdict uses all flights** (failed ones included, MSE over what was
+  flown). **Sensitivity analysis:** recompute `wind_share_MSE` and its CI after excluding every seed that has a failure
+  in *either* profile, from *both* profiles (keeps the pairing). Reported next to the primary result; it does not
+  replace it. If the two verdicts differ, say so.
+- **Secondary only:** the same share on RMSE, `(RMSE_tr − RMSE_still) / RMSE_tr` (same pairing and bootstrap),
+  **per-scenario MSE wind shares** (same formula restricted to one scenario, ratio of sums over seeds, seed bootstrap
+  CI), and the paired RMSE difference. They cannot change the H1 verdict.
+- **Pre-registered sanity check (hover).** The `hover` reference is a fixed point, so in still air PID only corrects
+  the small random start offset (±0.1 m, ±3° roll/pitch, ±5° yaw): its still-air MSE should be near 0 and its MSE
+  wind share near 1. **If hover's MSE wind share is below 0.8, the measurement is flagged as suspect, and H1 is not
+  interpreted** until the cause is found (e.g. still air not actually calm, or a start transient dominating).
+  Reported: hover still-air MSE, training_range MSE and share, with CI.
+- **Interpretation notes (fixed in advance):**
+  - RMSE-based shares *understate* wind's contribution: independent error sources add in squares
+    (MSE_total ≈ MSE_lag + MSE_wind), so square roots compress the wind part. Example: lag 0.4 m RMS plus
+    independent wind 0.3 m RMS gives 0.5 m total; the RMSE share is 0.2 but the MSE share is 0.36. That is why the
+    primary statistic uses MSE.
+  - Interaction counts as wind: any extra error from wind *combined with* lag (e.g. a headwind that increases
+    lag on a fast segment) is part of `M_training_range − M_still_air`, so it is attributed to wind.
+  - Negative values are kept as they are (never clipped to 0). Wind can reduce error (e.g. a tailwind offsetting
+    lag), and clipping would bias the share upward.
+- Run on the M2.3 pilot (team's 10 seeds) and confirmed on all seeds in M2.4. The M2.4 result is the one reported.
+
+**Per-flight diagnostics** (M2.3 and M2.4; instrumentation in our runner only, no shared-file edits). Recorded at
+every physics step by wrapping `env.sim.step_command` on the instance (as in M2.2), using `env.core.desired` and the
+PID part of the command (`final − core.correction`, which is the whole command for PID):
+- `accel_cap_binding_frac`: fraction of physics steps where the PID's horizontal demand is at the cap
+  (`ReferencePID.acceleration_capped(...)`, the shared helper, ≥ 98% of the cap) **and** the cap in force is
+  `PID_ACCELERATION_CAP` (1.5 m/s²).
+- `tilt_cap_binding_frac`: same, but the cap in force is the tilt term `vertical_accel × tan(MAX_TILT_DEGREES)` (< 1.5).
+  The two fractions do not overlap; their sum is the helper's "capped" fraction.
+- `along_track_lag_mean` [m]: mean of `(p_ref − p) · v_ref / |v_ref|` over physics steps with `|v_ref| > 0.05 m/s`
+  (positive = drone behind the reference), plus the number of steps it was computed on.
+  Also `along_track_lag_rms` and `cross_track_component_rms` (the part of `p_ref − p` perpendicular to `v_ref`),
+  so RMSE can be split into "behind" vs "beside" the reference.
+These are diagnostics, not endpoints: they explain H1 and are not used to rank controllers.
+
 ## M2.3 Still air vs wind: separate tracking lag from wind effect
 
 **Why:** PID error in wind = error PID already has in still air on that route (lag, cornering, drag from its own
@@ -127,7 +203,7 @@ Outputs: `results\m2\still_vs_wind.{json,csv}` and summary.
 ## M2.4 Full PID-only baseline table
 
 The protocol (section E) run end to end with controller `pid` (= env path A, proven equal to pure PID in M2.2):
-6 scenarios × (still_air + 3 team profiles) × 30 seeds = 720 flights (fewer if D3 reduces the seeds).
+6 scenarios × (still_air + 3 team profiles) × 30 seeds = 720 flights (D3).
 D4 is decided after this step.
 M2.3's still-air vs wind table is then recomputed on all 30 seeds from these same flights (nothing flown twice).
 Output exactly in the format later PPO/SAC runs will use: `results\eval\eval-v1\pid\{results.json, flights.csv,
@@ -149,7 +225,7 @@ Commit with explicit paths (with approval). Update README and CLAUDE.md status �
 Applies unchanged to **PID, PID + SAC and PID + PPO**. Changing anything below makes a new version (v2) and
 requires re-running every controller on it.
 
-**E1. Realizations.** Eval seeds `300000..300029` (D3, provisional until M2.1), disjoint from the training seeds and
+**E1. Realizations.** Eval seeds `300000..300029` (D3, decided 2026-11-13), disjoint from the training seeds and
 from the validation seeds (E6).
 A seed fixes route, start state and wind. Route stage `full` for every scenario. Scenarios (route_type):
 hover, straight, turns (waypoints), altitude, circle, figure_eight. Every controller flies every
@@ -172,6 +248,8 @@ completion from `COMPLETION`. Policies are frozen and **deterministic** (SAC: ac
 and `cross_track_max` (geometric), `max_deviation`, `completed`, `completion_time`, `failed` +
 `failure_reason`, `collided` (too_low), `saturation_rate`, `residual_norm`, `residual_change`
 (0 for PID). Failed flights are **never dropped**; their metrics cover what was flown.
+Diagnostics (not endpoints), recorded for every controller: `accel_cap_binding_frac`, `tilt_cap_binding_frac`,
+`along_track_lag_mean`, `along_track_lag_rms`, `cross_track_component_rms` (definitions in the pre-registration block above M2.3).
 
 **E5. Summaries.**
 - **Primary endpoint (pre-registered):** for each wind profile, the **mean position RMSE across the 6 scenarios**
@@ -202,6 +280,12 @@ then evaluated once on the eval seeds.
 contract, source commit and `SHARED_MANIFEST` check result, package versions from imported modules, device,
 `total_mass_kg`, wall-clock time and hardware, **and the registered still-air definition (E2)**. Wall-clock time is
 reported per controller and is not a head-to-head comparison.
+
+**E7b. PPO vs SAC: training cost.** Every PPO-vs-SAC comparison reports, for each controller, **both** the number of
+env decisions used in training (exact count, from the run metadata) **and** the wall-clock training hours with the
+hardware and device (e.g. PPO: CPU torch on this PC; SAC: teammate's RTX 4070 SUPER, or ours if retrained). Results are
+compared at equal decisions where checkpoints allow (150k / 400k / 800k / final). Wall-clock is context, not a
+head-to-head score.
 
 **E8. Comparison with the team's published numbers.** Team README §2 rows are compared only for the open scene;
 **their Dijkstra (warehouse) rows are dropped** (D2). Team numbers use 10 seeds; ours on 30 seeds are not directly

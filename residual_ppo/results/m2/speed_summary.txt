@@ -1,0 +1,19 @@
+[M2.1] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[M2.1] registered in memory (D1): {'still_air': {'no_wind_probability': 1.0, 'mean_speed_range': (2.0, 7.0), 'gust_scale_range': (0.5, 1.0), 'direction_rate_range': (0.0, 0.2)}}
+[M2.1] startup: SimulationApp 7.2 s, env build 1.3 s
+[M2.1] warm-up 200 decisions (discarded)
+[M2.1] training_range  repeat 0: 48.94 decisions/s, 587.3 physics steps/s, 12 episodes ended (0 failures), reset mean 4.0 ms
+[M2.1] training_range  repeat 1: 49.19 decisions/s, 590.3 physics steps/s, 12 episodes ended (0 failures), reset mean 3.9 ms
+[M2.1] training_range  repeat 2: 49.19 decisions/s, 590.3 physics steps/s, 11 episodes ended (0 failures), reset mean 4.0 ms
+[M2.1] training_range  mean 49.11 decisions/s (min 48.94, max 49.19); all repeats within +-10% of mean: True
+[M2.1] still_air       repeat 0: 49.33 decisions/s, 591.9 physics steps/s, 13 episodes ended (0 failures), reset mean 2.6 ms
+[M2.1] still_air       repeat 1: 49.24 decisions/s, 590.8 physics steps/s, 10 episodes ended (0 failures), reset mean 3.5 ms
+[M2.1] still_air       repeat 2: 49.01 decisions/s, 588.1 physics steps/s, 13 episodes ended (0 failures), reset mean 2.8 ms
+[M2.1] still_air       mean 49.19 decisions/s (min 49.01, max 49.33); all repeats within +-10% of mean: True
+[M2.1] policy forward (untrained 128-256-256-4 Tanh MLP, cpu, no_grad; lower bound for SB3 predict): 0.027 ms/decision; SB3 get_device('auto') = cpu
+[M2.1] eval caps (30 seeds x 6 scenarios): total 28920 decisions per profile; per scenario mean hover 65, straight 134, turns 173, altitude 84, circle 209, figure_eight 299
+[M2.1] still_air vs training_range same route/start/caps and zero still-air wind on all 180: True
+[M2.1] ESTIMATE training, 2,000,000 decisions: env 11.3 h + policy inference 0.02 h + 977 PPO updates x t_update (unmeasured; M3 smoke run)
+[M2.1] ESTIMATE eval, 720 flights (4 profiles x 6 scenarios x 30 seeds): <= 0.66 h per controller (upper bound: no early failures); per 10 seeds 0.22 h; per seed 1.3 min
+[M2.1] written: residual_ppo/results/m2/speed.json, speed_summary.txt
+[M2.1] RESULT: DONE
