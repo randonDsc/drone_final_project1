@@ -4,7 +4,7 @@
   "source_path": "drone_code",
   "source_commit": "61d2722b260dcb467ab487cb24bf22f61d410a65",
   "identity": "git blob id (git hash-object, autocrlf-normalized)",
-  "copied_at": "2026-11-13T05:11:16+00:00",
+  "copied_at": "2026-11-13T05:30:06+00:00",
   "files": {
     "path_sac_env.py": "2a19c77eb4b503e83c649c0fcfa704aff852ab2d",
     "path_sac_policy.py": "8762796985f2547482b3c961f450fe6569dead8a",
@@ -23,7 +23,8 @@
     "wind.py": "d6eaf33bfba3835fb2b394651bfa2000719590af",
     "drone_diagnostics.py": "43d1b6628dbaf7817d6357bf23fe6bb83110924c",
     "hover_sac_policy.py": "489ef3d0f96270518ee84c7c92731f985c762575",
-    "hover_sac_config.py": "de4fbe1c1eae580e5a09e2cb515319cd16ddf012"
+    "hover_sac_config.py": "de4fbe1c1eae580e5a09e2cb515319cd16ddf012",
+    "tests/test_path_sac.py": "5a621658e12c7d93ddf3b7feb1432eeafa4a440d"
   },
   "assets": {
     "sim_scene/dij3d_boxes.usd": {

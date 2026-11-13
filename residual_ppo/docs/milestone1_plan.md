@@ -147,6 +147,12 @@ and that imports resolve to `residual_ppo\`, before paying Isaac's startup cost.
    & "<isaac python.bat>" -m unittest discover -s tests -p "test_*.py" -v
    ```
 **Pass:** test_path_sac 15/15 and import-path tests OK in both. (Already observed 15/15 in a Linux replica: re-confirm on Windows.)
+Also: with the old `drone_code\` put on `PYTHONPATH`, `test_no_drone_code_on_sys_path` must FAIL (proves the guard works).
+
+Passed 2026-11-12 (done after M1.5, by Claire's instruction). `test_path_sac.py` written via sync_shared.py (blob 5a62165,
+manifest key `tests/test_path_sac.py`); `--check` 21/21 OK (18 modules + 1 test + 2 assets). Normal venv (Python 3.13.15,
+NumPy 2.5.4): 22/22 OK. Isaac python.bat without SimulationApp (Python 3.12.14, NumPy 2.3.1): 22/22 OK.
+Negative check: `PYTHONPATH=drone_code` → 1 failure (`test_no_drone_code_on_sys_path`), exit 1, as intended.
 
 ## M1.5 Isaac environment smoke test
 
@@ -187,7 +193,7 @@ With zero action under PID, an early failure would be a red flag to investigate 
 
 ## M1.6 Close out
 
-- `sync_shared.py --check` still 20/20 OK (proves nothing shared was edited while debugging).
+- `sync_shared.py --check` still 21/21 OK (18 modules + 1 test + 2 assets; proves nothing shared was edited while debugging).
 - Commit (explicit paths): tools, manifest, shared modules, tests, docs, config snapshot. Don't commit the smoke log unless Claire wants it.
 - Update the README in `residual_ppo` (what's shared, from which commit, how to verify) and the "Current status" in CLAUDE.md → M2.
 

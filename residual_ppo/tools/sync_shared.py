@@ -3,11 +3,13 @@
 Identity of a shared file = its git blob ID at the source commit, NOT its on-disk SHA-256.
 core.autocrlf=true makes working copies CRLF, so on-disk hashes differ from the LF bytes in git
 even when the content is identical; `git hash-object` normalizes line endings first.
-See docs/milestone1_plan.md, steps M1.2 and M1.3.
+See docs/milestone1_plan.md, steps M1.2, M1.3 and M1.4.
 
-Two kinds of entries:
-  modules  team drone_code/<name>.py      -> residual_ppo/<name>.py      (mode "copy")
-  assets   team <repo-relative path>      -> same repo-relative path     (mode "copy" or "check")
+Three kinds of entries:
+  modules  team drone_code/<name>.py        -> residual_ppo/<name>.py        (mode "copy")
+  tests    team drone_code/tests/<name>.py  -> residual_ppo/tests/<name>.py  (mode "copy")
+  assets   team <repo-relative path>        -> same repo-relative path       (mode "copy" or "check")
+Modules and tests are recorded under "files" (tests keyed "tests/<name>.py"); assets under "assets".
 A "check" entry is never written, not even with --force: it must already match the source.
 
 Usage (normal venv is enough; standard library only):
@@ -46,6 +48,9 @@ MODULES = [
     "hover_sac_policy", "hover_sac_config",
 ]
 
+# Team unit tests copied verbatim (M1.4). Each inserts parents[1] (= residual_ppo) on sys.path.
+TESTS = ["test_path_sac"]
+
 # Local files of the scene's dependency closure (UsdUtils.ComputeAllDependencies on
 # sim_scene/dij3d_boxes.usd at 61d2722). Repo-relative; the USD-relative reference
 # ../sim_asset/iris.usd only works at these exact locations. Remote S3 assets cannot be pinned here.
@@ -58,7 +63,7 @@ ASSETS = {
 @dataclass(frozen=True)
 class Entry:
     key: str        # manifest key
-    kind: str       # "module" or "asset"
+    kind: str       # "module", "test" or "asset"
     mode: str       # "copy" or "check"
     dest_rel: str   # path relative to DEST_REPO (posix)
     src_rel: str    # path inside the source commit (posix)
@@ -66,6 +71,8 @@ class Entry:
 
 ENTRIES = (
     [Entry(f"{m}.py", "module", "copy", f"{DEST_PREFIX}/{m}.py", f"{SOURCE_DIR}/{m}.py") for m in MODULES]
+    + [Entry(f"tests/{t}.py", "test", "copy", f"{DEST_PREFIX}/tests/{t}.py", f"{SOURCE_DIR}/tests/{t}.py")
+       for t in TESTS]
     + [Entry(p, "asset", mode, p, p) for p, mode in ASSETS.items()]
 )
 
@@ -125,7 +132,7 @@ def load_manifest() -> dict | None:
 
 
 def manifest_blob(manifest: dict, entry: Entry) -> str | None:
-    if entry.kind == "module":
+    if entry.kind != "asset":
         return manifest.get("files", {}).get(entry.key)
     rec = manifest.get("assets", {}).get(entry.key)
     return rec.get("blob_id") if isinstance(rec, dict) else None
@@ -143,18 +150,18 @@ def sync(force: bool) -> int:
     if check_bad:
         print(f"\nREFUSING: {len(check_bad)} check-only file(s) are missing or differ (never written, even with --force):")
         for e, src, loc in check_bad:
-            print(f"  {e.dest_rel:<34} local {short(loc)}  source {short(src)}")
+            print(f"  {e.dest_rel:<36} local {short(loc)}  source {short(src)}")
         print("Nothing was written.")
         return 1
     if conflicts and not force:
         print(f"\nREFUSING: {len(conflicts)} existing file(s) differ from the source commit:")
         for e, src, loc in conflicts:
-            print(f"  {e.dest_rel:<34} local {short(loc)}  source {short(src)}")
+            print(f"  {e.dest_rel:<36} local {short(loc)}  source {short(src)}")
         print("Nothing was written. A shared file must never be edited; "
               "re-run with --force to restore the source bytes.")
         return 1
 
-    print(f"\n{'path':<34} {'mode':<6} {'source blob':<13} result")
+    print(f"\n{'path':<36} {'mode':<6} {'source blob':<13} result")
     for e, src, loc in rows:
         if loc == src:
             result = "unchanged (already identical)" if e.mode == "copy" else "verified identical (check only)"
@@ -167,9 +174,9 @@ def sync(force: bool) -> int:
             if after != src:
                 raise SyncError(f"{e.dest_rel}: wrote source bytes but hash-object gives {after}, expected {src}")
             result = "written" if loc is None else f"OVERWRITTEN with --force (was {short(loc)})"
-        print(f"{e.dest_rel:<34} {e.mode:<6} {short(src):<13} {result}")
+        print(f"{e.dest_rel:<36} {e.mode:<6} {short(src):<13} {result}")
 
-    files = {e.key: s for e, s, _ in rows if e.kind == "module"}
+    files = {e.key: s for e, s, _ in rows if e.kind != "asset"}
     assets = {e.key: {"blob_id": s, "mode": e.mode} for e, s, _ in rows if e.kind == "asset"}
     old = load_manifest()
     if old and old.get("source_commit") == commit and old.get("files") == files and old.get("assets") == assets:
@@ -205,7 +212,7 @@ def check() -> int:
     if manifest.get("identity") != IDENTITY:
         print(f"FAIL: manifest identity {manifest.get('identity')!r} != {IDENTITY!r}")
         problems += 1
-    known_files = {e.key for e in ENTRIES if e.kind == "module"}
+    known_files = {e.key for e in ENTRIES if e.kind != "asset"}
     known_assets = {e.key for e in ENTRIES if e.kind == "asset"}
     extra = [k for k in manifest.get("files", {}) if k not in known_files]
     extra += [k for k in manifest.get("assets", {}) if k not in known_assets]
@@ -217,7 +224,7 @@ def check() -> int:
             print(f"FAIL: manifest mode for {k!r} is {rec.get('mode')!r}, expected {ASSETS[k]!r}")
             problems += 1
 
-    print(f"{'path':<34} {'manifest':<13} {'local':<13} {'source':<13} status")
+    print(f"{'path':<36} {'manifest':<13} {'local':<13} {'source':<13} status")
     n_ok = 0
     for e in ENTRIES:
         man = manifest_blob(manifest, e)
@@ -236,11 +243,12 @@ def check() -> int:
             status = "FAIL (file missing)"
         else:
             status = "FAIL (blob mismatch)"
-        print(f"{e.dest_rel:<34} {short(man):<13} {short(loc):<13} {short(src):<13} {status}")
+        print(f"{e.dest_rel:<36} {short(man):<13} {short(loc):<13} {short(src):<13} {status}")
 
     all_ok = problems == 0 and n_ok == len(ENTRIES)
-    n_mod = sum(e.kind == "module" for e in ENTRIES)
-    print(f"\n{n_ok}/{len(ENTRIES)} OK ({n_mod} modules + {len(ENTRIES) - n_mod} assets) -> {'PASS' if all_ok else 'FAIL'}")
+    n = {k: sum(e.kind == k for e in ENTRIES) for k in ("module", "test", "asset")}
+    print(f"\n{n_ok}/{len(ENTRIES)} OK ({n['module']} modules + {n['test']} tests + {n['asset']} assets) "
+          f"-> {'PASS' if all_ok else 'FAIL'}")
     return 0 if all_ok else 1
 
 
