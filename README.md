@@ -547,3 +547,86 @@ The full log of AI-assisted prompts of everyone is in [`AI_USE.md`](AI_USE.md).
 ## 11. License
 
 See [`LICENSE`](LICENSE).
+
+
+## Colin: task 2 wind-change evaluation
+
+`drone_code/eval_wind_events.py` evaluates the existing **path-SAC** controller
+while hovering: unchanged wind, 90/180-degree turns, and speed steps (2 to 6 m/s
+and 6 to 2 m/s). Events occur at 5 seconds in a 20-second flight; gusts continue.
+This is an evaluation experiment, not new training.
+
+From PowerShell in the repository, verify PID first:
+
+```powershell
+& C:\isaacsim\python.bat -B drone_code/eval_wind_events.py --pid-only --seeds 410000 --output runs/wind_events/pid_check
+```
+
+For paired evaluation, obtain the group's path model and matching
+`flight_contract.json` in its run folder, then run:
+
+```powershell
+& C:\isaacsim\python.bat -B drone_code/eval_wind_events.py --model runs/flight_sac/flight1/final_model.zip --seeds 410000 410001 410002 --output runs/wind_events/paired_check
+```
+
+Use a new output folder each time; existing results are never overwritten.
+Add `--gui` to watch, or `--scenarios turn90` for one scenario. Outputs include
+`manifest.json`, source snapshots, per-flight `flights.json`, and trajectory CSVs.
+Recovery means error below 0.1 m for one continuous second after the largest
+post-event error, sampled at 10 Hz. Missing recovery is null, not zero. Failed
+flights remain flagged. These hover tests do not establish moving-route or
+hardware performance; extend to routes after verifying this controlled test.
+
+Pure regression checks (no simulator launch):
+
+```powershell
+& C:\isaacsim\python.bat -B -m unittest discover -s drone_code/tests -p test_wind_events.py -v
+```
+
+
+Task-2 startup avoids creating a temporary empty scene before loading the drone.
+The published baseline remains in `runs/flight_sac/flight1/`; Colin's evaluation
+outputs go under `runs/flight_sac/flight3/evaluation/`. This does **not** create a
+new trained flight3 model. Flight4 and flight5 remain available for later runs.
+
+Reproduce the paired three-seed pilot (use a fresh output folder):
+
+```powershell
+& C:\isaacsim\python.bat -u -B drone_code/eval_wind_events.py --seeds 410000 410001 410002 --output runs/flight_sac/flight3/evaluation/wind_events_baseline_02
+& C:\isaacsim\python.bat -B drone_code/summarize_wind_events.py runs/flight_sac/flight3/evaluation/wind_events_baseline_02 --plot
+```
+
+The summary validates CSV timing, mean-wind schedules and recorded metrics before
+writing `summary.csv`, `paired.csv`, and `error_over_time.png`. Negative paired
+RMSE differences favor SAC. The plot shows individual flights and across-seed
+means (no mean for groups with failures). Recovery is the conservative post-peak
+measure above; `stayed_below_threshold` separately counts flights that never
+exceeded 0.1 m after the event. Three seeds are a pilot, not a significance claim.
+
+
+### New seeds and moving trajectories
+
+The original pilot used seeds 410000-410002. The next batch uses 410003-410007;
+repeated scenarios or controller runs do not create additional independent seeds.
+Run hover first, then straight and waypoint routes (one simulator at a time):
+
+```powershell
+& C:\isaacsim\python.bat -u -B drone_code/eval_wind_events.py --seeds 410003 410004 410005 410006 410007 --output runs/flight_sac/flight3/evaluation/hover_new_seeds_02
+& C:\isaacsim\python.bat -u -B drone_code/eval_wind_events.py --route straight --seeds 410003 410004 410005 410006 410007 --output runs/flight_sac/flight3/evaluation/straight_new_seeds_02
+& C:\isaacsim\python.bat -u -B drone_code/eval_wind_events.py --route waypoints --seeds 410003 410004 410005 410006 410007 --output runs/flight_sac/flight3/evaluation/waypoints_new_seeds_02
+```
+
+Each command runs 50 flights: five seeds, five wind scenarios, two controllers.
+These are 20-second observation windows; some routes finish and hold their final
+position within that window, while longer routes may be truncated. They are not
+full-route completion tests. Moving-route events occur 35% into the available
+motion, with at least two seconds of follow-up, and must have reference speed
+above 0.05 m/s. `--event-s` can override that timing if the target is moving then.
+Hover retains its fixed 5-second event. Wind direction is world-relative.
+
+The CSVs now include actual/target XYZ and reference speed. `reference_<seed>.json`
+records path geometry, timing and event speed. The same source/model/PID are used
+for both controllers. Summarize any completed folder using
+`drone_code/summarize_wind_events.py <folder> --plot` as above. Plots are aligned
+to event time (zero), and tables separately report moving-only RMSE so endpoint
+hovering does not hide tracking error. Keep hover and each route type separate.

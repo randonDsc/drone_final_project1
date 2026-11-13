@@ -96,9 +96,16 @@ class PathSacEnv(gym.Env):
         # Nothing here depends on the policy, so a seed reproduces all of them.
         wind = hover_task.sample_stage_wind(self.np_random, profile)
 
+        route_settings = dict(stage["route"])
+        if "hover_seconds" in options:
+            seconds = float(options["hover_seconds"])
+            if options.get("route_type") != "hover" or not np.isfinite(seconds) or seconds <= 0:
+                raise ValueError("hover_seconds requires a positive duration and route_type=hover")
+            route_settings["hover_seconds_range"] = (seconds, seconds)
+
         self.route_type, reference = sample_reference(
             self.np_random,
-            stage["route"],
+            route_settings,
             path_sac_config.EPISODE,
             options.get("route_type"),
         )

@@ -467,6 +467,7 @@ class PathCore:
         self.time = 0.0
         self.saturated = False
         self.direction_rate = 0.0
+        self.wind_event = None  # Optional task-2 schedule; cleared between flights.
         self.action = np.zeros(4, dtype=np.float32)
         self.previous_action = self.action.copy()
         self.correction = np.zeros(4)
@@ -551,7 +552,9 @@ class PathCore:
         """One physics step; returns whether the mixer clipped a rotor."""
         sim = self.sim
 
-        if self.direction_rate != 0.0:
+        if self.wind_event is not None:
+            sim.wind.mean_wind = self.wind_event.at(self.time)
+        elif self.direction_rate != 0.0:
             # Turn the mean wind; gusts keep fluctuating around it.
             angle = self.direction_rate * sim.dt
             c, s = np.cos(angle), np.sin(angle)
