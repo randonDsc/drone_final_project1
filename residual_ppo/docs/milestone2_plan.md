@@ -129,6 +129,40 @@ Runs (in this order; D6):
 Outputs: `results\m2\zero_residual.json` and a summary.
 **Pass:** the pre-registered D6 tolerance met on every run; the guard test differs; same termination step and reason everywhere.
 
+**M2.2 result (2026-11-13, Confirmed): PASS, bit-exact.** Runner `evaluation\zero_residual_check.py` (modes `floor`,
+`tolerance`, `compare`, `supplementary`). Checks 21/21 before every Isaac run; all 18 shared modules resolved inside
+`residual_ppo\`; protocol hash `18658b9c…` recorded in every results file; total_mass_kg 1.618614, HESAI 0 kg;
+Isaac 6.2.0-rc.14, numpy 2.3.1, gymnasium 1.2.3, SB3 2.7.0, torch 2.14.1+cpu (torch imported before SimulationApp).
+- *Compared at every physics step* (instance wrapper on `env.sim.step_command`): pre-step position, orientation,
+  linear and angular velocity; PID integrators (height, xy, attitude) after `integrate`; wrench to the mixer; rotor
+  speeds from the mixer; saturation flag; wind force/torque; mean wind; plus the post-episode state and the episode
+  fields (physics steps, decisions, end reason, completion, route_seconds, wind_seed). Path B stubs `core.observe` on
+  the instance during its reset, so its PID is never read with dt=0.
+- *Run 1, noise floor:* A twice per cell (A,A) on the 36 run-2 cells, in two separate processes. All 4 pairs
+  (within p1, within p2, across processes ×2) bitwise identical on 36/36 cells; one trace hash `e0b25e6d…` for all four
+  runs. **Floor = 0 for every quantity → tolerance bit-exact (D6).** `results\m2\zero_residual_tolerance.json`.
+- *Run 2, equivalence:* A vs B (A,B per cell), 36 cells, 72,000 physics steps: **max |diff| = 0 for every quantity,
+  bitwise identical on 36/36, same end (all truncated) and step everywhere.** A called `observe()` 1 + decisions times
+  per flight, B never. This proves (empirically) that `pid.read` with dt=0 leaves PID state untouched.
+- *Run 3, guard:* thrust action 1e-6 and 1e-3 at decision 0 only, 2 cells: detected 4/4, first difference at physics
+  step 0. Even 1e-6 (+8e-7 N) changes the physics (position up to ~3e-5 m, rotor speeds ~1e-3 rad/s), not only the command.
+- *Supplementary, added after the pre-registered run, same bit-exact tolerance* (Claire, 2026-11-13; run 2 had no
+  failed flight, so the failure-termination branch was untested): A vs B on `outside_range` × 6 scenarios × seeds
+  300000–300002, 18 cells, 15,780 physics steps. **12/18 flights failed (all `out_of_bounds`); every one has the same end
+  reason and decision in A and B and is bitwise identical; all 18 cells pass bit-exact.** Guards with action 1e-6 on
+  roll torque (straight/still_air/300000) and yaw torque (turns/training_range/300000) at decision 0: detected 2/2.
+  `results\m2\zero_residual_supplementary.json`. No tracking metric is computed from any M2.2 trace (seeds overlap the
+  H1 pilot); failure counts here are not compared with anything.
+- *Process note:* the plan said STOP after run 1. Claire's instruction for the session asked for all three runs in one
+  go, so runs 2–3 followed without a stop. The pre-registration still holds: the tolerance file was written
+  (2026-11-13T22:49:00Z) before run 2 started, the comparison refuses to run without it, and `zero_residual.json`
+  records its hash (`sha256_lf` 45f9ff4d…).
+- *Path redaction:* committed JSONs store the Isaac install prefix in `package_files` as `<ISAAC_ROOT>`. In the two
+  files written before that rule, the prefix was replaced afterwards (only those strings changed). The tolerance file's
+  LF hash is a945d764… after redaction; putting the prefix `C:\isaacsim\isaac-sim-standalone-6.2.0-windows-x86_64` back
+  restores 45f9ff4d…, the hash recorded at run time. The supplementary JSON was written already redacted.
+- Raw per-step traces (`results\m2\zero_residual_traces\`, 86 MB+) and Isaac logs are gitignored; their hashes are in the JSON.
+
 ## Pre-registered before any M2.3 run (Claire, 2026-11-12)
 
 **H1.** *On the team's open-scene routes, PID-only RMSE in still air is close to its RMSE in `training_range`, i.e.

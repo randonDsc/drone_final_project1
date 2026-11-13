@@ -1,0 +1,42 @@
+[M2.2] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[M2.2] import paths: all 18 shared modules resolve inside residual_ppo
+[M2.2] startup 8.0 s; decimation 12, dt 0.008333333333333333
+[M2.2] total_mass_kg 1.618614; HESAI {'root': '/World/iris/body/HESAI_XT32_SD10', 'prims': 258, 'rigid_body_prims': 0, 'mass_api_prims': 0, 'hesai_mass_contribution_kg': 0}
+[M2.2] packages {'numpy': '2.3.1', 'gymnasium': '1.2.3', 'stable_baselines3': '2.7.0', 'torch': '2.14.1+cpu'}; isaac 6.2.0-rc.14+release.52805.02189a84.gl
+[M2.2] tolerance file sha256 45f9ff4d47bea299… created 2026-11-13T22:49:00+00:00; BIT-EXACT tolerance
+[M2.2] SUPPLEMENTARY run (added after the pre-registered run; same bit-exact tolerance)
+[M2.2] hover__outside_range__300000             PASS steps [924, 924] end ['truncated', 77] vs ['truncated', 77] bitwise True first diff None
+[M2.2] hover__outside_range__300001             PASS steps [684, 684] end ['truncated', 57] vs ['truncated', 57] bitwise True first diff None
+[M2.2] hover__outside_range__300002             PASS steps [768, 768] end ['truncated', 64] vs ['truncated', 64] bitwise True first diff None
+[M2.2] straight__outside_range__300000          PASS steps [360, 360] end ['out_of_bounds', 30] vs ['out_of_bounds', 30] bitwise True first diff None
+[M2.2] straight__outside_range__300001          PASS steps [444, 444] end ['out_of_bounds', 37] vs ['out_of_bounds', 37] bitwise True first diff None
+[M2.2] straight__outside_range__300002          PASS steps [1944, 1944] end ['truncated', 162] vs ['truncated', 162] bitwise True first diff None
+[M2.2] turns__outside_range__300000             PASS steps [348, 348] end ['out_of_bounds', 29] vs ['out_of_bounds', 29] bitwise True first diff None
+[M2.2] turns__outside_range__300001             PASS steps [456, 456] end ['out_of_bounds', 38] vs ['out_of_bounds', 38] bitwise True first diff None
+[M2.2] turns__outside_range__300002             PASS steps [672, 672] end ['out_of_bounds', 56] vs ['out_of_bounds', 56] bitwise True first diff None
+[M2.2] altitude__outside_range__300000          PASS steps [360, 360] end ['out_of_bounds', 30] vs ['out_of_bounds', 30] bitwise True first diff None
+[M2.2] altitude__outside_range__300001          PASS steps [444, 444] end ['out_of_bounds', 37] vs ['out_of_bounds', 37] bitwise True first diff None
+[M2.2] altitude__outside_range__300002          PASS steps [660, 660] end ['out_of_bounds', 55] vs ['out_of_bounds', 55] bitwise True first diff None
+[M2.2] circle__outside_range__300000            PASS steps [384, 384] end ['out_of_bounds', 32] vs ['out_of_bounds', 32] bitwise True first diff None
+[M2.2] circle__outside_range__300001            PASS steps [2484, 2484] end ['truncated', 207] vs ['truncated', 207] bitwise True first diff None
+[M2.2] circle__outside_range__300002            PASS steps [420, 420] end ['out_of_bounds', 35] vs ['out_of_bounds', 35] bitwise True first diff None
+[M2.2] figure_eight__outside_range__300000      PASS steps [420, 420] end ['out_of_bounds', 35] vs ['out_of_bounds', 35] bitwise True first diff None
+[M2.2] figure_eight__outside_range__300001      PASS steps [3552, 3552] end ['truncated', 296] vs ['truncated', 296] bitwise True first diff None
+[M2.2] figure_eight__outside_range__300002      PASS steps [456, 456] end ['out_of_bounds', 38] vs ['out_of_bounds', 38] bitwise True first diff None
+[M2.2] outside_range: 18 cells, 15780 physics steps; failed flights A 12, B 12; all failed flights same reason+step and bit-exact: True; equivalence PASS
+[M2.2]     failed: straight__outside_range__300000 A ['out_of_bounds', 30] B ['out_of_bounds', 30]
+[M2.2]     failed: straight__outside_range__300001 A ['out_of_bounds', 37] B ['out_of_bounds', 37]
+[M2.2]     failed: turns__outside_range__300000 A ['out_of_bounds', 29] B ['out_of_bounds', 29]
+[M2.2]     failed: turns__outside_range__300001 A ['out_of_bounds', 38] B ['out_of_bounds', 38]
+[M2.2]     failed: turns__outside_range__300002 A ['out_of_bounds', 56] B ['out_of_bounds', 56]
+[M2.2]     failed: altitude__outside_range__300000 A ['out_of_bounds', 30] B ['out_of_bounds', 30]
+[M2.2]     failed: altitude__outside_range__300001 A ['out_of_bounds', 37] B ['out_of_bounds', 37]
+[M2.2]     failed: altitude__outside_range__300002 A ['out_of_bounds', 55] B ['out_of_bounds', 55]
+[M2.2]     failed: circle__outside_range__300000 A ['out_of_bounds', 32] B ['out_of_bounds', 32]
+[M2.2]     failed: circle__outside_range__300002 A ['out_of_bounds', 35] B ['out_of_bounds', 35]
+[M2.2]     failed: figure_eight__outside_range__300000 A ['out_of_bounds', 35] B ['out_of_bounds', 35]
+[M2.2]     failed: figure_eight__outside_range__300002 A ['out_of_bounds', 38] B ['out_of_bounds', 38]
+[M2.2] GUARD straight__still_air__300000 roll_torque action[1]=1e-06 (+5e-08 N*m, decision 0): comparison FAILS (detected); exceeded position 1.91e-05, orientation 8.92e-07, linear_velocity 1.07e-05, angular_velocity 5.22e-06, pid_integrators 0.000103, command 2.75e-05, rotor_speeds 0.000776, wind_force 4.07e-07, wind_torque 3.09e-09, final_state 5.62e-06; first diff step 0
+[M2.2] GUARD turns__training_range__300000 yaw_torque action[3]=1e-06 (+2e-08 N*m, decision 0): comparison FAILS (detected); exceeded position 3.53e-05, orientation 8.48e-07, linear_velocity 2.22e-05, angular_velocity 3.54e-06, pid_integrators 1.8e-05, command 5.25e-05, rotor_speeds 0.00141, wind_force 2.42e-06, wind_torque 2.21e-08, final_state 1.24e-05; first diff step 0
+[M2.2] RESULT M2.2 SUPPLEMENTARY: PASS (equivalence True, same end everywhere True, failed flights 12, guard detected 2/2)
+[M2.2] written: residual_ppo/results/m2/zero_residual_supplementary.json, zero_residual_supplementary_summary.txt

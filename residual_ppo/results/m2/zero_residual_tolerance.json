@@ -1,0 +1,587 @@
+{
+  "created_at": "2026-11-13T22:49:00+00:00",
+  "purpose": "M2.2 run 1: noise floor of the env path (A vs A) and the pre-registered tolerance (D6)",
+  "rule": "D6: tolerance = measured noise floor per quantity (max |diff| over the 4 A-vs-A pairs, 36 cells); bit-exact if the floor is 0. Episode lengths, end reason/step and completion must match exactly. Never loosened afterwards.",
+  "usable": true,
+  "bit_exact": true,
+  "tolerance": {
+    "position": 0.0,
+    "orientation": 0.0,
+    "linear_velocity": 0.0,
+    "angular_velocity": 0.0,
+    "pid_integrators": 0.0,
+    "command": 0.0,
+    "rotor_speeds": 0.0,
+    "saturated": 0.0,
+    "wind_force": 0.0,
+    "wind_torque": 0.0,
+    "mean_wind": 0.0,
+    "final_state": 0.0
+  },
+  "episode_fields_must_match": [
+    "physics_steps",
+    "decisions",
+    "terminated",
+    "truncated",
+    "failure_reason",
+    "completed",
+    "completion_time",
+    "route_seconds",
+    "wind_seed",
+    "wind_mean",
+    "max_decisions"
+  ],
+  "noise_floor": {
+    "position": 0.0,
+    "orientation": 0.0,
+    "linear_velocity": 0.0,
+    "angular_velocity": 0.0,
+    "pid_integrators": 0.0,
+    "command": 0.0,
+    "rotor_speeds": 0.0,
+    "saturated": 0.0,
+    "wind_force": 0.0,
+    "wind_torque": 0.0,
+    "mean_wind": 0.0,
+    "final_state": 0.0
+  },
+  "per_pair": {
+    "within_process_p1": {
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "cells_bitwise_identical": 36,
+      "cells": 36
+    },
+    "within_process_p2": {
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "cells_bitwise_identical": 36,
+      "cells": 36
+    },
+    "cross_process_run1": {
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "cells_bitwise_identical": 36,
+      "cells": 36
+    },
+    "cross_process_run2": {
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "cells_bitwise_identical": 36,
+      "cells": 36
+    }
+  },
+  "floor_problems": [],
+  "trace_sha256": {
+    "p1_r1": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da",
+    "p1_r2": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da",
+    "p2_r1": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da",
+    "p2_r2": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da"
+  },
+  "cells": [
+    [
+      "hover",
+      "still_air",
+      300000
+    ],
+    [
+      "hover",
+      "still_air",
+      300001
+    ],
+    [
+      "hover",
+      "still_air",
+      300002
+    ],
+    [
+      "hover",
+      "training_range",
+      300000
+    ],
+    [
+      "hover",
+      "training_range",
+      300001
+    ],
+    [
+      "hover",
+      "training_range",
+      300002
+    ],
+    [
+      "straight",
+      "still_air",
+      300000
+    ],
+    [
+      "straight",
+      "still_air",
+      300001
+    ],
+    [
+      "straight",
+      "still_air",
+      300002
+    ],
+    [
+      "straight",
+      "training_range",
+      300000
+    ],
+    [
+      "straight",
+      "training_range",
+      300001
+    ],
+    [
+      "straight",
+      "training_range",
+      300002
+    ],
+    [
+      "turns",
+      "still_air",
+      300000
+    ],
+    [
+      "turns",
+      "still_air",
+      300001
+    ],
+    [
+      "turns",
+      "still_air",
+      300002
+    ],
+    [
+      "turns",
+      "training_range",
+      300000
+    ],
+    [
+      "turns",
+      "training_range",
+      300001
+    ],
+    [
+      "turns",
+      "training_range",
+      300002
+    ],
+    [
+      "altitude",
+      "still_air",
+      300000
+    ],
+    [
+      "altitude",
+      "still_air",
+      300001
+    ],
+    [
+      "altitude",
+      "still_air",
+      300002
+    ],
+    [
+      "altitude",
+      "training_range",
+      300000
+    ],
+    [
+      "altitude",
+      "training_range",
+      300001
+    ],
+    [
+      "altitude",
+      "training_range",
+      300002
+    ],
+    [
+      "circle",
+      "still_air",
+      300000
+    ],
+    [
+      "circle",
+      "still_air",
+      300001
+    ],
+    [
+      "circle",
+      "still_air",
+      300002
+    ],
+    [
+      "circle",
+      "training_range",
+      300000
+    ],
+    [
+      "circle",
+      "training_range",
+      300001
+    ],
+    [
+      "circle",
+      "training_range",
+      300002
+    ],
+    [
+      "figure_eight",
+      "still_air",
+      300000
+    ],
+    [
+      "figure_eight",
+      "still_air",
+      300001
+    ],
+    [
+      "figure_eight",
+      "still_air",
+      300002
+    ],
+    [
+      "figure_eight",
+      "training_range",
+      300000
+    ],
+    [
+      "figure_eight",
+      "training_range",
+      300001
+    ],
+    [
+      "figure_eight",
+      "training_range",
+      300002
+    ]
+  ],
+  "row_layout": [
+    [
+      "position",
+      3
+    ],
+    [
+      "orientation",
+      4
+    ],
+    [
+      "linear_velocity",
+      3
+    ],
+    [
+      "angular_velocity",
+      3
+    ],
+    [
+      "pid_integrators",
+      6
+    ],
+    [
+      "command",
+      4
+    ],
+    [
+      "rotor_speeds",
+      4
+    ],
+    [
+      "saturated",
+      1
+    ],
+    [
+      "wind_force",
+      3
+    ],
+    [
+      "wind_torque",
+      3
+    ],
+    [
+      "mean_wind",
+      3
+    ]
+  ],
+  "protocol": {
+    "version": "eval-v1",
+    "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+    "eval_seeds": [
+      300000,
+      300029,
+      30
+    ],
+    "validation_seeds": [
+      400000,
+      400009,
+      10
+    ],
+    "route_stage": "full",
+    "scenarios": {
+      "hover": "hover",
+      "straight": "straight",
+      "turns": "waypoints",
+      "altitude": "altitude",
+      "circle": "circle",
+      "figure_eight": "figure_eight"
+    },
+    "team_profiles": {
+      "training_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      },
+      "unseen_gusts": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          2.0,
+          6.0
+        ],
+        "gust_scale_range": [
+          1.2,
+          1.5
+        ],
+        "direction_rate_range": [
+          0.1,
+          0.3
+        ],
+        "gust_timescale": 0.7,
+        "local_gust_timescale": 0.15
+      },
+      "outside_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          8.0,
+          10.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    },
+    "our_profiles": {
+      "still_air": {
+        "no_wind_probability": 1.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    }
+  },
+  "protocol_hash_ok": true,
+  "isaac_runs": {
+    "p1": {
+      "mode": "floor",
+      "tag": "p1",
+      "created_at": "2026-11-13T22:40:02+00:00",
+      "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+      "git": {
+        "head": "c58075f468ac0f869844d96491aea9a35200e951",
+        "branch": "claire/drone-simulation",
+        "residual_ppo_status": [
+          "M residual_ppo/.gitignore",
+          "?? residual_ppo/evaluation/zero_residual_check.py"
+        ]
+      },
+      "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+      "registered_profiles": {
+        "still_air": {
+          "no_wind_probability": 1.0,
+          "mean_speed_range": [
+            2.0,
+            7.0
+          ],
+          "gust_scale_range": [
+            0.5,
+            1.0
+          ],
+          "direction_rate_range": [
+            0.0,
+            0.2
+          ]
+        }
+      },
+      "python": "3.12.14",
+      "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+      "packages": {
+        "numpy": "2.3.1",
+        "gymnasium": "1.2.3",
+        "stable_baselines3": "2.7.0",
+        "torch": "2.14.1+cpu"
+      },
+      "package_files": {
+        "numpy": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+        "torch": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py"
+      },
+      "torch_cuda_available": false,
+      "total_mass_kg": 1.6186144351959229,
+      "hesai": {
+        "root": "/World/iris/body/HESAI_XT32_SD10",
+        "prims": 258,
+        "rigid_body_prims": 0,
+        "mass_api_prims": 0,
+        "hesai_mass_contribution_kg": 0
+      },
+      "decimation": 12,
+      "physics_dt": 0.008333333333333333,
+      "residual_limits": [
+        0.8,
+        0.05,
+        0.03,
+        0.02
+      ],
+      "wall_clock_s": 248.0625703999831,
+      "trace_sha256": {
+        "r1": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da",
+        "r2": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da"
+      }
+    },
+    "p2": {
+      "mode": "floor",
+      "tag": "p2",
+      "created_at": "2026-11-13T22:44:34+00:00",
+      "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+      "git": {
+        "head": "c58075f468ac0f869844d96491aea9a35200e951",
+        "branch": "claire/drone-simulation",
+        "residual_ppo_status": [
+          "M residual_ppo/.gitignore",
+          "?? residual_ppo/evaluation/zero_residual_check.py",
+          "?? residual_ppo/results/m2/zero_residual_floor_p1_summary.txt"
+        ]
+      },
+      "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+      "registered_profiles": {
+        "still_air": {
+          "no_wind_probability": 1.0,
+          "mean_speed_range": [
+            2.0,
+            7.0
+          ],
+          "gust_scale_range": [
+            0.5,
+            1.0
+          ],
+          "direction_rate_range": [
+            0.0,
+            0.2
+          ]
+        }
+      },
+      "python": "3.12.14",
+      "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+      "packages": {
+        "numpy": "2.3.1",
+        "gymnasium": "1.2.3",
+        "stable_baselines3": "2.7.0",
+        "torch": "2.14.1+cpu"
+      },
+      "package_files": {
+        "numpy": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+        "torch": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py"
+      },
+      "torch_cuda_available": false,
+      "total_mass_kg": 1.6186144351959229,
+      "hesai": {
+        "root": "/World/iris/body/HESAI_XT32_SD10",
+        "prims": 258,
+        "rigid_body_prims": 0,
+        "mass_api_prims": 0,
+        "hesai_mass_contribution_kg": 0
+      },
+      "decimation": 12,
+      "physics_dt": 0.008333333333333333,
+      "residual_limits": [
+        0.8,
+        0.05,
+        0.03,
+        0.02
+      ],
+      "wall_clock_s": 246.9921600999951,
+      "trace_sha256": {
+        "r1": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da",
+        "r2": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da"
+      }
+    }
+  },
+  "tolerance_computed_with": {
+    "python": "3.12.14",
+    "numpy": "2.3.1",
+    "executable": "Isaac python.bat (no SimulationApp)"
+  }
+}

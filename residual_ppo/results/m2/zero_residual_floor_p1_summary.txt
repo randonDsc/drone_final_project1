@@ -1,0 +1,43 @@
+[M2.2] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[M2.2] import paths: all 18 shared modules resolve inside residual_ppo
+[M2.2] startup 8.6 s; decimation 12, dt 0.008333333333333333
+[M2.2] total_mass_kg 1.618614; HESAI {'root': '/World/iris/body/HESAI_XT32_SD10', 'prims': 258, 'rigid_body_prims': 0, 'mass_api_prims': 0, 'hesai_mass_contribution_kg': 0}
+[M2.2] packages {'numpy': '2.3.1', 'gymnasium': '1.2.3', 'stable_baselines3': '2.7.0', 'torch': '2.14.1+cpu'}; isaac 6.2.0-rc.14+release.52805.02189a84.gl
+[M2.2] hover__still_air__300000                 steps   924 end truncated@77 observe 78; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] hover__still_air__300001                 steps   684 end truncated@57 observe 58; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] hover__still_air__300002                 steps   768 end truncated@64 observe 65; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] hover__training_range__300000            steps   924 end truncated@77 observe 78; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] hover__training_range__300001            steps   684 end truncated@57 observe 58; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] hover__training_range__300002            steps   768 end truncated@64 observe 65; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] straight__still_air__300000              steps  1920 end truncated@160 observe 161; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] straight__still_air__300001              steps  2376 end truncated@198 observe 199; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] straight__still_air__300002              steps  1944 end truncated@162 observe 163; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] straight__training_range__300000         steps  1920 end truncated@160 observe 161; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] straight__training_range__300001         steps  2376 end truncated@198 observe 199; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] straight__training_range__300002         steps  1944 end truncated@162 observe 163; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] turns__still_air__300000                 steps  2208 end truncated@184 observe 185; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] turns__still_air__300001                 steps  2772 end truncated@231 observe 232; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] turns__still_air__300002                 steps  2244 end truncated@187 observe 188; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] turns__training_range__300000            steps  2208 end truncated@184 observe 185; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] turns__training_range__300001            steps  2772 end truncated@231 observe 232; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] turns__training_range__300002            steps  2244 end truncated@187 observe 188; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] altitude__still_air__300000              steps  1080 end truncated@90 observe 91; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] altitude__still_air__300001              steps  1164 end truncated@97 observe 98; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] altitude__still_air__300002              steps  1092 end truncated@91 observe 92; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] altitude__training_range__300000         steps  1080 end truncated@90 observe 91; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] altitude__training_range__300001         steps  1164 end truncated@97 observe 98; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] altitude__training_range__300002         steps  1092 end truncated@91 observe 92; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] circle__still_air__300000                steps  2364 end truncated@197 observe 198; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] circle__still_air__300001                steps  2484 end truncated@207 observe 208; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] circle__still_air__300002                steps  2076 end truncated@173 observe 174; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] circle__training_range__300000           steps  2364 end truncated@197 observe 198; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] circle__training_range__300001           steps  2484 end truncated@207 observe 208; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] circle__training_range__300002           steps  2076 end truncated@173 observe 174; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] figure_eight__still_air__300000          steps  3432 end truncated@286 observe 287; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] figure_eight__still_air__300001          steps  3552 end truncated@296 observe 297; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] figure_eight__still_air__300002          steps  2916 end truncated@243 observe 244; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] figure_eight__training_range__300000     steps  3432 end truncated@286 observe 287; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] figure_eight__training_range__300001     steps  3552 end truncated@296 observe 297; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] figure_eight__training_range__300002     steps  2916 end truncated@243 observe 244; r1 vs r2 bitwise True max|dpos| 0
+[M2.2] trace sha256: {'r1': 'e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da', 'r2': 'e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da'}
+[M2.2] written: residual_ppo/results/m2/zero_residual_traces/floor_p1.npz/.json (gitignored)

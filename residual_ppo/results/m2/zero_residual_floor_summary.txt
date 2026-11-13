@@ -1,0 +1,9 @@
+[M2.2] mode tolerance: noise floor from floor_p1 / floor_p2 (A twice per cell, two processes)
+[M2.2] within_process_p1    bitwise identical cells 36/36; max |diff| position 0, orientation 0, linear_velocity 0, angular_velocity 0, pid_integrators 0, command 0, rotor_speeds 0, saturated 0, wind_force 0, wind_torque 0, mean_wind 0, final_state 0
+[M2.2] within_process_p2    bitwise identical cells 36/36; max |diff| position 0, orientation 0, linear_velocity 0, angular_velocity 0, pid_integrators 0, command 0, rotor_speeds 0, saturated 0, wind_force 0, wind_torque 0, mean_wind 0, final_state 0
+[M2.2] cross_process_run1   bitwise identical cells 36/36; max |diff| position 0, orientation 0, linear_velocity 0, angular_velocity 0, pid_integrators 0, command 0, rotor_speeds 0, saturated 0, wind_force 0, wind_torque 0, mean_wind 0, final_state 0
+[M2.2] cross_process_run2   bitwise identical cells 36/36; max |diff| position 0, orientation 0, linear_velocity 0, angular_velocity 0, pid_integrators 0, command 0, rotor_speeds 0, saturated 0, wind_force 0, wind_torque 0, mean_wind 0, final_state 0
+[M2.2] trace sha256 (all cells): p1_r1 e0b25e6deb77, p1_r2 e0b25e6deb77, p2_r1 e0b25e6deb77, p2_r2 e0b25e6deb77
+[M2.2] noise floor per quantity: position 0, orientation 0, linear_velocity 0, angular_velocity 0, pid_integrators 0, command 0, rotor_speeds 0, saturated 0, wind_force 0, wind_torque 0, mean_wind 0, final_state 0
+[M2.2] TOLERANCE: BIT-EXACT (floor is 0 for every quantity); usable=True
+[M2.2] written: residual_ppo/results/m2/zero_residual_tolerance.json

@@ -3,3 +3,6 @@ __pycache__/
 
 # Full Isaac Sim console logs (large, machine-specific); commit summaries/snapshots instead
 results/**/*.log
+
+# M2.2 raw per-physics-step traces (large; reproducible; hashes are in the committed JSON)
+results/m2/zero_residual_traces/

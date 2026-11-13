@@ -1,0 +1,2172 @@
+{
+  "created_at": "2026-11-13T22:53:43+00:00",
+  "purpose": "M2.2 runs 2-3: env path with zero residual (A) vs pure PID loop (B), plus guard tests",
+  "verdict": "PASS",
+  "equivalence_pass": true,
+  "same_end_everywhere": true,
+  "guard_detected_all": true,
+  "tolerance_file": {
+    "path": "residual_ppo/results/m2/zero_residual_tolerance.json",
+    "sha256_lf": "45f9ff4d47bea2994478856cb7529192d49622ffce6ed7d663644981cbe4f2b8",
+    "created_at": "2026-11-13T22:49:00+00:00",
+    "bit_exact": true,
+    "tolerance": {
+      "position": 0.0,
+      "orientation": 0.0,
+      "linear_velocity": 0.0,
+      "angular_velocity": 0.0,
+      "pid_integrators": 0.0,
+      "command": 0.0,
+      "rotor_speeds": 0.0,
+      "saturated": 0.0,
+      "wind_force": 0.0,
+      "wind_torque": 0.0,
+      "mean_wind": 0.0,
+      "final_state": 0.0
+    }
+  },
+  "worst_abs_diff": {
+    "position": 0.0,
+    "orientation": 0.0,
+    "linear_velocity": 0.0,
+    "angular_velocity": 0.0,
+    "pid_integrators": 0.0,
+    "command": 0.0,
+    "rotor_speeds": 0.0,
+    "saturated": 0.0,
+    "wind_force": 0.0,
+    "wind_torque": 0.0,
+    "mean_wind": 0.0,
+    "final_state": 0.0
+  },
+  "physics_steps_compared": 72000,
+  "cells": {
+    "hover__still_air__300000": {
+      "physics_steps": [
+        924,
+        924
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          77
+        ],
+        [
+          "truncated",
+          77
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        78,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "hover__still_air__300001": {
+      "physics_steps": [
+        684,
+        684
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          57
+        ],
+        [
+          "truncated",
+          57
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        58,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "hover__still_air__300002": {
+      "physics_steps": [
+        768,
+        768
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          64
+        ],
+        [
+          "truncated",
+          64
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        65,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "hover__training_range__300000": {
+      "physics_steps": [
+        924,
+        924
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          77
+        ],
+        [
+          "truncated",
+          77
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        78,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "hover__training_range__300001": {
+      "physics_steps": [
+        684,
+        684
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          57
+        ],
+        [
+          "truncated",
+          57
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        58,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "hover__training_range__300002": {
+      "physics_steps": [
+        768,
+        768
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          64
+        ],
+        [
+          "truncated",
+          64
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        65,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "straight__still_air__300000": {
+      "physics_steps": [
+        1920,
+        1920
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          160
+        ],
+        [
+          "truncated",
+          160
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        161,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "straight__still_air__300001": {
+      "physics_steps": [
+        2376,
+        2376
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          198
+        ],
+        [
+          "truncated",
+          198
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        199,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "straight__still_air__300002": {
+      "physics_steps": [
+        1944,
+        1944
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          162
+        ],
+        [
+          "truncated",
+          162
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        163,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "straight__training_range__300000": {
+      "physics_steps": [
+        1920,
+        1920
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          160
+        ],
+        [
+          "truncated",
+          160
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        161,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "straight__training_range__300001": {
+      "physics_steps": [
+        2376,
+        2376
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          198
+        ],
+        [
+          "truncated",
+          198
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        199,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "straight__training_range__300002": {
+      "physics_steps": [
+        1944,
+        1944
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          162
+        ],
+        [
+          "truncated",
+          162
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        163,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "turns__still_air__300000": {
+      "physics_steps": [
+        2208,
+        2208
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          184
+        ],
+        [
+          "truncated",
+          184
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        185,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "turns__still_air__300001": {
+      "physics_steps": [
+        2772,
+        2772
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          231
+        ],
+        [
+          "truncated",
+          231
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        232,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "turns__still_air__300002": {
+      "physics_steps": [
+        2244,
+        2244
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          187
+        ],
+        [
+          "truncated",
+          187
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        188,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "turns__training_range__300000": {
+      "physics_steps": [
+        2208,
+        2208
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          184
+        ],
+        [
+          "truncated",
+          184
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        185,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "turns__training_range__300001": {
+      "physics_steps": [
+        2772,
+        2772
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          231
+        ],
+        [
+          "truncated",
+          231
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        232,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "turns__training_range__300002": {
+      "physics_steps": [
+        2244,
+        2244
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          187
+        ],
+        [
+          "truncated",
+          187
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        188,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "altitude__still_air__300000": {
+      "physics_steps": [
+        1080,
+        1080
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          90
+        ],
+        [
+          "truncated",
+          90
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        91,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "altitude__still_air__300001": {
+      "physics_steps": [
+        1164,
+        1164
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          97
+        ],
+        [
+          "truncated",
+          97
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        98,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "altitude__still_air__300002": {
+      "physics_steps": [
+        1092,
+        1092
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          91
+        ],
+        [
+          "truncated",
+          91
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        92,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "altitude__training_range__300000": {
+      "physics_steps": [
+        1080,
+        1080
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          90
+        ],
+        [
+          "truncated",
+          90
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        91,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "altitude__training_range__300001": {
+      "physics_steps": [
+        1164,
+        1164
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          97
+        ],
+        [
+          "truncated",
+          97
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        98,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "altitude__training_range__300002": {
+      "physics_steps": [
+        1092,
+        1092
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          91
+        ],
+        [
+          "truncated",
+          91
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        92,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "circle__still_air__300000": {
+      "physics_steps": [
+        2364,
+        2364
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          197
+        ],
+        [
+          "truncated",
+          197
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        198,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "circle__still_air__300001": {
+      "physics_steps": [
+        2484,
+        2484
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          207
+        ],
+        [
+          "truncated",
+          207
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        208,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "circle__still_air__300002": {
+      "physics_steps": [
+        2076,
+        2076
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          173
+        ],
+        [
+          "truncated",
+          173
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        174,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        true,
+        true
+      ]
+    },
+    "circle__training_range__300000": {
+      "physics_steps": [
+        2364,
+        2364
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          197
+        ],
+        [
+          "truncated",
+          197
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        198,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "circle__training_range__300001": {
+      "physics_steps": [
+        2484,
+        2484
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          207
+        ],
+        [
+          "truncated",
+          207
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        208,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "circle__training_range__300002": {
+      "physics_steps": [
+        2076,
+        2076
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          173
+        ],
+        [
+          "truncated",
+          173
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        174,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "figure_eight__still_air__300000": {
+      "physics_steps": [
+        3432,
+        3432
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          286
+        ],
+        [
+          "truncated",
+          286
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        287,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "figure_eight__still_air__300001": {
+      "physics_steps": [
+        3552,
+        3552
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          296
+        ],
+        [
+          "truncated",
+          296
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        297,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "figure_eight__still_air__300002": {
+      "physics_steps": [
+        2916,
+        2916
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          243
+        ],
+        [
+          "truncated",
+          243
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        244,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "figure_eight__training_range__300000": {
+      "physics_steps": [
+        3432,
+        3432
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          286
+        ],
+        [
+          "truncated",
+          286
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        287,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "figure_eight__training_range__300001": {
+      "physics_steps": [
+        3552,
+        3552
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          296
+        ],
+        [
+          "truncated",
+          296
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        297,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    },
+    "figure_eight__training_range__300002": {
+      "physics_steps": [
+        2916,
+        2916
+      ],
+      "same_length": true,
+      "max_abs_diff": {
+        "position": 0.0,
+        "orientation": 0.0,
+        "linear_velocity": 0.0,
+        "angular_velocity": 0.0,
+        "pid_integrators": 0.0,
+        "command": 0.0,
+        "rotor_speeds": 0.0,
+        "saturated": 0.0,
+        "wind_force": 0.0,
+        "wind_torque": 0.0,
+        "mean_wind": 0.0,
+        "final_state": 0.0
+      },
+      "first_differing_step": null,
+      "episode_fields_equal": true,
+      "episode_field_mismatches": {},
+      "end": [
+        [
+          "truncated",
+          243
+        ],
+        [
+          "truncated",
+          243
+        ]
+      ],
+      "bitwise_identical": true,
+      "exceeded": {},
+      "first_step_exceeding_tolerance": null,
+      "pass": true,
+      "observe_calls": [
+        244,
+        0
+      ],
+      "reset_observe_stubbed_B": 1,
+      "completed": [
+        false,
+        false
+      ]
+    }
+  },
+  "guards": [
+    {
+      "cell": "straight__still_air__300000",
+      "action": [
+        1e-06,
+        0,
+        0,
+        0
+      ],
+      "decision": 0,
+      "thrust_correction_N": 7.999999979801942e-07,
+      "comparison_pass": false,
+      "detected": true,
+      "exceeded": {
+        "position": 2.6702880859375e-05,
+        "orientation": 8.698552846908569e-07,
+        "linear_velocity": 9.551644325256348e-06,
+        "angular_velocity": 4.149973392486572e-06,
+        "pid_integrators": 6.815165647639853e-05,
+        "command": 2.649207336169468e-05,
+        "rotor_speeds": 0.0008498963130705306,
+        "wind_force": 4.5418689845200255e-07,
+        "wind_torque": 2.8387351201251618e-09,
+        "final_state": 9.164214134216309e-06
+      },
+      "first_step_exceeding_tolerance": 0,
+      "first_differing_step": 0,
+      "max_abs_diff": {
+        "position": 2.6702880859375e-05,
+        "orientation": 8.698552846908569e-07,
+        "linear_velocity": 9.551644325256348e-06,
+        "angular_velocity": 4.149973392486572e-06,
+        "pid_integrators": 6.815165647639853e-05,
+        "command": 2.649207336169468e-05,
+        "rotor_speeds": 0.0008498963130705306,
+        "saturated": 0.0,
+        "wind_force": 4.5418689845200255e-07,
+        "wind_torque": 2.8387351201251618e-09,
+        "mean_wind": 0.0,
+        "final_state": 9.164214134216309e-06
+      },
+      "physics_steps": [
+        1920,
+        1920
+      ],
+      "end": [
+        [
+          "truncated",
+          160
+        ],
+        [
+          "truncated",
+          160
+        ]
+      ]
+    },
+    {
+      "cell": "straight__still_air__300000",
+      "action": [
+        0.001,
+        0,
+        0,
+        0
+      ],
+      "decision": 0,
+      "thrust_correction_N": 0.000800000037997961,
+      "comparison_pass": false,
+      "detected": true,
+      "exceeded": {
+        "position": 4.1961669921875e-05,
+        "orientation": 1.053791493177414e-06,
+        "linear_velocity": 4.256516695022583e-05,
+        "angular_velocity": 4.757195711135864e-06,
+        "pid_integrators": 0.00010335371274665274,
+        "command": 0.000800000037997961,
+        "rotor_speeds": 0.02148292183267131,
+        "wind_force": 7.852701056423883e-07,
+        "wind_torque": 6.0743739964088305e-09,
+        "final_state": 3.147125244140625e-05
+      },
+      "first_step_exceeding_tolerance": 0,
+      "first_differing_step": 0,
+      "max_abs_diff": {
+        "position": 4.1961669921875e-05,
+        "orientation": 1.053791493177414e-06,
+        "linear_velocity": 4.256516695022583e-05,
+        "angular_velocity": 4.757195711135864e-06,
+        "pid_integrators": 0.00010335371274665274,
+        "command": 0.000800000037997961,
+        "rotor_speeds": 0.02148292183267131,
+        "saturated": 0.0,
+        "wind_force": 7.852701056423883e-07,
+        "wind_torque": 6.0743739964088305e-09,
+        "mean_wind": 0.0,
+        "final_state": 3.147125244140625e-05
+      },
+      "physics_steps": [
+        1920,
+        1920
+      ],
+      "end": [
+        [
+          "truncated",
+          160
+        ],
+        [
+          "truncated",
+          160
+        ]
+      ]
+    },
+    {
+      "cell": "turns__training_range__300000",
+      "action": [
+        1e-06,
+        0,
+        0,
+        0
+      ],
+      "decision": 0,
+      "thrust_correction_N": 7.999999979801942e-07,
+      "comparison_pass": false,
+      "detected": true,
+      "exceeded": {
+        "position": 1.9073486328125e-05,
+        "orientation": 8.549541234970093e-07,
+        "linear_velocity": 9.149312973022461e-06,
+        "angular_velocity": 5.0086528062820435e-06,
+        "pid_integrators": 1.2171268463153674e-05,
+        "command": 4.521362612486257e-05,
+        "rotor_speeds": 0.001334682420633726,
+        "wind_force": 1.482632523530647e-06,
+        "wind_torque": 2.8129876702281953e-08,
+        "final_state": 5.27501106262207e-06
+      },
+      "first_step_exceeding_tolerance": 0,
+      "first_differing_step": 0,
+      "max_abs_diff": {
+        "position": 1.9073486328125e-05,
+        "orientation": 8.549541234970093e-07,
+        "linear_velocity": 9.149312973022461e-06,
+        "angular_velocity": 5.0086528062820435e-06,
+        "pid_integrators": 1.2171268463153674e-05,
+        "command": 4.521362612486257e-05,
+        "rotor_speeds": 0.001334682420633726,
+        "saturated": 0.0,
+        "wind_force": 1.482632523530647e-06,
+        "wind_torque": 2.8129876702281953e-08,
+        "mean_wind": 0.0,
+        "final_state": 5.27501106262207e-06
+      },
+      "physics_steps": [
+        2208,
+        2208
+      ],
+      "end": [
+        [
+          "truncated",
+          184
+        ],
+        [
+          "truncated",
+          184
+        ]
+      ]
+    },
+    {
+      "cell": "turns__training_range__300000",
+      "action": [
+        0.001,
+        0,
+        0,
+        0
+      ],
+      "decision": 0,
+      "thrust_correction_N": 0.000800000037997961,
+      "comparison_pass": false,
+      "detected": true,
+      "exceeded": {
+        "position": 1.621246337890625e-05,
+        "orientation": 5.690380930900574e-07,
+        "linear_velocity": 4.1987746953964233e-05,
+        "angular_velocity": 3.896653652191162e-06,
+        "pid_integrators": 2.5510787963867188e-05,
+        "command": 0.000800000037997961,
+        "rotor_speeds": 0.020599153660100455,
+        "wind_force": 4.409065438141374e-06,
+        "wind_torque": 2.510663096519372e-08,
+        "final_state": 3.7103891372680664e-06
+      },
+      "first_step_exceeding_tolerance": 0,
+      "first_differing_step": 0,
+      "max_abs_diff": {
+        "position": 1.621246337890625e-05,
+        "orientation": 5.690380930900574e-07,
+        "linear_velocity": 4.1987746953964233e-05,
+        "angular_velocity": 3.896653652191162e-06,
+        "pid_integrators": 2.5510787963867188e-05,
+        "command": 0.000800000037997961,
+        "rotor_speeds": 0.020599153660100455,
+        "saturated": 0.0,
+        "wind_force": 4.409065438141374e-06,
+        "wind_torque": 2.510663096519372e-08,
+        "mean_wind": 0.0,
+        "final_state": 3.7103891372680664e-06
+      },
+      "physics_steps": [
+        2208,
+        2208
+      ],
+      "end": [
+        [
+          "truncated",
+          184
+        ],
+        [
+          "truncated",
+          184
+        ]
+      ]
+    }
+  ],
+  "row_layout": [
+    [
+      "position",
+      3
+    ],
+    [
+      "orientation",
+      4
+    ],
+    [
+      "linear_velocity",
+      3
+    ],
+    [
+      "angular_velocity",
+      3
+    ],
+    [
+      "pid_integrators",
+      6
+    ],
+    [
+      "command",
+      4
+    ],
+    [
+      "rotor_speeds",
+      4
+    ],
+    [
+      "saturated",
+      1
+    ],
+    [
+      "wind_force",
+      3
+    ],
+    [
+      "wind_torque",
+      3
+    ],
+    [
+      "mean_wind",
+      3
+    ]
+  ],
+  "named_quantities": [
+    "position",
+    "linear_velocity",
+    "orientation",
+    "angular_velocity",
+    "pid_integrators",
+    "rotor_speeds"
+  ],
+  "protocol": {
+    "version": "eval-v1",
+    "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+    "eval_seeds": [
+      300000,
+      300029,
+      30
+    ],
+    "validation_seeds": [
+      400000,
+      400009,
+      10
+    ],
+    "route_stage": "full",
+    "scenarios": {
+      "hover": "hover",
+      "straight": "straight",
+      "turns": "waypoints",
+      "altitude": "altitude",
+      "circle": "circle",
+      "figure_eight": "figure_eight"
+    },
+    "team_profiles": {
+      "training_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      },
+      "unseen_gusts": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          2.0,
+          6.0
+        ],
+        "gust_scale_range": [
+          1.2,
+          1.5
+        ],
+        "direction_rate_range": [
+          0.1,
+          0.3
+        ],
+        "gust_timescale": 0.7,
+        "local_gust_timescale": 0.15
+      },
+      "outside_range": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": [
+          8.0,
+          10.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    },
+    "our_profiles": {
+      "still_air": {
+        "no_wind_probability": 1.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    }
+  },
+  "run": {
+    "mode": "compare",
+    "tag": null,
+    "created_at": "2026-11-13T22:49:15+00:00",
+    "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+    "git": {
+      "head": "c58075f468ac0f869844d96491aea9a35200e951",
+      "branch": "claire/drone-simulation",
+      "residual_ppo_status": [
+        "M residual_ppo/.gitignore",
+        "?? residual_ppo/evaluation/zero_residual_check.py",
+        "?? residual_ppo/results/m2/zero_residual_floor_p1_summary.txt",
+        "?? residual_ppo/results/m2/zero_residual_floor_p2_summary.txt",
+        "?? residual_ppo/results/m2/zero_residual_floor_summary.txt",
+        "?? residual_ppo/results/m2/zero_residual_tolerance.json"
+      ]
+    },
+    "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+    "registered_profiles": {
+      "still_air": {
+        "no_wind_probability": 1.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    },
+    "python": "3.12.14",
+    "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+    "packages": {
+      "numpy": "2.3.1",
+      "gymnasium": "1.2.3",
+      "stable_baselines3": "2.7.0",
+      "torch": "2.14.1+cpu"
+    },
+    "package_files": {
+      "numpy": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+      "torch": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py"
+    },
+    "torch_cuda_available": false,
+    "total_mass_kg": 1.6186144351959229,
+    "hesai": {
+      "root": "/World/iris/body/HESAI_XT32_SD10",
+      "prims": 258,
+      "rigid_body_prims": 0,
+      "mass_api_prims": 0,
+      "hesai_mass_contribution_kg": 0
+    },
+    "decimation": 12,
+    "physics_dt": 0.008333333333333333,
+    "residual_limits": [
+      0.8,
+      0.05,
+      0.03,
+      0.02
+    ],
+    "wall_clock_s": 239.1325848000124,
+    "trace_sha256": {
+      "A": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da",
+      "B": "e0b25e6deb77fd25c68792940e00af92d4ee7cc1584e11d29c1c96e33e19b7da"
+    }
+  }
+}

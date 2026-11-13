@@ -1,0 +1,49 @@
+[M2.2] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[M2.2] import paths: all 18 shared modules resolve inside residual_ppo
+[M2.2] startup 7.9 s; decimation 12, dt 0.008333333333333333
+[M2.2] total_mass_kg 1.618614; HESAI {'root': '/World/iris/body/HESAI_XT32_SD10', 'prims': 258, 'rigid_body_prims': 0, 'mass_api_prims': 0, 'hesai_mass_contribution_kg': 0}
+[M2.2] packages {'numpy': '2.3.1', 'gymnasium': '1.2.3', 'stable_baselines3': '2.7.0', 'torch': '2.14.1+cpu'}; isaac 6.2.0-rc.14+release.52805.02189a84.gl
+[M2.2] tolerance file sha256 45f9ff4d47bea299… created 2026-11-13T22:49:00+00:00; BIT-EXACT tolerance
+[M2.2] hover__still_air__300000                 PASS steps [924, 924] end ['truncated', 77] vs ['truncated', 77] bitwise True first diff None observe A 78 B 0
+[M2.2] hover__still_air__300001                 PASS steps [684, 684] end ['truncated', 57] vs ['truncated', 57] bitwise True first diff None observe A 58 B 0
+[M2.2] hover__still_air__300002                 PASS steps [768, 768] end ['truncated', 64] vs ['truncated', 64] bitwise True first diff None observe A 65 B 0
+[M2.2] hover__training_range__300000            PASS steps [924, 924] end ['truncated', 77] vs ['truncated', 77] bitwise True first diff None observe A 78 B 0
+[M2.2] hover__training_range__300001            PASS steps [684, 684] end ['truncated', 57] vs ['truncated', 57] bitwise True first diff None observe A 58 B 0
+[M2.2] hover__training_range__300002            PASS steps [768, 768] end ['truncated', 64] vs ['truncated', 64] bitwise True first diff None observe A 65 B 0
+[M2.2] straight__still_air__300000              PASS steps [1920, 1920] end ['truncated', 160] vs ['truncated', 160] bitwise True first diff None observe A 161 B 0
+[M2.2] straight__still_air__300001              PASS steps [2376, 2376] end ['truncated', 198] vs ['truncated', 198] bitwise True first diff None observe A 199 B 0
+[M2.2] straight__still_air__300002              PASS steps [1944, 1944] end ['truncated', 162] vs ['truncated', 162] bitwise True first diff None observe A 163 B 0
+[M2.2] straight__training_range__300000         PASS steps [1920, 1920] end ['truncated', 160] vs ['truncated', 160] bitwise True first diff None observe A 161 B 0
+[M2.2] straight__training_range__300001         PASS steps [2376, 2376] end ['truncated', 198] vs ['truncated', 198] bitwise True first diff None observe A 199 B 0
+[M2.2] straight__training_range__300002         PASS steps [1944, 1944] end ['truncated', 162] vs ['truncated', 162] bitwise True first diff None observe A 163 B 0
+[M2.2] turns__still_air__300000                 PASS steps [2208, 2208] end ['truncated', 184] vs ['truncated', 184] bitwise True first diff None observe A 185 B 0
+[M2.2] turns__still_air__300001                 PASS steps [2772, 2772] end ['truncated', 231] vs ['truncated', 231] bitwise True first diff None observe A 232 B 0
+[M2.2] turns__still_air__300002                 PASS steps [2244, 2244] end ['truncated', 187] vs ['truncated', 187] bitwise True first diff None observe A 188 B 0
+[M2.2] turns__training_range__300000            PASS steps [2208, 2208] end ['truncated', 184] vs ['truncated', 184] bitwise True first diff None observe A 185 B 0
+[M2.2] turns__training_range__300001            PASS steps [2772, 2772] end ['truncated', 231] vs ['truncated', 231] bitwise True first diff None observe A 232 B 0
+[M2.2] turns__training_range__300002            PASS steps [2244, 2244] end ['truncated', 187] vs ['truncated', 187] bitwise True first diff None observe A 188 B 0
+[M2.2] altitude__still_air__300000              PASS steps [1080, 1080] end ['truncated', 90] vs ['truncated', 90] bitwise True first diff None observe A 91 B 0
+[M2.2] altitude__still_air__300001              PASS steps [1164, 1164] end ['truncated', 97] vs ['truncated', 97] bitwise True first diff None observe A 98 B 0
+[M2.2] altitude__still_air__300002              PASS steps [1092, 1092] end ['truncated', 91] vs ['truncated', 91] bitwise True first diff None observe A 92 B 0
+[M2.2] altitude__training_range__300000         PASS steps [1080, 1080] end ['truncated', 90] vs ['truncated', 90] bitwise True first diff None observe A 91 B 0
+[M2.2] altitude__training_range__300001         PASS steps [1164, 1164] end ['truncated', 97] vs ['truncated', 97] bitwise True first diff None observe A 98 B 0
+[M2.2] altitude__training_range__300002         PASS steps [1092, 1092] end ['truncated', 91] vs ['truncated', 91] bitwise True first diff None observe A 92 B 0
+[M2.2] circle__still_air__300000                PASS steps [2364, 2364] end ['truncated', 197] vs ['truncated', 197] bitwise True first diff None observe A 198 B 0
+[M2.2] circle__still_air__300001                PASS steps [2484, 2484] end ['truncated', 207] vs ['truncated', 207] bitwise True first diff None observe A 208 B 0
+[M2.2] circle__still_air__300002                PASS steps [2076, 2076] end ['truncated', 173] vs ['truncated', 173] bitwise True first diff None observe A 174 B 0
+[M2.2] circle__training_range__300000           PASS steps [2364, 2364] end ['truncated', 197] vs ['truncated', 197] bitwise True first diff None observe A 198 B 0
+[M2.2] circle__training_range__300001           PASS steps [2484, 2484] end ['truncated', 207] vs ['truncated', 207] bitwise True first diff None observe A 208 B 0
+[M2.2] circle__training_range__300002           PASS steps [2076, 2076] end ['truncated', 173] vs ['truncated', 173] bitwise True first diff None observe A 174 B 0
+[M2.2] figure_eight__still_air__300000          PASS steps [3432, 3432] end ['truncated', 286] vs ['truncated', 286] bitwise True first diff None observe A 287 B 0
+[M2.2] figure_eight__still_air__300001          PASS steps [3552, 3552] end ['truncated', 296] vs ['truncated', 296] bitwise True first diff None observe A 297 B 0
+[M2.2] figure_eight__still_air__300002          PASS steps [2916, 2916] end ['truncated', 243] vs ['truncated', 243] bitwise True first diff None observe A 244 B 0
+[M2.2] figure_eight__training_range__300000     PASS steps [3432, 3432] end ['truncated', 286] vs ['truncated', 286] bitwise True first diff None observe A 287 B 0
+[M2.2] figure_eight__training_range__300001     PASS steps [3552, 3552] end ['truncated', 296] vs ['truncated', 296] bitwise True first diff None observe A 297 B 0
+[M2.2] figure_eight__training_range__300002     PASS steps [2916, 2916] end ['truncated', 243] vs ['truncated', 243] bitwise True first diff None observe A 244 B 0
+[M2.2] equivalence over 36 cells: PASS; physics steps compared 72000; worst |diff| position 0, orientation 0, linear_velocity 0, angular_velocity 0, pid_integrators 0, command 0, rotor_speeds 0, saturated 0, wind_force 0, wind_torque 0, mean_wind 0, final_state 0
+[M2.2] GUARD straight__still_air__300000 action[0]=1e-06 (thrust +8e-07 N, decision 0): comparison FAILS (detected); exceeded position 2.67e-05, orientation 8.7e-07, linear_velocity 9.55e-06, angular_velocity 4.15e-06, pid_integrators 6.82e-05, command 2.65e-05, rotor_speeds 0.00085, wind_force 4.54e-07, wind_torque 2.84e-09, final_state 9.16e-06; first diff step 0
+[M2.2] GUARD straight__still_air__300000 action[0]=0.001 (thrust +0.0008 N, decision 0): comparison FAILS (detected); exceeded position 4.2e-05, orientation 1.05e-06, linear_velocity 4.26e-05, angular_velocity 4.76e-06, pid_integrators 0.000103, command 0.0008, rotor_speeds 0.0215, wind_force 7.85e-07, wind_torque 6.07e-09, final_state 3.15e-05; first diff step 0
+[M2.2] GUARD turns__training_range__300000 action[0]=1e-06 (thrust +8e-07 N, decision 0): comparison FAILS (detected); exceeded position 1.91e-05, orientation 8.55e-07, linear_velocity 9.15e-06, angular_velocity 5.01e-06, pid_integrators 1.22e-05, command 4.52e-05, rotor_speeds 0.00133, wind_force 1.48e-06, wind_torque 2.81e-08, final_state 5.28e-06; first diff step 0
+[M2.2] GUARD turns__training_range__300000 action[0]=0.001 (thrust +0.0008 N, decision 0): comparison FAILS (detected); exceeded position 1.62e-05, orientation 5.69e-07, linear_velocity 4.2e-05, angular_velocity 3.9e-06, pid_integrators 2.55e-05, command 0.0008, rotor_speeds 0.0206, wind_force 4.41e-06, wind_torque 2.51e-08, final_state 3.71e-06; first diff step 0
+[M2.2] RESULT M2.2: PASS (equivalence True, same end everywhere True, guard detected 4/4)
+[M2.2] written: residual_ppo/results/m2/zero_residual.json, zero_residual_summary.txt
