@@ -207,6 +207,11 @@ With zero action under PID, an early failure would be a red flag to investigate 
     (b) `test_manifest_matches_team_source` (`check()` vs 61d2722; `skipUnless` the default sibling exists or
     `SYNC_SHARED_TEAM_REPO` is set; a set-but-wrong path FAILS rather than skips). The suite now has 23 tests.
     Run-2 expectations: no env var → 23 run, 0 failures, 1 skipped; env var set → tests 23/23 and checks 21/21; both interpreters.
+  - **Run 2 (2026-11-12, clone of 1f0499e, no patches): PASS.** All text files CRLF. No env var: tests 23 run, 0 failures,
+    1 skipped (`test_manifest_matches_team_source`, reason names `SYNC_SHARED_TEAM_REPO`), checks `--check-local` 21/21, in
+    both interpreters. Env var set: tests 23/23, checks `--check` 21/21, in both interpreters. Clone deleted.
+
+**M1 result: complete (2026-11-12).** Next: M2, PID-only flight validation and the zero-residual equivalence test.
 - Commit (explicit paths): tools, manifest, shared modules, tests, docs, config snapshot. Don't commit the smoke log unless Claire wants it.
 - Update the README in `residual_ppo` (what's shared, from which commit, how to verify) and the "Current status" in CLAUDE.md → M2.
 
