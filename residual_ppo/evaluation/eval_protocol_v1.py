@@ -11,7 +11,7 @@ import path_sac_config
 
 VERSION = "eval-v1"
 
-# E1. Eval seeds: provisional 30 (D3, re-decided after M2.1). The first 10 are the team's EVAL_SEEDS.
+# E1. Eval seeds: 30 (D3, decided 2026-11-13 after M2.1). The first 10 are the team's EVAL_SEEDS.
 EVAL_SEEDS = tuple(range(300_000, 300_030))
 TEAM_EVAL_SEEDS = tuple(path_sac_config.EVAL_SEEDS)
 assert EVAL_SEEDS[:10] == TEAM_EVAL_SEEDS, "first 10 eval seeds must be the team's EVAL_SEEDS"

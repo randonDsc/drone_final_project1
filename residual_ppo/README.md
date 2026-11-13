@@ -56,6 +56,30 @@ It writes `results/m1_env_config_snapshot.json` and `results/m1_env_smoke_summar
 - Record package versions from the imported modules (`torch.__version__`), not `importlib.metadata`, which reports
   a stale torch version once SimulationApp has started.
 
+### ENV-1: our software versions differ from the team's (open; current choice: keep ours)
+
+| Item | Team (README §3) | This branch |
+|---|---|---|
+| Isaac Sim | 6.1.0 | 6.2.0 |
+| Python | 3.12.13 | 3.12.14 |
+| stable-baselines3 | 2.9.0 | 2.7.0 |
+| gymnasium | 1.4.0 | 1.2.3 |
+| torch | 2.11.0 + CUDA 12.8 (Isaac's bundled copy) | 2.14.1+cpu (pip install into Isaac Python) |
+| numpy | 2.3.1 | 2.3.1 |
+| GPU | RTX 4070 SUPER, driver 617.14 | RTX 5070 Ti, driver 617.42 |
+
+- **Why two torches:** installing stable-baselines3 with pip pulled torch from PyPI (the default Windows build is
+  CPU-only), because pip cannot see Isaac's bundled torch 2.11.0+cu128, which only goes on the path once
+  SimulationApp starts. Both copies are on disk. The install is left as it is.
+- **Consequence:** scripts that build an SB3 model import `torch` (and `torch._dynamo`) **before** SimulationApp;
+  otherwise the two copies mix and the optimizer import fails.
+- **Comparison rule:** every number we compare (PID, the team's SAC checkpoint re-evaluated, our PPO) is produced
+  in this environment with evaluation protocol v1. The team README's numbers are context only, never a comparison
+  baseline. Every results file records the Isaac, SB3, gymnasium and torch versions.
+- **Check before M3:** load and evaluate the team's `final_model.zip` under SB3 2.7.0. If that fails or warns, make
+  one planned change (remove the extra torch, upgrade to SB3 2.9.0 and gymnasium 1.4.0, with `pip freeze` before
+  and after) and re-run the M1 checks and tests.
+
 ## Milestone 1 results (shared environment integration)
 
 - Checks 21/21 (18 modules + 1 test + 2 assets). Tests 23/23 in the venv (Python 3.13) and in Isaac Python (3.12),
@@ -67,5 +91,6 @@ It writes `results/m1_env_config_snapshot.json` and `results/m1_env_smoke_summar
 
 ## Status
 
-Milestone 1 complete. Next: **M2, PID-only flight validation** (not training). No PPO training code yet.
+Milestone 1 complete. **M2 (PID-only baseline + evaluation protocol v1)** in progress: M2.1 (headless speed) done,
+about 49 env decisions/s. Next: M2.2 (zero residual = PID). No PPO training code yet.
 Step plans live in [`docs/`](docs/).

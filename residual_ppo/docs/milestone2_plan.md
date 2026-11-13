@@ -94,6 +94,12 @@ route/start/caps and zero still-air wind on all 180 cases.
 ≤ 0.66 h per controller (0.22 h per 10 seeds). → D3 decided: 30 seeds (see M2.0).
 Files: `results\m2\speed.json`, `results\m2\speed_summary.txt`.
 
+**Protocol hash note:** `speed.json` records `protocol_file_sha256` = `69c3c95c26576e2bf51d543de9e19052c3a58510e3b0737c8e936ee11f148d46`
+(`eval_protocol_v1.py` as committed in b738103). Afterwards, only the line-14 comment was changed ("provisional 30 (D3,
+re-decided after M2.1)" → "30 (D3, decided 2026-11-13 after M2.1)"); no constant changed. The new hash is
+`18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc`, and every run from M2.2 on records that one.
+`speed.json` is not re-run for this (M2.1 measured speed only, no protocol results).
+
 ## M2.2 Zero residual equals PID (identical seeds)
 
 **Why:** every residual-RL result is "PID + residual" minus "PID". If zero residual through the env is not exactly
