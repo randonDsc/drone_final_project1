@@ -1,0 +1,7 @@
+Team README section 2 reproduction (PID only, open scene, seeds 300000-300009, mean over 6 scenarios)
+pass range: RMSE within +-5% relative; completed and failed within +-3 of 60 flights; max deviation descriptive
+profile          RMSE ours  README     rel   compl ours/exp   fail ours/exp   maxdev meanmax/overall README  verdict
+training_range       0.502   0.502   +0.1%       3/3.0           0/0.0              1.77/2.44          1.77  PASS
+unseen_gusts         0.497   0.497   -0.0%       3/3.0           0/0.0              1.51/2.10          1.51  PASS
+outside_range        1.653   1.653   -0.0%       0/0.0          37/37.2             3.11/3.15          3.11  PASS; failures {'out_of_bounds': 37}
+overall: PASS

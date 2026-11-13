@@ -161,6 +161,8 @@ Isaac 6.2.0-rc.14, numpy 2.3.1, gymnasium 1.2.3, SB3 2.7.0, torch 2.14.1+cpu (to
   files written before that rule, the prefix was replaced afterwards (only those strings changed). The tolerance file's
   LF hash is a945d764… after redaction; putting the prefix `C:\isaacsim\isaac-sim-standalone-6.2.0-windows-x86_64` back
   restores 45f9ff4d…, the hash recorded at run time. The supplementary JSON was written already redacted.
+  **`<ISAAC_ROOT>` applies from M2.2 on.** Earlier committed files (the M1.5 `results\m1_env_config_snapshot.json`)
+  keep their absolute Isaac paths, by decision (Claire, 2026-11-13).
 - Raw per-step traces (`results\m2\zero_residual_traces\`, 86 MB+) and Isaac logs are gitignored; their hashes are in the JSON.
 
 ## Pre-registered before any M2.3 run (Claire, 2026-11-12)
@@ -239,6 +241,62 @@ all seeds (D3).
 
 Outputs: `results\m2\still_vs_wind.{json,csv}` and summary.
 **Pass:** consistency check passes; table complete (no missing cells; failed flights included and counted).
+
+### M2.3 runner design (approved by Claire 2026-11-13, with additions a–d; written before any M2.3 flight)
+
+Code: `evaluation\controllers.py` (controller interface, no Isaac), `evaluation\run_protocol.py` (Isaac runner),
+`evaluation\protocol_stats.py` (NumPy only: summaries, aggregation, reproduction comparison; later bootstrap/H1),
+venv tests in `tests\test_protocol_stats.py`.
+- **Controller interface:** `name`, `act(observation) -> float32[4]` (deterministic), `record() -> dict`. Only `pid`
+  (`np.zeros(4, float32)`, as the team's PID-only) is implemented; `pid_ppo` (`predict(deterministic=True)`) and
+  `pid_sac` (team `load_path_policy`, after `path_sac_config.incompatibility`) raise NotImplementedError until M3/M7.
+  One controller per invocation.
+- **Flight loop and metrics** mirror `drone_team_main\drone_code\eval_path_sac.py` `fly()` exactly: `env.reset(seed,
+  options={route_stage, route_type, wind_profile})`; step until terminated/truncated; `reason` from the last step's
+  info; row = scenario, wind_profile, seed, `wind_speed = norm(info["wind_mean"])`, wind_seed, route_seconds,
+  plus `env.trace.metrics(env.core.reference.path, reason, reason == "too_low", env.core.completion)`.
+  Per (scenario, profile): `path_sac_policy.summarize(rows)`, plus median/IQR and failure-reason counts.
+- **Matched realizations:** every flight row stores `initial_obs_sha256` and `max_decisions`. Within a run, for each
+  (scenario, seed): route_seconds, max_decisions and initial observation identical across profiles; still_air
+  wind_mean = 0 (the M2.3 consistency check). Across controllers: a non-PID run loads the PID `realizations.json`
+  (key: wind_seed, wind_speed, route_seconds, initial_obs_sha256) and refuses on any mismatch. Seeds are asserted to be
+  eval (or validation) seeds.
+  **(d) The canonical `realizations.json` is the one written by the M2.4 30-seed PID run.** Pilot runs write their own
+  copy, which is never used as the cross-controller reference.
+- **Diagnostics** (read-only instance wrapper on `env.sim.step_command`, as in M2.2): per physics step, `p_ref`,
+  `v_ref` from `core.sample()` (before `core.time` advances), PID command, `core.desired`; cap fractions from the shared
+  `acceleration_capped(...)`, split by which cap is in force; along-track lag mean/RMS and cross-track component RMS over
+  steps with |v_ref| > 0.05 (counts recorded; hover gives none).
+  **(c) The PID command is taken as `final − core.correction`. That is exact only for zero correction (PID):** for
+  PPO/SAC it is the PID part reconstructed from the sum (floating-point rounding), so their diagnostics are labelled
+  "PID part = final − correction (reconstructed)" in every file.
+- **Check 0 (before the pilot):** one cell flown with diagnostics on and off must give identical metrics and identical
+  per-decision trace (proves the wrapper does not change the flight).
+- **Outputs:** M2.4 and later protocol runs → `results\eval\eval-v1\<controller>\{results.json, flights.csv,
+  summary.csv, summary.txt, realizations.json}`. M2.3 pilot → `results\m2\pilot_pid\` (same file set), plus
+  `results\m2\team_reproduction.{json,txt}`; later `results\m2\still_vs_wind.{json,csv}`. Every file records E7 items and
+  uses `<ISAAC_ROOT>`.
+
+### M2.3 first check: reproduce the team README §2 open-scene PID-only rows (pre-registered before any flight)
+
+PID on seeds 300000–300009 × {training_range, unseen_gusts, outside_range} × 6 scenarios (180 flights, flown inside
+the pilot). Aggregation as README §2 ("averaged over 6 route types"): per profile, the mean over the 6 scenarios of
+`summarize()` values. Targets (README §2, 61d2722):
+
+| profile | RMSE [m] | max deviation [m] | completed | failed |
+|---|---|---|---|---|
+| training_range | 0.502 | 1.77 | 5% | 0% |
+| unseen_gusts | 0.497 | 1.51 | 5% | 0% |
+| outside_range | 1.653 | 3.11 | 0% | 62% |
+
+**(a) Pass range:** per profile, position RMSE within ±5% relative of the README value; completed and failed flights
+each within ±3 of the README count out of 60 flights (README % × 60, e.g. 5% → 3, 62% → 37.2). Max deviation is
+**descriptive only**, reported in both aggregations (mean of per-scenario maxima, and the maximum over all 60 flights).
+**(b) If any profile is outside the range,** investigate in this order before M2.4: (1) when README §2 last changed
+versus the code commits (`git log` in `drone_team_main`, read-only), i.e. whether the table was produced by older code;
+(2) Isaac version (6.2.0 vs the team's 6.1.0) and GPU/PhysX differences. **Never tune anything** (PID, wind, limits,
+seeds) to match. Report the differences either way; STOP after the reproduction report, before the consistency check
+and any H1 statistic.
 
 ## M2.4 Full PID-only baseline table
 

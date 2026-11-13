@@ -1,0 +1,31 @@
+[PROTO] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[PROTO] import paths: all 18 shared modules resolve inside residual_ppo
+[PROTO] controller pid; seeds 300000..300009 (10); profiles ('still_air', 'training_range', 'unseen_gusts', 'outside_range'); total_mass_kg 1.618614; HESAI 0 kg; packages {'numpy': '2.3.1', 'gymnasium': '1.2.3', 'stable_baselines3': '2.7.0', 'torch': '2.14.1+cpu'}; isaac 6.2.0-rc.14+release.52805.02189a84.gl
+[PROTO] CHECK 0 PASS: ('turns', 'training_range', 300000) diagnostics off vs on; metric differences none; trace bitwise equal {'positions': True, 'errors': True, 'final_state': True}
+[PROTO] finished hover / still_air (10 flights)
+[PROTO] finished hover / training_range (10 flights)
+[PROTO] finished hover / unseen_gusts (10 flights)
+[PROTO] finished hover / outside_range (10 flights)
+[PROTO] finished straight / still_air (10 flights)
+[PROTO] finished straight / training_range (10 flights)
+[PROTO] finished straight / unseen_gusts (10 flights)
+[PROTO] finished straight / outside_range (10 flights)
+[PROTO] finished turns / still_air (10 flights)
+[PROTO] finished turns / training_range (10 flights)
+[PROTO] finished turns / unseen_gusts (10 flights)
+[PROTO] finished turns / outside_range (10 flights)
+[PROTO] finished altitude / still_air (10 flights)
+[PROTO] finished altitude / training_range (10 flights)
+[PROTO] finished altitude / unseen_gusts (10 flights)
+[PROTO] finished altitude / outside_range (10 flights)
+[PROTO] finished circle / still_air (10 flights)
+[PROTO] finished circle / training_range (10 flights)
+[PROTO] finished circle / unseen_gusts (10 flights)
+[PROTO] finished circle / outside_range (10 flights)
+[PROTO] finished figure_eight / still_air (10 flights)
+[PROTO] finished figure_eight / training_range (10 flights)
+[PROTO] finished figure_eight / unseen_gusts (10 flights)
+[PROTO] finished figure_eight / outside_range (10 flights)
+[PROTO] 240 flights in 11.9 min
+[PROTO] written: residual_ppo/results/m2/pilot_pid/results.json, flights.csv, summary.csv, summary.txt, realizations.json
+[PROTO] RESULT: DONE (flights only; no consistency check or H1 statistic computed here)

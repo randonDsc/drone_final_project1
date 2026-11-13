@@ -1,0 +1,154 @@
+{
+  "created_at": "2026-11-13T23:28:50+00:00",
+  "purpose": "M2.3 first check: reproduce team README section 2 open-scene PID-only rows (seeds 300000-300009)",
+  "source_run": "residual_ppo/results/m2/pilot_pid/results.json",
+  "source_run_sha256_lf": "2fdfb86c4116eb69eda9c8d1b63ff0887014ec10c878115848b08b042eddbe76",
+  "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+  "packages": {
+    "numpy": "2.3.1",
+    "gymnasium": "1.2.3",
+    "stable_baselines3": "2.7.0",
+    "torch": "2.14.1+cpu"
+  },
+  "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+  "total_mass_kg": 1.6186144351959229,
+  "aggregation": "per profile: mean over the 6 scenarios of path_sac_policy.summarize() values (README 2)",
+  "readme_source": "drone_team_main README.md section 2 at 61d2722",
+  "pass_range": {
+    "position_rmse_relative": 0.05,
+    "completed_and_failed_flights": 3,
+    "flights_per_profile": 60,
+    "max_deviation": "descriptive only (both aggregations)"
+  },
+  "profiles": {
+    "training_range": {
+      "readme": {
+        "position_rmse": 0.502,
+        "max_deviation": 1.77,
+        "completed_pct": 5.0,
+        "failed_pct": 0.0
+      },
+      "ours": {
+        "profile": "training_range",
+        "scenarios": [
+          "hover",
+          "straight",
+          "turns",
+          "altitude",
+          "circle",
+          "figure_eight"
+        ],
+        "flights": 60,
+        "position_rmse": 0.5024075749757594,
+        "cross_track_rmse": 0.3636017976317882,
+        "completion_rate": 0.05000000000000001,
+        "failure_rate": 0.0,
+        "completed_flights": 3,
+        "failed_flights": 0,
+        "failure_reasons": {},
+        "max_deviation_mean_of_scenario_max": 1.7683322582202277,
+        "max_deviation_overall_max": 2.440551171806919
+      },
+      "position_rmse_diff_m": 0.00040757497575938384,
+      "position_rmse_rel_diff": 0.000811902342150167,
+      "completed_flights_expected": 3.0,
+      "failed_flights_expected": 0.0,
+      "max_deviation_diff_mean_of_scenario_max": -0.0016677417797723582,
+      "max_deviation_diff_overall_max": 0.670551171806919,
+      "checks": {
+        "complete": true,
+        "position_rmse": true,
+        "completed_flights": true,
+        "failed_flights": true
+      },
+      "pass": true
+    },
+    "unseen_gusts": {
+      "readme": {
+        "position_rmse": 0.497,
+        "max_deviation": 1.51,
+        "completed_pct": 5.0,
+        "failed_pct": 0.0
+      },
+      "ours": {
+        "profile": "unseen_gusts",
+        "scenarios": [
+          "hover",
+          "straight",
+          "turns",
+          "altitude",
+          "circle",
+          "figure_eight"
+        ],
+        "flights": 60,
+        "position_rmse": 0.49681901720467936,
+        "cross_track_rmse": 0.37510015893532195,
+        "completion_rate": 0.05000000000000001,
+        "failure_rate": 0.0,
+        "completed_flights": 3,
+        "failed_flights": 0,
+        "failure_reasons": {},
+        "max_deviation_mean_of_scenario_max": 1.5068045116331488,
+        "max_deviation_overall_max": 2.104119374778947
+      },
+      "position_rmse_diff_m": -0.00018098279532063888,
+      "position_rmse_rel_diff": -0.00036415049360289514,
+      "completed_flights_expected": 3.0,
+      "failed_flights_expected": 0.0,
+      "max_deviation_diff_mean_of_scenario_max": -0.00319548836685124,
+      "max_deviation_diff_overall_max": 0.5941193747789468,
+      "checks": {
+        "complete": true,
+        "position_rmse": true,
+        "completed_flights": true,
+        "failed_flights": true
+      },
+      "pass": true
+    },
+    "outside_range": {
+      "readme": {
+        "position_rmse": 1.653,
+        "max_deviation": 3.11,
+        "completed_pct": 0.0,
+        "failed_pct": 62.0
+      },
+      "ours": {
+        "profile": "outside_range",
+        "scenarios": [
+          "hover",
+          "straight",
+          "turns",
+          "altitude",
+          "circle",
+          "figure_eight"
+        ],
+        "flights": 60,
+        "position_rmse": 1.6526762594783166,
+        "cross_track_rmse": 1.0953165134485958,
+        "completion_rate": 0.0,
+        "failure_rate": 0.6166666666666666,
+        "completed_flights": 0,
+        "failed_flights": 37,
+        "failure_reasons": {
+          "out_of_bounds": 37
+        },
+        "max_deviation_mean_of_scenario_max": 3.1123087137776975,
+        "max_deviation_overall_max": 3.1505606639788195
+      },
+      "position_rmse_diff_m": -0.00032374052168337997,
+      "position_rmse_rel_diff": -0.00019585028534989713,
+      "completed_flights_expected": 0.0,
+      "failed_flights_expected": 37.2,
+      "max_deviation_diff_mean_of_scenario_max": 0.002308713777697591,
+      "max_deviation_diff_overall_max": 0.04056066397881963,
+      "checks": {
+        "complete": true,
+        "position_rmse": true,
+        "completed_flights": true,
+        "failed_flights": true
+      },
+      "pass": true
+    }
+  },
+  "pass": true
+}
