@@ -1,17 +1,22 @@
-"""Copy the team's shared modules into residual_ppo/ byte-for-byte, and verify them later.
+"""Copy the team's shared modules (and scene asset) byte-for-byte from 61d2722, and verify them later.
 
 Identity of a shared file = its git blob ID at the source commit, NOT its on-disk SHA-256.
 core.autocrlf=true makes working copies CRLF, so on-disk hashes differ from the LF bytes in git
 even when the content is identical; `git hash-object` normalizes line endings first.
-See docs/milestone1_plan.md, step M1.2.
+See docs/milestone1_plan.md, steps M1.2 and M1.3.
+
+Two kinds of entries:
+  modules  team drone_code/<name>.py      -> residual_ppo/<name>.py      (mode "copy")
+  assets   team <repo-relative path>      -> same repo-relative path     (mode "copy" or "check")
+A "check" entry is never written, not even with --force: it must already match the source.
 
 Usage (normal venv is enough; standard library only):
     python tools/sync_shared.py            copy missing files; refuse if any existing file differs
-    python tools/sync_shared.py --force    also overwrite files that differ, with the source bytes
-    python tools/sync_shared.py --check    verify every file; exit 1 on any mismatch
+    python tools/sync_shared.py --force    also overwrite "copy" files that differ, with the source bytes
+    python tools/sync_shared.py --check    verify every entry; exit 1 on any mismatch
 
 Exit codes: 0 OK, 1 mismatch / refused, 2 precondition or git error.
-Read-only toward drone_team_main: only `git rev-parse` and `git cat-file` run there.
+Read-only toward drone_team_main: only `git rev-parse`, `git cat-file`, `git remote get-url` run there.
 """
 from __future__ import annotations
 
@@ -19,6 +24,7 @@ import argparse
 import json
 import subprocess
 import sys
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -39,7 +45,29 @@ MODULES = [
     "drone_sim", "motor", "wind", "drone_diagnostics",
     "hover_sac_policy", "hover_sac_config",
 ]
-FILES = [f"{m}.py" for m in MODULES]
+
+# Local files of the scene's dependency closure (UsdUtils.ComputeAllDependencies on
+# sim_scene/dij3d_boxes.usd at 61d2722). Repo-relative; the USD-relative reference
+# ../sim_asset/iris.usd only works at these exact locations. Remote S3 assets cannot be pinned here.
+ASSETS = {
+    "sim_scene/dij3d_boxes.usd": "copy",   # opened by hover_env.make_hover_sim
+    "sim_asset/iris.usd": "check",         # already on Claire's branch; must stay identical
+}
+
+
+@dataclass(frozen=True)
+class Entry:
+    key: str        # manifest key
+    kind: str       # "module" or "asset"
+    mode: str       # "copy" or "check"
+    dest_rel: str   # path relative to DEST_REPO (posix)
+    src_rel: str    # path inside the source commit (posix)
+
+
+ENTRIES = (
+    [Entry(f"{m}.py", "module", "copy", f"{DEST_PREFIX}/{m}.py", f"{SOURCE_DIR}/{m}.py") for m in MODULES]
+    + [Entry(p, "asset", mode, p, p) for p, mode in ASSETS.items()]
+)
 
 
 class SyncError(Exception):
@@ -70,20 +98,20 @@ def resolve_source_commit() -> str:
     return full
 
 
-def source_blob_id(commit: str, name: str) -> str:
-    return git_text(TEAM_REPO, "rev-parse", "--verify", f"{commit}:{SOURCE_DIR}/{name}")
+def source_blob_id(commit: str, entry: Entry) -> str:
+    return git_text(TEAM_REPO, "rev-parse", "--verify", f"{commit}:{entry.src_rel}")
 
 
-def source_bytes(commit: str, name: str) -> bytes:
+def source_bytes(commit: str, entry: Entry) -> bytes:
     # cat-file blob = the exact stored bytes; never applies textconv or eol conversion.
-    return git(TEAM_REPO, "cat-file", "blob", f"{commit}:{SOURCE_DIR}/{name}")
+    return git(TEAM_REPO, "cat-file", "blob", f"{commit}:{entry.src_rel}")
 
 
-def local_blob_id(name: str) -> str | None:
-    """Blob ID of residual_ppo/<name> as git would store it (autocrlf applied), or None if missing."""
-    if not (RESIDUAL_DIR / name).is_file():
+def local_blob_id(entry: Entry) -> str | None:
+    """Blob ID of the destination file as git would store it (autocrlf applied), or None if missing."""
+    if not (DEST_REPO / entry.dest_rel).is_file():
         return None
-    return git_text(DEST_REPO, "hash-object", "--", f"{DEST_PREFIX}/{name}")
+    return git_text(DEST_REPO, "hash-object", "--", entry.dest_rel)
 
 
 def short(blob: str | None) -> str:
@@ -96,37 +124,55 @@ def load_manifest() -> dict | None:
     return json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
 
 
+def manifest_blob(manifest: dict, entry: Entry) -> str | None:
+    if entry.kind == "module":
+        return manifest.get("files", {}).get(entry.key)
+    rec = manifest.get("assets", {}).get(entry.key)
+    return rec.get("blob_id") if isinstance(rec, dict) else None
+
+
 def sync(force: bool) -> int:
     commit = resolve_source_commit()
-    print(f"source: {TEAM_REPO.name} @ {commit}  ({SOURCE_DIR}/)")
-    print(f"dest:   {RESIDUAL_DIR}")
+    print(f"source: {TEAM_REPO.name} @ {commit}")
+    print(f"dest:   {DEST_REPO}")
 
-    rows = [(name, source_blob_id(commit, name), local_blob_id(name)) for name in FILES]
-    conflicts = [(n, s, l) for n, s, l in rows if l is not None and l != s]
+    rows = [(e, source_blob_id(commit, e), local_blob_id(e)) for e in ENTRIES]
+    check_bad = [(e, s, l) for e, s, l in rows if e.mode == "check" and l != s]
+    conflicts = [(e, s, l) for e, s, l in rows if e.mode == "copy" and l is not None and l != s]
 
+    if check_bad:
+        print(f"\nREFUSING: {len(check_bad)} check-only file(s) are missing or differ (never written, even with --force):")
+        for e, src, loc in check_bad:
+            print(f"  {e.dest_rel:<34} local {short(loc)}  source {short(src)}")
+        print("Nothing was written.")
+        return 1
     if conflicts and not force:
         print(f"\nREFUSING: {len(conflicts)} existing file(s) differ from the source commit:")
-        for name, src, loc in conflicts:
-            print(f"  {name:<22} local {short(loc)}  source {short(src)}")
-        print("Nothing was written. A shared module must never be edited; "
+        for e, src, loc in conflicts:
+            print(f"  {e.dest_rel:<34} local {short(loc)}  source {short(src)}")
+        print("Nothing was written. A shared file must never be edited; "
               "re-run with --force to restore the source bytes.")
         return 1
 
-    print(f"\n{'file':<22} {'source blob':<13} result")
-    for name, src, loc in rows:
+    print(f"\n{'path':<34} {'mode':<6} {'source blob':<13} result")
+    for e, src, loc in rows:
         if loc == src:
-            result = "unchanged (already identical)"
+            result = "unchanged (already identical)" if e.mode == "copy" else "verified identical (check only)"
         else:
-            (RESIDUAL_DIR / name).write_bytes(source_bytes(commit, name))
-            after = local_blob_id(name)
+            dest = DEST_REPO / e.dest_rel
+            if not dest.parent.is_dir():
+                raise SyncError(f"destination folder missing: {dest.parent}")
+            dest.write_bytes(source_bytes(commit, e))
+            after = local_blob_id(e)
             if after != src:
-                raise SyncError(f"{name}: wrote source bytes but hash-object gives {after}, expected {src}")
+                raise SyncError(f"{e.dest_rel}: wrote source bytes but hash-object gives {after}, expected {src}")
             result = "written" if loc is None else f"OVERWRITTEN with --force (was {short(loc)})"
-        print(f"{name:<22} {short(src):<13} {result}")
+        print(f"{e.dest_rel:<34} {e.mode:<6} {short(src):<13} {result}")
 
-    files = {name: src for name, src, _ in rows}
+    files = {e.key: s for e, s, _ in rows if e.kind == "module"}
+    assets = {e.key: {"blob_id": s, "mode": e.mode} for e, s, _ in rows if e.kind == "asset"}
     old = load_manifest()
-    if old and old.get("source_commit") == commit and old.get("files") == files:
+    if old and old.get("source_commit") == commit and old.get("files") == files and old.get("assets") == assets:
         print(f"\nmanifest unchanged: {MANIFEST_PATH.name} (copied_at {old.get('copied_at')})")
     else:
         manifest = {
@@ -137,11 +183,12 @@ def sync(force: bool) -> int:
             "identity": IDENTITY,
             "copied_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "files": files,
+            "assets": assets,
         }
         with open(MANIFEST_PATH, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(manifest, fh, indent=2)
             fh.write("\n")
-        print(f"\nmanifest written: {MANIFEST_PATH.name} ({len(files)} files)")
+        print(f"\nmanifest written: {MANIFEST_PATH.name} ({len(files)} files, {len(assets)} assets)")
     return 0
 
 
@@ -158,16 +205,25 @@ def check() -> int:
     if manifest.get("identity") != IDENTITY:
         print(f"FAIL: manifest identity {manifest.get('identity')!r} != {IDENTITY!r}")
         problems += 1
+    known_files = {e.key for e in ENTRIES if e.kind == "module"}
+    known_assets = {e.key for e in ENTRIES if e.kind == "asset"}
+    extra = [k for k in manifest.get("files", {}) if k not in known_files]
+    extra += [k for k in manifest.get("assets", {}) if k not in known_assets]
+    for k in extra:
+        print(f"FAIL: manifest entry {k!r} is not a known shared file")
+        problems += 1
+    for k, rec in manifest.get("assets", {}).items():
+        if k in known_assets and isinstance(rec, dict) and rec.get("mode") != ASSETS[k]:
+            print(f"FAIL: manifest mode for {k!r} is {rec.get('mode')!r}, expected {ASSETS[k]!r}")
+            problems += 1
 
-    man_files: dict = manifest.get("files", {})
-    names = FILES + [n for n in man_files if n not in FILES]
-    print(f"{'file':<22} {'manifest':<13} {'local':<13} {'source':<13} status")
+    print(f"{'path':<34} {'manifest':<13} {'local':<13} {'source':<13} status")
     n_ok = 0
-    for name in names:
-        man = man_files.get(name)
-        loc = local_blob_id(name)
+    for e in ENTRIES:
+        man = manifest_blob(manifest, e)
+        loc = local_blob_id(e)
         try:
-            src = source_blob_id(commit, name)
+            src = source_blob_id(commit, e)
         except SyncError:
             src = None
         ok = man is not None and man == loc == src
@@ -178,14 +234,13 @@ def check() -> int:
             status = "FAIL (not in manifest)"
         elif loc is None:
             status = "FAIL (file missing)"
-        elif name not in FILES:
-            status = "FAIL (not a shared module)"
         else:
             status = "FAIL (blob mismatch)"
-        print(f"{name:<22} {short(man):<13} {short(loc):<13} {short(src):<13} {status}")
+        print(f"{e.dest_rel:<34} {short(man):<13} {short(loc):<13} {short(src):<13} {status}")
 
-    all_ok = problems == 0 and n_ok == len(names)
-    print(f"\n{n_ok}/{len(names)} OK -> {'PASS' if all_ok else 'FAIL'}")
+    all_ok = problems == 0 and n_ok == len(ENTRIES)
+    n_mod = sum(e.kind == "module" for e in ENTRIES)
+    print(f"\n{n_ok}/{len(ENTRIES)} OK ({n_mod} modules + {len(ENTRIES) - n_mod} assets) -> {'PASS' if all_ok else 'FAIL'}")
     return 0 if all_ok else 1
 
 
@@ -193,7 +248,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true", help="verify only; exit 1 on any mismatch")
-    mode.add_argument("--force", action="store_true", help="overwrite files that differ from the source")
+    mode.add_argument("--force", action="store_true", help='overwrite "copy" files that differ from the source')
     args = parser.parse_args()
     try:
         return check() if args.check else sync(force=args.force)
