@@ -85,6 +85,20 @@ Set-Location C:\Users\tucla\Desktop\DSC180A\drone_final_project1\residual_ppo
 **Pass:** 18 files present, `--check` reports 18/18 OK (blob IDs match manifest and 61d2722), and
 `git -C drone_final_project1 status --short` shows only new untracked files under `residual_ppo\` (no `M` on controller.py / sim_config.py).
 
+**Negative test (must also pass):** proves `--check` actually detects an edit and the sync refuses to hide it.
+```powershell
+# Directory: C:\Users\tucla\Desktop\DSC180A\drone_final_project1\residual_ppo
+Set-Location C:\Users\tucla\Desktop\DSC180A\drone_final_project1\residual_ppo
+$py = "C:\Users\tucla\Desktop\DSC180A\.venv\Scripts\python.exe"
+Add-Content -Path wind.py -Value ""          # (1) tamper: append one blank line
+& $py tools\sync_shared.py --check            # (2) must print FAIL (blob mismatch) for wind.py, 17/18, exit 1
+& $py tools\sync_shared.py                    # (3) must REFUSE, write nothing, exit 1
+& $py tools\sync_shared.py --force            # (4a) restores wind.py from 61d2722, exit 0
+& $py tools\sync_shared.py --check            # (4b) must be 18/18 OK again, exit 0
+```
+Passed 2026-11-12: (1) wind.py blob d6eaf33 → 28980ed; (2) FAIL for wind.py only, exit 1; (3) REFUSING, wind.py and
+manifest unchanged, exit 1; (4) wind.py OVERWRITTEN, manifest unchanged, then 18/18 OK, exit 0.
+
 ## M1.3 Scene files
 
 **Why:** the env opens `<repo root>\sim_scene\dij3d_boxes.usd`, which needs `dij3d.usd` next to it and `..\sim_asset\iris.usd`.

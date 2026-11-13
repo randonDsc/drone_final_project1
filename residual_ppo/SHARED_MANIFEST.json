@@ -1,0 +1,28 @@
+{
+  "source_repo": "https://github.com/randonDsc/drone_final_project1.git",
+  "source_worktree": "drone_team_main",
+  "source_path": "drone_code",
+  "source_commit": "61d2722b260dcb467ab487cb24bf22f61d410a65",
+  "identity": "git blob id (git hash-object, autocrlf-normalized)",
+  "copied_at": "2026-11-13T04:52:59+00:00",
+  "files": {
+    "path_sac_env.py": "2a19c77eb4b503e83c649c0fcfa704aff852ab2d",
+    "path_sac_policy.py": "8762796985f2547482b3c961f450fe6569dead8a",
+    "path_sac_config.py": "af49cc1e05529699506cf4f419daf23f4c1e8b7c",
+    "path_reference.py": "6b9e876d3b5c434b90f7d7ece81f8a821d784516",
+    "hover_env.py": "59ab31c3bf06ccbdb93838e2bec81ee249c0ba38",
+    "hover_task.py": "7dc799257fbc177258dd6f2ce413cda2bc148e52",
+    "hover_ppo_config.py": "f6ac8575c6466b61cc91433bef880f5aca91aa17",
+    "sensor_config.py": "ffdb6b956bfa255116e6f2515c86915e84afc3c1",
+    "state_estimation.py": "5d3be4a5c6e8b0bdfbe305757e9fe428e0e5c3ba",
+    "model_contract.py": "9d42c08bd731c1d52dc9c21a157650845abaf717",
+    "controller.py": "e34bd6193d0df880ed672fc3eb7947b8f7da4bb4",
+    "sim_config.py": "4d5d59cd212c3a48a08dc01f2238ca12bcccad0e",
+    "drone_sim.py": "007e79e0cb221167f8ad728d7229f2a9fbc1a1c2",
+    "motor.py": "9d28944f0136d13065455f758542fe6b72a4bbd0",
+    "wind.py": "d6eaf33bfba3835fb2b394651bfa2000719590af",
+    "drone_diagnostics.py": "43d1b6628dbaf7817d6357bf23fe6bb83110924c",
+    "hover_sac_policy.py": "489ef3d0f96270518ee84c7c92731f985c762575",
+    "hover_sac_config.py": "de4fbe1c1eae580e5a09e2cb515319cd16ddf012"
+  }
+}
