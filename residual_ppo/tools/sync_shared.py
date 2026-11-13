@@ -15,7 +15,12 @@ A "check" entry is never written, not even with --force: it must already match t
 Usage (normal venv is enough; standard library only):
     python tools/sync_shared.py            copy missing files; refuse if any existing file differs
     python tools/sync_shared.py --force    also overwrite "copy" files that differ, with the source bytes
-    python tools/sync_shared.py --check    verify every entry; exit 1 on any mismatch
+    python tools/sync_shared.py --check    verify every entry vs manifest AND team source; exit 1 on mismatch
+    python tools/sync_shared.py --check-local   verify local files vs manifest only (no team repo needed)
+
+Source repo: the team worktree `drone_team_main` next to this repo (the DSC180A layout). Anywhere else,
+e.g. a fresh clone, set the environment variable SYNC_SHARED_TEAM_REPO to its path. It is read at import
+time, so it also applies to tests/test_import_paths.py.
 
 Exit codes: 0 OK, 1 mismatch / refused, 2 precondition or git error.
 Read-only toward drone_team_main: only `git rev-parse`, `git cat-file`, `git remote get-url` run there.
@@ -24,6 +29,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -33,7 +40,10 @@ from pathlib import Path
 RESIDUAL_DIR = Path(__file__).resolve().parents[1]           # ...\drone_final_project1\residual_ppo
 DEST_REPO = RESIDUAL_DIR.parent                               # ...\drone_final_project1
 DEST_PREFIX = RESIDUAL_DIR.relative_to(DEST_REPO).as_posix()  # "residual_ppo"
-TEAM_REPO = DEST_REPO.parent / "drone_team_main"              # read-only source worktree
+TEAM_REPO_ENV = "SYNC_SHARED_TEAM_REPO"
+TEAM_REPO = Path(                                             # read-only source worktree
+    os.environ.get(TEAM_REPO_ENV) or DEST_REPO.parent / "drone_team_main"
+).resolve()
 SOURCE_DIR = "drone_code"
 EXPECTED_COMMIT = "61d2722"
 MANIFEST_PATH = RESIDUAL_DIR / "SHARED_MANIFEST.json"
@@ -97,7 +107,7 @@ def git_text(repo: Path, *args: str) -> str:
 def resolve_source_commit() -> str:
     """Full SHA of EXPECTED_COMMIT; also require the team HEAD to be exactly that commit."""
     if not TEAM_REPO.is_dir():
-        raise SyncError(f"team worktree not found: {TEAM_REPO}")
+        raise SyncError(f"team worktree not found: {TEAM_REPO} (set {TEAM_REPO_ENV} to its path)")
     full = git_text(TEAM_REPO, "rev-parse", "--verify", f"{EXPECTED_COMMIT}^{{commit}}")
     head = git_text(TEAM_REPO, "rev-parse", "HEAD")
     if head != full:
@@ -199,15 +209,33 @@ def sync(force: bool) -> int:
     return 0
 
 
-def check() -> int:
-    commit = resolve_source_commit()
+def team_repo_configured() -> bool:
+    """True if a source check should run: the env var is set (then a wrong path must FAIL, not skip),
+    or the default sibling drone_team_main exists."""
+    return bool(os.environ.get(TEAM_REPO_ENV)) or TEAM_REPO.is_dir()
+
+
+def check_local() -> int:
+    """Local files vs the manifest only. Needs no team repo (works in any clone)."""
+    return check(local_only=True)
+
+
+def check(local_only: bool = False) -> int:
+    """Local blob IDs vs the manifest, and (unless local_only) vs the team source commit."""
+    commit = None if local_only else resolve_source_commit()
     manifest = load_manifest()
     if manifest is None:
         print(f"FAIL: manifest not found: {MANIFEST_PATH}")
         return 1
     problems = 0
-    if manifest.get("source_commit") != commit:
-        print(f"FAIL: manifest source_commit {manifest.get('source_commit')} != {commit}")
+    recorded = manifest.get("source_commit")
+    if local_only:
+        if not (isinstance(recorded, str) and re.fullmatch(r"[0-9a-f]{40}", recorded)
+                and recorded.startswith(EXPECTED_COMMIT)):
+            print(f"FAIL: manifest source_commit {recorded!r} is not a full SHA of {EXPECTED_COMMIT}")
+            problems += 1
+    elif recorded != commit:
+        print(f"FAIL: manifest source_commit {recorded} != {commit}")
         problems += 1
     if manifest.get("identity") != IDENTITY:
         print(f"FAIL: manifest identity {manifest.get('identity')!r} != {IDENTITY!r}")
@@ -229,11 +257,13 @@ def check() -> int:
     for e in ENTRIES:
         man = manifest_blob(manifest, e)
         loc = local_blob_id(e)
-        try:
-            src = source_blob_id(commit, e)
-        except SyncError:
-            src = None
-        ok = man is not None and man == loc == src
+        src = None
+        if not local_only:
+            try:
+                src = source_blob_id(commit, e)
+            except SyncError:
+                src = None
+        ok = man is not None and man == loc and (local_only or man == src)
         n_ok += ok
         if ok:
             status = "OK"
@@ -243,22 +273,28 @@ def check() -> int:
             status = "FAIL (file missing)"
         else:
             status = "FAIL (blob mismatch)"
-        print(f"{e.dest_rel:<36} {short(man):<13} {short(loc):<13} {short(src):<13} {status}")
+        src_col = "n/a" if local_only else short(src)
+        print(f"{e.dest_rel:<36} {short(man):<13} {short(loc):<13} {src_col:<13} {status}")
 
     all_ok = problems == 0 and n_ok == len(ENTRIES)
     n = {k: sum(e.kind == k for e in ENTRIES) for k in ("module", "test", "asset")}
+    scope = " [local vs manifest only; team source not checked]" if local_only else ""
     print(f"\n{n_ok}/{len(ENTRIES)} OK ({n['module']} modules + {n['test']} tests + {n['asset']} assets) "
-          f"-> {'PASS' if all_ok else 'FAIL'}")
+          f"-> {'PASS' if all_ok else 'FAIL'}{scope}")
     return 0 if all_ok else 1
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--check", action="store_true", help="verify only; exit 1 on any mismatch")
+    mode.add_argument("--check", action="store_true", help="verify vs manifest AND team source; exit 1 on mismatch")
+    mode.add_argument("--check-local", action="store_true",
+                      help="verify local files vs manifest only (no team repo needed); exit 1 on mismatch")
     mode.add_argument("--force", action="store_true", help='overwrite "copy" files that differ from the source')
     args = parser.parse_args()
     try:
+        if args.check_local:
+            return check_local()
         return check() if args.check else sync(force=args.force)
     except SyncError as exc:
         print(f"ERROR: {exc}")

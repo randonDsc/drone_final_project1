@@ -32,6 +32,29 @@ SHARED = [
 SHADOWED = ["controller", "sim_config", "motor", "drone_diagnostics"]
 
 
+def load_sync_shared():
+    spec = importlib.util.spec_from_file_location("sync_shared", RESIDUAL_DIR / "tools" / "sync_shared.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["sync_shared"] = module  # dataclasses need the module registered before exec
+    spec.loader.exec_module(module)
+    return module
+
+
+# Loaded once at import so skipUnless below can see where the team source is.
+sync_shared = load_sync_shared()
+SOURCE_SKIP_REASON = (
+    f"team source repo not found at {sync_shared.TEAM_REPO}; set {sync_shared.TEAM_REPO_ENV} "
+    "to the drone_team_main path to run the manifest-vs-source check"
+)
+
+
+def run_quietly(fn):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = fn()
+    return rc, buf.getvalue()
+
+
 def load_manifest():
     return json.loads((RESIDUAL_DIR / "SHARED_MANIFEST.json").read_text(encoding="utf-8"))
 
@@ -80,15 +103,17 @@ class ManifestTests(unittest.TestCase):
         self.assertEqual(git_blob("residual_ppo/controller.py"), manifest["files"]["controller.py"])
         self.assertEqual(manifest["files"]["controller.py"], "e34bd6193d0df880ed672fc3eb7947b8f7da4bb4")
 
-    def test_full_manifest_check_passes(self):
-        spec = importlib.util.spec_from_file_location("sync_shared", RESIDUAL_DIR / "tools" / "sync_shared.py")
-        module = importlib.util.module_from_spec(spec)
-        sys.modules["sync_shared"] = module  # dataclasses need the module registered before exec
-        spec.loader.exec_module(module)
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            rc = module.check()
-        self.assertEqual(rc, 0, buf.getvalue())
+    def test_local_files_match_manifest(self):
+        # (a) Always runs; needs no external repo. Every local shared file's git blob ID == manifest.
+        rc, out = run_quietly(sync_shared.check_local)
+        self.assertEqual(rc, 0, out)
+
+    @unittest.skipUnless(sync_shared.team_repo_configured(), SOURCE_SKIP_REASON)
+    def test_manifest_matches_team_source(self):
+        # (b) Manifest and local files vs the team commit 61d2722. Runs when the default sibling
+        # drone_team_main exists or SYNC_SHARED_TEAM_REPO is set (a wrong path then FAILS, not skips).
+        rc, out = run_quietly(sync_shared.check)
+        self.assertEqual(rc, 0, out)
 
 
 if __name__ == "__main__":

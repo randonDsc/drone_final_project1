@@ -194,6 +194,19 @@ With zero action under PID, an early failure would be a red flag to investigate 
 ## M1.6 Close out
 
 - `sync_shared.py --check` still 21/21 OK (18 modules + 1 test + 2 assets; proves nothing shared was edited while debugging).
+- **Fresh-clone check** (proves the pushed branch works outside this folder, with CRLF working copies): normal Windows clone of
+  `origin/claire/drone-simulation` into the scratchpad (system `core.autocrlf=true`); report line endings of the checked-out files;
+  with `SYNC_SHARED_TEAM_REPO=<DSC180A>\drone_team_main`, run `tools\sync_shared.py --check` and
+  `-m unittest discover -s tests -p "test_*.py"` with BOTH interpreters; delete the clone. Must pass without patching the clone.
+  - Run 1 (2026-11-12, clone of 2252194): every text file pure CRLF (0 bare LF); both .usd byte-identical to their blobs.
+    Checks 21/21 in both interpreters (source overridden in-process). Tests 21/22 in both: `test_full_manifest_check_passes`
+    errored because `sync_shared.py` hard-coded the source as the sibling `..\drone_team_main`. Fix: `SYNC_SHARED_TEAM_REPO`
+    override (default unchanged). With the fix applied to the clone: checks 21/21 and tests 22/22 in both. Re-run on the pushed fix.
+  - Then (Claire's change): `test_full_manifest_check_passes` split into (a) `test_local_files_match_manifest`
+    (`sync_shared.check_local()` / `--check-local`: local blob IDs vs manifest, no external repo, always runs) and
+    (b) `test_manifest_matches_team_source` (`check()` vs 61d2722; `skipUnless` the default sibling exists or
+    `SYNC_SHARED_TEAM_REPO` is set; a set-but-wrong path FAILS rather than skips). The suite now has 23 tests.
+    Run-2 expectations: no env var → 23 run, 0 failures, 1 skipped; env var set → tests 23/23 and checks 21/21; both interpreters.
 - Commit (explicit paths): tools, manifest, shared modules, tests, docs, config snapshot. Don't commit the smoke log unless Claire wants it.
 - Update the README in `residual_ppo` (what's shared, from which commit, how to verify) and the "Current status" in CLAUDE.md → M2.
 
