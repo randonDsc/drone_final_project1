@@ -47,14 +47,33 @@ Paths below are absolute; `$ROOT = "C:\Users\tucla\Desktop\DSC180A"`.
 **Why a script instead of manual copying:** it makes the copy reproducible and records which commit and which bytes
 we use. `--check` can then prove later that nobody edited a shared file. That is our evidence for "same environment as SAC".
 
-`residual_ppo\tools\sync_shared.py` (runs with the normal venv; standard library only):
-- `SOURCE = <DSC180A>\drone_team_main\drone_code`, `EXPECTED_COMMIT = "61d2722"`, `MODULES =` the 18 names in CLAUDE.md.
-- Refuse to run if the team HEAD doesn't start with EXPECTED_COMMIT, or if `git status --porcelain -- drone_code` is non-empty there.
-- Default mode: copy each `<name>.py` with `shutil.copy2`. Refuse to overwrite a destination whose hash differs from the
-  manifest unless `--force` is passed. Write `SHARED_MANIFEST.json` = {source_repo, source_commit (full SHA), copied_at, files: {name: sha256}}.
-- `--check` mode: re-hash `residual_ppo\<name>.py` against the manifest AND against the team source; print a table; exit 1 on any mismatch.
-- `controller.py` and `sim_config.py` already exist: they must hash-match the source (they do), and are included in the manifest.
-- Read-only toward `drone_team_main` (no git writes, no file writes there).
+**Identity rule: a shared file's identity is its git blob ID at 61d2722, NOT its on-disk SHA-256.**
+Why: `core.autocrlf=true` in `drone_final_project1` checks text files out with CRLF line endings, so the working copy's
+SHA-256 (`controller.py`: 1FA0F757…) differs from the LF bytes stored in git / shown on GitHub (da20b7f6…), even though the
+content is identical. The git blob ID (`controller.py`: e34bd61) is computed after line-ending normalization, so it is the same
+for the team's file, our CRLF working copy, and an LF copy. It is also exactly what gets committed.
+
+`residual_ppo\tools\sync_shared.py` (runs with the normal venv; standard library only, calls `git` via `subprocess`):
+- `TEAM_REPO = <DSC180A>\drone_team_main`, `SOURCE_DIR = "drone_code"`, `EXPECTED_COMMIT = "61d2722"`,
+  `DEST_REPO = <DSC180A>\drone_final_project1`, `MODULES =` the 18 names in CLAUDE.md.
+- Resolve the full source SHA with `git -C <TEAM_REPO> rev-parse 61d2722^{commit}`; refuse to run if it doesn't resolve.
+  Also refuse if the team HEAD doesn't start with EXPECTED_COMMIT (guards against baseline confusion). The team working-tree
+  dirty check is no longer needed for correctness, because bytes come from the commit object, not the team's working tree.
+- Source bytes: `git -C <TEAM_REPO> cat-file blob <full_sha>:drone_code/<name>.py`, captured as raw bytes with
+  `subprocess.run(..., capture_output=True, check=True).stdout` and written with `open(dest, "wb")`. (Same bytes as
+  `git show 61d2722:drone_code/<file>`; `cat-file blob` is used because it never applies textconv. Never copy via PowerShell
+  `>` redirection, which re-encodes text.) Source blob ID: `git -C <TEAM_REPO> rev-parse <full_sha>:drone_code/<name>.py`.
+- Default mode, per file: if the destination exists and `git -C <DEST_REPO> hash-object residual_ppo/<name>.py` equals the
+  source blob ID, leave it untouched (this covers the existing CRLF `controller.py` and `sim_config.py`). If it exists with a
+  different blob ID, refuse unless `--force`. Otherwise write it. After writing, re-run `hash-object` and assert it equals the source blob.
+- Write `SHARED_MANIFEST.json` = {`source_repo`, `source_path`: "drone_code", `source_commit`: full 40-char SHA,
+  `identity`: "git blob id (git hash-object, autocrlf-normalized)", `copied_at`, `files`: {`"<name>.py"`: full 40-char blob ID}}.
+- `--check` mode: for each manifest entry, compare `git -C <DEST_REPO> hash-object residual_ppo/<file>` against the manifest
+  blob ID, and also against `rev-parse <source_commit>:drone_code/<file>`. Print a table (file, manifest, local, source, OK/FAIL).
+  Exit 1 on any mismatch, missing file, or missing manifest entry. `hash-object` must run inside `DEST_REPO` without
+  `--no-filters`, so the autocrlf normalization applies.
+- `controller.py` and `sim_config.py` already exist and already match (e34bd61, 4d5d59c; committed in 2aaf0cd); they are included in the manifest.
+- Read-only toward `drone_team_main` (only `rev-parse` / `cat-file`; no git writes, no file writes there).
 
 Run:
 ```powershell
@@ -63,7 +82,8 @@ Set-Location C:\Users\tucla\Desktop\DSC180A\drone_final_project1\residual_ppo
 & C:\Users\tucla\Desktop\DSC180A\.venv\Scripts\python.exe tools\sync_shared.py
 & C:\Users\tucla\Desktop\DSC180A\.venv\Scripts\python.exe tools\sync_shared.py --check
 ```
-**Pass:** 18 files present, `--check` reports 18/18 OK.
+**Pass:** 18 files present, `--check` reports 18/18 OK (blob IDs match manifest and 61d2722), and
+`git -C drone_final_project1 status --short` shows only new untracked files under `residual_ppo\` (no `M` on controller.py / sim_config.py).
 
 ## M1.3 Scene files
 
@@ -71,22 +91,29 @@ Set-Location C:\Users\tucla\Desktop\DSC180A\drone_final_project1\residual_ppo
 They live at the repo root, not in `residual_ppo\`. This is a deliberate, documented exception to "everything under residual_ppo"
 (moving them would break the USD-relative references). Ask Claire before doing it.
 
-- `Test-Path` the two files in `drone_final_project1\sim_scene\`. If missing, copy them from `drone_team_main\sim_scene\`.
-- Compare `Get-FileHash` of `sim_asset\iris.usd` across both worktrees (expected identical).
+Same identity rule as M1.2: git blob ID at 61d2722, not `Get-FileHash`. (These USDs are binary USDC, so autocrlf
+does not convert them, but we use one rule for every shared file.) Expected blobs at 61d2722:
+`sim_scene/dij3d_boxes.usd` = 8af9451d89795ebeae3b014b73f55e9828c866d9, `sim_scene/dij3d.usd` = f5461f9a8477b937f1c8822cf94b427cbdfd5b58,
+`sim_asset/iris.usd` = 003d97f30dfd6bb196e018a29a1743a1228528a3.
+
+- `Test-Path` the two files in `drone_final_project1\sim_scene\`. If missing, write them from
+  `git -C drone_team_main cat-file blob 61d2722:sim_scene/<file>` (raw bytes, via sync_shared.py; not a manual copy).
+- Compare `git -C drone_final_project1 hash-object sim_asset/iris.usd` against the 61d2722 blob above (expected identical).
 - Do NOT replace `sim_scene\drone1.usd` (it differs from main but the path env does not use it).
-- Add the two USDs' hashes to the manifest under `assets` (extend sync_shared.py rather than hand-editing JSON).
+- Add the two USDs (and iris.usd, as a verified dependency) to the manifest under `assets`: {repo-relative path: blob ID}
+  (extend sync_shared.py rather than hand-editing JSON); `--check` verifies them the same way as the modules.
 
 ## M1.4 Offline tests (no Isaac)
 
 **Why:** prove the copied pure-Python logic (PID adapter, reward, references, residual budget) behaves like the team's,
 and that imports resolve to `residual_ppo\`, before paying Isaac's startup cost.
 
-1. Copy the team's `drone_code\tests\test_path_sac.py` verbatim to `residual_ppo\tests\` (its `parents[1]` resolves to `residual_ppo`).
-   Add it to the manifest's tracked files.
+1. Write the team's `61d2722:drone_code/tests/test_path_sac.py` verbatim to `residual_ppo\tests\` via sync_shared.py
+   (`cat-file blob`, same identity rule; its `parents[1]` resolves to `residual_ppo`). Add it to the manifest with its blob ID.
 2. New `residual_ppo\tests\test_import_paths.py`: insert `residual_ppo` at `sys.path[0]`. For all 18 modules use
    `importlib.util.find_spec(name).origin` (this does not execute the module, so it works for `drone_sim` without Isaac) and
    assert the parent folder is `residual_ppo`. Also assert no entry of `sys.path` ends with `drone_code`. Also assert that
-   `controller.py`'s hash equals the manifest.
+   `controller.py`'s git blob ID (`git hash-object`) equals the manifest.
 3. Run with BOTH interpreters:
    ```powershell
    # Directory: C:\Users\tucla\Desktop\DSC180A\drone_final_project1\residual_ppo
