@@ -1,0 +1,84 @@
+{
+  "created_at": "2026-11-13T05:28:44+00:00",
+  "purpose": "M1.5 Isaac environment smoke test (no training)",
+  "source_commit": "61d2722b260dcb467ab487cb24bf22f61d410a65",
+  "manifest_check": "20/20 OK (18 modules + 2 assets) -> PASS",
+  "python": "3.12.14",
+  "packages": {
+    "numpy": {
+      "version": "2.3.1",
+      "file": "C:\\isaacsim\\isaac-sim-standalone-6.2.0-windows-x86_64/extscache/omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312/pip_prebundle\\numpy\\__init__.py"
+    },
+    "gymnasium": {
+      "version": "1.2.3",
+      "file": "C:\\isaacsim\\isaac-sim-standalone-6.2.0-windows-x86_64\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py"
+    },
+    "stable_baselines3": {
+      "version": "2.7.0",
+      "file": "C:\\isaacsim\\isaac-sim-standalone-6.2.0-windows-x86_64\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py"
+    },
+    "torch": {
+      "version": "2.14.1+cpu",
+      "file": "C:\\isaacsim\\isaac-sim-standalone-6.2.0-windows-x86_64\\kit\\python\\Lib\\site-packages\\torch\\__init__.py",
+      "cuda_available": false,
+      "cuda_version": null,
+      "sb3_auto_device": "cpu"
+    }
+  },
+  "scene": "sim_scene/dij3d_boxes.usd",
+  "action_space": "Box(-1.0, 1.0, (4,), float32)",
+  "observation_space": "Box(-10.0, 10.0, (128,), float32)",
+  "decimation": 12,
+  "physics_dt": 0.008333333333333333,
+  "rl_rate_hz": 10,
+  "residual_limits": {
+    "thrust": 0.8,
+    "roll_torque": 0.05,
+    "pitch_torque": 0.03,
+    "yaw_torque": 0.02
+  },
+  "total_mass_kg": 1.6186144351959229,
+  "vehicle_body_masses_kg": {
+    "/World/iris/body": 1.5,
+    "/World/iris/rotor0": 0.029236136004328728,
+    "/World/iris/rotor1": 0.029236136004328728,
+    "/World/iris/rotor2": 0.030071178451180458,
+    "/World/iris/rotor3": 0.030071178451180458
+  },
+  "hover_thrust_n": 15.878607609272004,
+  "hesai": {
+    "root": "/World/iris/body/HESAI_XT32_SD10",
+    "exists": true,
+    "active": true,
+    "prims": 258,
+    "rigid_body_prims": [],
+    "collision_prims": [],
+    "mass_api_prims": [],
+    "rigid_body_mass_kg": 0,
+    "verdict": "HESAI adds no rigid-body mass (not a rigid body, no enabled colliders)"
+  },
+  "body_authored_mass_api": {
+    "mass": 1.5,
+    "density": 0.0
+  },
+  "zero_action_smoke": {
+    "decisions": 30,
+    "saturated_steps": 0,
+    "physics_steps": 360,
+    "ended": [
+      false,
+      false,
+      null
+    ]
+  },
+  "curriculum_check": {
+    "0": "short_slow",
+    "149999": "short_slow",
+    "150000": "turns",
+    "400000": "climbs_loops",
+    "800000": "full",
+    "1500000": "full"
+  },
+  "determinism_obs_max_abs_diff": 0.0,
+  "smoke_result": "RESULT: PASS"
+}

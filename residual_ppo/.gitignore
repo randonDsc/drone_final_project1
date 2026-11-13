@@ -1,2 +1,5 @@
 # Python bytecode caches (regenerated on import; differ per interpreter)
 __pycache__/
+
+# Full Isaac Sim console logs (large, machine-specific); commit summaries/snapshots instead
+results/*.log

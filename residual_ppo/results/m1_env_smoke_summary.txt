@@ -1,0 +1,63 @@
+[M1.5] started 2026-11-13T05:28:34+00:00  python 3.12.14
+[M1.5] residual_ppo: residual_ppo
+[M1.5] sync_shared --check: 20/20 OK (18 modules + 2 assets) -> PASS (rc=0)
+[M1.5] path_sac_env     residual_ppo/path_sac_env.py
+[M1.5] path_sac_config  residual_ppo/path_sac_config.py
+[M1.5] controller       residual_ppo/controller.py
+[M1.5] scene: sim_scene/dij3d_boxes.usd  exists=True
+[M1.5] shared modules loaded after build: 16/18; not loaded: ['hover_sac_policy', 'hover_sac_config']; outside residual_ppo: none
+[M1.5] action_space=Box(-1.0, 1.0, (4,), float32)  observation_space=Box(-10.0, 10.0, (128,), float32)
+[M1.5] decimation=12 (expect 12)  dt=0.008333333333333333 (expect 0.008333333333333333)
+[M1.5] residual limits (config)={'thrust': 0.8, 'roll_torque': 0.05, 'pitch_torque': 0.03, 'yaw_torque': 0.02}  array=[0.8, 0.05, 0.03, 0.02]
+[M1.5] vehicle rigid bodies under /World/iris: 5
+[M1.5]     /World/iris/body: 1.500000 kg
+[M1.5]     /World/iris/rotor0: 0.029236 kg
+[M1.5]     /World/iris/rotor1: 0.029236 kg
+[M1.5]     /World/iris/rotor2: 0.030071 kg
+[M1.5]     /World/iris/rotor3: 0.030071 kg
+[M1.5] total_mass_kg = 1.618614  (float32 sum of bodies 1.618614; |float64 sum - total| = 1.94e-07 kg)
+[M1.5] HESAI root /World/iris/body/HESAI_XT32_SD10: exists=True active=True prims=258
+[M1.5]     RigidBodyAPI prims: none
+[M1.5]     CollisionAPI prims: 0 (enabled 0)
+[M1.5]     MassAPI prims: none
+[M1.5]     hesai_rigid_body_mass_kg = 0.000000
+[M1.5] /World/iris/body authored MassAPI: {'mass': 1.5, 'density': 0.0}
+[M1.5] HESAI verdict: HESAI adds no rigid-body mass (not a rigid body, no enabled colliders)
+[M1.5] reset(seed=123): obs shape=(128,) dtype=float32 finite=True range=[-0.068, 1.000]
+[M1.5]     info: {"wind_mean": [-0.019930971833300674, -0.10578073842348144, 0.0], "wind_seed": 8516354435172480967, "route_type": "straight", "stage": "short_slow", "route_seconds": 9.05372418133065}
+[M1.5] zero action for up to 30 decisions:
+[M1.5]    0 reward=-0.00816 term=False trunc=False fail=None pos_err=0.0750 sat=0/12
+[M1.5]    1 reward=-0.00655 term=False trunc=False fail=None pos_err=0.0687 sat=0/12
+[M1.5]    2 reward=-0.00564 term=False trunc=False fail=None pos_err=0.0618 sat=0/12
+[M1.5]    3 reward=-0.00501 term=False trunc=False fail=None pos_err=0.0551 sat=0/12
+[M1.5]    4 reward=-0.00447 term=False trunc=False fail=None pos_err=0.0496 sat=0/12
+[M1.5]    5 reward=-0.00382 term=False trunc=False fail=None pos_err=0.0466 sat=0/12
+[M1.5]    6 reward=-0.00374 term=False trunc=False fail=None pos_err=0.0493 sat=0/12
+[M1.5]    7 reward=-0.00418 term=False trunc=False fail=None pos_err=0.0568 sat=0/12
+[M1.5]    8 reward=-0.00546 term=False trunc=False fail=None pos_err=0.0673 sat=0/12
+[M1.5]    9 reward=-0.00740 term=False trunc=False fail=None pos_err=0.0787 sat=0/12
+[M1.5]   10 reward=-0.00962 term=False trunc=False fail=None pos_err=0.0933 sat=0/12
+[M1.5]   11 reward=-0.01258 term=False trunc=False fail=None pos_err=0.1108 sat=0/12
+[M1.5]   12 reward=-0.01574 term=False trunc=False fail=None pos_err=0.1264 sat=0/12
+[M1.5]   13 reward=-0.01862 term=False trunc=False fail=None pos_err=0.1421 sat=0/12
+[M1.5]   14 reward=-0.02086 term=False trunc=False fail=None pos_err=0.1545 sat=0/12
+[M1.5]   15 reward=-0.02283 term=False trunc=False fail=None pos_err=0.1635 sat=0/12
+[M1.5]   16 reward=-0.02421 term=False trunc=False fail=None pos_err=0.1694 sat=0/12
+[M1.5]   17 reward=-0.02491 term=False trunc=False fail=None pos_err=0.1707 sat=0/12
+[M1.5]   18 reward=-0.02499 term=False trunc=False fail=None pos_err=0.1674 sat=0/12
+[M1.5]   19 reward=-0.02451 term=False trunc=False fail=None pos_err=0.1594 sat=0/12
+[M1.5]   20 reward=-0.02346 term=False trunc=False fail=None pos_err=0.1471 sat=0/12
+[M1.5]   21 reward=-0.02187 term=False trunc=False fail=None pos_err=0.1309 sat=0/12
+[M1.5]   22 reward=-0.01994 term=False trunc=False fail=None pos_err=0.1113 sat=0/12
+[M1.5]   23 reward=-0.01793 term=False trunc=False fail=None pos_err=0.0889 sat=0/12
+[M1.5]   24 reward=-0.01718 term=False trunc=False fail=None pos_err=0.0642 sat=0/12
+[M1.5]   25 reward=-0.01966 term=False trunc=False fail=None pos_err=0.0373 sat=0/12
+[M1.5]   26 reward=-0.01987 term=False trunc=False fail=None pos_err=0.0126 sat=0/12
+[M1.5]   27 reward=-0.02096 term=False trunc=False fail=None pos_err=0.0286 sat=0/12
+[M1.5]   28 reward=-0.02188 term=False trunc=False fail=None pos_err=0.0589 sat=0/12
+[M1.5]   29 reward=-0.02287 term=False trunc=False fail=None pos_err=0.0889 sat=0/12
+[M1.5] zero-action summary: decisions=30 saturated physics steps=0/360 last=(False, False, None)
+[M1.5] curriculum stages (0, 149999, 150000, 400000, 800000, 1500000) -> ['short_slow', 'short_slow', 'turns', 'climbs_loops', 'full', 'full']
+[M1.5] determinism reset(seed=7) x2: {'wind_seed': True, 'route_type': True, 'route_seconds': True}  wind_mean equal=True obs max|diff|=0.000e+00
+[M1.5] snapshot written: residual_ppo/results/m1_env_config_snapshot.json
+[M1.5] RESULT: PASS
