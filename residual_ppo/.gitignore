@@ -6,3 +6,6 @@ results/**/*.log
 
 # M2.2 raw per-physics-step traces (large; reproducible; hashes are in the committed JSON)
 results/m2/zero_residual_traces/
+
+# Team SAC checkpoint downloaded from Hugging Face (binary, not ours); provenance in models/sac_team/SOURCE.json
+models/sac_team/flight1/

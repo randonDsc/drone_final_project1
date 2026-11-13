@@ -1,0 +1,65 @@
+{
+  "what": "Team path-following SAC checkpoint (PID + SAC residual), for M7 comparison only. Binaries are gitignored (models/sac_team/flight1/).",
+  "source": {
+    "huggingface_repo": "pcldsc/Iris_drone_residual_correction_SAC",
+    "revision": "7dd1f14bd64fe37bc25b47aac82e3de37f642936",
+    "repo_last_modified": "2026-11-06T23:23:28.000Z",
+    "referenced_by": "drone_team_main README.md section 3 (Quick Start notes) at team commit 61d2722",
+    "retrieved_at": "2026-11-13",
+    "download_url_pattern": "https://huggingface.co/pcldsc/Iris_drone_residual_correction_SAC/resolve/<revision>/<path_in_repo>"
+  },
+  "files": [
+    {
+      "path_in_repo": "runs/flight_sac/flight1/final_model.zip",
+      "local_path": "residual_ppo/models/sac_team/flight1/final_model.zip",
+      "size_bytes": 4468548,
+      "sha256": "2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d",
+      "hf_lfs_sha256": "2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d"
+    },
+    {
+      "path_in_repo": "runs/flight_sac/flight1/flight_contract.json",
+      "local_path": "residual_ppo/models/sac_team/flight1/flight_contract.json",
+      "size_bytes": 9414,
+      "sha256": "8b9f628329f182a64d45596912f186aef4337601c7898e865da84dd5f2dcf007",
+      "hf_git_blob": "daa38d0852a2e3cfd0d42369bc02ccdae43f1ac4"
+    }
+  ],
+  "not_downloaded": [
+    {"path_in_repo": ".gitattributes", "size_bytes": 1519},
+    {"path_in_repo": "README.md", "size_bytes": 21},
+    {"path_in_repo": "runs/sac_hover/wind1/checkpoints/sac_200000_steps.zip", "size_bytes": 4151479,
+     "hf_lfs_sha256": "74c72c409ea1e97c3ab6da4349fc162760dd93df56252a8bac728b10328763bf"},
+    {"path_in_repo": "runs/sac_hover/wind1/observation_contract.json", "size_bytes": 1157}
+  ],
+  "metadata_read_without_unpickling": {
+    "method": "zipfile + json on the 'data' member, system_info.txt; pickled fields only disassembled with pickletools (never loaded)",
+    "num_timesteps": 1500000,
+    "_total_timesteps": 1500000,
+    "_num_timesteps_at_start": 50000,
+    "_n_updates": 1494999,
+    "_episode_num": 10402,
+    "seed": 0,
+    "sb3_version": "2.9.0",
+    "system_info": {"python": "3.12.13", "torch": "2.11.0+cu128", "gpu_enabled": true, "numpy": "2.3.1",
+                    "gymnasium": "1.4.0", "cloudpickle": "3.1.2"},
+    "policy_kwargs": {"net_arch": {"pi": [256, 256], "qf": [256, 256]}, "use_sde": false},
+    "gamma": 0.99,
+    "learning_rate": 0.0003,
+    "batch_size": 256,
+    "buffer_size": 500000,
+    "ent_coef": "auto",
+    "target_entropy": -4.0,
+    "train_freq": "TrainFreq(1, 'step')",
+    "gradient_steps": 1,
+    "tau": 0.005,
+    "learning_starts": 5000,
+    "n_envs": 1,
+    "observation_space": "Box(-10, 10, (128,), float32)",
+    "action_space": "Box(-1, 1, (4,), float32)"
+  },
+  "contract_check": {
+    "path_sac_config.incompatibility(model)": null,
+    "path_sac_config.incompatibility(model, check_training=True)": null,
+    "run_with": "venv Python 3.13, residual_ppo shared modules (61d2722)"
+  }
+}
