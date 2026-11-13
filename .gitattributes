@@ -1,0 +1,2 @@
+# USD crate files are binary: no line-ending conversion, no text diff/merge.
+*.usd binary

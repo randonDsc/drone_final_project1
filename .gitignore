@@ -1,0 +1,5 @@
+# Python bytecode caches (regenerated on import; differ per interpreter and checkout time)
+__pycache__/
+
+# Runtime output of drone_code/motor_physics.py (old logs are kept outside the repo)
+flight_log.txt
