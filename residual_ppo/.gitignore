@@ -15,3 +15,6 @@ scratch/
 
 # M2.5 adapter smoke: raw fly outputs on validation seed 400000 (contain tracking metrics); only the summary is committed
 results/m2/m2_5_adapter_smoke/runs/
+
+# PPO runs: model zips (final + checkpoints) are large binaries; contracts, status, meta and CSV logs are small
+runs/**/*.zip

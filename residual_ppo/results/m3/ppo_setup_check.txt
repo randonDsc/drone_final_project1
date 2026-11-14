@@ -1,0 +1,24 @@
+[M3.verify] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[M3.verify] import paths: all 18 shared modules resolve inside residual_ppo
+[M3.verify] V1 preflight: PASS - 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS; config files inside residual_ppo; gamma 0.99 == SAC 0.99; sweep variant None; contract policy == policy_contract(); contract file name == adapter's; 40 forbidden reset seeds; 733 rollouts = 1,501,184 decisions; <= 58,640 gradient steps; 30 checkpoints incl. 150k/400k/800k/1.5M
+[M3.verify] startup: SimulationApp 6.5 s, env build 1.3 s; versions {'python': '3.12.14', 'numpy': '2.3.1', 'numpy_file': '<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py', 'gymnasium': '1.2.3', 'gymnasium_file': '<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py', 'stable_baselines3': '2.7.0', 'stable_baselines3_file': '<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py', 'torch': '2.14.1+cpu', 'torch_file': '<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py', 'torch_cuda_available': False, 'torch_num_threads': 8, 'sb3_auto_device': 'cpu'}
+[M3.verify] V2 import order: PASS - PPO created after SimulationApp + env with no ImportError; optimizer Adam; torch 2.14.1+cpu from <ISAAC_ROOT>\kit\python\Lib\site-packages\torch; 1044 torch modules with a file, 0 outside it [] (placeholder __file__ skipped: [('torch.ops', '_ops.py'), ('torch.classes', '_classes.py')]); modules from the ml_archive pip_prebundle: 0 []; any module path containing ml_archive: 1 ['omni.isaac.ml_archive'] (the Isaac extension package itself); model device cpu
+[M3.verify] V3 spaces: PASS - env obs Box(-10.0, 10.0, (128,), float32), act Box(-1.0, 1.0, (4,), float32); model and VecEnv equal
+[M3.verify] V4 parameters: PASS - actor 99,848 (expected 99,848), critic 99,073 (expected 99,073), features extractor 0, total 198,921; hidden activations ['ReLU']; log_std [-1.0, -1.0, -1.0, -1.0]; pi Sequential(
+  (0): Linear(in_features=128, out_features=256, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=256, out_features=256, bias=True)
+  (3): ReLU()
+); vf Sequential(
+  (0): Linear(in_features=128, out_features=256, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=256, out_features=256, bias=True)
+  (3): ReLU()
+)
+[M3.verify] V7 no update: PASS - collect_rollouts(2048) returned True; num_timesteps 2048; state_dict sha256 before c44dcdbdc012 after c44dcdbdc012 (identical); optimizer steps 0; Adam state entries 0; SB3 _n_updates 0
+[M3.verify] V5 initial mean: PASS - mean |mu| per component [0.002199999988079071, 0.0010300000431016088, 0.0022299999836832285, 0.001879999996162951], max |mu| 0.00682 (flag if > 0.1); std 0.3679 (exp(-1) = 0.3679); obs |x| mean 0.167, max 1.672
+[M3.verify] V6 clip fraction: PASS - 0.6958% of components (expected 0.6562%), per component [0.635, 0.635, 0.586, 0.928] %, 2.783% of actions (expected 2.599%); flag if > 2x expected; |a| max 1.434
+[M3.verify] V8 rollout contents: PASS - finite {'rewards': True, 'values': True, 'returns': True, 'advantages': True, 'log_probs': True}; 24 episodes ended (0 terminated, 24 truncated; end reasons {'None': 24}; completed 1); truncations bootstrapped 24/24 with |r_buf - r_raw - gamma*V(terminal)| max 1.88e-08, non-truncated rewards changed 0; stages ['short_slow']; resets: seeded [0], unseeded 24 (no forbidden seed, no options); 46.6 decisions/s incl. policy forward (M2.1 zero action: 49.1)
+[M3.verify] summary: 8 PASS, 0 FLAG [], 0 FAIL []
+[M3.verify] written: residual_ppo/results/m3/ppo_setup_check.json, residual_ppo/results/m3/ppo_setup_check.txt
+[M3.verify] RESULT: DONE

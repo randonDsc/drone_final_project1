@@ -1,0 +1,27 @@
+[M3.probe] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[M3.probe] import paths: all 18 shared modules resolve inside residual_ppo
+[M3.probe] V1 preflight: PASS - 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS; config files inside residual_ppo; gamma 0.99 == SAC 0.99; sweep variant None; contract policy == policy_contract(); contract file name == adapter's; 40 forbidden reset seeds; 733 rollouts = 1,501,184 decisions; <= 58,640 gradient steps; 30 checkpoints incl. 150k/400k/800k/1.5M
+[M3.probe] startup: SimulationApp 6.4 s, env build 1.3 s; versions {'python': '3.12.14', 'numpy': '2.3.1', 'numpy_file': '<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py', 'gymnasium': '1.2.3', 'gymnasium_file': '<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py', 'stable_baselines3': '2.7.0', 'stable_baselines3_file': '<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py', 'torch': '2.14.1+cpu', 'torch_file': '<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py', 'torch_cuda_available': False, 'torch_num_threads': 8, 'sb3_auto_device': 'cpu'}
+[M3.probe] V2 import order: PASS - PPO created after SimulationApp + env with no ImportError; optimizer Adam; torch 2.14.1+cpu from <ISAAC_ROOT>\kit\python\Lib\site-packages\torch; 1044 torch modules with a file, 0 outside it [] (placeholder __file__ skipped: [('torch.ops', '_ops.py'), ('torch.classes', '_classes.py')]); modules from the ml_archive pip_prebundle: 0 []; any module path containing ml_archive: 1 ['omni.isaac.ml_archive'] (the Isaac extension package itself); model device cpu
+[M3.probe] V3 spaces: PASS - env obs Box(-10.0, 10.0, (128,), float32), act Box(-1.0, 1.0, (4,), float32); model and VecEnv equal
+[M3.probe] V4 parameters: PASS - actor 99,848 (expected 99,848), critic 99,073 (expected 99,073), features extractor 0, total 198,921; hidden activations ['ReLU']; log_std [-1.0, -1.0, -1.0, -1.0]; pi Sequential(
+  (0): Linear(in_features=128, out_features=256, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=256, out_features=256, bias=True)
+  (3): ReLU()
+); vf Sequential(
+  (0): Linear(in_features=128, out_features=256, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=256, out_features=256, bias=True)
+  (3): ReLU()
+)
+[M3.probe] rollout 1: collect 44.1 s (46.4 decisions/s), update 0.21 s, 80 gradient steps, value_loss 1.997, PPO clip_fraction 0.0996, approx_kl 0.0118, std 0.3665, explained_var -0.028, action clip 0.696% of components / 2.78% of actions
+[M3.probe] rollout 2: collect 44.1 s (46.4 decisions/s), update 0.18 s, 80 gradient steps, value_loss 0.9633, PPO clip_fraction 0.0826, approx_kl 0.0126, std 0.3654, explained_var 0.235, action clip 0.647% of components / 2.54% of actions
+[M3.probe] rollout 3: collect 44.1 s (46.4 decisions/s), update 0.18 s, 80 gradient steps, value_loss 0.7647, PPO clip_fraction 0.1399, approx_kl 0.0148, std 0.3627, explained_var 0.374, action clip 0.610% of components / 2.44% of actions
+[M3.probe] rollout 4: collect 44.2 s (46.3 decisions/s), update 0.19 s, 80 gradient steps, value_loss 0.4957, PPO clip_fraction 0.1374, approx_kl 0.0152, std 0.3590, explained_var 0.509, action clip 0.598% of components / 2.34% of actions
+[M3.probe] t_update: mean 0.19 s per rollout over 4 updates (320 gradient steps, 2.4 ms each); full 80-step update 0.19 s
+[M3.probe] ESTIMATE 1.5M (733 rollouts = 1,501,184 decisions): collect 8.99 h (probe rate 46.4 decisions/s; at M2.1's 49.1/s: 8.49 h) + updates <= 0.04 h + 31 saves (0.02 s each) + startup 8 s = 9.03 h
+[M3.probe] probe: PASS - 8192 decisions in 4 rollouts with updates; learn() 177.3 s; seeded resets [0]; model discarded
+[M3.probe] summary: 5 PASS, 0 FLAG [], 0 FAIL []
+[M3.probe] written: residual_ppo/results/m3/timing_probe.json, residual_ppo/results/m3/timing_probe.txt
+[M3.probe] RESULT: DONE
