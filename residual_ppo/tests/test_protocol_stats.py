@@ -106,6 +106,91 @@ class ReproductionCheckTest(unittest.TestCase):
         self.assertIn("overall: PASS", text)
 
 
+def grid(mse_still, mse_wind, seeds=range(5), fail=()):
+    """mse_*: {scenario: [per-seed MSE]}. fail: set of (scenario, profile, seed) that failed."""
+    rows = []
+    for sc in SCENARIOS:
+        for p, table in (("still_air", mse_still), ("training_range", mse_wind)):
+            for i, s in enumerate(seeds):
+                f = flight(sc, p, s, float(np.sqrt(table[sc][i])), failed=(sc, p, s) in fail)
+                f.update(route_seconds=10.0 + s, max_decisions=100 + s, initial_obs_sha256=f"h{sc}{s}",
+                         wind_speed=0.0 if p == "still_air" else 3.0,
+                         wind_mean=[0.0, 0.0, 0.0] if p == "still_air" else [3.0, 0.0, 0.0])
+                rows.append(f)
+    return rows
+
+
+class StillVsWindH1Test(unittest.TestCase):
+    PROFILES = ("still_air", "training_range")
+
+    def test_wind_share_point_and_decision_rule(self):
+        # still MSE 1, wind MSE 4 everywhere -> share = 3/4 for every resample -> CI [0.75, 0.75] -> rejected
+        rows = grid({sc: [1.0] * 5 for sc in SCENARIOS}, {sc: [4.0] * 5 for sc in SCENARIOS})
+        h1 = ps.h1_analysis(rows, SCENARIOS, range(5))
+        p = h1["primary_wind_share_mse"]
+        self.assertAlmostEqual(p["value"], 0.75)
+        self.assertAlmostEqual(p["ci95"][0], 0.75)
+        self.assertEqual(p["verdict"], "rejected")
+        self.assertTrue(h1["primary_and_sensitivity_agree"])
+        self.assertEqual(ps.h1_verdict([0.1, 0.49]), "supported")
+        self.assertEqual(ps.h1_verdict([0.4, 0.6]), "inconclusive")
+
+    def test_ratio_of_sums_not_mean_of_ratios_and_negative_kept(self):
+        still = {sc: [1.0, 1.0, 0.0, 2.0, 1.0] for sc in SCENARIOS}
+        wind = {sc: [2.0, 1.0, 0.5, 1.0, 1.5] for sc in SCENARIOS}
+        h1 = ps.h1_analysis(grid(still, wind), SCENARIOS, range(5))
+        # sum(wind - still) = 1 - 0 + 0.5 - 1 + 0.5 = 1.0; sum(wind) = 6.0
+        self.assertAlmostEqual(h1["primary_wind_share_mse"]["value"], 1.0 / 6.0)
+        still2 = {sc: [2.0] * 5 for sc in SCENARIOS}
+        wind2 = {sc: [1.0] * 5 for sc in SCENARIOS}
+        self.assertAlmostEqual(ps.h1_analysis(grid(still2, wind2), SCENARIOS, range(5))
+                               ["primary_wind_share_mse"]["value"], -1.0)
+
+    def test_bootstrap_reproducible_and_paired(self):
+        a = ps.bootstrap_mean([0.1, 0.5, 0.2, 0.9, 0.3])
+        b = ps.bootstrap_mean([0.1, 0.5, 0.2, 0.9, 0.3])
+        self.assertEqual(a, b)
+        self.assertLessEqual(a["ci95"][0], a["value"])
+        self.assertGreaterEqual(a["ci95"][1], a["value"])
+
+    def test_failure_sensitivity_excludes_seed_from_both_profiles(self):
+        still = {sc: [1.0] * 5 for sc in SCENARIOS}
+        wind = {sc: [2.0, 2.0, 2.0, 2.0, 100.0] for sc in SCENARIOS}
+        rows = grid(still, wind, fail={("turns", "training_range", 4)})
+        h1 = ps.h1_analysis(rows, SCENARIOS, range(5))
+        sens = h1["sensitivity_excluding_failed_seeds"]
+        self.assertEqual(sens["excluded_seeds"], [4])
+        self.assertEqual(sens["n_seeds"], 4)
+        self.assertAlmostEqual(sens["value"], 0.5)
+        self.assertEqual(len(h1["failed_flights"]), 1)
+
+    def test_hover_sanity_flag(self):
+        still = {sc: [1.0] * 5 for sc in SCENARIOS}
+        wind = {sc: [1.1] * 5 for sc in SCENARIOS}  # hover share 0.09 < 0.8 -> suspect
+        h1 = ps.h1_analysis(grid(still, wind), SCENARIOS, range(5))
+        self.assertTrue(h1["hover_sanity"]["suspect"])
+        self.assertFalse(h1["h1_interpretable"])
+        self.assertTrue(h1["verdict"].startswith("not interpreted"))
+
+    def test_consistency_check(self):
+        rows = grid({sc: [1.0] * 5 for sc in SCENARIOS}, {sc: [2.0] * 5 for sc in SCENARIOS})
+        self.assertTrue(ps.consistency_check(rows, SCENARIOS, self.PROFILES, range(5))["pass"])
+        rows[7]["initial_obs_sha256"] = "different"
+        bad = ps.consistency_check(rows, SCENARIOS, self.PROFILES, range(5))
+        self.assertFalse(bad["pass"])
+        self.assertEqual(bad["problems"][0]["field"], "initial_obs_sha256")
+        rows = grid({sc: [1.0] * 5 for sc in SCENARIOS}, {sc: [2.0] * 5 for sc in SCENARIOS})
+        self.assertFalse(ps.consistency_check(rows[1:], SCENARIOS, self.PROFILES, range(5))["pass"])
+
+    def test_still_vs_wind_table_paired_differences(self):
+        rows = grid({sc: [1.0] * 5 for sc in SCENARIOS}, {sc: [4.0] * 5 for sc in SCENARIOS})
+        table = ps.still_vs_wind_table(rows, SCENARIOS, self.PROFILES, range(5))
+        self.assertEqual(len(table), 12)
+        tr = [r for r in table if r["wind_profile"] == "training_range"][0]
+        self.assertAlmostEqual(tr["position_rmse_diff_vs_still_mean"], 1.0)  # sqrt(4) - sqrt(1)
+        self.assertNotIn("position_rmse_diff_vs_still_mean", table[0])
+
+
 class ControllersTest(unittest.TestCase):
     def test_pid_returns_float32_zeros(self):
         a = controllers.make_controller("pid").act(np.ones(128, np.float32))

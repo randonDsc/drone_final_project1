@@ -5,6 +5,7 @@ Modes:
              drone_team_main/drone_code/eval_path_sac.py fly() exactly. Optional --check0 first: one cell flown with
              diagnostics off and on must give identical metrics and per-decision trace.
   reproduce  No Isaac. M2.3 first check: team README section 2 PID-only rows vs a pilot run's flights.
+  still-vs-wind  No Isaac. M2.3 consistency check (stops if violated), still-vs-wind table, H1 pilot statistics.
 
     # Directory: C:\\Users\\tucla\\Desktop\\DSC180A\\drone_final_project1
     & "<Isaac>\\python.bat" residual_ppo\\evaluation\\run_protocol.py fly --controller pid --seeds 300000-300009 `
@@ -363,6 +364,115 @@ def mode_reproduce(args):
     print("written: residual_ppo/results/m2/team_reproduction.json, team_reproduction.txt")
 
 
+def _fmt(x, nd=3):
+    return "  n/a" if x is None else f"{x:.{nd}f}"
+
+
+def mode_still_vs_wind(args):
+    """M2.3: consistency check (fails the step if violated), still-vs-wind table, H1 pilot statistics. No Isaac."""
+    import eval_protocol_v1 as protocol
+    import protocol_stats as ps
+
+    run = Path(args.run)
+    run = run if run.is_absolute() else (REPO_DIR / run)
+    data = json.loads((run / "results.json").read_text(encoding="utf-8"))
+    flights = [f for f in data["flights"] if f["controller"] == "pid"]
+    scenarios = tuple(protocol.SCENARIOS)
+    profiles = tuple(data["meta"]["profiles"])
+    first, last, n = data["meta"]["seeds"]
+    seeds = tuple(range(first, last + 1))
+    assert len(seeds) == n
+    out_lines = []
+
+    def emit(msg=""):
+        print(msg)
+        out_lines.append(msg)
+
+    result = {
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "purpose": "M2.3 pilot: consistency check, still air vs wind table, H1 pilot statistics (pre-registered)",
+        "source_run": repo_rel(run / "results.json"), "source_run_sha256_lf": rc.file_sha256(run / "results.json"),
+        "protocol_file_sha256": data["meta"]["protocol"]["protocol_file_sha256"],
+        "packages": data["meta"]["packages"], "isaac_sim": data["meta"]["isaac_sim"],
+        "total_mass_kg": data["meta"]["total_mass_kg"], "still_air_definition": data["meta"]["still_air_definition"],
+        "seeds": [first, last, n], "profiles": list(profiles), "scenarios": scenarios,
+        "bootstrap": {"resamples": ps.BOOT_RESAMPLES, "rng_seed": ps.BOOT_SEED, "ci": "95% percentile",
+                      "unit": "seed (keeps all scenarios / both profiles together)",
+                      "rng": "np.random.default_rng(0) started afresh for each statistic"},
+        "note": "PILOT (10 seeds). The M2.4 30-seed result is the one reported for H1.",
+    }
+    dest = REPO_DIR / "residual_ppo" / "results" / "m2"
+    cons = ps.consistency_check(flights, scenarios, profiles, seeds, protocol.STILL_AIR_NAME)
+    result["consistency_check"] = cons
+    emit(f"M2.3 consistency check: {'PASS' if cons['pass'] else 'FAIL'} ({cons['flights']}/{cons['expected_flights']} "
+         f"flights; {cons['groups_checked']} (scenario, seed) groups; fields {cons['fields']})")
+    if not cons["pass"]:
+        emit(f"problems: {cons['problems'][:10]}")
+        (dest / "still_vs_wind.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+        (dest / "still_vs_wind_summary.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+        raise SystemExit("consistency check failed: step fails; no table or H1 statistic computed")
+
+    table = ps.still_vs_wind_table(flights, scenarios, profiles, seeds, protocol.STILL_AIR_NAME)
+    result["table"] = table
+    emit("")
+    emit("Still air vs wind (PID only; means over 10 seeds, failed flights included; diff = wind - still_air, "
+         "paired per seed, mean [95% CI])")
+    emit(f"{'scenario':<13}{'profile':<15}{'n':>3}{'fail':>5}{'RMSE':>7}{'cross':>7}{'maxdev':>7}  "
+         f"{'dRMSE [CI]':<24}{'dcross [CI]':<24}{'dmaxdev [CI]':<24}{'acc%':>6}{'tilt%':>6}{'lag':>7}{'lagrms':>7}"
+         f"{'xtrk':>7}")
+    for r in table:
+        def d(m):
+            if f"{m}_diff_vs_still_mean" not in r:
+                return f"{'':<24}"
+            return (f"{r[f'{m}_diff_vs_still_mean']:+.3f} [{r[f'{m}_diff_vs_still_ci95_lo']:+.3f},"
+                    f"{r[f'{m}_diff_vs_still_ci95_hi']:+.3f}]").ljust(24)
+        acc, tilt = r["accel_cap_binding_frac_mean"], r["tilt_cap_binding_frac_mean"]
+        emit(f"{r['scenario']:<13}{r['wind_profile']:<15}{r['flights']:>3}{r['failed_flights']:>5}"
+             f"{r['position_rmse']:>7.3f}{r['cross_track_rmse']:>7.3f}{r['max_deviation']:>7.2f}  "
+             f"{d('position_rmse')}{d('cross_track_rmse')}{d('max_deviation')}"
+             f"{_fmt(None if acc is None else 100 * acc, 1):>6}{_fmt(None if tilt is None else 100 * tilt, 1):>6}"
+             f"{_fmt(r['along_track_lag_mean_mean']):>7}{_fmt(r['along_track_lag_rms_mean']):>7}"
+             f"{_fmt(r['cross_track_component_rms_mean']):>7}")
+    emit("(maxdev column = summarize() max over the 10 flights; acc%/tilt% = accel-cap / tilt-cap binding share of "
+         "physics steps; lag = along-track lag mean, + = behind; xtrk = cross-track component RMS; diagnostics over "
+         "steps with |v_ref| > 0.05)")
+
+    h1 = ps.h1_analysis(flights, scenarios, seeds, protocol.STILL_AIR_NAME, "training_range")
+    result["h1_pilot"] = h1
+    p = h1["primary_wind_share_mse"]
+    emit("")
+    emit("H1 pilot (pre-registered; seeds 300000-300009)")
+    emit(f"PRIMARY wind_share_MSE = {p['value']:.3f}  95% CI [{p['ci95'][0]:.3f}, {p['ci95'][1]:.3f}]  "
+         f"(mean MSE training_range {p['mean_wind']:.4f} m^2, still_air {p['mean_still']:.4f} m^2) -> {p['verdict']}")
+    hv = h1["hover_sanity"]
+    emit(f"hover sanity: still-air MSE {hv['still_air_mse_mean']:.5f} m^2, training_range MSE "
+         f"{hv['training_range_mse_mean']:.5f} m^2, share {hv['mse_wind_share']:.3f} "
+         f"[{hv['ci95'][0]:.3f}, {hv['ci95'][1]:.3f}] (threshold {hv['threshold']}) -> "
+         f"{'SUSPECT: H1 not interpreted' if hv['suspect'] else 'OK'}")
+    emit(f"H1 VERDICT (pilot): {h1['verdict']}")
+    emit(f"failed flights in still_air/training_range: {len(h1['failed_flights'])}"
+         + "".join(f"\n    {f}" for f in h1["failed_flights"]))
+    s = h1["sensitivity_excluding_failed_seeds"]
+    emit(f"sensitivity (excluding seeds {s['excluded_seeds'] or 'none'}): share {_fmt(s['value'])} CI "
+         f"[{_fmt(s['ci95'][0])}, {_fmt(s['ci95'][1])}] n_seeds {s['n_seeds']} -> {s['verdict']}"
+         + ("" if h1["primary_and_sensitivity_agree"] else "  ** DIFFERS FROM PRIMARY **")
+         + (f" ({s['note']})" if "note" in s else ""))
+    sec = h1["secondary"]
+    r_ = sec["wind_share_rmse"]
+    emit(f"secondary: wind_share_RMSE {r_['value']:.3f} [{r_['ci95'][0]:.3f}, {r_['ci95'][1]:.3f}]; paired RMSE "
+         f"difference {sec['paired_rmse_difference_m']['value']:+.4f} m [{sec['paired_rmse_difference_m']['ci95'][0]:+.4f},"
+         f" {sec['paired_rmse_difference_m']['ci95'][1]:+.4f}]")
+    for sc, v in sec["per_scenario_wind_share_mse"].items():
+        emit(f"    per-scenario MSE wind share {sc:<13} {v['value']:+.3f} [{v['ci95'][0]:+.3f}, {v['ci95'][1]:+.3f}]  "
+             f"(MSE tr {v['mean_wind']:.4f}, still {v['mean_still']:.4f})")
+    emit("(secondary results cannot change the H1 verdict)")
+
+    (dest / "still_vs_wind.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+    write_csv(dest / "still_vs_wind.csv", table)
+    (dest / "still_vs_wind_summary.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+    print("written: residual_ppo/results/m2/still_vs_wind.json, still_vs_wind.csv, still_vs_wind_summary.txt")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="mode", required=True)
@@ -374,11 +484,15 @@ def main():
     f.add_argument("--check0", action="store_true")
     r = sub.add_parser("reproduce")
     r.add_argument("--run", required=True)
+    v = sub.add_parser("still-vs-wind")
+    v.add_argument("--run", required=True)
     args = parser.parse_args()
     if args.mode == "fly":
         mode_fly(args)
-    else:
+    elif args.mode == "reproduce":
         mode_reproduce(args)
+    else:
+        mode_still_vs_wind(args)
 
 
 if __name__ == "__main__":

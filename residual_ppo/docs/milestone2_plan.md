@@ -298,6 +298,37 @@ versus the code commits (`git log` in `drone_team_main`, read-only), i.e. whethe
 seeds) to match. Report the differences either way; STOP after the reproduction report, before the consistency check
 and any H1 statistic.
 
+### M2.3 result (pilot, seeds 300000–300009, 2026-11-13, Confirmed unless labelled): PASS
+
+- *Check 0:* one cell (turns / training_range / 300000) with diagnostics on and off: identical metrics and per-decision
+  trace. Pilot: 240 flights (4 profiles × 6 scenarios × 10 seeds), 11.9 min. Files `results\m2\pilot_pid\` (its
+  `realizations.json` is a pilot copy, not canonical).
+- *Reproduction of README §2 (pre-registered range): PASS.* RMSE 0.50241 / 0.49682 / 1.65268 m (training_range /
+  unseen_gusts / outside_range; every |relative diff| ≤ 0.08%); completed 3 / 3 / 0 and failed 0 / 0 / 37 of 60 (exact).
+  Max deviation (descriptive): mean of per-scenario maxima 1.768 / 1.507 / 3.112 m, overall max 2.44 / 2.10 / 3.15 m.
+  Files `results\m2\team_reproduction.{json,txt}`.
+- *Consistency check: PASS* (240/240 flights, 60 (scenario, seed) groups; route_seconds, max_decisions, initial
+  observation hash identical across the 4 profiles; still_air wind zero).
+- *Still air vs wind* (`results\m2\still_vs_wind.{json,csv}`, `still_vs_wind_summary.txt`): still-air RMSE 0.115–0.244 m;
+  training_range adds +0.30 to +0.42 m RMSE per scenario (every 95% CI above 0). Along-track lag mean is slightly
+  negative in still air (−0.007 to −0.057 m: the drone is marginally ahead of the reference) and +0.09 to +0.30 m in
+  training_range.
+- *Cap-binding diagnostics:* accel cap (1.5 m/s²) binds on 0–4.6% of physics steps in still air, 0–9.4% in
+  training_range and unseen_gusts, and 55–67% in outside_range on moving routes (38% on hover). The tilt cap never binds
+  (0% everywhere).
+- **H1 pilot verdict: REJECTED.** Primary `wind_share_MSE` = **0.900, 95% CI [0.768, 0.948]** (mean MSE training_range
+  0.3297 m², still_air 0.0329 m²); lower bound > 0.5.
+  - Hover sanity check: OK. Still-air MSE 0.01433 m², training_range 0.20241 m², share 0.929 [0.845, 0.963] (≥ 0.8).
+  - Failures: 0 failed flights in still_air or training_range, so the sensitivity set equals the primary set (same
+    verdict).
+  - Secondary (cannot change the verdict): RMSE share 0.655 [0.508, 0.753]; paired RMSE difference +0.329 m
+    [+0.185, +0.514]; per-scenario MSE shares 0.834 (turns) to 0.951 (straight), every lower bound > 0.6.
+  - Reading: in training_range about 90% of PID's MSE is attributable to wind (including wind × lag interaction, as
+    fixed in advance), not to reference-tracking lag. The pilot verdict is not the reported one; M2.4 (30 seeds) is.
+- **Why the H1 motivation pointed the wrong way (Inference, not tested):** `unseen_gusts` has stronger, faster gusts
+  but a lower mean wind speed (2–6 m/s vs 2–7 m/s in training_range). If mean-wind drag dominates PID's error, the
+  weaker mean offsets the stronger gusts, so near-equal RMSE in README §2 says little about whether wind matters.
+
 ## M2.4 Full PID-only baseline table
 
 The protocol (section E) run end to end with controller `pid` (= env path A, proven equal to pure PID in M2.2):
@@ -400,6 +431,17 @@ with 60 flights per profile (e.g. 5% = 3/60) but that does not prove it. **Quest
 3. Can they share `runs/flight_sac/flight1/` (`final_model.zip`, `flight_contract.json`, `evaluation/final_model/*`)?
 4. How was "Max deviation" aggregated in the README table (max over flights, or mean of per-flight maxima)?
    `summarize()` gives the max; worth confirming.
+
+**E9 status (2026-11-13):**
+- Q1: *supported, not asked*: the M2.3 reproduction on all 10 seeds matches README §2 (RMSE within 0.08%, completed and
+  failed counts exact out of 60 per profile).
+- **Q2 resolved (Confirmed):** the Hugging Face `final_model.zip` (README §3) has `num_timesteps` 1,500,000 and passes
+  `incompatibility()` for policy + training (`models\sac_team\SOURCE.json`).
+- **Q3 resolved:** files obtained from Hugging Face `pcldsc/Iris_drone_residual_correction_SAC` @ 7dd1f14b (model +
+  contract; `evaluation/final_model/*` is not in that repo).
+- **Q4 resolved (Inference):** README max deviation = the mean over the 6 scenarios of the per-scenario maxima
+  (`summarize()`'s max per scenario, then averaged); matches to 0.003 m on all three profiles, while the overall maximum
+  does not (2.44 / 2.10 / 3.15 m).
 
 ---
 

@@ -1,8 +1,10 @@
 """Protocol statistics (docs/milestone2_plan.md, section E and M2.3). NumPy only, no Isaac.
 
-Implemented now: per-cell summaries (team summarize() + median/IQR + failure reasons), README-style per-profile
-aggregation, and the M2.3 team README section 2 reproduction check (pass range pre-registered in the plan).
-Bootstrap / paired differences / H1 wind share come later (after the M2.3 consistency check).
+Per-cell summaries (team summarize() + median/IQR + failure reasons), README-style per-profile aggregation, the M2.3
+team README section 2 reproduction check, the M2.3 consistency check, the still-vs-wind table (paired per-seed
+differences with seed bootstrap) and the pre-registered H1 analysis (wind_share_MSE, decision rule, failure sensitivity,
+secondary shares, hover sanity check). Bootstrap: 10,000 seed resamples, percentile 95% CI, np.random.default_rng(0)
+started afresh for each statistic.
 """
 from collections import Counter
 
@@ -119,6 +121,192 @@ def reproduction_check(flights, scenarios, readme=TEAM_README_PID):
         }
     out["pass"] = all(p["pass"] for p in out["profiles"].values())
     return out
+
+
+# ---------------------------------------------------------------- M2.3: consistency, still vs wind, H1 (pre-registered)
+
+BOOT_RESAMPLES = 10_000
+BOOT_SEED = 0          # each statistic's bootstrap starts its own np.random.default_rng(0)
+H1_THRESHOLD = 0.5
+HOVER_SANITY_MIN = 0.8
+DIAGNOSTICS = ("accel_cap_binding_frac", "tilt_cap_binding_frac", "along_track_lag_mean", "along_track_lag_rms",
+               "cross_track_component_rms")
+PAIRED_METRICS = ("position_rmse", "cross_track_rmse", "max_deviation")
+
+
+def index_flights(flights):
+    out = {}
+    for f in flights:
+        key = (f["scenario"], f["wind_profile"], int(f["seed"]))
+        if key in out:
+            raise ValueError(f"duplicate flight {key}")
+        out[key] = f
+    return out
+
+
+def consistency_check(flights, scenarios, profiles, seeds, still="still_air"):
+    """M2.3 check: full grid; per (scenario, seed) identical route_seconds, max_decisions, initial observation across
+    profiles; still-air flights have zero wind."""
+    idx = index_flights(flights)
+    problems = []
+    missing = [(s, p, seed) for s in scenarios for p in profiles for seed in seeds if (s, p, seed) not in idx]
+    if missing:
+        problems.append({"missing_flights": missing})
+    for s in scenarios:
+        for seed in seeds:
+            rows = {p: idx[(s, p, seed)] for p in profiles if (s, p, seed) in idx}
+            for field in ("route_seconds", "max_decisions", "initial_obs_sha256"):
+                values = {p: r[field] for p, r in rows.items()}
+                if len(set(values.values())) > 1:
+                    problems.append({"scenario": s, "seed": seed, "field": field, "values": values})
+            if still in rows:
+                r = rows[still]
+                if r["wind_speed"] != 0.0 or any(v != 0.0 for v in r.get("wind_mean", [0.0])):
+                    problems.append({"scenario": s, "seed": seed, "field": "still_air_wind",
+                                     "wind_speed": r["wind_speed"], "wind_mean": r.get("wind_mean")})
+    return {"pass": not problems, "flights": len(flights),
+            "expected_flights": len(scenarios) * len(profiles) * len(seeds),
+            "groups_checked": len(scenarios) * len(seeds),
+            "fields": ["route_seconds", "max_decisions", "initial_obs_sha256", "still_air zero wind"],
+            "problems": problems}
+
+
+def _boot_idx(n, resamples=BOOT_RESAMPLES, seed=BOOT_SEED):
+    return np.random.default_rng(seed).integers(0, n, size=(resamples, n))
+
+
+def bootstrap_ratio_of_sums(num, den):
+    """Point = sum(num)/sum(den); 95% percentile CI resampling seeds (paired: same indices for num and den)."""
+    num, den = np.asarray(num, float), np.asarray(den, float)
+    if num.size == 0:
+        return {"value": None, "ci95": [None, None], "n_seeds": 0}
+    idx = _boot_idx(num.size)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        vals = num[idx].sum(axis=1) / den[idx].sum(axis=1)
+    lo, hi = np.nanpercentile(vals, [2.5, 97.5])
+    return {"value": float(num.sum() / den.sum()), "ci95": [float(lo), float(hi)], "n_seeds": int(num.size),
+            "resamples": BOOT_RESAMPLES, "rng_seed": BOOT_SEED}
+
+
+def bootstrap_mean(diffs):
+    """Mean of per-seed values; 95% percentile CI resampling seeds."""
+    d = np.asarray(diffs, float)
+    if d.size == 0:
+        return {"value": None, "ci95": [None, None], "n_seeds": 0}
+    vals = d[_boot_idx(d.size)].mean(axis=1)
+    lo, hi = np.percentile(vals, [2.5, 97.5])
+    return {"value": float(d.mean()), "ci95": [float(lo), float(hi)], "n_seeds": int(d.size),
+            "resamples": BOOT_RESAMPLES, "rng_seed": BOOT_SEED}
+
+
+def h1_verdict(ci):
+    lo, hi = ci
+    if lo is None:
+        return "not computable"
+    if hi < H1_THRESHOLD:
+        return "supported"
+    if lo > H1_THRESHOLD:
+        return "rejected"
+    return "inconclusive"
+
+
+def per_seed_mean(idx, profile, seeds, scenarios, value):
+    """M_p(s): per seed, mean over the scenarios of value(flight)."""
+    return np.array([np.mean([value(idx[(sc, profile, s)]) for sc in scenarios]) for s in seeds], dtype=float)
+
+
+def _mse(f):
+    return float(f["position_rmse"]) ** 2
+
+
+def _rmse(f):
+    return float(f["position_rmse"])
+
+
+def wind_share(idx, seeds, scenarios, value, still, wind):
+    tr = per_seed_mean(idx, wind, seeds, scenarios, value)
+    st = per_seed_mean(idx, still, seeds, scenarios, value)
+    out = bootstrap_ratio_of_sums(tr - st, tr)
+    out.update({"mean_wind": float(tr.mean()) if tr.size else None,
+                "mean_still": float(st.mean()) if st.size else None})
+    return out
+
+
+def h1_analysis(flights, scenarios, seeds, still="still_air", wind="training_range"):
+    """Pre-registered H1 test (plan, block above M2.3). Uses all flights; failed flights keep MSE over what was flown."""
+    idx = index_flights(flights)
+    seeds = list(seeds)
+    primary = wind_share(idx, seeds, scenarios, _mse, still, wind)
+    primary["verdict"] = h1_verdict(primary["ci95"])
+
+    failed = [{"scenario": sc, "seed": s, "profile": p, "failure_reason": idx[(sc, p, s)]["failure_reason"],
+               "decisions": idx[(sc, p, s)]["decisions"]}
+              for p in (still, wind) for sc in scenarios for s in seeds if idx[(sc, p, s)]["failed"]]
+    bad_seeds = sorted({f["seed"] for f in failed})
+    keep = [s for s in seeds if s not in bad_seeds]
+    if not failed:
+        sensitivity = dict(primary, note="no failed flight in either profile: sensitivity set = primary set")
+    elif keep:
+        sensitivity = wind_share(idx, keep, scenarios, _mse, still, wind)
+        sensitivity["verdict"] = h1_verdict(sensitivity["ci95"])
+    else:
+        sensitivity = {"value": None, "ci95": [None, None], "n_seeds": 0, "verdict": "not computable"}
+    sensitivity["excluded_seeds"] = bad_seeds
+
+    rmse_tr = per_seed_mean(idx, wind, seeds, scenarios, _rmse)
+    rmse_st = per_seed_mean(idx, still, seeds, scenarios, _rmse)
+    per_scenario = {}
+    for sc in scenarios:
+        per_scenario[sc] = wind_share(idx, seeds, (sc,), _mse, still, wind)
+
+    hover = per_scenario.get("hover")
+    hover_check = None
+    if hover is not None:
+        hover_check = {"still_air_mse_mean": hover["mean_still"], "training_range_mse_mean": hover["mean_wind"],
+                       "mse_wind_share": hover["value"], "ci95": hover["ci95"], "threshold": HOVER_SANITY_MIN,
+                       "suspect": bool(hover["value"] is None or hover["value"] < HOVER_SANITY_MIN)}
+    interpretable = not (hover_check and hover_check["suspect"])
+    return {
+        "hypothesis": "H1: PID-only MSE in still air is close to training_range MSE (wind share < 0.5)",
+        "profiles": {"still": still, "wind": wind}, "seeds": [seeds[0], seeds[-1], len(seeds)],
+        "primary_wind_share_mse": primary,
+        "decision_rule": "supported if upper 95% CI < 0.5; rejected if lower > 0.5; else inconclusive",
+        "hover_sanity": hover_check,
+        "h1_interpretable": interpretable,
+        "verdict": primary["verdict"] if interpretable else "not interpreted (hover sanity check flagged)",
+        "failed_flights": failed,
+        "sensitivity_excluding_failed_seeds": sensitivity,
+        "primary_and_sensitivity_agree": primary["verdict"] == sensitivity["verdict"],
+        "secondary": {
+            "wind_share_rmse": wind_share(idx, seeds, scenarios, _rmse, still, wind),
+            "per_scenario_wind_share_mse": per_scenario,
+            "paired_rmse_difference_m": bootstrap_mean(rmse_tr - rmse_st),
+        },
+    }
+
+
+def still_vs_wind_table(flights, scenarios, profiles, seeds, still="still_air"):
+    """Per scenario x profile: summaries (failed included) + diagnostics means; for wind profiles, paired per-seed
+    differences wind - still_air with seed-bootstrap CI."""
+    idx = index_flights(flights)
+    rows = []
+    for sc in scenarios:
+        for p in profiles:
+            cell = [idx[(sc, p, s)] for s in seeds]
+            row = {"scenario": sc, "wind_profile": p, **cell_summary(cell)}
+            for d in DIAGNOSTICS:
+                vals = [f.get(d) for f in cell if f.get(d) is not None]
+                row[f"{d}_mean"] = float(np.mean(vals)) if vals else None
+                row[f"{d}_n_flights"] = len(vals)
+            if p != still:
+                for m in PAIRED_METRICS:
+                    diff = np.array([idx[(sc, p, s)][m] - idx[(sc, still, s)][m] for s in seeds], float)
+                    b = bootstrap_mean(diff)
+                    row[f"{m}_diff_vs_still_mean"] = b["value"]
+                    row[f"{m}_diff_vs_still_ci95_lo"] = b["ci95"][0]
+                    row[f"{m}_diff_vs_still_ci95_hi"] = b["ci95"][1]
+            rows.append(row)
+    return rows
 
 
 def reproduction_text(rep):
