@@ -45,7 +45,7 @@ JSON/CSV committed, full Isaac logs not). Each step ends with a STOP and a repor
 | D1 | Add `still_air` without editing shared files | **Yes.** Our evaluation module registers it **in memory at startup** (`EVAL_WIND_PROFILES.setdefault`, asserting no existing key is overwritten). The still-air definition is written into the protocol (E2) **and into every snapshot/results file**. |
 | D2 | Dijkstra scenario | **Excluded from protocol v1** (needs `path_navigation.py` + another scene, outside the M1 closure). **Any comparison with the team's published results drops their Dijkstra (warehouse) rows.** |
 | D3 | Seed count | **Decided (2026-11-13): 30 seeds `300000..300029`** (first 10 = team `EVAL_SEEDS`). D3 was deferred to M2.1 **only for cost**; M2.1 measured ≤ 0.66 h per controller for 720 flights, so cost does not justify a change and the pre-registered 30 stand. Not increased either (that would be a post-hoc change). |
-| D4 | `strong_range` / `beyond_strong` | **Deferred until after M2.4.** Not part of protocol v1 for now; if added later they are labelled as our eval-only profiles. |
+| D4 | `strong_range` / `beyond_strong` | ~~Deferred until after M2.4.~~ **Decided (Claire, 2026-11-13, after M2.4): added as OUR evaluation-only, SECONDARY profiles.** Each is an exact copy of the team's `outside_range` with only `mean_speed_range` changed: `strong_range` (10, 14) m/s, `beyond_strong` (14, 16) m/s. Registered in memory like `still_air` (D1; no shared edits). Primary endpoints stay the 3 team profiles; `still_air` stays reported, not primary. Definitions in E2, endpoint status in E5. Adding them changes the protocol file hash (see M2.4b). |
 | D5 | Wall-clock estimates | **Yes:** training estimate for 2,000,000 decisions, **plus eval wall-clock per 720 flights**. (Budget open issue: team docs say SAC trained 1.5M, config says 2M; see E9.) |
 | D6 | Equivalence tolerance | **Pre-registered:** tolerance = the M2.2 noise floor; **bit-exact required if the floor is 0**. The floor is measured and the tolerance written to `results\m2\zero_residual_tolerance.json` **before** the A-vs-B comparison runs. The comparison script refuses to run without that file. Never loosened afterwards. |
 
@@ -383,7 +383,54 @@ eval_protocol_v1.py 57718499).
   - Secondary: RMSE share 0.621 [0.544, 0.679]; paired RMSE difference +0.300 m [+0.220, +0.384]; per-scenario MSE
     shares 0.773 (turns) to 0.933 (straight), every lower bound ≥ 0.68.
   - Same verdict as the pilot (0.900 [0.768, 0.948]); the CI is narrower with 30 seeds.
-- D4 (`strong_range` / `beyond_strong`) is to be decided now, after M2.4 (not decided here).
+- D4 (`strong_range` / `beyond_strong`) is to be decided now, after M2.4 (not decided here). → Decided 2026-11-13, see D4
+  and M2.4b.
+
+## M2.4b PID baseline re-flown with the D4 profiles (fixed 2026-11-13, before flying)
+
+D4 adds two profiles to `evaluation\eval_protocol_v1.py`, so the protocol file hash changes (M2.2–M2.4 results
+record `18658b9c…`; from M2.4b on, the new hash, also set as `run_common.EXPECTED_PROTOCOL_SHA`). The version name stays
+`eval-v1`: no controller other than PID has been evaluated, and the protocol is frozen only in M2.5.
+- The 4-profile M2.4 run is kept for reference, moved (`git mv`, content unchanged) from `results\eval\eval-v1\pid\` to
+  `results\m2\m2_4_pid_4profiles\`. Committed M2.4 check files that name the old path as `source_run`/`candidate_run`
+  refer to this moved copy (their recorded sha256 identifies it). Its `realizations.json` says CANONICAL but is
+  **superseded** by the M2.4b one.
+- Run: `run_protocol.py fly --controller pid --seeds 300000-300029 --check0 --out residual_ppo/results/eval/eval-v1/pid`
+  with all 6 profiles → 1,080 flights; its `realizations.json` is the canonical cross-controller reference.
+- **Check 1, bit-identity:** the 720 flights of the original 4 profiles must equal the M2.4 run bit-for-bit (all 32
+  row fields + realizations entries; `run_protocol.py compare`, reference = `m2_4_pid_4profiles`)
+  → `results\m2\m2_4b_equality.{json,txt}`.
+- **Check 2, matched realizations across all 6 profiles:** route_seconds, max_decisions, initial observation hash
+  identical per (scenario, seed); still_air wind zero → `results\m2\m2_4b_baseline.{json,txt}`, with the per-profile
+  table (primary / secondary / reported-not-primary labels, failure counts and reasons per scenario).
+- The H1 verdict is not recomputed (it uses only still_air and training_range, which check 1 proves unchanged).
+
+**M2.4b result (2026-11-13, Confirmed): PASS.** Protocol hash `d3f677dc…`; checks 21/21; total_mass_kg 1.618614,
+HESAI 0 kg; same package versions as M2.4. Flown from HEAD 3352061 plus the uncommitted D4 edits; `meta.code_blobs`:
+eval_protocol_v1.py 5b490ddd, run_common.py 1fb19f77, run_protocol.py 68fe3361 (others unchanged from M2.4).
+- Check 0 PASS; **1,080/1,080 flights in 38.2 min** → `results\eval\eval-v1\pid\` (canonical `realizations.json`).
+- **Check 1: PASS, bit-for-bit.** 720/720 flights of the original 4 profiles identical to M2.4 on all 32 fields;
+  720/720 realizations entries identical.
+- **Check 2 (matched realizations, 6 profiles): PASS** (1,080/1,080; 180 groups).
+- **PID-only baseline, protocol eval-v1 (`d3f677dc…`)**, mean over 6 scenarios of `summarize()`, 180 flights per profile:
+
+  | profile | status | RMSE [m] | cross [m] | max dev (mean of maxima / all) [m] | completed | failed | reasons | mean decisions | accel cap |
+  |---|---|---|---|---|---|---|---|---|---|
+  | still_air | reported, not primary | 0.183 | 0.124 | 0.571 / 0.798 | 116 | 0 | – | 161 | 2.8% |
+  | training_range | PRIMARY | 0.483 | 0.356 | 1.768 / 2.441 | 24 | 0 | – | 161 | 5.3% |
+  | unseen_gusts | PRIMARY | 0.484 | 0.366 | 1.531 / 2.104 | 16 | 0 | – | 161 | 4.6% |
+  | outside_range | PRIMARY | 1.641 | 1.172 | 3.113 / 3.151 | 0 | 110 (61%) | out_of_bounds 110 | 82 | 54.8% |
+  | strong_range | secondary (D4) | 1.651 | 1.191 | 3.228 / 3.251 | 0 | 179 (99%) | out_of_bounds 179 | 27 | 71.6% |
+  | beyond_strong | secondary (D4) | 1.604 | 1.168 | 3.302 / 3.329 | 0 | 180 (100%) | out_of_bounds 180 | 18 | 74.2% |
+
+  Failed per scenario (hover/straight/turns/altitude/circle/figure_eight): outside_range 5/19/24/14/21/27;
+  strong_range 29/30/30/30/30/30 (the one survivor: hover, seed 300009, mean wind 10.66 m/s); beyond_strong 30 in every
+  scenario. Sampled mean wind speeds fall inside the definitions (strong 10.14–13.96, beyond 14.07–15.98 m/s).
+- **Reading note (descriptive):** in strong_range / beyond_strong PID leaves the 3 m bound (`out_of_bounds`) after a
+  median of 23 / 18 decisions (2.3 / 1.8 s). RMSE covers only what was flown and is capped in practice by the 3 m bound,
+  so it does **not** rise with wind once almost every flight fails (1.65 / 1.60 m vs 1.64 m in outside_range). For
+  these profiles failure counts and decisions flown carry the information; RMSE comparisons there need the flight
+  length next to them. (Not a protocol change; to be considered for how M7 tables present the secondary profiles.)
 
 Important: PID failing under `outside_range` (or stronger) is a **result, not a bug**. Do not tune PID, wind or
 limits: they are shared with SAC.
@@ -412,8 +459,20 @@ observation across controllers.
 `{"no_wind_probability": 1.0, "mean_speed_range": (2.0, 7.0), "gust_scale_range": (0.5, 1.0),
 "direction_rate_range": (0.0, 0.2)}`. Every draw is still made (so routes and starts match the windy profiles), then
 mean wind, gust scale and turn rate are set to 0. Drag from the drone's own motion remains. Registered in memory
-(D1); this definition is copied verbatim into every snapshot and results file. `strong_range` / `beyond_strong`:
-deferred (D4).
+(D1); this definition is copied verbatim into every snapshot and results file.
+**`strong_range` and `beyond_strong` (D4, decided 2026-11-13; OUR evaluation-only profiles, never used in training).**
+Each is an exact copy of the team's `outside_range` with only `mean_speed_range` changed (built in code from
+`outside_range`, asserting that `mean_speed_range` is the only differing key):
+- `strong_range`: `{"no_wind_probability": 0.0, "mean_speed_range": (10.0, 14.0), "gust_scale_range": (0.5, 1.0),
+  "direction_rate_range": (0.0, 0.2)}`
+- `beyond_strong`: `{"no_wind_probability": 0.0, "mean_speed_range": (14.0, 16.0), "gust_scale_range": (0.5, 1.0),
+  "direction_rate_range": (0.0, 0.2)}`
+
+Registered in memory like `still_air` (D1); definitions copied into every results file (`our_profiles`). Because
+`sample_stage_wind` makes the same draws for any range, a seed gives these profiles the same direction, gust scale,
+turn rate and gust seed as `outside_range`; only the mean speed differs (`low + (high − low)·u` with the same `u`).
+Evaluation order: still_air, training_range, unseen_gusts, outside_range, strong_range, beyond_strong
+(6 × 6 × 30 = 1,080 flights per controller).
 
 **E3. Episode rules.** Unchanged env: 60 s limit, settle 3 s, failure limits from `path_sac_config.FAILURE`,
 completion from `COMPLETION`. Policies are frozen and **deterministic** (SAC: actor mean; PPO:
@@ -432,6 +491,10 @@ Diagnostics (not endpoints), recorded for every controller: `accel_cap_binding_f
   95% percentile bootstrap CI. The bootstrap resamples **seeds** (each resample keeps a seed's flights in all 6
   scenarios together), 10,000 resamples, RNG seed 0. One primary result per profile; `still_air` is reported but is
   not a primary endpoint. A controller "improves on PID" in a profile only if the CI is entirely below 0.
+  **Primary profiles = the 3 team profiles only** (`training_range`, `unseen_gusts`, `outside_range`).
+  `strong_range` and `beyond_strong` (D4) are **secondary**: the same paired statistic is reported for them, labelled
+  secondary, and they cannot overturn or add to a primary result. `still_air` is reported prominently (nominal
+  tracking; see CLAUDE.md M7 notes) but is not primary.
 - **Secondary:** every per-cell (scenario × profile) result below, and all other metrics. Secondary results are
   descriptive; they cannot overturn the primary endpoint.
 - Per (scenario, profile, controller): `path_sac_policy.summarize` (team means, failed included), plus median and

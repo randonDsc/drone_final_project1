@@ -36,8 +36,27 @@ STILL_AIR = {
     "gust_scale_range": (0.5, 1.0),
     "direction_rate_range": (0.0, 0.2),
 }
-OUR_PROFILES = {STILL_AIR_NAME: STILL_AIR}
-PROFILES = (STILL_AIR_NAME,) + TEAM_PROFILES  # evaluation order
+
+# E2. D4 (decided 2026-11-13, after M2.4): our evaluation-only, SECONDARY profiles. Each is an exact copy of the
+# team's outside_range with only mean_speed_range changed. Never used in training.
+def _outside_range_with_mean_speed(mean_speed_range):
+    base = path_sac_config.EVAL_WIND_PROFILES["outside_range"]
+    profile = {**copy.deepcopy(base), "mean_speed_range": tuple(mean_speed_range)}
+    assert [k for k in set(base) | set(profile) if base.get(k) != profile.get(k)] == ["mean_speed_range"]
+    return profile
+
+
+STRONG_RANGE = _outside_range_with_mean_speed((10.0, 14.0))
+BEYOND_STRONG = _outside_range_with_mean_speed((14.0, 16.0))
+
+OUR_PROFILES = {STILL_AIR_NAME: STILL_AIR, "strong_range": STRONG_RANGE, "beyond_strong": BEYOND_STRONG}
+PROFILES = (STILL_AIR_NAME,) + TEAM_PROFILES + ("strong_range", "beyond_strong")  # evaluation order
+
+# E5. Endpoint status of each profile.
+PRIMARY_PROFILES = TEAM_PROFILES                       # primary endpoints: the 3 team profiles only
+SECONDARY_PROFILES = ("strong_range", "beyond_strong")  # D4: reported, labelled secondary
+REPORTED_NOT_PRIMARY = (STILL_AIR_NAME,)              # nominal tracking, reported prominently
+assert set(PRIMARY_PROFILES + SECONDARY_PROFILES + REPORTED_NOT_PRIMARY) == set(PROFILES)
 
 
 def register_profiles():
@@ -66,4 +85,8 @@ def protocol_record():
         "scenarios": SCENARIOS,
         "team_profiles": {n: path_sac_config.EVAL_WIND_PROFILES[n] for n in TEAM_PROFILES},
         "our_profiles": copy.deepcopy(OUR_PROFILES),
+        "profiles_order": list(PROFILES),
+        "primary_profiles": list(PRIMARY_PROFILES),
+        "secondary_profiles": list(SECONDARY_PROFILES),
+        "reported_not_primary": list(REPORTED_NOT_PRIMARY),
     }

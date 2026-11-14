@@ -7,6 +7,8 @@ Modes:
   reproduce  No Isaac. M2.3 first check: team README section 2 PID-only rows vs a pilot run's flights.
   still-vs-wind  No Isaac. M2.3 consistency check (stops if violated), still-vs-wind table, H1 statistics
              (pilot on 10 seeds; the reported verdict on the M2.4 30 seeds).
+  baseline-table  No Isaac. M2.4b: matched-realization check across all profiles of a run + per-profile table
+             (endpoint status, failures and reasons per scenario, wind speeds, cap binding).
   compare    No Isaac. M2.4: every flight of a reference run (pilot, or a 1-cell re-run) must equal the same
              (scenario, profile, seed) flight of a candidate run bit-for-bit (all row fields + realizations entries).
 
@@ -496,6 +498,91 @@ def mode_still_vs_wind(args):
     print(f"written: residual_ppo/results/m2/{args.name}.json, .csv, _summary.txt")
 
 
+def mode_baseline_table(args):
+    """M2.4b: consistency (matched realizations) across ALL profiles of a run, then the per-profile table. No Isaac."""
+    import eval_protocol_v1 as protocol
+    import protocol_stats as ps
+
+    run = Path(args.run)
+    run = run if run.is_absolute() else (REPO_DIR / run)
+    data = json.loads((run / "results.json").read_text(encoding="utf-8"))
+    meta = data["meta"]
+    flights = data["flights"]
+    scenarios = tuple(meta["scenarios"])
+    profiles = tuple(meta["profiles"])
+    first, last, n = meta["seeds"]
+    seeds = tuple(range(first, last + 1))
+    assert len(seeds) == n
+    prot = meta["protocol"]
+    status = {**{p: "PRIMARY" for p in prot.get("primary_profiles", [])},
+              **{p: "secondary (D4)" for p in prot.get("secondary_profiles", [])},
+              **{p: "reported, not primary" for p in prot.get("reported_not_primary", [])}}
+    out_lines = []
+
+    def emit(msg=""):
+        print(msg)
+        out_lines.append(msg)
+
+    cons = ps.consistency_check(flights, scenarios, profiles, seeds, protocol.STILL_AIR_NAME)
+    emit(f"M2.4b matched-realization (consistency) check across {len(profiles)} profiles: "
+         f"{'PASS' if cons['pass'] else 'FAIL'} ({cons['flights']}/{cons['expected_flights']} flights; "
+         f"{cons['groups_checked']} (scenario, seed) groups; fields {cons['fields']})")
+    if not cons["pass"]:
+        emit(f"problems: {cons['problems'][:10]}")
+    table = []
+    for prof in profiles:
+        rows = [f for f in flights if f["wind_profile"] == prof]
+        agg = ps.profile_aggregate(rows, prof, scenarios)
+        reasons, per_scen = {}, {}
+        for f in rows:
+            if f["failed"]:
+                reasons[f["failure_reason"]] = reasons.get(f["failure_reason"], 0) + 1
+                per_scen[f["scenario"]] = per_scen.get(f["scenario"], 0) + 1
+        speeds = [f["wind_speed"] for f in rows]
+        acc = [f["accel_cap_binding_frac"] for f in rows if f.get("accel_cap_binding_frac") is not None]
+        dec = [f["decisions"] for f in rows]
+        table.append({
+            **{k: v for k, v in agg.items() if not isinstance(v, (dict, list))},
+            "endpoint_status": status.get(prof, "?"),
+            "definition": (prot["team_profiles"].get(prof) or prot["our_profiles"].get(prof)),
+            "failure_reasons": reasons,
+            "failed_per_scenario": {sc: per_scen.get(sc, 0) for sc in scenarios},
+            "wind_speed_min": min(speeds), "wind_speed_max": max(speeds),
+            "decisions_mean": float(np.mean(dec)),
+            "accel_cap_binding_frac_mean": float(np.mean(acc)) if acc else None,
+        })
+    emit("")
+    emit(f"PID-only baseline per profile (protocol {prot['protocol_file_sha256'][:8]}; mean over the "
+         f"{len(scenarios)} scenarios of summarize(); {n} seeds; failed flights included)")
+    emit(f"{'profile':<16}{'status':<23}{'n':>4}{'RMSE':>7}{'cross':>7}{'maxdev':>7}{'(all)':>7}{'compl':>6}"
+         f"{'fail':>5}{'fail%':>6}{'wind m/s':>12}{'dec':>6}{'acc%':>6}  failure reasons / per scenario")
+    for r in table:
+        emit(f"{r['profile']:<16}{r['endpoint_status']:<23}{r['flights']:>4}{r['position_rmse']:>7.3f}"
+             f"{r['cross_track_rmse']:>7.3f}{r['max_deviation_mean_of_scenario_max']:>7.3f}"
+             f"{r['max_deviation_overall_max']:>7.3f}{r['completed_flights']:>6}{r['failed_flights']:>5}"
+             f"{100 * r['failure_rate']:>5.0f}%{r['wind_speed_min']:>6.2f}-{r['wind_speed_max']:<5.2f}"
+             f"{r['decisions_mean']:>6.0f}{_fmt(None if r['accel_cap_binding_frac_mean'] is None else 100 * r['accel_cap_binding_frac_mean'], 1):>6}"
+             f"  {r['failure_reasons'] or '-'}"
+             + (f" {r['failed_per_scenario']}" if r['failed_flights'] else ""))
+    emit("(maxdev = mean of per-scenario maxima; (all) = max over all flights; dec = mean decisions flown; "
+         "acc% = accel-cap binding share of physics steps)")
+    result = {
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "purpose": "M2.4b: matched realizations across all profiles + per-profile PID baseline table",
+        "source_run": repo_rel(run / "results.json"), "source_run_sha256_lf": rc.file_sha256(run / "results.json"),
+        "protocol_file_sha256": prot["protocol_file_sha256"], "packages": meta["packages"],
+        "isaac_sim": meta["isaac_sim"], "total_mass_kg": meta["total_mass_kg"],
+        "our_profiles": prot["our_profiles"], "seeds": [first, last, n], "profiles": list(profiles),
+        "consistency_check": cons, "table": table,
+    }
+    dest = REPO_DIR / "residual_ppo" / "results" / "m2"
+    (dest / f"{args.name}.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+    (dest / f"{args.name}.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+    print(f"written: residual_ppo/results/m2/{args.name}.json, .txt")
+    if not cons["pass"]:
+        raise SystemExit("consistency check failed")
+
+
 def mode_compare(args):
     """M2.4: reference flights (and their realizations entries) must equal the candidate's bit-for-bit. No Isaac."""
     import protocol_stats as ps
@@ -564,6 +651,9 @@ def main():
     v = sub.add_parser("still-vs-wind")
     v.add_argument("--run", required=True)
     v.add_argument("--name", default="still_vs_wind", help="output basename in results/m2/")
+    b = sub.add_parser("baseline-table")
+    b.add_argument("--run", required=True)
+    b.add_argument("--name", required=True, help="output basename in results/m2/")
     c = sub.add_parser("compare")
     c.add_argument("--reference", required=True, help="run dir whose flights must all appear in --candidate")
     c.add_argument("--candidate", required=True)
@@ -576,6 +666,8 @@ def main():
         mode_reproduce(args)
     elif args.mode == "compare":
         mode_compare(args)
+    elif args.mode == "baseline-table":
+        mode_baseline_table(args)
     else:
         mode_still_vs_wind(args)
 

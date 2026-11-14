@@ -11,7 +11,8 @@ from pathlib import Path
 RESIDUAL_DIR = Path(__file__).resolve().parents[1]
 REPO_DIR = RESIDUAL_DIR.parent
 ISAAC_ROOT_TOKEN = "<ISAAC_ROOT>"
-EXPECTED_PROTOCOL_SHA = "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc"
+# eval_protocol_v1.py with the D4 profiles (M2.4b on). M2.2-M2.4 results were produced under 18658b9c... (before D4).
+EXPECTED_PROTOCOL_SHA = "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e"
 SHARED = [
     "path_sac_env", "path_sac_policy", "path_sac_config", "path_reference",
     "hover_env", "hover_task", "hover_ppo_config", "sensor_config",

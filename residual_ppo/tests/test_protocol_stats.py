@@ -219,6 +219,51 @@ class EqualityChecksTest(unittest.TestCase):
         self.assertFalse(r["pass"])
 
 
+class D4ProfilesTest(unittest.TestCase):
+    """D4: strong_range / beyond_strong = outside_range with only mean_speed_range changed; secondary endpoints."""
+
+    def test_definitions_and_status(self):
+        import copy
+
+        import eval_protocol_v1 as protocol
+        import path_sac_config
+
+        outside = path_sac_config.EVAL_WIND_PROFILES["outside_range"]
+        for name, rng in (("strong_range", (10.0, 14.0)), ("beyond_strong", (14.0, 16.0))):
+            prof = protocol.OUR_PROFILES[name]
+            self.assertEqual(prof["mean_speed_range"], rng)
+            self.assertEqual({k: v for k, v in prof.items() if k != "mean_speed_range"},
+                             {k: v for k, v in outside.items() if k != "mean_speed_range"})
+            self.assertEqual(set(prof), set(outside))
+        self.assertEqual(protocol.PROFILES, ("still_air", "training_range", "unseen_gusts", "outside_range",
+                                             "strong_range", "beyond_strong"))
+        self.assertEqual(protocol.PRIMARY_PROFILES, ("training_range", "unseen_gusts", "outside_range"))
+        self.assertEqual(protocol.SECONDARY_PROFILES, ("strong_range", "beyond_strong"))
+        before = copy.deepcopy(path_sac_config.EVAL_WIND_PROFILES)
+        registered = protocol.register_profiles()
+        self.assertEqual(set(registered), {"still_air", "strong_range", "beyond_strong"})
+        for team in protocol.TEAM_PROFILES:  # team profiles untouched
+            self.assertEqual(path_sac_config.EVAL_WIND_PROFILES[team], before[team])
+
+    def test_same_draws_for_any_mean_speed_range(self):
+        """Matched realizations: only the mean speed differs between outside_range and the D4 profiles."""
+        import eval_protocol_v1 as protocol
+        import hover_task
+        import path_sac_config
+
+        outside = path_sac_config.EVAL_WIND_PROFILES["outside_range"]
+        for seed in range(5):
+            ref = hover_task.sample_stage_wind(np.random.default_rng(seed), outside)
+            for name in ("strong_range", "beyond_strong"):
+                w = hover_task.sample_stage_wind(np.random.default_rng(seed), protocol.OUR_PROFILES[name])
+                self.assertEqual((w["gust_scale"], w["seed"], w["direction_rate"]),
+                                 (ref["gust_scale"], ref["seed"], ref["direction_rate"]))
+                lo, hi = protocol.OUR_PROFILES[name]["mean_speed_range"]
+                self.assertTrue(lo <= np.linalg.norm(w["mean_wind"]) <= hi)
+                np.testing.assert_allclose(w["mean_wind"][:2] / np.linalg.norm(w["mean_wind"]),
+                                           ref["mean_wind"][:2] / np.linalg.norm(ref["mean_wind"]))
+
+
 class ControllersTest(unittest.TestCase):
     def test_pid_returns_float32_zeros(self):
         a = controllers.make_controller("pid").act(np.ones(128, np.float32))

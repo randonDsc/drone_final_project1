@@ -1,0 +1,4 @@
+M2.4b check 1: the 720 flights of the original 4 profiles (M2.4, protocol 18658b9c) vs the same flights of the 6-profile re-fly (protocol d3f677dc), bit-for-bit
+flights: 720/720 identical on all 32 fields; missing 0; differing 0
+realizations entries: 720 compared; missing 0; differing 0
+RESULT: PASS (bit-for-bit)
