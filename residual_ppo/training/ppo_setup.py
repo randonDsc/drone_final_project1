@@ -15,11 +15,53 @@ RESIDUAL_DIR = Path(__file__).resolve().parents[1]
 
 
 def import_torch_first():
-    """Import torch + torch._dynamo before SimulationApp. Returns the torch module."""
+    """Import torch + the lazily imported submodules SB3 needs before SimulationApp. Returns the torch module.
+
+    torch._dynamo: imported by Adam (M2.1). torch.utils.serialization(.config): imported lazily by torch.load
+    (torch/serialization.py), i.e. by PPO.load; after SimulationApp it resolved to the stale ml_archive copy
+    (M5 S2 first attempt, caught by the origin check)."""
     import torch
     import torch._dynamo  # noqa: F401
+    import torch.utils.serialization  # noqa: F401
+    import torch.utils.serialization.config  # noqa: F401
 
     return torch
+
+
+def pin_torch_imports():
+    """Call right AFTER SimulationApp(...). Kit's OmniFinder (first on sys.meta_path) maps not-yet-imported module
+    names to extension prebundles, so lazily imported torch.* submodules resolved to the stale
+    extsDeprecated/omni.isaac.ml_archive torch (M5: torch.utils.serialization via PPO.load,
+    torch._subclasses.schema_check_mode in an error path). This finder, inserted ahead of it, resolves torch /
+    torch.* only through the parent package's own __path__ (the imported kit torch). Nothing on disk changes.
+    Returns a check record."""
+    import importlib.abc
+    import importlib.machinery
+    import importlib.util
+
+    import torch
+
+    class _PinTorchFinder(importlib.abc.MetaPathFinder):
+        pinned = True
+
+        def find_spec(self, name, path=None, target=None):
+            if not name.startswith("torch."):
+                return None
+            if path is None:
+                parent = sys.modules.get(name.rpartition(".")[0])
+                path = getattr(parent, "__path__", None)
+            if path is None:
+                return None
+            return importlib.machinery.PathFinder.find_spec(name, path, target)
+
+    if not any(getattr(f, "pinned", False) for f in sys.meta_path):
+        sys.meta_path.insert(0, _PinTorchFinder())
+    probe = "torch._subclasses.schema_check_mode"
+    origin = None if probe in sys.modules else importlib.util.find_spec(probe).origin
+    root = Path(torch.__file__).resolve().parent
+    ok = origin is None or root in Path(origin).resolve().parents
+    return {"pinned": True, "meta_path_first": type(sys.meta_path[0]).__name__, "probe": probe,
+            "probe_origin": None if origin is None else _redact(origin), "probe_inside_kit_torch": ok}
 
 
 class SeedGuard(gym.Wrapper):
@@ -47,8 +89,10 @@ class SeedGuard(gym.Wrapper):
         return self.env.reset(seed=seed, options=options)
 
 
-def build_training_env(app, forbidden_seeds):
-    """PathSacEnv -> SeedGuard -> Monitor -> DummyVecEnv (no VecNormalize). Returns (env, guard, venv)."""
+def build_training_env(app, forbidden_seeds, monitor_path=None):
+    """PathSacEnv -> SeedGuard -> Monitor -> DummyVecEnv (no VecNormalize). Returns (env, guard, venv).
+
+    monitor_path: optional per-launch Monitor CSV (SB3 appends ".monitor.csv")."""
     from stable_baselines3.common.monitor import Monitor
     from stable_baselines3.common.vec_env import DummyVecEnv
 
@@ -56,7 +100,7 @@ def build_training_env(app, forbidden_seeds):
 
     env = path_sac_env.make_path_sac_env(app)
     guard = SeedGuard(env, forbidden_seeds)
-    venv = DummyVecEnv([lambda: Monitor(guard)])
+    venv = DummyVecEnv([lambda: Monitor(guard, filename=None if monitor_path is None else str(monitor_path))])
     return env, guard, venv
 
 
@@ -78,6 +122,13 @@ def make_curriculum_callback(env):
             return True
 
     return CurriculumCallback()
+
+
+def all_parameters_finite(model):
+    import torch
+
+    with torch.no_grad():
+        return all(bool(torch.isfinite(p).all()) for p in model.policy.parameters())
 
 
 def count_gradient_steps(optimizer):

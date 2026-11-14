@@ -1,0 +1,21 @@
+﻿PASS  status: state done, result RESULT: DONE, model residual_ppo/runs/ppo_path/smoke_ppo_s0_6/final_model.zip
+PASS  end model + state file: final_model.zip
+PASS  end counters: collected = trained_on + discarded + pending: 10,240 = 8,192 + 2,048 + 0
+PASS  final: pending 0 and num_timesteps >= target: num_timesteps 10,240 (target 10,240)
+PASS  zip num_timesteps / _n_updates == state: zip 10,240 / 40; state 10,240 / 40
+PASS  checkpoints at every interval: found [4096, 8192], expected [4096, 8192]
+PASS  checkpoint 4,096: trained_on 2,048 (== formula 2,048), discarded 0, pending 2,048, grad steps 80, stage short_slow
+PASS  checkpoint 8,192: trained_on 4,096 (after a resume: formula n/a), discarded 2,048, pending 2,048, grad steps 160, stage turns
+PASS  contract smoke_ppo_s0_6/ == run_contract(settings)
+PASS  contract checkpoints/ == run_contract(settings)
+PASS  adapter check_ppo_contract accepts all 3 models
+PASS  lineage: every update of the end model is found in the rollouts CSVs: rows in lineage per launch [1, 3], unexplained updates 0
+PASS  launch 1 (fresh) KILLED: resumed from a checkpoint it had reached: next training launch 2 resumed from residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_4096_steps.zip at 4096 (killed launch last recorded 4096); last heartbeat 2026-11-14T19:35:57+00:00; rollouts.csv 2 rows of which 1 in the lineage (1 after the resume point, excluded); mass 1.6186144351959229
+PASS  launch 2 (resume) CSVs: rollouts.csv 3 rows (3 in the lineage), progress.csv 3 rows, monitor True, grad steps per rollout [80] (<= 80)
+PASS  launch 2 meta: end done (completed), torch 2.14.1+cpu, mass 1.6186144351959229, reseed 4097, seeded resets [4097]
+PASS  lineage sums == end counters: gradient steps 320 / 320; epochs 40 / 40; early stops 0 / 0
+PASS  trained_on == n_steps x lineage updates: 8,192 = 2048 x 4
+PASS  no _partial files left
+PASS  training_summary.txt: training summary: smoke_ppo_s0_6  (state: done; written 2026-11-14T19:43:26+00:00)
+19/19 checks passed
+RESULT: PASS

@@ -1,0 +1,21 @@
+﻿PASS  status: state done, result RESULT: DONE, model residual_ppo/runs/ppo_path/smoke_ppo_s0_4/final_model.zip
+PASS  end model + state file: final_model.zip
+PASS  end counters: collected = trained_on + discarded + pending: 12,121 = 10,240 + 1,881 + 0
+PASS  final: pending 0 and num_timesteps >= target: num_timesteps 12,121 (target 10,240)
+PASS  zip num_timesteps / _n_updates == state: zip 12,121 / 50; state 12,121 / 50
+PASS  checkpoints at every interval: found [4096, 8192], expected [4096, 8192]
+PASS  checkpoint 4,096: trained_on 2,048 (== formula 2,048), discarded 0, pending 2,048, grad steps 80, stage short_slow
+PASS  checkpoint 8,192: trained_on 6,144 (after a resume: formula n/a), discarded 1,881, pending 167, grad steps 240, stage turns
+PASS  contract smoke_ppo_s0_4/ == run_contract(settings)
+PASS  contract checkpoints/ == run_contract(settings)
+PASS  adapter check_ppo_contract accepts all 4 models
+PASS  launch 1 (fresh) CSVs: rollouts.csv 2 rows, progress.csv 2 rows, monitor True, grad steps per rollout [80] (<= 80)
+PASS  launch 1 meta: end interrupted (stop_file), torch 2.14.1+cpu, mass 1.6186144351959229, reseed None, seeded resets [0]
+PASS  launch 2 (resume) CSVs: rollouts.csv 3 rows, progress.csv 3 rows, monitor True, grad steps per rollout [80] (<= 80)
+PASS  launch 2 meta: end done (completed), torch 2.14.1+cpu, mass 1.6186144351959229, reseed 5978, seeded resets [5978]
+PASS  lineage sums == end counters: gradient steps 400 / 400; epochs 50 / 50; early stops 0 / 0
+PASS  trained_on == n_steps x lineage updates: 10,240 = 2048 x 5
+PASS  no _partial files left
+PASS  training_summary.txt: training summary: smoke_ppo_s0_4  (state: done; written 2026-11-14T19:14:01+00:00)
+19/19 checks passed
+RESULT: PASS

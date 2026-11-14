@@ -1,0 +1,28 @@
+﻿launched wrapper pid 17268
+status at checkpoint: state running, num_timesteps 4096, pid 1520, updated_at 2026-11-14T19:35:57+00:00
+== S0.12 live lock: fresh on the live folder
+[M4.train] REFUSED: the run is live: status.json says 'running' (launch 1, 4096 decisions, updated 2026-11-14T19:35:57+00:00) and pid 1520 is alive; stop it with the STOP file first
+[M4.train] RESULT: REFUSED
+== S0.13 live lock: resume on the live folder
+[M4.train] REFUSED: the run is live: status.json says 'running' (launch 1, 4096 decisions, updated 2026-11-14T19:35:57+00:00) and pid 1520 is alive; stop it with the STOP file first
+[M4.train] RESULT: REFUSED
+before kill: python pid 1520 alive = True; 19.7 s after the 4,096 heartbeat -> about 5000 decisions collected (estimate)
+Stop-Process -Force sent at 2026-11-14T19:36:16.6811092Z
+after kill: pid alive = False; status.json state 'running', num_timesteps 4096, updated_at 2026-11-14T19:35:57+00:00 (stale by 26.5 s), result ''
+models in the run folder: ppo_4096_steps.zip
+console log tail: [M4.train] rollout 2 @ 4,096 [short_slow]: collect 45.6 s, update 0.23 s, 80 grad steps, kl 0.0126, vloss 0.9633, std 0.3654, clip 0.65%, episodes 25 (0 failed)
+planted 2 *_partial files to exercise the resume cleanup
+launched pid 10604: --run-id smoke_ppo_s0_6 --mode resume --resume-model residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_4096_steps.zip --curriculum-offset 145000 -> residual_ppo\runs\ppo_path\smoke_ppo_s0_6\logs\console_s7_resume.log
+process exited (exit code 1, not used to judge success)
+[M4.train] status.json says 'running' but pid 1520 is not alive (last heartbeat 2026-11-14T19:35:57+00:00 at 4096 decisions): treated as a killed launch
+[M4.train] removed leftover partial file: residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_8192_steps_partial.zip
+[M4.train] removed leftover partial file: residual_ppo/runs/ppo_path/smoke_ppo_s0_6/status_partial.json
+[M4.train] preflight OK: run smoke_ppo_s0_6 (smoke), mode resume, target 10,240 decisions, checkpoints every 4,096, resume from residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_4096_steps.zip at 4,096 (reseed 4097)
+[M4.train] launch 1 has no end record: recorded as KILLED (last heartbeat 2026-11-14T19:35:57+00:00 at 4096 decisions)
+[M4.train] training from 4,096 to >= 10,240 decisions (launch 2); torch <ISAAC_ROOT>\kit\python\Lib\site-packages\torch; mass 1.618614 kg
+[M4.train] rollout 2 @ 6,144 [turns]: collect 96.8 s, update 7.09 s, 80 grad steps, kl 0.0156, vloss 1.373, std 0.3658, clip 0.72%, episodes 20 (0 failed)
+[M4.train] checkpoint residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_8192_steps.zip: trained on 4,096, pending 2,048, gradient steps 160
+[M4.train] rollout 3 @ 8,192 [turns]: collect 130.4 s, update 10.70 s, 80 grad steps, kl 0.0149, vloss 1.346, std 0.3655, clip 0.72%, episodes 17 (0 failed)
+[M4.train] rollout 4 @ 10,240 [turns]: collect 144.6 s, update 5.24 s, 80 grad steps, kl 0.0186, vloss 0.7916, std 0.3627, clip 0.72%, episodes 20 (0 failed)
+[M4.train] saved residual_ppo/runs/ppo_path/smoke_ppo_s0_6/final_model.zip (final: completed); 10,240 decisions collected, trained on 8,192, discarded 2,048, pending 0; gradient steps 320, SB3 epochs 40, early stops 0; seeded resets [4097]
+[M4.train] RESULT: DONE

@@ -1,0 +1,2 @@
+[M4.train] REFUSED: residual_ppo/runs/ppo_path/smoke_ppo_s0_8/ppo_contract.json differs from the current contract: ['training.ppo']
+[M4.train] RESULT: REFUSED

@@ -1,0 +1,88 @@
+{
+  "created_at": "2026-11-14T19:45:33+00:00",
+  "purpose": "M5b S8: torch origin evidence for evaluation flights (frozen fly load order, no pin)",
+  "pass": true,
+  "controller": {
+    "name": "pid_ppo",
+    "model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_4/final_model.zip",
+    "model_sha256": "2e72a2e0abf4a425188a4865f8fcca3283ae5659a61ee6d5f858752f074b5fe4",
+    "saved_sb3_version": "2.7.0",
+    "num_timesteps": 12121,
+    "runtime_sb3_version": "2.7.0",
+    "loaded_num_timesteps": 12121,
+    "contract": "residual_ppo/runs/ppo_path/smoke_ppo_s0_4/ppo_contract.json",
+    "contract_sha256": "9fbb92b36dfce457c961e81e984f1ed5b140ae955dda7a4bc96d0a7220f74dc6",
+    "contract_rule": "ppo_contract.json 'policy' == policy_contract()",
+    "device": "cpu",
+    "deterministic": true,
+    "spaces_checked_against_env": true,
+    "action": "PPO.predict(obs, deterministic=True)[0]"
+  },
+  "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+  "flight": {
+    "seed": 400000,
+    "scenario": "hover",
+    "profile": "training_range",
+    "decisions": 60,
+    "nonfinite_or_bad_shape_actions": 0,
+    "episode_end": null,
+    "note": "no tracking metrics computed or stored"
+  },
+  "batch": {
+    "observations": 64,
+    "rng_seed": 20261114,
+    "bit_identical_before_after": true,
+    "max_abs_diff": 0.0
+  },
+  "torch_origins_end": {
+    "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+    "torch_modules_with_file": 1046,
+    "outside_package_dir": 0,
+    "outside_examples": [],
+    "synthetic_file_attributes": [
+      [
+        "torch.ops",
+        "_ops.py"
+      ],
+      [
+        "torch.classes",
+        "_classes.py"
+      ]
+    ],
+    "modules_from_ml_archive": 1,
+    "ml_archive_examples": [
+      "omni.isaac.ml_archive"
+    ],
+    "modules_from_ml_archive_pip_prebundle": 0,
+    "prebundle_examples": []
+  },
+  "torch_modules_imported_after_app": [],
+  "torch_modules_before_app": 1085,
+  "pin_used": false,
+  "versions": {
+    "torch": "2.14.1+cpu",
+    "torch_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py",
+    "stable_baselines3": "2.7.0",
+    "numpy": "2.3.1"
+  },
+  "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+  "total_mass_kg": 1.6186144351959229,
+  "git": {
+    "head": "30c7ce94f2fdf8cf8887bd4a1bb89e0de1a3e169",
+    "branch": "claire/drone-simulation",
+    "residual_ppo_status": [
+      "M residual_ppo/.gitignore",
+      " M residual_ppo/config/experiment_config.py",
+      " M residual_ppo/training/ppo_setup.py",
+      "?? residual_ppo/docs/milestone4_plan.md",
+      "?? residual_ppo/evaluation/learning_curve.py",
+      "?? residual_ppo/results/eval/eval-v1/pid_validation/",
+      "?? residual_ppo/results/m5/",
+      "?? residual_ppo/tests/test_ppo_training.py",
+      "?? residual_ppo/tools/audit_ppo_run.py",
+      "?? residual_ppo/tools/check_eval_torch_origin.py",
+      "?? residual_ppo/training/run_files.py",
+      "?? residual_ppo/training/train_path_ppo.py"
+    ]
+  }
+}

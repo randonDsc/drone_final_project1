@@ -1,0 +1,13 @@
+﻿== S0.7 fresh on a folder with a model
+[M4.train] REFUSED: residual_ppo/runs/ppo_path/smoke_ppo_s0_1 already holds a model (ppo_4096_steps.zip, interrupted_model.zip); use a new run id or --mode resume
+[M4.train] RESULT: REFUSED
+== S0.8 resume, tampered contract copy
+== S0.9 resume, wrong curriculum offset
+[M4.train] REFUSED: residual_ppo/runs/ppo_path/smoke_ppo_s0_1/ppo_contract.json differs from the current contract: ['training.smoke_override']
+[M4.train] RESULT: REFUSED
+== S0.10 resume path escaping the run dir
+[M4.train] REFUSED: --resume-model must be inside residual_ppo/runs/ppo_path/smoke_ppo_s0_1 (D2); got residual_ppo/runs/ppo_path/smoke_ppo_s0_8/interrupted_model.zip
+[M4.train] RESULT: REFUSED
+== S0.11 correct resume (preflight only)
+[M4.train] preflight OK: run smoke_ppo_s0_1 (smoke), mode resume, target 10,240 decisions, checkpoints every 4,096, resume from residual_ppo/runs/ppo_path/smoke_ppo_s0_1/interrupted_model.zip at 5,905 (reseed 5906)
+[M4.train] RESULT: PREFLIGHT OK (no Isaac started)

@@ -6,6 +6,7 @@ Primary PPO result (M4/E6): the FINAL model at 1,501,184 decisions (like the tea
 selection). Checkpoints 150k/400k/800k are evaluated on validation seeds 400000-400009 as a secondary learning
 curve only.
 """
+import re
 from pathlib import Path
 
 from config import ppo_config
@@ -37,6 +38,42 @@ VERIFY_RESULTS = Path("results") / "m3" / "ppo_setup_check"      # .json / .txt 
 TIMING_PROBE_ID = "m3_timing_probe_s0_8k"       # separate id; model discarded (never saved), never evaluated
 TIMING_PROBE_DECISIONS = 4 * ppo_config.PPO["n_steps"]           # 8,192 decisions = 4 rollouts with updates
 TIMING_PROBE_RESULTS = Path("results") / "m3" / "timing_probe"   # .json / .txt / _progress csv folder
+
+
+# ---------- M4: run settings (D1, smoke override (5), D5, D8) ----------
+STOP_FILE = "STOP"                              # D5: create runs/ppo_path/<id>/STOP to stop cleanly
+SUMMARY_FILE = "training_summary.txt"
+SMOKE_OVERRIDE = {"total_decisions": 10_240, "checkpoint_interval": 4_096}   # smoke_ppo_s0_<n> only
+_SMOKE_RE = re.compile(re.escape(SMOKE_RUN_PREFIX) + r"\d+")
+
+
+def is_smoke(run_id):
+    return bool(_SMOKE_RE.fullmatch(run_id))
+
+
+def run_settings(run_id, curriculum_offset=0):
+    """D1: only the main id or smoke_ppo_s0_<n>. The smoke override and the curriculum offset (D8) are smoke-only."""
+    if run_id == MAIN_RUN_ID:
+        if curriculum_offset:
+            raise ValueError("--curriculum-offset is smoke-only")
+        return {"run_id": run_id, "smoke": False, "total_decisions": ppo_config.TOTAL_DECISIONS,
+                "checkpoint_interval": CHECKPOINT_INTERVAL, "curriculum_offset": 0}
+    if is_smoke(run_id):
+        return {"run_id": run_id, "smoke": True, "total_decisions": SMOKE_OVERRIDE["total_decisions"],
+                "checkpoint_interval": SMOKE_OVERRIDE["checkpoint_interval"],
+                "curriculum_offset": int(curriculum_offset)}
+    raise ValueError(f"run id {run_id!r} not allowed (D1): use {MAIN_RUN_ID!r} or {SMOKE_RUN_PREFIX}<n>")
+
+
+def run_contract(settings):
+    """ppo_contract.json for a run: ppo_config.contract(), plus smoke_override in the training group for smoke runs
+    (so a smoke run and the main run can never resume into each other)."""
+    contract = ppo_config.contract()
+    if settings["smoke"]:
+        contract["training"]["smoke_override"] = {"total_decisions": settings["total_decisions"],
+                                                  "checkpoint_interval": settings["checkpoint_interval"],
+                                                  "curriculum_offset": settings["curriculum_offset"]}
+    return contract
 
 
 def run_dir(run_id):

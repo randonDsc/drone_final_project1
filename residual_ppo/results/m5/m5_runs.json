@@ -1,0 +1,828 @@
+{
+  "smoke_ppo_s0_1": {
+    "purpose": "S1/S2 first pass: STOP at ~6k, resume attempt 1 refused by the torch origin check, resume 2 done (pre-pin code)",
+    "settings": {
+      "run_id": "smoke_ppo_s0_1",
+      "smoke": true,
+      "total_decisions": 10240,
+      "checkpoint_interval": 4096,
+      "curriculum_offset": 145000
+    },
+    "status": {
+      "state": "done",
+      "num_timesteps": 12049,
+      "counters": {
+        "collected": 12049,
+        "trained_on": 10240,
+        "discarded": 1809,
+        "gradient_steps": 400,
+        "sb3_n_updates": 50,
+        "early_stops": 0,
+        "rollouts": 5,
+        "invalid_steps": 0
+      },
+      "pending": 0,
+      "last_checkpoint": "residual_ppo/runs/ppo_path/smoke_ppo_s0_1/checkpoints/ppo_8192_steps.zip",
+      "model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_1/final_model.zip",
+      "result": "RESULT: DONE",
+      "error": null,
+      "updated_at": "2026-11-14T19:01:59+00:00"
+    },
+    "files": [
+      "checkpoints/ppo_4096_steps.zip",
+      "checkpoints/ppo_4096_steps_state.json",
+      "checkpoints/ppo_8192_steps.zip",
+      "checkpoints/ppo_8192_steps_state.json",
+      "checkpoints/ppo_contract.json",
+      "final_model.zip",
+      "final_model_state.json",
+      "interrupted_model.zip",
+      "interrupted_model_state.json",
+      "logs/monitor_20261114_105505.monitor.csv",
+      "logs/monitor_20261114_105808.monitor.csv",
+      "logs/monitor_20261114_105928.monitor.csv",
+      "logs/progress_20261114_105505.csv",
+      "logs/progress_20261114_105928.csv",
+      "logs/rollouts_20261114_105505.csv",
+      "logs/rollouts_20261114_105928.csv",
+      "ppo_contract.json",
+      "run_meta.json",
+      "status.json",
+      "training_summary.txt"
+    ],
+    "launches": [
+      {
+        "launch": 1,
+        "mode": "fresh",
+        "source_model": null,
+        "start_num_timesteps": 0,
+        "reseed": null,
+        "end_state": "interrupted",
+        "end_reason": "stop_file",
+        "end_num_timesteps": 5905,
+        "nonfinite": false,
+        "seeded_resets": [
+          0
+        ],
+        "unseeded_resets": 68,
+        "counters_at_start": {
+          "collected": 0,
+          "trained_on": 0,
+          "discarded": 0,
+          "gradient_steps": 0,
+          "sb3_n_updates": 0,
+          "early_stops": 0,
+          "rollouts": 0,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 5905,
+          "trained_on": 4096,
+          "discarded": 0,
+          "gradient_steps": 160,
+          "sb3_n_updates": 20,
+          "early_stops": 0,
+          "rollouts": 2,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 144.25779649999458,
+        "torch_import_pin": null,
+        "torch_origin_clean_at_end": null,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": null,
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      },
+      {
+        "launch": 2,
+        "mode": "resume",
+        "source_model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_1/interrupted_model.zip",
+        "start_num_timesteps": 5905,
+        "reseed": 5906,
+        "end_state": "failed",
+        "end_reason": "RuntimeError: torch origin check failed: {'torch_package_dir': '<ISAAC_ROOT>\\\\kit\\\\python\\\\Lib\\\\site-packages\\\\torch', 'torch_modules_with_file': 1046, 'outside_package_dir': 2, 'outside_examples': [('torch.utils.serialization.config', '<ISAAC_ROOT>\\\\extsDeprecated\\\\omni.isaac.ml_archive\\\\pip_prebundle\\\\torch\\\\utils\\\\serialization\\\\config.py'), ('torch.utils.serialization', '<ISAAC_ROOT>\\\\extsDeprecated\\\\omni.isaac.ml_archive\\\\pip_prebundle\\\\torch\\\\utils\\\\serialization\\\\__init__.py')], 'synthetic_file_attributes': [('torch.ops', '_ops.py'), ('torch.classes', '_classes.py')], 'modules_from_ml_archive': 3, 'ml_archive_examples': ['omni.isaac.ml_archive', 'torch.utils.serialization', 'torch.utils.serialization.config'], 'modules_from_ml_archive_pip_prebundle': 2, 'prebundle_examples': ['torch.utils.serialization', 'torch.utils.serialization.config']}",
+        "end_num_timesteps": null,
+        "nonfinite": null,
+        "seeded_resets": null,
+        "unseeded_resets": null,
+        "counters_at_start": {
+          "collected": 5905,
+          "trained_on": 4096,
+          "discarded": 1809,
+          "gradient_steps": 160,
+          "sb3_n_updates": 20,
+          "early_stops": 0,
+          "rollouts": 2,
+          "invalid_steps": 0
+        },
+        "counters_at_end": null,
+        "wall_clock_s": null,
+        "torch_import_pin": null,
+        "torch_origin_clean_at_end": null,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 2,
+        "torch_origins_end_prebundle": null,
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      },
+      {
+        "launch": 3,
+        "mode": "resume",
+        "source_model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_1/interrupted_model.zip",
+        "start_num_timesteps": 5905,
+        "reseed": 5906,
+        "end_state": "done",
+        "end_reason": "completed",
+        "end_num_timesteps": 12049,
+        "nonfinite": false,
+        "seeded_resets": [
+          5906
+        ],
+        "unseeded_resets": 54,
+        "counters_at_start": {
+          "collected": 5905,
+          "trained_on": 4096,
+          "discarded": 1809,
+          "gradient_steps": 160,
+          "sb3_n_updates": 20,
+          "early_stops": 0,
+          "rollouts": 2,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 12049,
+          "trained_on": 10240,
+          "discarded": 1809,
+          "gradient_steps": 400,
+          "sb3_n_updates": 50,
+          "early_stops": 0,
+          "rollouts": 5,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 151.1928895000019,
+        "torch_import_pin": null,
+        "torch_origin_clean_at_end": true,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": [],
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      }
+    ]
+  },
+  "smoke_ppo_s0_2": {
+    "purpose": "S4 first pass: NaN hook (pre-pin): crashed+nonfinite, end origin check found schema_check_mode from ml_archive",
+    "settings": {
+      "run_id": "smoke_ppo_s0_2",
+      "smoke": true,
+      "total_decisions": 10240,
+      "checkpoint_interval": 4096,
+      "curriculum_offset": 0
+    },
+    "status": {
+      "state": "failed",
+      "num_timesteps": 4096,
+      "counters": {
+        "collected": 4096,
+        "trained_on": 2048,
+        "discarded": 0,
+        "gradient_steps": 80,
+        "sb3_n_updates": 10,
+        "early_stops": 0,
+        "rollouts": 1,
+        "invalid_steps": 0
+      },
+      "pending": 2048,
+      "last_checkpoint": "residual_ppo/runs/ppo_path/smoke_ppo_s0_2/checkpoints/ppo_4096_steps.zip",
+      "model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_2/crashed_model.zip",
+      "result": "RESULT: FAIL",
+      "error": "ValueError: Expected parameter scale (Tensor of shape (256, 4)) of distribution Normal(loc: torch.Size([256, 4]), scale: torch.Size([256, 4])) to satisfy the constraint GreaterThan(lower_bound=0.0), but found invalid values:\ntensor([[   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        ...,\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706]], grad_fn=<MulBackward0>)",
+      "updated_at": "2026-11-14T19:04:13+00:00"
+    },
+    "files": [
+      "checkpoints/ppo_4096_steps.zip",
+      "checkpoints/ppo_4096_steps_state.json",
+      "checkpoints/ppo_contract.json",
+      "crashed_model.zip",
+      "crashed_model_state.json",
+      "logs/monitor_20261114_110231.monitor.csv",
+      "logs/progress_20261114_110231.csv",
+      "logs/rollouts_20261114_110231.csv",
+      "ppo_contract.json",
+      "run_meta.json",
+      "status.json",
+      "training_summary.txt"
+    ],
+    "launches": [
+      {
+        "launch": 1,
+        "mode": "fresh",
+        "source_model": null,
+        "start_num_timesteps": 0,
+        "reseed": null,
+        "end_state": "failed",
+        "end_reason": "ValueError: Expected parameter scale (Tensor of shape (256, 4)) of distribution Normal(loc: torch.Size([256, 4]), scale: torch.Size([256, 4])) to satisfy the constraint GreaterThan(lower_bound=0.0), but found invalid values:\ntensor([[   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        ...,\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706]], grad_fn=<MulBackward0>)",
+        "end_num_timesteps": 4096,
+        "nonfinite": true,
+        "seeded_resets": [
+          0
+        ],
+        "unseeded_resets": 49,
+        "counters_at_start": {
+          "collected": 0,
+          "trained_on": 0,
+          "discarded": 0,
+          "gradient_steps": 0,
+          "sb3_n_updates": 0,
+          "early_stops": 0,
+          "rollouts": 0,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 4096,
+          "trained_on": 2048,
+          "discarded": 0,
+          "gradient_steps": 80,
+          "sb3_n_updates": 10,
+          "early_stops": 0,
+          "rollouts": 1,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 102.48728920001304,
+        "torch_import_pin": null,
+        "torch_origin_clean_at_end": false,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": [
+          "torch._subclasses.schema_check_mode"
+        ],
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      }
+    ]
+  },
+  "smoke_ppo_s0_3": {
+    "purpose": "S1b: real CTRL_C_EVENT: process terminated without saving; status stayed running",
+    "settings": {
+      "run_id": "smoke_ppo_s0_3",
+      "smoke": true,
+      "total_decisions": 10240,
+      "checkpoint_interval": 4096,
+      "curriculum_offset": 0
+    },
+    "status": {
+      "state": "running",
+      "num_timesteps": 2048,
+      "counters": {
+        "collected": 2048,
+        "trained_on": 2048,
+        "discarded": 0,
+        "gradient_steps": 80,
+        "sb3_n_updates": 10,
+        "early_stops": 0,
+        "rollouts": 1,
+        "invalid_steps": 0
+      },
+      "pending": 0,
+      "last_checkpoint": null,
+      "model": null,
+      "result": null,
+      "error": null,
+      "updated_at": "2026-11-14T19:08:24+00:00"
+    },
+    "files": [
+      "checkpoints/ppo_contract.json",
+      "logs/monitor_20261114_110729.monitor.csv",
+      "logs/progress_20261114_110729.csv",
+      "logs/rollouts_20261114_110729.csv",
+      "ppo_contract.json",
+      "run_meta.json",
+      "status.json"
+    ],
+    "launches": [
+      {
+        "launch": 1,
+        "mode": "fresh",
+        "source_model": null,
+        "start_num_timesteps": 0,
+        "reseed": null,
+        "end_state": null,
+        "end_reason": null,
+        "end_num_timesteps": null,
+        "nonfinite": null,
+        "seeded_resets": null,
+        "unseeded_resets": null,
+        "counters_at_start": {
+          "collected": 0,
+          "trained_on": 0,
+          "discarded": 0,
+          "gradient_steps": 0,
+          "sb3_n_updates": 0,
+          "early_stops": 0,
+          "rollouts": 0,
+          "invalid_steps": 0
+        },
+        "counters_at_end": null,
+        "wall_clock_s": null,
+        "torch_import_pin": {
+          "pinned": true,
+          "meta_path_first": "_PinTorchFinder",
+          "probe": "torch._subclasses.schema_check_mode",
+          "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+          "probe_inside_kit_torch": true
+        },
+        "torch_origin_clean_at_end": null,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": null,
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      }
+    ]
+  },
+  "smoke_ppo_s0_4": {
+    "purpose": "S1/S2/S3 on final M5 code: STOP at ~6k, resume, done; audit PASS; S5 flight and S8 pid_ppo model",
+    "settings": {
+      "run_id": "smoke_ppo_s0_4",
+      "smoke": true,
+      "total_decisions": 10240,
+      "checkpoint_interval": 4096,
+      "curriculum_offset": 145000
+    },
+    "status": {
+      "state": "done",
+      "num_timesteps": 12121,
+      "counters": {
+        "collected": 12121,
+        "trained_on": 10240,
+        "discarded": 1881,
+        "gradient_steps": 400,
+        "sb3_n_updates": 50,
+        "early_stops": 0,
+        "rollouts": 5,
+        "invalid_steps": 0
+      },
+      "pending": 0,
+      "last_checkpoint": "residual_ppo/runs/ppo_path/smoke_ppo_s0_4/checkpoints/ppo_8192_steps.zip",
+      "model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_4/final_model.zip",
+      "result": "RESULT: DONE",
+      "error": null,
+      "updated_at": "2026-11-14T19:14:01+00:00"
+    },
+    "files": [
+      "checkpoints/ppo_4096_steps.zip",
+      "checkpoints/ppo_4096_steps_state.json",
+      "checkpoints/ppo_8192_steps.zip",
+      "checkpoints/ppo_8192_steps_state.json",
+      "checkpoints/ppo_contract.json",
+      "final_model.zip",
+      "final_model_state.json",
+      "interrupted_model.zip",
+      "interrupted_model_state.json",
+      "logs/monitor_20261114_110909.monitor.csv",
+      "logs/monitor_20261114_111134.monitor.csv",
+      "logs/progress_20261114_110909.csv",
+      "logs/progress_20261114_111134.csv",
+      "logs/rollouts_20261114_110909.csv",
+      "logs/rollouts_20261114_111134.csv",
+      "ppo_contract.json",
+      "run_meta.json",
+      "status.json",
+      "training_summary.txt"
+    ],
+    "launches": [
+      {
+        "launch": 1,
+        "mode": "fresh",
+        "source_model": null,
+        "start_num_timesteps": 0,
+        "reseed": null,
+        "end_state": "interrupted",
+        "end_reason": "stop_file",
+        "end_num_timesteps": 5977,
+        "nonfinite": false,
+        "seeded_resets": [
+          0
+        ],
+        "unseeded_resets": 69,
+        "counters_at_start": {
+          "collected": 0,
+          "trained_on": 0,
+          "discarded": 0,
+          "gradient_steps": 0,
+          "sb3_n_updates": 0,
+          "early_stops": 0,
+          "rollouts": 0,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 5977,
+          "trained_on": 4096,
+          "discarded": 0,
+          "gradient_steps": 160,
+          "sb3_n_updates": 20,
+          "early_stops": 0,
+          "rollouts": 2,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 142.3492327000131,
+        "torch_import_pin": {
+          "pinned": true,
+          "meta_path_first": "_PinTorchFinder",
+          "probe": "torch._subclasses.schema_check_mode",
+          "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+          "probe_inside_kit_torch": true
+        },
+        "torch_origin_clean_at_end": true,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": [],
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      },
+      {
+        "launch": 2,
+        "mode": "resume",
+        "source_model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_4/interrupted_model.zip",
+        "start_num_timesteps": 5977,
+        "reseed": 5978,
+        "end_state": "done",
+        "end_reason": "completed",
+        "end_num_timesteps": 12121,
+        "nonfinite": false,
+        "seeded_resets": [
+          5978
+        ],
+        "unseeded_resets": 51,
+        "counters_at_start": {
+          "collected": 5977,
+          "trained_on": 4096,
+          "discarded": 1881,
+          "gradient_steps": 160,
+          "sb3_n_updates": 20,
+          "early_stops": 0,
+          "rollouts": 2,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 12121,
+          "trained_on": 10240,
+          "discarded": 1881,
+          "gradient_steps": 400,
+          "sb3_n_updates": 50,
+          "early_stops": 0,
+          "rollouts": 5,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 146.83634430001257,
+        "torch_import_pin": {
+          "pinned": true,
+          "meta_path_first": "_PinTorchFinder",
+          "probe": "torch._subclasses.schema_check_mode",
+          "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+          "probe_inside_kit_torch": true
+        },
+        "torch_origin_clean_at_end": true,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": [],
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      }
+    ]
+  },
+  "smoke_ppo_s0_5": {
+    "purpose": "S4 on final M5 code (torch import pin): crashed+nonfinite, origin clean, resume refused",
+    "settings": {
+      "run_id": "smoke_ppo_s0_5",
+      "smoke": true,
+      "total_decisions": 10240,
+      "checkpoint_interval": 4096,
+      "curriculum_offset": 0
+    },
+    "status": {
+      "state": "failed",
+      "num_timesteps": 4096,
+      "counters": {
+        "collected": 4096,
+        "trained_on": 2048,
+        "discarded": 0,
+        "gradient_steps": 80,
+        "sb3_n_updates": 10,
+        "early_stops": 0,
+        "rollouts": 1,
+        "invalid_steps": 0
+      },
+      "pending": 2048,
+      "last_checkpoint": "residual_ppo/runs/ppo_path/smoke_ppo_s0_5/checkpoints/ppo_4096_steps.zip",
+      "model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_5/crashed_model.zip",
+      "result": "RESULT: FAIL",
+      "error": "ValueError: Expected parameter scale (Tensor of shape (256, 4)) of distribution Normal(loc: torch.Size([256, 4]), scale: torch.Size([256, 4])) to satisfy the constraint GreaterThan(lower_bound=0.0), but found invalid values:\ntensor([[   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        ...,\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706]], grad_fn=<MulBackward0>)",
+      "updated_at": "2026-11-14T19:07:10+00:00"
+    },
+    "files": [
+      "checkpoints/ppo_4096_steps.zip",
+      "checkpoints/ppo_4096_steps_state.json",
+      "checkpoints/ppo_contract.json",
+      "crashed_model.zip",
+      "crashed_model_state.json",
+      "logs/monitor_20261114_110529.monitor.csv",
+      "logs/progress_20261114_110529.csv",
+      "logs/rollouts_20261114_110529.csv",
+      "ppo_contract.json",
+      "run_meta.json",
+      "status.json",
+      "training_summary.txt"
+    ],
+    "launches": [
+      {
+        "launch": 1,
+        "mode": "fresh",
+        "source_model": null,
+        "start_num_timesteps": 0,
+        "reseed": null,
+        "end_state": "failed",
+        "end_reason": "ValueError: Expected parameter scale (Tensor of shape (256, 4)) of distribution Normal(loc: torch.Size([256, 4]), scale: torch.Size([256, 4])) to satisfy the constraint GreaterThan(lower_bound=0.0), but found invalid values:\ntensor([[   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        ...,\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706],\n        [   nan, 0.3655, 0.3652, 0.3706]], grad_fn=<MulBackward0>)",
+        "end_num_timesteps": 4096,
+        "nonfinite": true,
+        "seeded_resets": [
+          0
+        ],
+        "unseeded_resets": 49,
+        "counters_at_start": {
+          "collected": 0,
+          "trained_on": 0,
+          "discarded": 0,
+          "gradient_steps": 0,
+          "sb3_n_updates": 0,
+          "early_stops": 0,
+          "rollouts": 0,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 4096,
+          "trained_on": 2048,
+          "discarded": 0,
+          "gradient_steps": 80,
+          "sb3_n_updates": 10,
+          "early_stops": 0,
+          "rollouts": 1,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 100.82337810000172,
+        "torch_import_pin": {
+          "pinned": true,
+          "meta_path_first": "_PinTorchFinder",
+          "probe": "torch._subclasses.schema_check_mode",
+          "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+          "probe_inside_kit_torch": true
+        },
+        "torch_origin_clean_at_end": true,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": [],
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      }
+    ]
+  },
+  "smoke_ppo_s0_6": {
+    "purpose": "M5b S7: Stop-Process -Force at ~5,000; live-lock refusals while alive; resume from the 4,096 checkpoint; audit PASS. Launch 2 timings not representative (another heavy application was running on the PC)",
+    "settings": {
+      "run_id": "smoke_ppo_s0_6",
+      "smoke": true,
+      "total_decisions": 10240,
+      "checkpoint_interval": 4096,
+      "curriculum_offset": 145000
+    },
+    "status": {
+      "state": "done",
+      "num_timesteps": 10240,
+      "counters": {
+        "collected": 10240,
+        "trained_on": 8192,
+        "discarded": 2048,
+        "gradient_steps": 320,
+        "sb3_n_updates": 40,
+        "early_stops": 0,
+        "rollouts": 4,
+        "invalid_steps": 0
+      },
+      "pending": 0,
+      "last_checkpoint": "residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_8192_steps.zip",
+      "model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_6/final_model.zip",
+      "result": "RESULT: DONE",
+      "error": null,
+      "updated_at": "2026-11-14T19:43:26+00:00"
+    },
+    "files": [
+      "checkpoints/ppo_4096_steps.zip",
+      "checkpoints/ppo_4096_steps_state.json",
+      "checkpoints/ppo_8192_steps.zip",
+      "checkpoints/ppo_8192_steps_state.json",
+      "checkpoints/ppo_contract.json",
+      "final_model.zip",
+      "final_model_state.json",
+      "logs/monitor_20261114_113415.monitor.csv",
+      "logs/monitor_20261114_113636.monitor.csv",
+      "logs/progress_20261114_113415.csv",
+      "logs/progress_20261114_113636.csv",
+      "logs/rollouts_20261114_113415.csv",
+      "logs/rollouts_20261114_113636.csv",
+      "ppo_contract.json",
+      "run_meta.json",
+      "status.json",
+      "training_summary.txt"
+    ],
+    "launches": [
+      {
+        "launch": 1,
+        "mode": "fresh",
+        "source_model": null,
+        "start_num_timesteps": 0,
+        "reseed": null,
+        "end_state": "killed",
+        "end_reason": "no end record: the process was killed or lost power (inferred at the next launch)",
+        "end_num_timesteps": null,
+        "nonfinite": null,
+        "seeded_resets": null,
+        "unseeded_resets": null,
+        "counters_at_start": {
+          "collected": 0,
+          "trained_on": 0,
+          "discarded": 0,
+          "gradient_steps": 0,
+          "sb3_n_updates": 0,
+          "early_stops": 0,
+          "rollouts": 0,
+          "invalid_steps": 0
+        },
+        "counters_at_end": null,
+        "wall_clock_s": null,
+        "torch_import_pin": {
+          "pinned": true,
+          "meta_path_first": "_PinTorchFinder",
+          "probe": "torch._subclasses.schema_check_mode",
+          "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+          "probe_inside_kit_torch": true
+        },
+        "torch_origin_clean_at_end": null,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": "2026-11-14T19:36:36+00:00",
+        "last_heartbeat": "2026-11-14T19:35:57+00:00",
+        "last_num_timesteps": 4096,
+        "last_status_state": "running",
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": null,
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      },
+      {
+        "launch": 2,
+        "mode": "resume",
+        "source_model": "residual_ppo/runs/ppo_path/smoke_ppo_s0_6/checkpoints/ppo_4096_steps.zip",
+        "start_num_timesteps": 4096,
+        "reseed": 4097,
+        "end_state": "done",
+        "end_reason": "completed",
+        "end_num_timesteps": 10240,
+        "nonfinite": false,
+        "seeded_resets": [
+          4097
+        ],
+        "unseeded_resets": 57,
+        "counters_at_start": {
+          "collected": 4096,
+          "trained_on": 2048,
+          "discarded": 2048,
+          "gradient_steps": 80,
+          "sb3_n_updates": 10,
+          "early_stops": 0,
+          "rollouts": 1,
+          "invalid_steps": 0
+        },
+        "counters_at_end": {
+          "collected": 10240,
+          "trained_on": 8192,
+          "discarded": 2048,
+          "gradient_steps": 320,
+          "sb3_n_updates": 40,
+          "early_stops": 0,
+          "rollouts": 4,
+          "invalid_steps": 0
+        },
+        "wall_clock_s": 410.4987614999991,
+        "torch_import_pin": {
+          "pinned": true,
+          "meta_path_first": "_PinTorchFinder",
+          "probe": "torch._subclasses.schema_check_mode",
+          "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+          "probe_inside_kit_torch": true
+        },
+        "torch_origin_clean_at_end": true,
+        "total_mass_kg": 1.6186144351959229,
+        "killed_inferred_at": null,
+        "last_heartbeat": null,
+        "last_num_timesteps": null,
+        "last_status_state": null,
+        "torch_origins_start_outside": 0,
+        "torch_origins_end_prebundle": [],
+        "versions": {
+          "python": "3.12.14",
+          "numpy": "2.3.1",
+          "gymnasium": "1.2.3",
+          "stable_baselines3": "2.7.0",
+          "torch": "2.14.1+cpu",
+          "torch_num_threads": 8
+        }
+      }
+    ]
+  }
+}

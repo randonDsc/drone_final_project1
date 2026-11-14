@@ -18,3 +18,12 @@ results/m2/m2_5_adapter_smoke/runs/
 
 # PPO runs: model zips (final + checkpoints) are large binaries; contracts, status, meta and CSV logs are small
 runs/**/*.zip
+
+# PPO run console logs (large; status.json, run_meta.json and CSVs carry the record)
+runs/**/*.log
+
+# M5 S5/S6: raw smoke-model flight + dry-run learning curve (untrained-model metrics); only the summary is committed
+results/m5/smoke_fly/
+
+# M5 smoke runs (test artifacts with model zips); evidence is condensed in results/m5/m5_runs.json
+runs/ppo_path/smoke_*/

@@ -1,0 +1,9 @@
+[S8] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[S8] import paths: all 18 shared modules resolve inside residual_ppo
+[S8] controller pid_sac loaded before SimulationApp (model: residual_ppo/models/sac_team/flight1/final_model.zip)
+[S8] batch of 64 seeded observations -> actions before SimulationApp: finite True; 1085 torch modules loaded
+[S8] flew 60 decisions on validation seed 400000 (hover / training_range); non-finite or bad-shape actions 0; episode end: cut at 60
+[S8] same batch after the flight: bit-identical to before = True (max |diff| 0.000e+00)
+[S8] torch origin at the end: 1046 modules with a file, 0 outside <ISAAC_ROOT>\kit\python\Lib\site-packages\torch []; from the ml_archive pip_prebundle: 0 []
+[S8] torch modules first imported AFTER SimulationApp: 0 (0 outside the kit torch)
+[S8] RESULT: PASS
