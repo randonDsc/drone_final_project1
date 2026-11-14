@@ -30,7 +30,7 @@ Run from `residual_ppo/` with the normal venv or Isaac's `python.bat`:
 ```powershell
 python tools\sync_shared.py --check-local   # local files vs manifest (no team repo needed)
 python tools\sync_shared.py --check         # local files vs manifest AND team commit 61d2722
-python -m unittest discover -s tests -p "test_*.py" -v
+python -m unittest discover -s tests -p "test_*.py" -v   # 56 tests (team test + ours), both interpreters
 ```
 
 - `--check` and the source test look for the team worktree `drone_team_main` **next to** this repo.
@@ -47,7 +47,73 @@ Isaac environment smoke test (needs Isaac Sim; run from the repo root with Isaac
 ```
 
 It writes `results/m1_env_config_snapshot.json` and `results/m1_env_smoke_summary.txt`. Full Isaac logs
-(`results/*.log`) are not committed.
+(`results/**/*.log`) are not committed.
+
+## Evaluation protocol v1 (frozen)
+
+The protocol is frozen in [`docs/eval_protocol_v1.md`](docs/eval_protocol_v1.md): 30 eval seeds
+(300000–300029) × 6 scenarios × 6 wind profiles = 1,080 flights per controller. Profiles: `still_air` (ours, reported,
+not primary), the team's `training_range`, `unseen_gusts`, `outside_range` (**primary endpoints**), and our
+evaluation-only `strong_range` / `beyond_strong` (secondary). Its identity is the protocol hash
+`d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e` plus the git blob IDs of the five evaluation files
+listed there; **any change to them is protocol v2** and requires re-running every controller.
+
+Verify the frozen code (from the repo root):
+
+```powershell
+git hash-object residual_ppo/evaluation/eval_protocol_v1.py residual_ppo/evaluation/protocol_stats.py `
+    residual_ppo/evaluation/run_protocol.py residual_ppo/evaluation/run_common.py residual_ppo/evaluation/controllers.py
+# must print the blob IDs in docs/eval_protocol_v1.md; every results file also stores them in meta.code_blobs
+```
+
+Run the protocol (from the repo root; flying needs Isaac's `python.bat`, the analysis modes run in either interpreter):
+
+```powershell
+# 1,080 flights for one controller (PID: ~38 min on this PC); checks 21/21 run first, check 0 proves diagnostics are passive
+& "<Isaac Sim>\python.bat" residual_ppo\evaluation\run_protocol.py fly --controller pid --seeds 300000-300029 `
+    --check0 --out residual_ppo/results/eval/eval-v1/pid *> residual_ppo\results\eval\eval-v1\pid.log
+# matched-realization check across all profiles + per-profile table
+python residual_ppo\evaluation\run_protocol.py baseline-table --run residual_ppo/results/eval/eval-v1/pid --name <name>
+# E5 report of a controller run vs the canonical PID run (refuses mismatched realizations or a different protocol hash)
+python residual_ppo\evaluation\run_protocol.py report --controller-run residual_ppo/results/eval/eval-v1/<controller> `
+    --out residual_ppo/results/eval/eval-v1/<controller>/report_vs_pid
+# bit-for-bit comparison of two runs on their shared flights
+python residual_ppo\evaluation\run_protocol.py compare --reference <run dir> --candidate <run dir> --name <name> --purpose "<text>"
+```
+
+The canonical PID run is `results/eval/eval-v1/pid/` (its `realizations.json` is the cross-controller reference).
+
+**Learned controllers** (`evaluation/controllers.py`; rules in E3b of the frozen protocol):
+
+```powershell
+& "<Isaac Sim>\python.bat" residual_ppo\evaluation\run_protocol.py fly --controller pid_sac `
+    --model residual_ppo/models/sac_team/flight1/final_model.zip --seeds 300000-300029 --out residual_ppo/results/eval/eval-v1/pid_sac
+& "<Isaac Sim>\python.bat" residual_ppo\evaluation\run_protocol.py fly --controller pid_ppo `
+    --model <run folder>\final_model.zip --seeds 300000-300029 --out residual_ppo/results/eval/eval-v1/pid_ppo
+```
+
+- The model is loaded **before** SimulationApp. A run is refused (before flying) if the contract check fails or the
+  model's spaces differ from the env's, and stops at the first reset whose realization differs from the PID reference
+  (`--reference-realizations`, default the canonical PID run; validation-seed runs pass a PID run on those seeds).
+- `pid_sac`: `path_sac_config.incompatibility(model, check_training=True)` must be None (needs the team's
+  `flight_contract.json` in the model's run folder).
+- `pid_ppo`: **`ppo_contract.json` must sit next to the model file** with a `"policy"` group equal to
+  `path_sac_config.policy_contract()`. **M4 note: PPO training must write `ppo_contract.json` next to every model it
+  saves (final model and every checkpoint folder)**, or the evaluation refuses the model.
+- **A run counts as successful only if its log contains `RESULT: DONE` and its output files exist — never by exit
+  code.** Isaac runs exit with code 0 even when they raise (Inference: `SimulationApp.close()` ends the process with
+  0 before the exception propagates). A failed or refused run logs `RESULT: FAIL` and writes no results files.
+
+**M4 to-dos (from M2.5):**
+- The PPO training script writes `ppo_contract.json` next to every model it saves (final and checkpoints), and an
+  explicit `status.json` (`running` / `done` / `failed` + last step), because exit codes cannot be trusted.
+- Before validating checkpoints (E6), fly PID once on the validation seeds 400000–400009 (all scenarios and profiles)
+  as the validation reference; validation runs pass it as `--reference-realizations`.
+
+**Reproducing earlier M2 steps.** M2.2 (`evaluation/zero_residual_check.py`) and the M2.3/M2.4 results were produced
+under the earlier protocol hash `18658b9c…` (before the D4 profiles were added). **To reproduce M2.2, check out commit
+`714f64f`**; on the current code its runner refuses (hash mismatch). M2.4b showed the 720 flights of the four original
+profiles are bit-identical under both hashes.
 
 ## Environment
 
@@ -78,7 +144,10 @@ It writes `results/m1_env_config_snapshot.json` and `results/m1_env_smoke_summar
   baseline. Every results file records the Isaac, SB3, gymnasium and torch versions.
 - **Check before M3:** load and evaluate the team's `final_model.zip` under SB3 2.7.0. If that fails or warns, make
   one planned change (remove the extra torch, upgrade to SB3 2.9.0 and gymnasium 1.4.0, with `pip freeze` before
-  and after) and re-run the M1 checks and tests.
+  and after) and re-run the M1 checks and tests. **Load check done (2026-11-13):** `SAC.load(..., device="cpu")` under
+  SB3 2.7.0 succeeds with 0 warnings and predicts deterministically; the full evaluation is M7. The checkpoint comes
+  from Hugging Face `pcldsc/Iris_drone_residual_correction_SAC` (provenance in `models/sac_team/SOURCE.json`; binaries
+  gitignored).
 
 ## Milestone 1 results (shared environment integration)
 
@@ -89,8 +158,30 @@ It writes `results/m1_env_config_snapshot.json` and `results/m1_env_smoke_summar
 - Zero residual (PID only): no failure and no motor saturation over 30 decisions; curriculum stage mapping correct;
   seeded resets are deterministic.
 
+## Milestone 2 results (PID-only baseline + evaluation protocol v1)
+
+- **M2.1** headless speed: about 49 env decisions/s; eval ≈ 0.6 h per controller.
+- **M2.2** zero residual = PID: bit-exact (noise floor 0; 72,000 physics steps compared, max difference 0).
+- **M2.3** pilot (team's 10 seeds): reproduces the team README §2 PID-only rows (RMSE within 0.08%, failure counts
+  exact).
+- **M2.4** PID on 30 seeds; pilot flights and a fresh-process re-run bit-identical. **H1 rejected:** about 87% of PID's
+  training_range MSE is due to wind, not reference lag (wind_share_MSE 0.868, 95% CI [0.808, 0.906]).
+- **M2.4b** D4 profiles added; 1,080-flight PID baseline (protocol `d3f677dc…`):
+
+  | profile | status | RMSE [m] | failed / 180 | median decisions |
+  |---|---|---|---|---|
+  | still_air | reported | 0.183 | 0 | 154 |
+  | training_range | primary | 0.483 | 0 | 154 |
+  | unseen_gusts | primary | 0.484 | 0 | 154 |
+  | outside_range | primary | 1.641 | 110 | 62 |
+  | strong_range | secondary | 1.651 (flown portion only) | 179 | 23 |
+  | beyond_strong | secondary | 1.604 (flown portion only) | 180 | 18 |
+
+- **M2.5** PPO and SAC controller adapters (contract + space checks, realization guard, loaded before SimulationApp;
+  smoke-tested on a validation seed with the team SAC checkpoint and an untrained PPO), then the protocol frozen with
+  the reporting rules (exact McNemar paired failure test, exact binomial failure CIs, RMSE never interpreted alone when
+  there are failures); PID baseline re-flown with the final code (bit-identical); PID-vs-PID dry run of the report.
+
 ## Status
 
-Milestone 1 complete. **M2 (PID-only baseline + evaluation protocol v1)** in progress: M2.1 (headless speed) done,
-about 49 env decisions/s. Next: M2.2 (zero residual = PID). No PPO training code yet.
-Step plans live in [`docs/`](docs/).
+Milestones 1 and 2 complete. **Next: M3** (PPO training setup and smoke run). Step plans live in [`docs/`](docs/).

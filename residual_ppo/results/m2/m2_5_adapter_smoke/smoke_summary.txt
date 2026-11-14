@@ -1,0 +1,8 @@
+M2.5 (a) adapter smoke test: one cell (turns / training_range / validation seed 400000) per controller. Reported: flew, actions finite, realizations matched. No tracking metrics (raw fly outputs are gitignored under runs/).
+
+pid: flew True (134 decisions); actions finite & shape (4,): True; realizations matched: n/a (this PID run IS the reference)
+pid_sac: flew True (134 decisions); actions finite & shape (4,): True; realizations matched: True; model sha256 2d9e5cd0df1a..., saved SB3 2.9.0, runtime SB3 2.7.0, num_timesteps 1500000, contract sha256 8b9f628329f1..., device cpu, spaces == env: True
+pid_ppo: flew True (134 decisions); actions finite & shape (4,): True; realizations matched: True; model sha256 a00b4addf0ea..., saved SB3 2.7.0, runtime SB3 2.7.0, num_timesteps 0, contract sha256 ab3901c72a36..., device cpu, spaces == env: True
+
+negative: canonical reference has no seed 400000 -> refused at first reset: True; results written: False
+pid reference realizations sha256 (LF): deaa6e71b1ba...

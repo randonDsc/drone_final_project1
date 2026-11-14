@@ -1,5 +1,6 @@
 [PROTO] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
 [PROTO] import paths: all 18 shared modules resolve inside residual_ppo
+[PROTO] controller pid loaded before SimulationApp (model: none)
 [PROTO] controller pid; seeds 300000..300029 (30); profiles ('still_air', 'training_range', 'unseen_gusts', 'outside_range', 'strong_range', 'beyond_strong'); total_mass_kg 1.618614; HESAI 0 kg; packages {'numpy': '2.3.1', 'gymnasium': '1.2.3', 'stable_baselines3': '2.7.0', 'torch': '2.14.1+cpu'}; isaac 6.2.0-rc.14+release.52805.02189a84.gl
 [PROTO] CHECK 0 PASS: ('turns', 'training_range', 300000) diagnostics off vs on; metric differences none; trace bitwise equal {'positions': True, 'errors': True, 'final_state': True}
 [PROTO] finished hover / still_air (30 flights)
@@ -38,6 +39,7 @@
 [PROTO] finished figure_eight / outside_range (30 flights)
 [PROTO] finished figure_eight / strong_range (30 flights)
 [PROTO] finished figure_eight / beyond_strong (30 flights)
-[PROTO] 1080 flights in 38.2 min
+[PROTO] action check: {'decisions': 109631, 'nonfinite_or_bad_shape': 0, 'all_finite_shape_4': True}; realization guard: None
+[PROTO] 1080 flights in 38.1 min
 [PROTO] written: residual_ppo/results/eval/eval-v1/pid/results.json, flights.csv, summary.csv, summary.txt, realizations.json
 [PROTO] RESULT: DONE (flights only; no consistency check or H1 statistic computed here)

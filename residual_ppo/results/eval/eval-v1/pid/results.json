@@ -1,6 +1,6 @@
 {
   "meta": {
-    "created_at": "2026-11-14T03:55:29+00:00",
+    "created_at": "2026-11-14T06:27:13+00:00",
     "controller": {
       "name": "pid",
       "model": null,
@@ -32,19 +32,25 @@
     ],
     "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
     "git": {
-      "head": "3352061e5849a2852bfb66c9154c9d4731c86d41",
+      "head": "e0c328d21d278aaee289c57b3d011fa64b6237ef",
       "branch": "claire/drone-simulation",
       "residual_ppo_status": [
-        "M residual_ppo/docs/milestone2_plan.md",
-        " M residual_ppo/evaluation/eval_protocol_v1.py",
-        " M residual_ppo/evaluation/run_common.py",
+        "M residual_ppo/.gitignore",
+        " M residual_ppo/README.md",
+        " M residual_ppo/docs/milestone2_plan.md",
+        " M residual_ppo/evaluation/controllers.py",
+        " M residual_ppo/evaluation/protocol_stats.py",
         " M residual_ppo/evaluation/run_protocol.py",
-        "R  residual_ppo/results/eval/eval-v1/pid/flights.csv -> residual_ppo/results/m2/m2_4_pid_4profiles/flights.csv",
-        "R  residual_ppo/results/eval/eval-v1/pid/realizations.json -> residual_ppo/results/m2/m2_4_pid_4profiles/realizations.json",
-        "R  residual_ppo/results/eval/eval-v1/pid/results.json -> residual_ppo/results/m2/m2_4_pid_4profiles/results.json",
-        "R  residual_ppo/results/eval/eval-v1/pid/summary.csv -> residual_ppo/results/m2/m2_4_pid_4profiles/summary.csv",
-        "R  residual_ppo/results/eval/eval-v1/pid/summary.txt -> residual_ppo/results/m2/m2_4_pid_4profiles/summary.txt",
-        " M residual_ppo/tests/test_protocol_stats.py"
+        "R  residual_ppo/results/eval/eval-v1/pid/flights.csv -> residual_ppo/results/m2/m2_4b_pid/flights.csv",
+        "R  residual_ppo/results/eval/eval-v1/pid/realizations.json -> residual_ppo/results/m2/m2_4b_pid/realizations.json",
+        "R  residual_ppo/results/eval/eval-v1/pid/results.json -> residual_ppo/results/m2/m2_4b_pid/results.json",
+        "R  residual_ppo/results/eval/eval-v1/pid/summary.csv -> residual_ppo/results/m2/m2_4b_pid/summary.csv",
+        "R  residual_ppo/results/eval/eval-v1/pid/summary.txt -> residual_ppo/results/m2/m2_4b_pid/summary.txt",
+        " M residual_ppo/tests/test_protocol_stats.py",
+        "?? residual_ppo/docs/eval_protocol_v1.md",
+        "?? residual_ppo/results/m2/m2_5_report_dryrun.json",
+        "?? residual_ppo/results/m2/m2_5_report_dryrun.txt",
+        "?? residual_ppo/tools/make_untrained_ppo.py"
       ]
     },
     "protocol": {
@@ -277,21 +283,28 @@
       "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
       "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
     },
-    "startup_s": 8.845116200012853,
+    "startup_s": 8.324796900007641,
     "diagnostics": {
       "pid_part": "PID command = final - correction (exact: correction is 0)",
       "min_reference_speed_for_lag": 0.05
     },
     "code_blobs": {
-      "residual_ppo/evaluation/controllers.py": "9fa925b439a788a1ee87bb25be0cabcda1ca948a",
+      "residual_ppo/evaluation/controllers.py": "8dae58a9069813e0ad629a4cac9cc0e0b7e18150",
       "residual_ppo/evaluation/eval_protocol_v1.py": "5b490ddde319d347e56ba399e974fc30b2c0d3bc",
-      "residual_ppo/evaluation/protocol_stats.py": "0539d7799cad781b0c8043b53ce895c82e86559b",
+      "residual_ppo/evaluation/protocol_stats.py": "328fcbdc8ec328f1756f4eaf83455b8f49b6ea3a",
       "residual_ppo/evaluation/run_common.py": "1fb19f777db67e5aec040ca660a521e891d6d7b3",
-      "residual_ppo/evaluation/run_protocol.py": "68fe336105ff57645467146c49c029e5168895b0",
+      "residual_ppo/evaluation/run_protocol.py": "ce3a0da5c89a32cff3621ae6d53626bb8c3edce3",
       "residual_ppo/evaluation/zero_residual_check.py": "48677a7d71a89ac242fa1bc338aafef77f0be358"
     },
     "realizations_note": "CANONICAL: M2.4 30-seed PID run (plan, M2.3 design (d)); the cross-controller reference, valid once the M2.4 checks pass (results/m2/m2_4_*)",
-    "wall_clock_s": 2293.819469000009
+    "reference_realizations": null,
+    "wall_clock_s": 2283.003843500017,
+    "action_check": {
+      "decisions": 109631,
+      "nonfinite_or_bad_shape": 0,
+      "all_finite_shape_4": true
+    },
+    "realization_guard": null
   },
   "check0": {
     "cell": [

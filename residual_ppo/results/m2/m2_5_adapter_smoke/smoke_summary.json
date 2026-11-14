@@ -1,0 +1,158 @@
+{
+  "created_at": "2026-11-14T06:27:51+00:00",
+  "purpose": "M2.5 (a) adapter smoke test: one cell (turns / training_range / validation seed 400000) per controller. Reported: flew, actions finite, realizations matched. No tracking metrics (raw fly outputs are gitignored under runs/).",
+  "cell": [
+    "turns",
+    "training_range",
+    400000
+  ],
+  "controllers": {
+    "pid": {
+      "flew": true,
+      "decisions": 134,
+      "actions_finite_shape_4": true,
+      "action_check": {
+        "decisions": 134,
+        "nonfinite_or_bad_shape": 0,
+        "all_finite_shape_4": true
+      },
+      "realizations_matched": "n/a (this PID run IS the reference)",
+      "reference_realizations": null,
+      "controller_record": {
+        "name": "pid",
+        "model": null,
+        "contract": null,
+        "device": null,
+        "action": "np.zeros(4, float32) at every decision (team PID-only)",
+        "equivalence": "M2.2: bit-exact equal to a pure PID loop (results/m2/zero_residual.json)"
+      },
+      "protocol_file_sha256": "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e",
+      "code_blobs": {
+        "residual_ppo/evaluation/controllers.py": "8dae58a9069813e0ad629a4cac9cc0e0b7e18150",
+        "residual_ppo/evaluation/eval_protocol_v1.py": "5b490ddde319d347e56ba399e974fc30b2c0d3bc",
+        "residual_ppo/evaluation/protocol_stats.py": "328fcbdc8ec328f1756f4eaf83455b8f49b6ea3a",
+        "residual_ppo/evaluation/run_common.py": "1fb19f777db67e5aec040ca660a521e891d6d7b3",
+        "residual_ppo/evaluation/run_protocol.py": "ce3a0da5c89a32cff3621ae6d53626bb8c3edce3",
+        "residual_ppo/evaluation/zero_residual_check.py": "48677a7d71a89ac242fa1bc338aafef77f0be358"
+      },
+      "packages": {
+        "numpy": "2.3.1",
+        "gymnasium": "1.2.3",
+        "stable_baselines3": "2.7.0",
+        "torch": "2.14.1+cpu"
+      },
+      "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+      "device": "n/a (pid: no network)",
+      "total_mass_kg": 1.6186144351959229,
+      "loaded_before_simulationapp": true
+    },
+    "pid_sac": {
+      "flew": true,
+      "decisions": 134,
+      "actions_finite_shape_4": true,
+      "action_check": {
+        "decisions": 134,
+        "nonfinite_or_bad_shape": 0,
+        "all_finite_shape_4": true
+      },
+      "realizations_matched": true,
+      "reference_realizations": {
+        "path": "residual_ppo/results/m2/m2_5_adapter_smoke/runs/pid/realizations.json",
+        "sha256_lf": "deaa6e71b1ba375cbbc38da08edf7594e88db12c81ea692e2ab53bf60f81a17c",
+        "note": "NOT canonical (subset run); the canonical realizations.json is the M2.4 30-seed PID run (plan, M2.3 design (d))"
+      },
+      "controller_record": {
+        "name": "pid_sac",
+        "model": "residual_ppo/models/sac_team/flight1/final_model.zip",
+        "model_sha256": "2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d",
+        "saved_sb3_version": "2.9.0",
+        "num_timesteps": 1500000,
+        "runtime_sb3_version": "2.7.0",
+        "loaded_num_timesteps": 1500000,
+        "contract": "residual_ppo/models/sac_team/flight1/flight_contract.json",
+        "contract_sha256": "8b9f628329f182a64d45596912f186aef4337601c7898e865da84dd5f2dcf007",
+        "contract_rule": "path_sac_config.incompatibility(check_training=True) None",
+        "device": "cpu",
+        "deterministic": true,
+        "spaces_checked_against_env": true,
+        "action": "path_sac_policy.load_path_policy(model) (SAC.predict deterministic = actor mean)"
+      },
+      "protocol_file_sha256": "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e",
+      "code_blobs": {
+        "residual_ppo/evaluation/controllers.py": "8dae58a9069813e0ad629a4cac9cc0e0b7e18150",
+        "residual_ppo/evaluation/eval_protocol_v1.py": "5b490ddde319d347e56ba399e974fc30b2c0d3bc",
+        "residual_ppo/evaluation/protocol_stats.py": "328fcbdc8ec328f1756f4eaf83455b8f49b6ea3a",
+        "residual_ppo/evaluation/run_common.py": "1fb19f777db67e5aec040ca660a521e891d6d7b3",
+        "residual_ppo/evaluation/run_protocol.py": "ce3a0da5c89a32cff3621ae6d53626bb8c3edce3",
+        "residual_ppo/evaluation/zero_residual_check.py": "48677a7d71a89ac242fa1bc338aafef77f0be358"
+      },
+      "packages": {
+        "numpy": "2.3.1",
+        "gymnasium": "1.2.3",
+        "stable_baselines3": "2.7.0",
+        "torch": "2.14.1+cpu"
+      },
+      "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+      "device": "cpu",
+      "total_mass_kg": 1.6186144351959229,
+      "loaded_before_simulationapp": true
+    },
+    "pid_ppo": {
+      "flew": true,
+      "decisions": 134,
+      "actions_finite_shape_4": true,
+      "action_check": {
+        "decisions": 134,
+        "nonfinite_or_bad_shape": 0,
+        "all_finite_shape_4": true
+      },
+      "realizations_matched": true,
+      "reference_realizations": {
+        "path": "residual_ppo/results/m2/m2_5_adapter_smoke/runs/pid/realizations.json",
+        "sha256_lf": "deaa6e71b1ba375cbbc38da08edf7594e88db12c81ea692e2ab53bf60f81a17c",
+        "note": "NOT canonical (subset run); the canonical realizations.json is the M2.4 30-seed PID run (plan, M2.3 design (d))"
+      },
+      "controller_record": {
+        "name": "pid_ppo",
+        "model": "residual_ppo/scratch/m2_5_untrained_ppo/model.zip",
+        "model_sha256": "a00b4addf0ea9f0c33383e5f113be0c271de577dc25352b55d2c65386c3783c4",
+        "saved_sb3_version": "2.7.0",
+        "num_timesteps": 0,
+        "runtime_sb3_version": "2.7.0",
+        "loaded_num_timesteps": 0,
+        "contract": "residual_ppo/scratch/m2_5_untrained_ppo/ppo_contract.json",
+        "contract_sha256": "ab3901c72a36b3a258171415fb6e003bdaa60ffd748f9275bcdc215a54c018ec",
+        "contract_rule": "ppo_contract.json 'policy' == policy_contract()",
+        "device": "cpu",
+        "deterministic": true,
+        "spaces_checked_against_env": true,
+        "action": "PPO.predict(obs, deterministic=True)[0]"
+      },
+      "protocol_file_sha256": "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e",
+      "code_blobs": {
+        "residual_ppo/evaluation/controllers.py": "8dae58a9069813e0ad629a4cac9cc0e0b7e18150",
+        "residual_ppo/evaluation/eval_protocol_v1.py": "5b490ddde319d347e56ba399e974fc30b2c0d3bc",
+        "residual_ppo/evaluation/protocol_stats.py": "328fcbdc8ec328f1756f4eaf83455b8f49b6ea3a",
+        "residual_ppo/evaluation/run_common.py": "1fb19f777db67e5aec040ca660a521e891d6d7b3",
+        "residual_ppo/evaluation/run_protocol.py": "ce3a0da5c89a32cff3621ae6d53626bb8c3edce3",
+        "residual_ppo/evaluation/zero_residual_check.py": "48677a7d71a89ac242fa1bc338aafef77f0be358"
+      },
+      "packages": {
+        "numpy": "2.3.1",
+        "gymnasium": "1.2.3",
+        "stable_baselines3": "2.7.0",
+        "torch": "2.14.1+cpu"
+      },
+      "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+      "device": "cpu",
+      "total_mass_kg": 1.6186144351959229,
+      "loaded_before_simulationapp": true
+    }
+  },
+  "negative_test": {
+    "what": "pid_sac on the same cell with the DEFAULT (canonical eval-seed) reference realizations, which have no entry for validation seed 400000",
+    "refused_at_first_reset": true,
+    "results_written": false,
+    "note": "Process exit code was 0 although the run raised (inference: SimulationApp.close() ends the process first); failure is signalled by 'RESULT: FAIL' and the absence of results files."
+  }
+}

@@ -9,6 +9,9 @@ Modes:
              (pilot on 10 seeds; the reported verdict on the M2.4 30 seeds).
   baseline-table  No Isaac. M2.4b: matched-realization check across all profiles of a run + per-profile table
              (endpoint status, failures and reasons per scenario, wind speeds, cap binding).
+  report     No Isaac. E5 report of a controller run vs the canonical PID run (M2.5 rules): primary endpoint (paired
+             RMSE difference, seed bootstrap), paired failure comparison (exact McNemar) + exact failure CIs for every
+             profile, median decisions; refuses runs whose realizations differ from the canonical PID ones.
   compare    No Isaac. M2.4: every flight of a reference run (pilot, or a 1-cell re-run) must equal the same
              (scenario, profile, seed) flight of a candidate run bit-for-bit (all row fields + realizations entries).
 
@@ -38,6 +41,7 @@ sys.path.insert(1, str(RESIDUAL_DIR / "evaluation"))
 import run_common as rc  # noqa: E402
 
 CHECK0_CELL = ("turns", "training_range", 300_000)
+CANONICAL_PID_REALIZATIONS = "residual_ppo/results/eval/eval-v1/pid/realizations.json"
 DIAG_MIN_REF_SPEED = 0.05
 PID_PART_LABEL = {
     "pid": "PID command = final - correction (exact: correction is 0)",
@@ -68,6 +72,10 @@ def code_blobs():
     out = subprocess.run(["git", "-C", str(REPO_DIR), "hash-object", *map(str, files)], capture_output=True,
                          text=True).stdout.split()
     return dict(zip((repo_rel(f) for f in files), out))
+
+
+def meta_device(controller):
+    return str(getattr(getattr(controller, "model", None), "device", "unknown"))
 
 
 def parse_seeds(text):
@@ -167,7 +175,7 @@ class Diagnostics:
 
 # ---------------------------------------------------------------- flight (mirrors team fly())
 
-def fly(env, protocol, controller, seed, scenario, profile, diag=None):
+def fly(env, protocol, controller, seed, scenario, profile, diag=None, guard=None, action_check=None):
     route_type = protocol.SCENARIOS[scenario]
     observation, info = env.reset(seed=seed, options={
         "route_stage": protocol.ROUTE_STAGE,
@@ -176,11 +184,20 @@ def fly(env, protocol, controller, seed, scenario, profile, diag=None):
     })
     initial_obs_sha256 = hashlib.sha256(np.ascontiguousarray(observation).tobytes()).hexdigest()
     max_decisions = int(env.max_decisions)
+    if guard is not None:  # non-PID: refuse at the first reset whose realization differs from the PID reference
+        guard(scenario, profile, seed, {
+            "wind_seed": info["wind_seed"], "wind_speed": float(np.linalg.norm(info["wind_mean"])),
+            "route_seconds": info["route_seconds"], "initial_obs_sha256": initial_obs_sha256,
+            "max_decisions": max_decisions})
     if diag is not None:
         diag.start()
     reason = None
     while True:
         action = controller.act(observation)
+        if action_check is not None:
+            action_check["decisions"] += 1
+            if np.shape(action) != (4,) or not np.all(np.isfinite(action)):
+                action_check["nonfinite_or_bad_shape"] += 1
         observation, _, terminated, truncated, step_info = env.step(action)
         reason = step_info["failure_reason"]
         if terminated or truncated:
@@ -236,10 +253,51 @@ def check0(env, protocol, controller, make_diag):
     return result, diag
 
 
+class RealizationMismatch(RuntimeError):
+    pass
+
+
+def make_realization_guard(reference):
+    """Every reset must reproduce the reference realization (key fields of the PID realizations.json) exactly."""
+    import protocol_stats as ps
+
+    key_fields = reference["key"]
+    checked = {"resets": 0}
+
+    def guard(scenario, profile, seed, realized):
+        key = f"{scenario}|{profile}|{seed}"
+        if key not in reference["flights"]:
+            raise RealizationMismatch(f"{key}: no reference realization (cannot verify); refusing")
+        expected = reference["flights"][key]
+        got = json.loads(json.dumps({k: realized[k] for k in key_fields}, default=str))
+        diff = ps.row_differences(expected, got)
+        if diff:
+            raise RealizationMismatch(f"{key}: realization differs from the PID reference: {diff}")
+        checked["resets"] += 1
+
+    guard.checked = checked
+    return guard
+
+
 def mode_fly(args):
     check_line = rc.preflight(say)
     import torch  # before SimulationApp (two torch installs; CLAUDE.md)
     import torch._dynamo  # noqa: F401
+
+    # The controller (and its SB3 model) is loaded BEFORE SimulationApp: M2.1 showed torch._dynamo / the deprecated
+    # omni.isaac.ml_archive torch get mixed in if SB3/torch objects are first built after the app starts.
+    import controllers
+
+    controller = controllers.make_controller(args.controller, model=args.model)
+    say(f"controller {controller.name} loaded before SimulationApp (model: {args.model or 'none'})")
+    reference = ref_path = None
+    if controller.name != "pid":
+        ref_path = Path(args.reference_realizations)
+        ref_path = ref_path if ref_path.is_absolute() else (REPO_DIR / ref_path)
+        reference = json.loads(ref_path.read_text(encoding="utf-8"))
+        if ref_path.resolve() == (REPO_DIR / CANONICAL_PID_REALIZATIONS).resolve() and \
+                not reference["note"].startswith("CANONICAL"):
+            raise SystemExit("canonical PID realizations.json is not marked CANONICAL")
 
     t0 = time.perf_counter()
     from isaacsim import SimulationApp
@@ -250,7 +308,6 @@ def mode_fly(args):
         import gymnasium
         import stable_baselines3
 
-        import controllers
         import eval_protocol_v1 as protocol
         import path_sac_env
         import protocol_stats
@@ -267,7 +324,6 @@ def mode_fly(args):
         scenarios = tuple(args.scenarios.split(",")) if args.scenarios else tuple(protocol.SCENARIOS)
         if not set(scenarios) <= set(protocol.SCENARIOS) or not set(profiles) <= set(protocol.PROFILES):
             raise SystemExit(f"unknown scenario/profile: {scenarios} {profiles}")
-        controller = controllers.make_controller(args.controller)
         canonical = (controller.name == "pid" and seeds == tuple(protocol.EVAL_SEEDS)
                      and profiles == tuple(protocol.PROFILES) and scenarios == tuple(protocol.SCENARIOS))
 
@@ -275,6 +331,9 @@ def mode_fly(args):
         outside = rc.loaded_outside_residual()
         if outside:
             raise SystemExit(f"loaded shared modules outside residual_ppo: {outside}")
+        controller.bind_env(env)  # model spaces must equal the env's (no-op for pid)
+        guard = make_realization_guard(reference) if reference is not None else None
+        action_check = {"decisions": 0, "nonfinite_or_bad_shape": 0}
         startup_s = time.perf_counter() - t0
         meta = {
             "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -285,7 +344,8 @@ def mode_fly(args):
             "python": platform.python_version(), "isaac_sim": rc.isaac_version(),
             "packages": {m.__name__: m.__version__ for m in (np, gymnasium, stable_baselines3, torch)},
             "package_files": {m.__name__: rc.redact_isaac(m.__file__) for m in (np, torch)},
-            "torch_cuda_available": torch.cuda.is_available(), "device": "n/a (pid: no network)",
+            "torch_cuda_available": torch.cuda.is_available(),
+            "device": "n/a (pid: no network)" if controller.name == "pid" else meta_device(controller),
             "total_mass_kg": float(env.sim.total_mass), "hesai": rc.hesai_report(env.sim),
             "decimation": env.core.decimation, "physics_dt": env.sim.dt,
             "hardware": rc.hardware(), "startup_s": startup_s,
@@ -295,7 +355,11 @@ def mode_fly(args):
             "realizations_note": ("CANONICAL: M2.4 30-seed PID run (plan, M2.3 design (d)); the cross-controller "
                                   "reference, valid once the M2.4 checks pass (results/m2/m2_4_*)") if canonical else
                                  ("NOT canonical (subset run); the canonical realizations.json is the M2.4 "
-                                  "30-seed PID run (plan, M2.3 design (d))"),
+                                  "30-seed PID run (plan, M2.3 design (d))") if controller.name == "pid" else
+                                 ("controller run: every reset was checked against the PID reference realizations "
+                                  "(reference_realizations); never a reference itself"),
+            "reference_realizations": None if ref_path is None else {
+                "path": repo_rel(ref_path), "sha256_lf": rc.file_sha256(ref_path), "note": reference["note"]},
         }
         say(f"controller {controller.name}; seeds {seeds[0]}..{seeds[-1]} ({len(seeds)}); profiles {profiles}; "
             f"total_mass_kg {meta['total_mass_kg']:.6f}; HESAI {meta['hesai']['hesai_mass_contribution_kg']} kg; "
@@ -317,10 +381,17 @@ def mode_fly(args):
         for scenario in scenarios:
             for profile in profiles:
                 for seed in seeds:
-                    row, _ = fly(env, protocol, controller, seed, scenario, profile, diag=diag)
+                    row, _ = fly(env, protocol, controller, seed, scenario, profile, diag=diag, guard=guard,
+                                 action_check=action_check)
                     flights.append(row)
                 say(f"finished {scenario} / {profile} ({len(seeds)} flights)")
         meta["wall_clock_s"] = time.perf_counter() - t1
+        meta["action_check"] = {**action_check, "all_finite_shape_4": action_check["nonfinite_or_bad_shape"] == 0}
+        meta["realization_guard"] = (None if guard is None else
+                                     {"resets_checked": guard.checked["resets"], "all_matched": True,
+                                      "fields": reference["key"]})
+        meta["controller"] = controller.record()  # after bind_env (records spaces_checked)
+        say(f"action check: {meta['action_check']}; realization guard: {meta['realization_guard']}")
         say(f"{len(flights)} flights in {meta['wall_clock_s']/60:.1f} min")
 
         out = Path(args.out)
@@ -583,6 +654,121 @@ def mode_baseline_table(args):
         raise SystemExit("consistency check failed")
 
 
+def _ci(lo, hi, nd=3):
+    return f"[{_fmt(lo, nd)}, {_fmt(hi, nd)}]"
+
+
+def mode_report(args):
+    """E5 report (M2.5 rules) for a controller run vs the canonical PID run. No Isaac."""
+    import eval_protocol_v1 as protocol
+    import protocol_stats as ps
+
+    def load(d):
+        d = Path(d)
+        d = d if d.is_absolute() else (REPO_DIR / d)
+        return (d, json.loads((d / "results.json").read_text(encoding="utf-8")),
+                json.loads((d / "realizations.json").read_text(encoding="utf-8")))
+
+    cdir, cres, creal = load(args.controller_run)
+    pdir, pres, preal = load(args.pid_run)
+    problems = []
+    hashes = {cres["meta"]["protocol"]["protocol_file_sha256"], pres["meta"]["protocol"]["protocol_file_sha256"]}
+    if hashes != {rc.EXPECTED_PROTOCOL_SHA}:
+        problems.append(f"protocol hash {sorted(hashes)} != frozen {rc.EXPECTED_PROTOCOL_SHA}")
+    if not preal["note"].startswith("CANONICAL") or pres["meta"]["controller"]["name"] != "pid":
+        problems.append("PID run is not the canonical PID run")
+    missing = [k for k in preal["flights"] if k not in creal["flights"]]
+    differ = [k for k, v in preal["flights"].items() if k in creal["flights"]
+              and ps.row_differences(v, creal["flights"][k])]
+    if missing or differ or preal["key"] != creal["key"]:
+        problems.append(f"realizations differ from canonical PID: missing {len(missing)}, differing {len(differ)}")
+    scenarios, profiles = tuple(protocol.SCENARIOS), tuple(protocol.PROFILES)
+    seeds = tuple(protocol.EVAL_SEEDS)
+    for name, res in (("controller", cres), ("pid", pres)):
+        cons = ps.consistency_check(res["flights"], scenarios, profiles, seeds, protocol.STILL_AIR_NAME)
+        if not cons["pass"]:
+            problems.append(f"{name} run consistency check failed: {cons['problems'][:3]}")
+    if problems:
+        raise SystemExit("report refused: " + "; ".join(problems))
+
+    ctrl_name = cres["meta"]["controller"]["name"]
+    ctrl = ctrl_name if ctrl_name != "pid" else "pid[as controller]"  # label used in the report lines
+    rows = ps.controller_report(cres["flights"], pres["flights"], profiles, scenarios, seeds,
+                                protocol.PRIMARY_PROFILES, protocol.SECONDARY_PROFILES, protocol.REPORTED_NOT_PRIMARY)
+    lines_ = []
+
+    def emit(msg=""):
+        print(msg)
+        lines_.append(msg)
+
+    emit(f"E5 report: {ctrl_name} vs pid (protocol eval-v1 {rc.EXPECTED_PROTOCOL_SHA[:8]}; {len(seeds)} seeds x "
+         f"{len(scenarios)} scenarios = {len(seeds) * len(scenarios)} paired flights per profile)")
+    if args.dry_run_note:
+        emit(f"NOTE: {args.dry_run_note}")
+    emit("Realizations identical to the canonical PID run; consistency checks PASS for both runs.")
+    order = ([r for r in rows if r["status"] == "primary"] + [r for r in rows if r["status"] == "reported, not primary"]
+             + [r for r in rows if r["status"] == "secondary"])
+    for r in order:
+        c, p_, fc, d = r["controller"], r["pid"], r["paired_failure_comparison"], r["paired_rmse_difference"]
+        m = fc["mcnemar"]
+
+        def fail_line():
+            return (f"  failures: {ctrl} {c['failures']['failed']}/{r['flights']} "
+                    f"rate CI {_ci(*c['failures']['ci95_rate'])}; pid {p_['failures']['failed']}/{r['flights']} "
+                    f"rate CI {_ci(*p_['failures']['ci95_rate'])}")
+
+        def mcn_line():
+            return (f"  paired failures ({fc['pairs']} pairs): both {fc['both_failed']}, controller only "
+                    f"{fc['controller_only_failed']}, PID only {fc['pid_only_failed']}, neither {fc['neither_failed']};"
+                    f" McNemar exact p = {m['p_value']:.4g}")
+
+        def dec_line():
+            cd, pd_ = c["decisions"], p_["decisions"]
+            return (f"  decisions flown, median (IQR): {ctrl} {_fmt(cd['median'], 0)} ({_fmt(cd['q25'], 0)}-"
+                    f"{_fmt(cd['q75'], 0)}); pid {_fmt(pd_['median'], 0)} ({_fmt(pd_['q25'], 0)}-{_fmt(pd_['q75'], 0)})")
+
+        def rmse_line():
+            flag = "  [interpret only with the paired failure comparison]" if r["rmse_requires_failure_comparison"] \
+                else ""
+            return (f"  RMSE ({r['rmse_label']}): {ctrl} {c['position_rmse_mean_over_scenarios']:.3f} m, pid "
+                    f"{p_['position_rmse_mean_over_scenarios']:.3f} m; paired diff {_fmt(d['value'], 4)} m "
+                    f"{_ci(*d['ci95'], 4)}{flag}")
+
+        emit("")
+        emit(f"{r['profile']} [{r['status'].upper()}]")
+        if r["status"] == "secondary":
+            for f_ in (fail_line, mcn_line, dec_line, rmse_line):  # rule 3 order
+                emit(f_())
+        else:
+            if r["status"] == "primary":
+                pe = r["primary_endpoint"]
+                emit(f"  PRIMARY ENDPOINT: paired RMSE difference {ctrl} - pid = {_fmt(pe['value'], 4)} m "
+                     f"{_ci(*pe['ci95'], 4)} -> improves on PID: {'YES' if pe['improves_on_pid'] else 'no'}"
+                     + ("  [interpret only with the paired failure comparison below]"
+                        if pe["interpret_only_with"] else ""))
+            emit(rmse_line())
+            emit(fail_line())
+            emit(mcn_line())
+            emit(dec_line())
+    result = {
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "purpose": f"E5 report (M2.5 rules): {ctrl_name} vs canonical pid",
+        "note": args.dry_run_note,
+        "controller_run": repo_rel(cdir / "results.json"), "controller_run_sha256_lf": rc.file_sha256(cdir / "results.json"),
+        "pid_run": repo_rel(pdir / "results.json"), "pid_run_sha256_lf": rc.file_sha256(pdir / "results.json"),
+        "protocol_file_sha256": rc.EXPECTED_PROTOCOL_SHA, "code_blobs": code_blobs(),
+        "bootstrap": {"resamples": ps.BOOT_RESAMPLES, "rng_seed": ps.BOOT_SEED, "ci": "95% percentile", "unit": "seed"},
+        "failure_ci": "Clopper-Pearson exact 95%", "paired_failure_test": "McNemar exact (binomial), two-sided",
+        "profiles": rows,
+    }
+    out = Path(args.out)
+    out = out if out.is_absolute() else (REPO_DIR / out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.with_suffix(".json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+    out.with_suffix(".txt").write_text("\n".join(lines_) + "\n", encoding="utf-8")
+    print(f"written: {repo_rel(out.with_suffix('.json'))}, .txt")
+
+
 def mode_compare(args):
     """M2.4: reference flights (and their realizations entries) must equal the candidate's bit-for-bit. No Isaac."""
     import protocol_stats as ps
@@ -641,6 +827,9 @@ def main():
     sub = parser.add_subparsers(dest="mode", required=True)
     f = sub.add_parser("fly")
     f.add_argument("--controller", default="pid")
+    f.add_argument("--model", default=None, help="model .zip for pid_ppo / pid_sac")
+    f.add_argument("--reference-realizations", default=CANONICAL_PID_REALIZATIONS,
+                   help="PID realizations.json every non-PID reset must match (default: the canonical PID run)")
     f.add_argument("--seeds", required=True, help="e.g. 300000-300009 or 300000,300001")
     f.add_argument("--profiles", default=None, help="comma list; default: all protocol profiles")
     f.add_argument("--scenarios", default=None, help="comma list; default: all protocol scenarios")
@@ -654,6 +843,11 @@ def main():
     b = sub.add_parser("baseline-table")
     b.add_argument("--run", required=True)
     b.add_argument("--name", required=True, help="output basename in results/m2/")
+    rp = sub.add_parser("report")
+    rp.add_argument("--controller-run", required=True)
+    rp.add_argument("--pid-run", default="residual_ppo/results/eval/eval-v1/pid")
+    rp.add_argument("--out", required=True, help="output path without extension (.json and .txt written)")
+    rp.add_argument("--dry-run-note", default=None)
     c = sub.add_parser("compare")
     c.add_argument("--reference", required=True, help="run dir whose flights must all appear in --candidate")
     c.add_argument("--candidate", required=True)
@@ -666,6 +860,8 @@ def main():
         mode_reproduce(args)
     elif args.mode == "compare":
         mode_compare(args)
+    elif args.mode == "report":
+        mode_report(args)
     elif args.mode == "baseline-table":
         mode_baseline_table(args)
     else:

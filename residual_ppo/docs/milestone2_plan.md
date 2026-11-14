@@ -440,9 +440,58 @@ limits: they are shared with SAC.
 Extract section E to `docs/eval_protocol_v1.md` (frozen). Checks `--check` 21/21, tests 23/23 in both interpreters.
 Commit with explicit paths (with approval). Update README and CLAUDE.md status → M3.
 
+**M2.5 result (2026-11-13, Confirmed).**
+- E5 reporting rules (1)–(3) added before any learned controller was evaluated; implemented in `protocol_stats.py`
+  (`binom_cdf`, `clopper_pearson`, `mcnemar_exact`, `failure_count`, `paired_failure_comparison`,
+  `decisions_median_iqr`, `controller_report`) and `run_protocol.py report`. Venv tests for exact values (binomial CDF
+  176/1024; McNemar (3, 7) p = 0.34375, (10, 0) p = 2/1024, capped at 1; Clopper–Pearson 5/10 = [0.187086, 0.812914],
+  0/10 upper = 1 − 0.025^0.1, tail probabilities = 0.025 at the bounds), the rules (RMSE flag, secondary endpoint order
+  and label) and PID-vs-itself = null.
+- Dry run (`results\m2\m2_5_report_dryrun.{json,txt}`): PID vs the canonical PID run; every paired RMSE difference 0
+  [0, 0], every McNemar p = 1, failure counts with exact CIs (outside_range 110/180, rate CI [0.536, 0.683];
+  strong_range 179/180 [0.969, 1.000]; beyond_strong 180/180 [0.980, 1.000]; 0/180 → [0, 0.020]); median decisions
+  (IQR) 154 (84–214) in still_air / training_range / unseen_gusts, 62 (39–95) outside_range, 23 (21–29) strong_range,
+  18 (17–19) beyond_strong. Negative test: a controller run with one realization entry altered (+1e-9 s) is refused.
+- Frozen: `docs\eval_protocol_v1.md` (section E verbatim + protocol hash `d3f677dc…` + blob IDs: eval_protocol_v1.py
+  5b490ddd, protocol_stats.py 328fcbdc, run_protocol.py cff95f85, run_common.py 1fb19f77, controllers.py 9fa925b4).
+- Checks 21/21 and tests **50/50** in both the venv (3.13.15, numpy 2.5.4) and Isaac `python.bat` (3.12.14, numpy
+  2.3.1); no test skipped. *(Superseded by M2.5 (a) below: the freeze was redone after adding the adapters.)*
+
+**M2.5 (a): controller adapters before freezing (Claire chose option (a), 2026-11-13).** `controllers.py` was in the
+frozen set while `pid_ppo` / `pid_sac` were stubs, so the adapters were implemented first (E3b):
+- `controllers.py`: `PidPpoController`, `PidSacController`, `check_ppo_contract`, `check_sac_contract`,
+  `check_spaces`, `saved_model_info` (zip read without unpickling), `ControllerRefused`. Contract checks run before any
+  SB3 load. `run_protocol.py fly`: `--model`, `--reference-realizations`; controller built before SimulationApp;
+  `bind_env` space check; realization guard; `meta.action_check`, `meta.realization_guard`.
+- Venv tests (56 in total): refusals (no model, missing file, pid with a model, missing/mismatched/extra-key/no-policy
+  PPO contract, SAC contract missing, SAC training group differing → `check_training` refuses; all before SB3 reads the
+  file), space mismatch (obs and action), realization guard (1-ulp wind_speed, hash, missing key), and positive loads
+  (tiny PPO and SAC on a spaces-only env act deterministically; SAC through the team loader).
+- Isaac smoke (`results\m2\m2_5_adapter_smoke\smoke_summary.{json,txt}`; raw runs gitignored), cell turns /
+  training_range / validation seed 400000: PID (reference), team SAC checkpoint (sha256 2d9e5cd0…, saved SB3 2.9.0,
+  loaded under 2.7.0, 1,500,000 timesteps, contract 8b9f6283…), untrained 256×256 PPO (`tools\make_untrained_ppo.py`,
+  model in gitignored `scratch\`): each **flew, actions finite, realizations matched**; spaces equal the env's; loaded
+  before SimulationApp without the torch._dynamo error. Negative: SAC against the canonical reference (no seed 400000)
+  was refused at the first reset and wrote nothing. The process exit code is 0 even for a refused/failed run
+  (Inference: SimulationApp.close() ends the process before the exception propagates); failures show as `RESULT: FAIL` and missing results files.
+  **Rule (Claire):** a run succeeds only if its log has `RESULT: DONE` and its outputs exist; never judged by exit code.
+  `run_protocol.py` is not changed for this.
+- **PID re-flown with the final code:** M2.4b run moved (`git mv`, unchanged) to `results\m2\m2_4b_pid\`; new run
+  `results\eval\eval-v1\pid\` (check 0 PASS, 1,080 flights in 38.1 min, 109,631 decisions, all actions finite,
+  `RESULT: DONE`). **Bit-for-bit equal to M2.4b on all 1,080 flights (32 fields) and all 1,080 realization entries**
+  (`results\m2\m2_5_equality.{json,txt}`); matched realizations across 6 profiles PASS
+  (`results\m2\m2_5_baseline.{json,txt}`); PID-vs-PID dry run regenerated on this run (all differences 0 [0, 0], all
+  McNemar p = 1). Its `meta.code_blobs` equal the frozen blob IDs.
+- **Final freeze** (`docs\eval_protocol_v1.md`, regenerated, includes E3b): protocol hash `d3f677dc…` (unchanged);
+  blob IDs eval_protocol_v1.py 5b490ddd, protocol_stats.py 328fcbdc, **run_protocol.py ce3a0da5**, run_common.py
+  1fb19f77, **controllers.py 8dae58a9** (the M2.5 "Frozen" bullet above is superseded).
+- M4 to-dos: training writes `ppo_contract.json` next to every saved model and an explicit `status.json`
+  (running/done/failed + last step); before validating checkpoints, fly PID once on validation seeds 400000–400009 as
+  the validation reference.
+
 ---
 
-## E. Evaluation protocol v1 (to be frozen as `docs/eval_protocol_v1.md`)
+## E. Evaluation protocol v1 (FROZEN 2026-11-13 as `docs/eval_protocol_v1.md`; edits here do not change v1)
 
 Applies unchanged to **PID, PID + SAC and PID + PPO**. Changing anything below makes a new version (v2) and
 requires re-running every controller on it.
@@ -478,6 +527,23 @@ Evaluation order: still_air, training_range, unseen_gusts, outside_range, strong
 completion from `COMPLETION`. Policies are frozen and **deterministic** (SAC: actor mean; PPO:
 `predict(deterministic=True)`). Each flight in a fresh `reset`; no learning during evaluation.
 
+**E3b. Controllers and model checks (M2.5 (a), `evaluation/controllers.py`).** One controller per run; `act` is
+deterministic and returns float32[4]. Models are loaded **before SimulationApp** (two torch installs, M2.1).
+- `pid`: zero residual (team PID-only; M2.2 bit-exact equal to a pure PID loop).
+- `pid_ppo`: refused unless **`ppo_contract.json` next to the model file** has a `"policy"` group equal (after JSON
+  normalization) to `path_sac_config.policy_contract()`; then `PPO.load(model, device="cpu")`;
+  act = `predict(obs, deterministic=True)[0]`.
+- `pid_sac`: refused unless `path_sac_config.incompatibility(model, check_training=True)` is None; act through the
+  team's `path_sac_policy.load_path_policy` (deterministic actor mean); the model is also loaded once with
+  `SAC.load(device="cpu")` for the space check and the record.
+- Both learned controllers: refused unless the model's observation and action spaces equal the env's (checked after
+  the env is built, before any flight). `record()` stores the repo-relative model path, model sha256, saved and runtime
+  SB3 versions, num_timesteps, contract path + sha256, device.
+- **Realization guard:** every reset of a non-PID run must reproduce the reference PID realization (`wind_seed`,
+  `wind_speed`, `route_seconds`, `initial_obs_sha256`, `max_decisions`) exactly; the run stops at the first difference
+  or missing entry. Default reference: the canonical `results/eval/eval-v1/pid/realizations.json`; validation-seed
+  runs (E6) pass a PID run on those seeds. Every run records an action check (all actions finite, shape (4,)).
+
 **E4. Metrics per flight** (`PathTrace.metrics`, unchanged): `position_rmse` (time-indexed), `cross_track_rmse`
 and `cross_track_max` (geometric), `max_deviation`, `completed`, `completion_time`, `failed` +
 `failure_reason`, `collided` (too_low), `saturation_rate`, `residual_norm`, `residual_change`
@@ -505,6 +571,22 @@ Diagnostics (not endpoints), recorded for every controller: `accel_cap_binding_f
 - Aggregates across scenarios: unweighted mean of the per-scenario means (each scenario counts once), reported
   separately per profile. No single overall score mixes profiles.
 - Tables always show n (flights) and failures next to every mean.
+- **Reporting rules added in M2.5 (Claire, 2026-11-13; decided before any learned controller is evaluated):**
+  1. **Paired failure comparison, every profile.** Flights are paired by (scenario, seed) within a profile
+     (6 × 30 = 180 pairs). McNemar **exact** test on the paired `failed` flags (controller vs PID): with
+     b = pairs where only the controller failed and c = pairs where only PID failed, two-sided
+     p = min(1, 2·P(X ≤ min(b, c))), X ~ Binomial(b + c, 0.5); p = 1 if b + c = 0. Reported with b, c and the
+     both/neither counts. Plus each controller's failure count out of 180 with an exact (Clopper–Pearson) 95% binomial
+     CI. Computed with the binomial distribution in `protocol_stats.py` (no new packages).
+  2. **RMSE never alone when there are failures.** In any profile where either controller (the evaluated one or PID)
+     has at least one failed flight, position RMSE is reported and interpreted only together with the paired failure
+     comparison (1), never on its own.
+  3. **strong_range and beyond_strong** (secondary): the descriptive endpoints, in this order, are (a) failure count
+     (exact CI), (b) the paired McNemar test, (c) median decisions flown (IQR; NumPy default linear percentiles, over
+     all 180 flights), (d) position RMSE labelled **"over flown portion only"**.
+  Implemented in `protocol_stats.py` (`mcnemar_exact`, `clopper_pearson`, `paired_failure_comparison`,
+  `decisions_median_iqr`, `controller_report`) and `run_protocol.py report` (which also refuses a controller run whose
+  realizations differ from the canonical PID ones).
 
 **E6. Model selection.** Each training run is evaluated at its **final** checkpoint and at pre-declared checkpoints
 (150k, 400k, 800k, end). Choosing a checkpoint by the eval seeds is not allowed. Any checkpoint selection (for PPO and,

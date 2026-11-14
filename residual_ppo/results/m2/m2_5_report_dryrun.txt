@@ -1,0 +1,42 @@
+E5 report: pid vs pid (protocol eval-v1 d3f677dc; 30 seeds x 6 scenarios = 180 paired flights per profile)
+NOTE: DRY RUN: PID vs itself (canonical eval-v1 PID run). Checks the report pipeline; every paired difference must be exactly 0 and every McNemar p = 1.
+Realizations identical to the canonical PID run; consistency checks PASS for both runs.
+
+training_range [PRIMARY]
+  PRIMARY ENDPOINT: paired RMSE difference pid[as controller] - pid = 0.0000 m [0.0000, 0.0000] -> improves on PID: no
+  RMSE (time-indexed, failed flights included): pid[as controller] 0.483 m, pid 0.483 m; paired diff 0.0000 m [0.0000, 0.0000]
+  failures: pid[as controller] 0/180 rate CI [0.000, 0.020]; pid 0/180 rate CI [0.000, 0.020]
+  paired failures (180 pairs): both 0, controller only 0, PID only 0, neither 180; McNemar exact p = 1
+  decisions flown, median (IQR): pid[as controller] 154 (84-214); pid 154 (84-214)
+
+unseen_gusts [PRIMARY]
+  PRIMARY ENDPOINT: paired RMSE difference pid[as controller] - pid = 0.0000 m [0.0000, 0.0000] -> improves on PID: no
+  RMSE (time-indexed, failed flights included): pid[as controller] 0.484 m, pid 0.484 m; paired diff 0.0000 m [0.0000, 0.0000]
+  failures: pid[as controller] 0/180 rate CI [0.000, 0.020]; pid 0/180 rate CI [0.000, 0.020]
+  paired failures (180 pairs): both 0, controller only 0, PID only 0, neither 180; McNemar exact p = 1
+  decisions flown, median (IQR): pid[as controller] 154 (84-214); pid 154 (84-214)
+
+outside_range [PRIMARY]
+  PRIMARY ENDPOINT: paired RMSE difference pid[as controller] - pid = 0.0000 m [0.0000, 0.0000] -> improves on PID: no  [interpret only with the paired failure comparison below]
+  RMSE (time-indexed, failed flights included): pid[as controller] 1.641 m, pid 1.641 m; paired diff 0.0000 m [0.0000, 0.0000]  [interpret only with the paired failure comparison]
+  failures: pid[as controller] 110/180 rate CI [0.536, 0.683]; pid 110/180 rate CI [0.536, 0.683]
+  paired failures (180 pairs): both 110, controller only 0, PID only 0, neither 70; McNemar exact p = 1
+  decisions flown, median (IQR): pid[as controller] 62 (39-95); pid 62 (39-95)
+
+still_air [REPORTED, NOT PRIMARY]
+  RMSE (time-indexed, failed flights included): pid[as controller] 0.183 m, pid 0.183 m; paired diff 0.0000 m [0.0000, 0.0000]
+  failures: pid[as controller] 0/180 rate CI [0.000, 0.020]; pid 0/180 rate CI [0.000, 0.020]
+  paired failures (180 pairs): both 0, controller only 0, PID only 0, neither 180; McNemar exact p = 1
+  decisions flown, median (IQR): pid[as controller] 154 (84-214); pid 154 (84-214)
+
+strong_range [SECONDARY]
+  failures: pid[as controller] 179/180 rate CI [0.969, 1.000]; pid 179/180 rate CI [0.969, 1.000]
+  paired failures (180 pairs): both 179, controller only 0, PID only 0, neither 1; McNemar exact p = 1
+  decisions flown, median (IQR): pid[as controller] 23 (21-29); pid 23 (21-29)
+  RMSE (over flown portion only): pid[as controller] 1.651 m, pid 1.651 m; paired diff 0.0000 m [0.0000, 0.0000]  [interpret only with the paired failure comparison]
+
+beyond_strong [SECONDARY]
+  failures: pid[as controller] 180/180 rate CI [0.980, 1.000]; pid 180/180 rate CI [0.980, 1.000]
+  paired failures (180 pairs): both 180, controller only 0, PID only 0, neither 0; McNemar exact p = 1
+  decisions flown, median (IQR): pid[as controller] 18 (17-19); pid 18 (17-19)
+  RMSE (over flown portion only): pid[as controller] 1.604 m, pid 1.604 m; paired diff 0.0000 m [0.0000, 0.0000]  [interpret only with the paired failure comparison]

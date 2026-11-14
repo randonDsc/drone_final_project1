@@ -1,0 +1,4 @@
+M2.5 (a): PID baseline re-flown with the final (frozen) code vs the M2.4b run, all 1,080 flights, bit-for-bit
+flights: 1080/1080 identical on all 32 fields; missing 0; differing 0
+realizations entries: 1080 compared; missing 0; differing 0
+RESULT: PASS (bit-for-bit)

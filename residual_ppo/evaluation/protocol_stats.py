@@ -3,9 +3,11 @@
 Per-cell summaries (team summarize() + median/IQR + failure reasons), README-style per-profile aggregation, the M2.3
 team README section 2 reproduction check, the M2.3 consistency check, the still-vs-wind table (paired per-seed
 differences with seed bootstrap) and the pre-registered H1 analysis (wind_share_MSE, decision rule, failure sensitivity,
-secondary shares, hover sanity check). Bootstrap: 10,000 seed resamples, percentile 95% CI, np.random.default_rng(0)
-started afresh for each statistic.
+secondary shares, hover sanity check), M2.4 exact equality checks, and the M2.5 reporting rules (exact McNemar,
+Clopper-Pearson failure CI, median decisions, controller_report). Bootstrap: 10,000 seed resamples, percentile 95% CI,
+np.random.default_rng(0) started afresh for each statistic.
 """
+import math
 from collections import Counter
 
 import numpy as np
@@ -362,3 +364,131 @@ def subset_equality(reference, candidate, ignore=()):
     return {"pass": not missing and not diffs, "reference_flights": len(ref), "compared": len(ref) - len(missing),
             "identical": len(ref) - len(missing) - len(diffs), "missing_in_candidate": missing,
             "differences": diffs, "fields_compared": fields}
+
+
+# ---------------------------------------------------------------- M2.5 reporting rules (E5, decided before any
+# learned controller is evaluated): paired failure comparison, exact binomial CI, median decisions, controller report
+
+
+
+FAILURE_CI_ALPHA = 0.05
+RMSE_FLOWN_LABEL = "over flown portion only"
+
+
+def binom_cdf(k, n, p):
+    """P(X <= k), X ~ Binomial(n, p); exact sum with math.comb (n is small here: <= a few hundred)."""
+    if k < 0:
+        return 0.0
+    if k >= n:
+        return 1.0
+    return min(1.0, math.fsum(math.comb(n, i) * p ** i * (1.0 - p) ** (n - i) for i in range(k + 1)))
+
+
+def _bisect(f, lo=0.0, hi=1.0, iters=200):
+    """Root of a decreasing-or-increasing f on [lo, hi] with f(lo), f(hi) of opposite sign."""
+    flo = f(lo)
+    for _ in range(iters):
+        mid = 0.5 * (lo + hi)
+        fm = f(mid)
+        if (fm > 0) == (flo > 0):
+            lo, flo = mid, fm
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+def clopper_pearson(k, n, alpha=FAILURE_CI_ALPHA):
+    """Exact (Clopper-Pearson) two-sided 1-alpha CI for a binomial proportion k/n, by inverting the binomial CDF."""
+    if n <= 0:
+        return [None, None]
+    lower = 0.0 if k == 0 else _bisect(lambda p: (1.0 - binom_cdf(k - 1, n, p)) - alpha / 2)
+    upper = 1.0 if k == n else _bisect(lambda p: binom_cdf(k, n, p) - alpha / 2)
+    return [lower, upper]
+
+
+def failure_count(flights, alpha=FAILURE_CI_ALPHA):
+    n = len(flights)
+    k = int(sum(bool(f["failed"]) for f in flights))
+    lo, hi = clopper_pearson(k, n, alpha)
+    return {"failed": k, "n": n, "rate": k / n if n else None,
+            "ci95_rate": [lo, hi], "ci95_count": [None if lo is None else lo * n, None if hi is None else hi * n],
+            "method": "Clopper-Pearson exact"}
+
+
+def mcnemar_exact(b, c):
+    """Two-sided exact McNemar: b, c = discordant pair counts. p = min(1, 2 P(X <= min(b, c))), X ~ Bin(b+c, 1/2)."""
+    n = int(b) + int(c)
+    p = 1.0 if n == 0 else min(1.0, 2.0 * binom_cdf(min(int(b), int(c)), n, 0.5))
+    return {"b": int(b), "c": int(c), "discordant": n, "p_value": p, "test": "McNemar exact (binomial), two-sided"}
+
+
+def paired_failure_comparison(ctrl_flights, pid_flights, profile, scenarios, seeds):
+    """Pairs = (scenario, seed) within one profile. b = controller-only failures, c = PID-only failures."""
+    ci, pi = index_flights(ctrl_flights), index_flights(pid_flights)
+    keys = [(sc, profile, s) for sc in scenarios for s in seeds]
+    missing = [list(k) for k in keys if k not in ci or k not in pi]
+    if missing:
+        raise ValueError(f"unpaired flights: {missing[:5]}")
+    both = ctrl_only = pid_only = neither = 0
+    for k in keys:
+        a, p = bool(ci[k]["failed"]), bool(pi[k]["failed"])
+        both += a and p
+        ctrl_only += a and not p
+        pid_only += p and not a
+        neither += not a and not p
+    return {"pairs": len(keys), "both_failed": both, "controller_only_failed": ctrl_only, "pid_only_failed": pid_only,
+            "neither_failed": neither, "mcnemar": mcnemar_exact(ctrl_only, pid_only)}
+
+
+def decisions_median_iqr(flights):
+    """Median and IQR of decisions flown over all flights (NumPy default linear percentiles)."""
+    out = _median_iqr([f["decisions"] for f in flights])
+    out["n"] = len(flights)
+    return out
+
+
+def controller_report(ctrl_flights, pid_flights, profiles, scenarios, seeds, primary, secondary, reported_not_primary):
+    """E5 report per profile, controller vs PID (paired on scenario and seed).
+
+    Primary endpoint (primary profiles only): per seed, mean over scenarios of (RMSE_controller - RMSE_PID); seed
+    bootstrap CI; "improves on PID" only if the CI is entirely below 0. Rule 1: paired failure comparison + failure
+    counts with exact CI for every profile. Rule 2: RMSE flagged as interpretable only with the failure comparison when
+    either controller failed. Rule 3: secondary profiles list endpoints in the fixed order, RMSE "over flown portion
+    only"."""
+    ci, pi = index_flights(ctrl_flights), index_flights(pid_flights)
+    rows = []
+    for prof in profiles:
+        status = ("primary" if prof in primary else "secondary" if prof in secondary
+                  else "reported, not primary" if prof in reported_not_primary else "unknown")
+        c_rows = [ci[(sc, prof, s)] for sc in scenarios for s in seeds]
+        p_rows = [pi[(sc, prof, s)] for sc in scenarios for s in seeds]
+        per_seed_diff = per_seed_mean(ci, prof, seeds, scenarios, _rmse) - per_seed_mean(pi, prof, seeds, scenarios,
+                                                                                          _rmse)
+        diff = bootstrap_mean(per_seed_diff)
+        fc = paired_failure_comparison(ctrl_flights, pid_flights, prof, scenarios, seeds)
+        c_fail, p_fail = failure_count(c_rows), failure_count(p_rows)
+        any_fail = c_fail["failed"] > 0 or p_fail["failed"] > 0
+        row = {
+            "profile": prof, "status": status, "flights": len(c_rows),
+            "controller": {"failures": c_fail, "decisions": decisions_median_iqr(c_rows),
+                           "position_rmse_mean_over_scenarios": profile_aggregate(c_rows, prof, scenarios)[
+                               "position_rmse"]},
+            "pid": {"failures": p_fail, "decisions": decisions_median_iqr(p_rows),
+                    "position_rmse_mean_over_scenarios": profile_aggregate(p_rows, prof, scenarios)["position_rmse"]},
+            "paired_failure_comparison": fc,
+            "paired_rmse_difference": diff,
+            "rmse_requires_failure_comparison": any_fail,
+            "rmse_label": RMSE_FLOWN_LABEL if prof in secondary else "time-indexed, failed flights included",
+        }
+        if status == "primary":
+            row["primary_endpoint"] = {
+                "statistic": "mean over seeds of [mean over scenarios of (RMSE_controller - RMSE_PID)]",
+                **diff,
+                "improves_on_pid": diff["ci95"][1] is not None and diff["ci95"][1] < 0,
+                "interpret_only_with": "paired_failure_comparison" if any_fail else None,
+            }
+        if status == "secondary":
+            row["endpoint_order"] = ["failure count (exact CI)", "paired McNemar exact", "median decisions (IQR)",
+                                     f"position RMSE ({RMSE_FLOWN_LABEL})"]
+        rows.append(row)
+    return rows

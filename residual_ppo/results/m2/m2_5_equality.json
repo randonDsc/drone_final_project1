@@ -1,0 +1,91 @@
+{
+  "created_at": "2026-11-14T07:05:36+00:00",
+  "purpose": "M2.5 (a): PID baseline re-flown with the final (frozen) code vs the M2.4b run, all 1,080 flights, bit-for-bit",
+  "reference_run": "residual_ppo/results/m2/m2_4b_pid/results.json",
+  "reference_sha256_lf": "57f228febc2bdf3fa87d996b888f9d0dc5f3469ddc5f05c61dd5c746a72ec3f2",
+  "candidate_run": "residual_ppo/results/eval/eval-v1/pid/results.json",
+  "candidate_sha256_lf": "0c97eff48d8ebe5e0fbf5a6fceb117d38216eba7a57da01b1cd5d4fa9e5a067c",
+  "tolerance": "bit-exact (JSON values identical; NaN == NaN; types must match)",
+  "protocol_file_sha256": [
+    "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e",
+    "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e"
+  ],
+  "packages": [
+    {
+      "numpy": "2.3.1",
+      "gymnasium": "1.2.3",
+      "stable_baselines3": "2.7.0",
+      "torch": "2.14.1+cpu"
+    },
+    {
+      "numpy": "2.3.1",
+      "gymnasium": "1.2.3",
+      "stable_baselines3": "2.7.0",
+      "torch": "2.14.1+cpu"
+    }
+  ],
+  "isaac_sim": [
+    "6.2.0-rc.14+release.52805.02189a84.gl",
+    "6.2.0-rc.14+release.52805.02189a84.gl"
+  ],
+  "total_mass_kg": [
+    1.6186144351959229,
+    1.6186144351959229
+  ],
+  "pass": true,
+  "flights": {
+    "pass": true,
+    "reference_flights": 1080,
+    "compared": 1080,
+    "identical": 1080,
+    "missing_in_candidate": [],
+    "differences": {},
+    "fields_compared": [
+      "accel_cap_binding_frac",
+      "along_track_lag_mean",
+      "along_track_lag_rms",
+      "collided",
+      "completed",
+      "completion_time",
+      "controller",
+      "cross_track_component_rms",
+      "cross_track_max",
+      "cross_track_rmse",
+      "decisions",
+      "diag_lag_steps",
+      "diag_physics_steps",
+      "diag_pid_part",
+      "failed",
+      "failure_reason",
+      "initial_obs_sha256",
+      "max_decisions",
+      "max_deviation",
+      "position_rmse",
+      "residual_change",
+      "residual_norm",
+      "route_seconds",
+      "route_type",
+      "saturation_rate",
+      "scenario",
+      "seed",
+      "tilt_cap_binding_frac",
+      "wind_mean",
+      "wind_profile",
+      "wind_seed",
+      "wind_speed"
+    ]
+  },
+  "realizations": {
+    "pass": true,
+    "compared": 1080,
+    "missing_in_candidate": [],
+    "differences": {},
+    "key": [
+      "wind_seed",
+      "wind_speed",
+      "route_seconds",
+      "initial_obs_sha256",
+      "max_decisions"
+    ]
+  }
+}

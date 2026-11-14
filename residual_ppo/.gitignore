@@ -9,3 +9,9 @@ results/m2/zero_residual_traces/
 
 # Team SAC checkpoint downloaded from Hugging Face (binary, not ours); provenance in models/sac_team/SOURCE.json
 models/sac_team/flight1/
+
+# Scratch models / smoke-test artifacts (never committed): e.g. the untrained PPO of the M2.5 adapter smoke test
+scratch/
+
+# M2.5 adapter smoke: raw fly outputs on validation seed 400000 (contain tracking metrics); only the summary is committed
+results/m2/m2_5_adapter_smoke/runs/

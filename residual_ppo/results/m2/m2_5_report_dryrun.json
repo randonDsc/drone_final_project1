@@ -1,0 +1,541 @@
+{
+  "created_at": "2026-11-14T07:05:36+00:00",
+  "purpose": "E5 report (M2.5 rules): pid vs canonical pid",
+  "note": "DRY RUN: PID vs itself (canonical eval-v1 PID run). Checks the report pipeline; every paired difference must be exactly 0 and every McNemar p = 1.",
+  "controller_run": "residual_ppo/results/eval/eval-v1/pid/results.json",
+  "controller_run_sha256_lf": "0c97eff48d8ebe5e0fbf5a6fceb117d38216eba7a57da01b1cd5d4fa9e5a067c",
+  "pid_run": "residual_ppo/results/eval/eval-v1/pid/results.json",
+  "pid_run_sha256_lf": "0c97eff48d8ebe5e0fbf5a6fceb117d38216eba7a57da01b1cd5d4fa9e5a067c",
+  "protocol_file_sha256": "d3f677dc37e2d347e87c0098eaab6bbea3c28f3ee10f2bfe84ebc9a5b745278e",
+  "code_blobs": {
+    "residual_ppo/evaluation/controllers.py": "8dae58a9069813e0ad629a4cac9cc0e0b7e18150",
+    "residual_ppo/evaluation/eval_protocol_v1.py": "5b490ddde319d347e56ba399e974fc30b2c0d3bc",
+    "residual_ppo/evaluation/protocol_stats.py": "328fcbdc8ec328f1756f4eaf83455b8f49b6ea3a",
+    "residual_ppo/evaluation/run_common.py": "1fb19f777db67e5aec040ca660a521e891d6d7b3",
+    "residual_ppo/evaluation/run_protocol.py": "ce3a0da5c89a32cff3621ae6d53626bb8c3edce3",
+    "residual_ppo/evaluation/zero_residual_check.py": "48677a7d71a89ac242fa1bc338aafef77f0be358"
+  },
+  "bootstrap": {
+    "resamples": 10000,
+    "rng_seed": 0,
+    "ci": "95% percentile",
+    "unit": "seed"
+  },
+  "failure_ci": "Clopper-Pearson exact 95%",
+  "paired_failure_test": "McNemar exact (binomial), two-sided",
+  "profiles": [
+    {
+      "profile": "still_air",
+      "status": "reported, not primary",
+      "flights": 180,
+      "controller": {
+        "failures": {
+          "failed": 0,
+          "n": 180,
+          "rate": 0.0,
+          "ci95_rate": [
+            0.0,
+            0.020285204570113013
+          ],
+          "ci95_count": [
+            0.0,
+            3.651336822620342
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 153.5,
+          "q25": 84.5,
+          "q75": 214.25,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 0.1829322309513504
+      },
+      "pid": {
+        "failures": {
+          "failed": 0,
+          "n": 180,
+          "rate": 0.0,
+          "ci95_rate": [
+            0.0,
+            0.020285204570113013
+          ],
+          "ci95_count": [
+            0.0,
+            3.651336822620342
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 153.5,
+          "q25": 84.5,
+          "q75": 214.25,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 0.1829322309513504
+      },
+      "paired_failure_comparison": {
+        "pairs": 180,
+        "both_failed": 0,
+        "controller_only_failed": 0,
+        "pid_only_failed": 0,
+        "neither_failed": 180,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "discordant": 0,
+          "p_value": 1.0,
+          "test": "McNemar exact (binomial), two-sided"
+        }
+      },
+      "paired_rmse_difference": {
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0
+      },
+      "rmse_requires_failure_comparison": false,
+      "rmse_label": "time-indexed, failed flights included"
+    },
+    {
+      "profile": "training_range",
+      "status": "primary",
+      "flights": 180,
+      "controller": {
+        "failures": {
+          "failed": 0,
+          "n": 180,
+          "rate": 0.0,
+          "ci95_rate": [
+            0.0,
+            0.020285204570113013
+          ],
+          "ci95_count": [
+            0.0,
+            3.651336822620342
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 153.5,
+          "q25": 84.5,
+          "q75": 214.25,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 0.48259283510652756
+      },
+      "pid": {
+        "failures": {
+          "failed": 0,
+          "n": 180,
+          "rate": 0.0,
+          "ci95_rate": [
+            0.0,
+            0.020285204570113013
+          ],
+          "ci95_count": [
+            0.0,
+            3.651336822620342
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 153.5,
+          "q25": 84.5,
+          "q75": 214.25,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 0.48259283510652756
+      },
+      "paired_failure_comparison": {
+        "pairs": 180,
+        "both_failed": 0,
+        "controller_only_failed": 0,
+        "pid_only_failed": 0,
+        "neither_failed": 180,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "discordant": 0,
+          "p_value": 1.0,
+          "test": "McNemar exact (binomial), two-sided"
+        }
+      },
+      "paired_rmse_difference": {
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0
+      },
+      "rmse_requires_failure_comparison": false,
+      "rmse_label": "time-indexed, failed flights included",
+      "primary_endpoint": {
+        "statistic": "mean over seeds of [mean over scenarios of (RMSE_controller - RMSE_PID)]",
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0,
+        "improves_on_pid": false,
+        "interpret_only_with": null
+      }
+    },
+    {
+      "profile": "unseen_gusts",
+      "status": "primary",
+      "flights": 180,
+      "controller": {
+        "failures": {
+          "failed": 0,
+          "n": 180,
+          "rate": 0.0,
+          "ci95_rate": [
+            0.0,
+            0.020285204570113013
+          ],
+          "ci95_count": [
+            0.0,
+            3.651336822620342
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 153.5,
+          "q25": 84.5,
+          "q75": 214.25,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 0.48383758926153314
+      },
+      "pid": {
+        "failures": {
+          "failed": 0,
+          "n": 180,
+          "rate": 0.0,
+          "ci95_rate": [
+            0.0,
+            0.020285204570113013
+          ],
+          "ci95_count": [
+            0.0,
+            3.651336822620342
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 153.5,
+          "q25": 84.5,
+          "q75": 214.25,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 0.48383758926153314
+      },
+      "paired_failure_comparison": {
+        "pairs": 180,
+        "both_failed": 0,
+        "controller_only_failed": 0,
+        "pid_only_failed": 0,
+        "neither_failed": 180,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "discordant": 0,
+          "p_value": 1.0,
+          "test": "McNemar exact (binomial), two-sided"
+        }
+      },
+      "paired_rmse_difference": {
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0
+      },
+      "rmse_requires_failure_comparison": false,
+      "rmse_label": "time-indexed, failed flights included",
+      "primary_endpoint": {
+        "statistic": "mean over seeds of [mean over scenarios of (RMSE_controller - RMSE_PID)]",
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0,
+        "improves_on_pid": false,
+        "interpret_only_with": null
+      }
+    },
+    {
+      "profile": "outside_range",
+      "status": "primary",
+      "flights": 180,
+      "controller": {
+        "failures": {
+          "failed": 110,
+          "n": 180,
+          "rate": 0.6111111111111112,
+          "ci95_rate": [
+            0.5357623324163381,
+            0.6827363802762565
+          ],
+          "ci95_count": [
+            96.43721983494086,
+            122.89254844972616
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 61.5,
+          "q25": 38.75,
+          "q75": 94.75,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 1.6406188795493586
+      },
+      "pid": {
+        "failures": {
+          "failed": 110,
+          "n": 180,
+          "rate": 0.6111111111111112,
+          "ci95_rate": [
+            0.5357623324163381,
+            0.6827363802762565
+          ],
+          "ci95_count": [
+            96.43721983494086,
+            122.89254844972616
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 61.5,
+          "q25": 38.75,
+          "q75": 94.75,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 1.6406188795493586
+      },
+      "paired_failure_comparison": {
+        "pairs": 180,
+        "both_failed": 110,
+        "controller_only_failed": 0,
+        "pid_only_failed": 0,
+        "neither_failed": 70,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "discordant": 0,
+          "p_value": 1.0,
+          "test": "McNemar exact (binomial), two-sided"
+        }
+      },
+      "paired_rmse_difference": {
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0
+      },
+      "rmse_requires_failure_comparison": true,
+      "rmse_label": "time-indexed, failed flights included",
+      "primary_endpoint": {
+        "statistic": "mean over seeds of [mean over scenarios of (RMSE_controller - RMSE_PID)]",
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0,
+        "improves_on_pid": false,
+        "interpret_only_with": "paired_failure_comparison"
+      }
+    },
+    {
+      "profile": "strong_range",
+      "status": "secondary",
+      "flights": 180,
+      "controller": {
+        "failures": {
+          "failed": 179,
+          "n": 180,
+          "rate": 0.9944444444444445,
+          "ci95_rate": [
+            0.9694366589918635,
+            0.9998593554025772
+          ],
+          "ci95_count": [
+            174.49859861853542,
+            179.9746839724639
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 23.0,
+          "q25": 21.0,
+          "q75": 29.0,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 1.651245348056608
+      },
+      "pid": {
+        "failures": {
+          "failed": 179,
+          "n": 180,
+          "rate": 0.9944444444444445,
+          "ci95_rate": [
+            0.9694366589918635,
+            0.9998593554025772
+          ],
+          "ci95_count": [
+            174.49859861853542,
+            179.9746839724639
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 23.0,
+          "q25": 21.0,
+          "q75": 29.0,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 1.651245348056608
+      },
+      "paired_failure_comparison": {
+        "pairs": 180,
+        "both_failed": 179,
+        "controller_only_failed": 0,
+        "pid_only_failed": 0,
+        "neither_failed": 1,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "discordant": 0,
+          "p_value": 1.0,
+          "test": "McNemar exact (binomial), two-sided"
+        }
+      },
+      "paired_rmse_difference": {
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0
+      },
+      "rmse_requires_failure_comparison": true,
+      "rmse_label": "over flown portion only",
+      "endpoint_order": [
+        "failure count (exact CI)",
+        "paired McNemar exact",
+        "median decisions (IQR)",
+        "position RMSE (over flown portion only)"
+      ]
+    },
+    {
+      "profile": "beyond_strong",
+      "status": "secondary",
+      "flights": 180,
+      "controller": {
+        "failures": {
+          "failed": 180,
+          "n": 180,
+          "rate": 1.0,
+          "ci95_rate": [
+            0.979714795429887,
+            1.0
+          ],
+          "ci95_count": [
+            176.34866317737968,
+            180.0
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 18.0,
+          "q25": 17.0,
+          "q75": 19.0,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 1.6038102834925334
+      },
+      "pid": {
+        "failures": {
+          "failed": 180,
+          "n": 180,
+          "rate": 1.0,
+          "ci95_rate": [
+            0.979714795429887,
+            1.0
+          ],
+          "ci95_count": [
+            176.34866317737968,
+            180.0
+          ],
+          "method": "Clopper-Pearson exact"
+        },
+        "decisions": {
+          "median": 18.0,
+          "q25": 17.0,
+          "q75": 19.0,
+          "n": 180
+        },
+        "position_rmse_mean_over_scenarios": 1.6038102834925334
+      },
+      "paired_failure_comparison": {
+        "pairs": 180,
+        "both_failed": 180,
+        "controller_only_failed": 0,
+        "pid_only_failed": 0,
+        "neither_failed": 0,
+        "mcnemar": {
+          "b": 0,
+          "c": 0,
+          "discordant": 0,
+          "p_value": 1.0,
+          "test": "McNemar exact (binomial), two-sided"
+        }
+      },
+      "paired_rmse_difference": {
+        "value": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "n_seeds": 30,
+        "resamples": 10000,
+        "rng_seed": 0
+      },
+      "rmse_requires_failure_comparison": true,
+      "rmse_label": "over flown portion only",
+      "endpoint_order": [
+        "failure count (exact CI)",
+        "paired McNemar exact",
+        "median decisions (IQR)",
+        "position RMSE (over flown portion only)"
+      ]
+    }
+  ]
+}
