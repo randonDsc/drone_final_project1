@@ -1,0 +1,4 @@
+M2.4 pilot equality (added by Claire): the 240 pilot flights (seeds 300000-300009) vs the same flights of the M2.4 30-seed run, bit-for-bit
+flights: 240/240 identical on all 32 fields; missing 0; differing 0
+realizations entries: 240 compared; missing 0; differing 0
+RESULT: PASS (bit-for-bit)

@@ -1,0 +1,272 @@
+{
+  "meta": {
+    "created_at": "2026-11-14T03:16:35+00:00",
+    "controller": {
+      "name": "pid",
+      "model": null,
+      "contract": null,
+      "device": null,
+      "action": "np.zeros(4, float32) at every decision (team PID-only)",
+      "equivalence": "M2.2: bit-exact equal to a pure PID loop (results/m2/zero_residual.json)"
+    },
+    "seeds": [
+      300029,
+      300029,
+      1
+    ],
+    "profiles": [
+      "outside_range"
+    ],
+    "scenarios": [
+      "figure_eight"
+    ],
+    "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+    "git": {
+      "head": "501999badeb437e5166df48967f9bd96f9ae7ac1",
+      "branch": "claire/drone-simulation",
+      "residual_ppo_status": [
+        "M residual_ppo/docs/milestone2_plan.md",
+        " M residual_ppo/evaluation/protocol_stats.py",
+        " M residual_ppo/evaluation/run_protocol.py",
+        " M residual_ppo/tests/test_protocol_stats.py",
+        "?? residual_ppo/results/eval/"
+      ]
+    },
+    "protocol": {
+      "version": "eval-v1",
+      "protocol_file_sha256": "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+      "eval_seeds": [
+        300000,
+        300029,
+        30
+      ],
+      "validation_seeds": [
+        400000,
+        400009,
+        10
+      ],
+      "route_stage": "full",
+      "scenarios": {
+        "hover": "hover",
+        "straight": "straight",
+        "turns": "waypoints",
+        "altitude": "altitude",
+        "circle": "circle",
+        "figure_eight": "figure_eight"
+      },
+      "team_profiles": {
+        "training_range": {
+          "no_wind_probability": 0.0,
+          "mean_speed_range": [
+            2.0,
+            7.0
+          ],
+          "gust_scale_range": [
+            0.5,
+            1.0
+          ],
+          "direction_rate_range": [
+            0.0,
+            0.2
+          ]
+        },
+        "unseen_gusts": {
+          "no_wind_probability": 0.0,
+          "mean_speed_range": [
+            2.0,
+            6.0
+          ],
+          "gust_scale_range": [
+            1.2,
+            1.5
+          ],
+          "direction_rate_range": [
+            0.1,
+            0.3
+          ],
+          "gust_timescale": 0.7,
+          "local_gust_timescale": 0.15
+        },
+        "outside_range": {
+          "no_wind_probability": 0.0,
+          "mean_speed_range": [
+            8.0,
+            10.0
+          ],
+          "gust_scale_range": [
+            0.5,
+            1.0
+          ],
+          "direction_rate_range": [
+            0.0,
+            0.2
+          ]
+        }
+      },
+      "our_profiles": {
+        "still_air": {
+          "no_wind_probability": 1.0,
+          "mean_speed_range": [
+            2.0,
+            7.0
+          ],
+          "gust_scale_range": [
+            0.5,
+            1.0
+          ],
+          "direction_rate_range": [
+            0.0,
+            0.2
+          ]
+        }
+      }
+    },
+    "registered_profiles": {
+      "still_air": {
+        "no_wind_probability": 1.0,
+        "mean_speed_range": [
+          2.0,
+          7.0
+        ],
+        "gust_scale_range": [
+          0.5,
+          1.0
+        ],
+        "direction_rate_range": [
+          0.0,
+          0.2
+        ]
+      }
+    },
+    "still_air_definition": {
+      "no_wind_probability": 1.0,
+      "mean_speed_range": [
+        2.0,
+        7.0
+      ],
+      "gust_scale_range": [
+        0.5,
+        1.0
+      ],
+      "direction_rate_range": [
+        0.0,
+        0.2
+      ]
+    },
+    "python": "3.12.14",
+    "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+    "packages": {
+      "numpy": "2.3.1",
+      "gymnasium": "1.2.3",
+      "stable_baselines3": "2.7.0",
+      "torch": "2.14.1+cpu"
+    },
+    "package_files": {
+      "numpy": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+      "torch": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py"
+    },
+    "torch_cuda_available": false,
+    "device": "n/a (pid: no network)",
+    "total_mass_kg": 1.6186144351959229,
+    "hesai": {
+      "root": "/World/iris/body/HESAI_XT32_SD10",
+      "prims": 258,
+      "rigid_body_prims": 0,
+      "mass_api_prims": 0,
+      "hesai_mass_contribution_kg": 0
+    },
+    "decimation": 12,
+    "physics_dt": 0.008333333333333333,
+    "hardware": {
+      "platform": "Windows-11-10.0.26200-SP0",
+      "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+      "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+    },
+    "startup_s": 8.683530900016194,
+    "diagnostics": {
+      "pid_part": "PID command = final - correction (exact: correction is 0)",
+      "min_reference_speed_for_lag": 0.05
+    },
+    "code_blobs": {
+      "residual_ppo/evaluation/controllers.py": "9fa925b439a788a1ee87bb25be0cabcda1ca948a",
+      "residual_ppo/evaluation/eval_protocol_v1.py": "5771849941385881aed1da48076b87fe0571c6a6",
+      "residual_ppo/evaluation/protocol_stats.py": "0539d7799cad781b0c8043b53ce895c82e86559b",
+      "residual_ppo/evaluation/run_common.py": "4b7374c986a8b82522c69da804e8ca0e6e873a84",
+      "residual_ppo/evaluation/run_protocol.py": "cab3d6f0f2f20ddd6d3498642c45e9c882edc461",
+      "residual_ppo/evaluation/zero_residual_check.py": "48677a7d71a89ac242fa1bc338aafef77f0be358"
+    },
+    "realizations_note": "NOT canonical (subset run); the canonical realizations.json is the M2.4 30-seed PID run (plan, M2.3 design (d))",
+    "wall_clock_s": 1.0302054000203498
+  },
+  "check0": null,
+  "summary": [
+    {
+      "scenario": "figure_eight",
+      "wind_profile": "outside_range",
+      "controller": "pid",
+      "flights": 1,
+      "position_rmse": 1.7250644310093672,
+      "cross_track_rmse": 0.7367391679564291,
+      "cross_track_max": 1.5497945094778016,
+      "max_deviation": 3.0663374080726484,
+      "completion_rate": 0.0,
+      "completion_time": null,
+      "failure_rate": 1.0,
+      "collision_rate": 0.0,
+      "saturation_rate": 0.0,
+      "residual_norm": 0.0,
+      "residual_change": 0.0,
+      "failed_flights": 1,
+      "completed_flights": 0,
+      "failure_reasons": {
+        "out_of_bounds": 1
+      },
+      "position_rmse_median": 1.7250644310093672,
+      "position_rmse_q25": 1.7250644310093672,
+      "position_rmse_q75": 1.7250644310093672,
+      "cross_track_rmse_median": 0.7367391679564291,
+      "cross_track_rmse_q25": 0.7367391679564291,
+      "cross_track_rmse_q75": 0.7367391679564291
+    }
+  ],
+  "flights": [
+    {
+      "scenario": "figure_eight",
+      "wind_profile": "outside_range",
+      "seed": 300029,
+      "wind_speed": 9.38543724746916,
+      "wind_seed": 2005085969107723306,
+      "route_seconds": 39.71606231319571,
+      "decisions": 45,
+      "failed": true,
+      "failure_reason": "out_of_bounds",
+      "collided": false,
+      "completed": false,
+      "completion_time": null,
+      "position_rmse": 1.7250644310093672,
+      "cross_track_rmse": 0.7367391679564291,
+      "cross_track_max": 1.5497945094778016,
+      "max_deviation": 3.0663374080726484,
+      "saturation_rate": 0.0,
+      "residual_norm": 0.0,
+      "residual_change": 0.0,
+      "controller": "pid",
+      "route_type": "figure_eight",
+      "initial_obs_sha256": "6bfee0586049422416e85bedc5c3868cc996f8f9b6e5bb550ac99bcc91b0e891",
+      "max_decisions": 398,
+      "wind_mean": [
+        0.6735596139864773,
+        9.36123655147053,
+        0.0
+      ],
+      "diag_physics_steps": 540,
+      "accel_cap_binding_frac": 0.7759259259259259,
+      "tilt_cap_binding_frac": 0.0,
+      "along_track_lag_mean": 0.924165011418857,
+      "along_track_lag_rms": 1.0512465877874804,
+      "cross_track_component_rms": 1.4813582836920538,
+      "diag_lag_steps": 468,
+      "diag_pid_part": "PID command = final - correction (exact: correction is 0)"
+    }
+  ]
+}

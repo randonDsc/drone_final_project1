@@ -1,0 +1,7 @@
+[PROTO] checks: 21/21 OK (18 modules + 1 tests + 2 assets) -> PASS (rc=0)
+[PROTO] import paths: all 18 shared modules resolve inside residual_ppo
+[PROTO] controller pid; seeds 300029..300029 (1); profiles ('outside_range',); total_mass_kg 1.618614; HESAI 0 kg; packages {'numpy': '2.3.1', 'gymnasium': '1.2.3', 'stable_baselines3': '2.7.0', 'torch': '2.14.1+cpu'}; isaac 6.2.0-rc.14+release.52805.02189a84.gl
+[PROTO] finished figure_eight / outside_range (1 flights)
+[PROTO] 1 flights in 0.0 min
+[PROTO] written: residual_ppo/results/m2/m2_4_rerun/results.json, flights.csv, summary.csv, summary.txt, realizations.json
+[PROTO] RESULT: DONE (flights only; no consistency check or H1 statistic computed here)

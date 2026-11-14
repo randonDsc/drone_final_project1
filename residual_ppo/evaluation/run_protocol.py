@@ -5,7 +5,10 @@ Modes:
              drone_team_main/drone_code/eval_path_sac.py fly() exactly. Optional --check0 first: one cell flown with
              diagnostics off and on must give identical metrics and per-decision trace.
   reproduce  No Isaac. M2.3 first check: team README section 2 PID-only rows vs a pilot run's flights.
-  still-vs-wind  No Isaac. M2.3 consistency check (stops if violated), still-vs-wind table, H1 pilot statistics.
+  still-vs-wind  No Isaac. M2.3 consistency check (stops if violated), still-vs-wind table, H1 statistics
+             (pilot on 10 seeds; the reported verdict on the M2.4 30 seeds).
+  compare    No Isaac. M2.4: every flight of a reference run (pilot, or a 1-cell re-run) must equal the same
+             (scenario, profile, seed) flight of a candidate run bit-for-bit (all row fields + realizations entries).
 
     # Directory: C:\\Users\\tucla\\Desktop\\DSC180A\\drone_final_project1
     & "<Isaac>\\python.bat" residual_ppo\\evaluation\\run_protocol.py fly --controller pid --seeds 300000-300009 `
@@ -17,6 +20,7 @@ import csv
 import hashlib
 import json
 import platform
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -53,6 +57,15 @@ def repo_rel(path):
         return p.relative_to(REPO_DIR.resolve()).as_posix()
     except ValueError:
         return rc.redact_isaac(p)
+
+
+def code_blobs():
+    """git blob IDs (autocrlf-normalized, as `git hash-object`) of the evaluation code actually run: identifies the
+    code exactly even when the run happens before the code is committed."""
+    files = sorted((RESIDUAL_DIR / "evaluation").glob("*.py"))
+    out = subprocess.run(["git", "-C", str(REPO_DIR), "hash-object", *map(str, files)], capture_output=True,
+                         text=True).stdout.split()
+    return dict(zip((repo_rel(f) for f in files), out))
 
 
 def parse_seeds(text):
@@ -249,8 +262,12 @@ def mode_fly(args):
         if not set(seeds) <= allowed:
             raise SystemExit(f"seeds outside eval/validation sets: {sorted(set(seeds) - allowed)}")
         profiles = tuple(args.profiles.split(",")) if args.profiles else protocol.PROFILES
-        scenarios = tuple(protocol.SCENARIOS)
+        scenarios = tuple(args.scenarios.split(",")) if args.scenarios else tuple(protocol.SCENARIOS)
+        if not set(scenarios) <= set(protocol.SCENARIOS) or not set(profiles) <= set(protocol.PROFILES):
+            raise SystemExit(f"unknown scenario/profile: {scenarios} {profiles}")
         controller = controllers.make_controller(args.controller)
+        canonical = (controller.name == "pid" and seeds == tuple(protocol.EVAL_SEEDS)
+                     and profiles == tuple(protocol.PROFILES) and scenarios == tuple(protocol.SCENARIOS))
 
         env = path_sac_env.make_path_sac_env(app)
         outside = rc.loaded_outside_residual()
@@ -272,9 +289,11 @@ def mode_fly(args):
             "hardware": rc.hardware(), "startup_s": startup_s,
             "diagnostics": {"pid_part": PID_PART_LABEL["pid" if controller.name == "pid" else "other"],
                             "min_reference_speed_for_lag": DIAG_MIN_REF_SPEED},
-            "realizations_note": "pilot copy, NOT canonical; the canonical realizations.json is the M2.4 "
-                                 "30-seed PID run (plan, M2.3 design (d))" if len(seeds) != 30 else
-                                 "candidate canonical (30 eval seeds)",
+            "code_blobs": code_blobs(),
+            "realizations_note": ("CANONICAL: M2.4 30-seed PID run (plan, M2.3 design (d)); the cross-controller "
+                                  "reference, valid once the M2.4 checks pass (results/m2/m2_4_*)") if canonical else
+                                 ("NOT canonical (subset run); the canonical realizations.json is the M2.4 "
+                                  "30-seed PID run (plan, M2.3 design (d))"),
         }
         say(f"controller {controller.name}; seeds {seeds[0]}..{seeds[-1]} ({len(seeds)}); profiles {profiles}; "
             f"total_mass_kg {meta['total_mass_kg']:.6f}; HESAI {meta['hesai']['hesai_mass_contribution_kg']} kg; "
@@ -382,6 +401,8 @@ def mode_still_vs_wind(args):
     first, last, n = data["meta"]["seeds"]
     seeds = tuple(range(first, last + 1))
     assert len(seeds) == n
+    reported = seeds == tuple(protocol.EVAL_SEEDS)
+    tag = "M2.4, 30 eval seeds: REPORTED" if reported else f"PILOT, {n} seeds"
     out_lines = []
 
     def emit(msg=""):
@@ -390,7 +411,8 @@ def mode_still_vs_wind(args):
 
     result = {
         "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "purpose": "M2.3 pilot: consistency check, still air vs wind table, H1 pilot statistics (pre-registered)",
+        "purpose": (f"{tag}: consistency check (matched realizations), still air vs wind table, H1 statistics "
+                    "(pre-registered)"),
         "source_run": repo_rel(run / "results.json"), "source_run_sha256_lf": rc.file_sha256(run / "results.json"),
         "protocol_file_sha256": data["meta"]["protocol"]["protocol_file_sha256"],
         "packages": data["meta"]["packages"], "isaac_sim": data["meta"]["isaac_sim"],
@@ -399,23 +421,24 @@ def mode_still_vs_wind(args):
         "bootstrap": {"resamples": ps.BOOT_RESAMPLES, "rng_seed": ps.BOOT_SEED, "ci": "95% percentile",
                       "unit": "seed (keeps all scenarios / both profiles together)",
                       "rng": "np.random.default_rng(0) started afresh for each statistic"},
-        "note": "PILOT (10 seeds). The M2.4 30-seed result is the one reported for H1.",
+        "note": ("M2.4 30-seed result: the reported H1 verdict." if reported else
+                 "PILOT. The M2.4 30-seed result is the one reported for H1."),
     }
     dest = REPO_DIR / "residual_ppo" / "results" / "m2"
     cons = ps.consistency_check(flights, scenarios, profiles, seeds, protocol.STILL_AIR_NAME)
     result["consistency_check"] = cons
-    emit(f"M2.3 consistency check: {'PASS' if cons['pass'] else 'FAIL'} ({cons['flights']}/{cons['expected_flights']} "
+    emit(f"[{tag}] consistency check: {'PASS' if cons['pass'] else 'FAIL'} ({cons['flights']}/{cons['expected_flights']} "
          f"flights; {cons['groups_checked']} (scenario, seed) groups; fields {cons['fields']})")
     if not cons["pass"]:
         emit(f"problems: {cons['problems'][:10]}")
-        (dest / "still_vs_wind.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
-        (dest / "still_vs_wind_summary.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+        (dest / f"{args.name}.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+        (dest / f"{args.name}_summary.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
         raise SystemExit("consistency check failed: step fails; no table or H1 statistic computed")
 
     table = ps.still_vs_wind_table(flights, scenarios, profiles, seeds, protocol.STILL_AIR_NAME)
     result["table"] = table
     emit("")
-    emit("Still air vs wind (PID only; means over 10 seeds, failed flights included; diff = wind - still_air, "
+    emit(f"Still air vs wind (PID only; means over {n} seeds, failed flights included; diff = wind - still_air, "
          "paired per seed, mean [95% CI])")
     emit(f"{'scenario':<13}{'profile':<15}{'n':>3}{'fail':>5}{'RMSE':>7}{'cross':>7}{'maxdev':>7}  "
          f"{'dRMSE [CI]':<24}{'dcross [CI]':<24}{'dmaxdev [CI]':<24}{'acc%':>6}{'tilt%':>6}{'lag':>7}{'lagrms':>7}"
@@ -433,15 +456,15 @@ def mode_still_vs_wind(args):
              f"{_fmt(None if acc is None else 100 * acc, 1):>6}{_fmt(None if tilt is None else 100 * tilt, 1):>6}"
              f"{_fmt(r['along_track_lag_mean_mean']):>7}{_fmt(r['along_track_lag_rms_mean']):>7}"
              f"{_fmt(r['cross_track_component_rms_mean']):>7}")
-    emit("(maxdev column = summarize() max over the 10 flights; acc%/tilt% = accel-cap / tilt-cap binding share of "
+    emit(f"(maxdev column = summarize() max over the {n} flights; acc%/tilt% = accel-cap / tilt-cap binding share of "
          "physics steps; lag = along-track lag mean, + = behind; xtrk = cross-track component RMS; diagnostics over "
          "steps with |v_ref| > 0.05)")
 
     h1 = ps.h1_analysis(flights, scenarios, seeds, protocol.STILL_AIR_NAME, "training_range")
-    result["h1_pilot"] = h1
+    result["h1_reported" if reported else "h1_pilot"] = h1
     p = h1["primary_wind_share_mse"]
     emit("")
-    emit("H1 pilot (pre-registered; seeds 300000-300009)")
+    emit(f"H1 [{tag}] (pre-registered; seeds {first}-{last})")
     emit(f"PRIMARY wind_share_MSE = {p['value']:.3f}  95% CI [{p['ci95'][0]:.3f}, {p['ci95'][1]:.3f}]  "
          f"(mean MSE training_range {p['mean_wind']:.4f} m^2, still_air {p['mean_still']:.4f} m^2) -> {p['verdict']}")
     hv = h1["hover_sanity"]
@@ -449,7 +472,7 @@ def mode_still_vs_wind(args):
          f"{hv['training_range_mse_mean']:.5f} m^2, share {hv['mse_wind_share']:.3f} "
          f"[{hv['ci95'][0]:.3f}, {hv['ci95'][1]:.3f}] (threshold {hv['threshold']}) -> "
          f"{'SUSPECT: H1 not interpreted' if hv['suspect'] else 'OK'}")
-    emit(f"H1 VERDICT (pilot): {h1['verdict']}")
+    emit(f"H1 VERDICT ({'reported, M2.4' if reported else 'pilot'}): {h1['verdict']}")
     emit(f"failed flights in still_air/training_range: {len(h1['failed_flights'])}"
          + "".join(f"\n    {f}" for f in h1["failed_flights"]))
     s = h1["sensitivity_excluding_failed_seeds"]
@@ -467,10 +490,63 @@ def mode_still_vs_wind(args):
              f"(MSE tr {v['mean_wind']:.4f}, still {v['mean_still']:.4f})")
     emit("(secondary results cannot change the H1 verdict)")
 
-    (dest / "still_vs_wind.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
-    write_csv(dest / "still_vs_wind.csv", table)
-    (dest / "still_vs_wind_summary.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
-    print("written: residual_ppo/results/m2/still_vs_wind.json, still_vs_wind.csv, still_vs_wind_summary.txt")
+    (dest / f"{args.name}.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+    write_csv(dest / f"{args.name}.csv", table)
+    (dest / f"{args.name}_summary.txt").write_text("\n".join(out_lines) + "\n", encoding="utf-8")
+    print(f"written: residual_ppo/results/m2/{args.name}.json, .csv, _summary.txt")
+
+
+def mode_compare(args):
+    """M2.4: reference flights (and their realizations entries) must equal the candidate's bit-for-bit. No Isaac."""
+    import protocol_stats as ps
+
+    def load(d):
+        d = Path(d)
+        d = d if d.is_absolute() else (REPO_DIR / d)
+        res = json.loads((d / "results.json").read_text(encoding="utf-8"))
+        real = json.loads((d / "realizations.json").read_text(encoding="utf-8"))
+        return d, res, real
+
+    ref_dir, ref, ref_real = load(args.reference)
+    cand_dir, cand, cand_real = load(args.candidate)
+    rows = ps.subset_equality(ref["flights"], cand["flights"])
+    real_missing = [k for k in ref_real["flights"] if k not in cand_real["flights"]]
+    real_diff = {k: d for k, v in ref_real["flights"].items() if k in cand_real["flights"]
+                 for d in [ps.row_differences(v, cand_real["flights"][k])] if d}
+    real_ok = not real_missing and not real_diff and ref_real["key"] == cand_real["key"]
+    ok = rows["pass"] and real_ok
+    result = {
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "purpose": args.purpose,
+        "reference_run": repo_rel(ref_dir / "results.json"),
+        "reference_sha256_lf": rc.file_sha256(ref_dir / "results.json"),
+        "candidate_run": repo_rel(cand_dir / "results.json"),
+        "candidate_sha256_lf": rc.file_sha256(cand_dir / "results.json"),
+        "tolerance": "bit-exact (JSON values identical; NaN == NaN; types must match)",
+        "protocol_file_sha256": [ref["meta"]["protocol"]["protocol_file_sha256"],
+                                 cand["meta"]["protocol"]["protocol_file_sha256"]],
+        "packages": [ref["meta"]["packages"], cand["meta"]["packages"]],
+        "isaac_sim": [ref["meta"]["isaac_sim"], cand["meta"]["isaac_sim"]],
+        "total_mass_kg": [ref["meta"]["total_mass_kg"], cand["meta"]["total_mass_kg"]],
+        "pass": ok, "flights": rows,
+        "realizations": {"pass": real_ok, "compared": len(ref_real["flights"]) - len(real_missing),
+                         "missing_in_candidate": real_missing, "differences": real_diff,
+                         "key": ref_real["key"]},
+    }
+    text = (f"{args.purpose}\n"
+            f"flights: {rows['identical']}/{rows['reference_flights']} identical on all {len(rows['fields_compared'])} "
+            f"fields; missing {len(rows['missing_in_candidate'])}; differing {len(rows['differences'])}\n"
+            f"realizations entries: {result['realizations']['compared']} compared; missing {len(real_missing)}; "
+            f"differing {len(real_diff)}\n"
+            f"RESULT: {'PASS (bit-for-bit)' if ok else 'FAIL'}")
+    if not ok:
+        text += "\n" + json.dumps({"flights": rows["differences"], "realizations": real_diff,
+                                    "missing": rows["missing_in_candidate"] + real_missing}, default=str)[:4000]
+    print(text)
+    dest = REPO_DIR / "residual_ppo" / "results" / "m2"
+    (dest / f"{args.name}.json").write_text(json.dumps(result, indent=2, default=str) + "\n", encoding="utf-8")
+    (dest / f"{args.name}.txt").write_text(text + "\n", encoding="utf-8")
+    print(f"written: residual_ppo/results/m2/{args.name}.json, .txt")
 
 
 def main():
@@ -480,17 +556,26 @@ def main():
     f.add_argument("--controller", default="pid")
     f.add_argument("--seeds", required=True, help="e.g. 300000-300009 or 300000,300001")
     f.add_argument("--profiles", default=None, help="comma list; default: all protocol profiles")
+    f.add_argument("--scenarios", default=None, help="comma list; default: all protocol scenarios")
     f.add_argument("--out", required=True)
     f.add_argument("--check0", action="store_true")
     r = sub.add_parser("reproduce")
     r.add_argument("--run", required=True)
     v = sub.add_parser("still-vs-wind")
     v.add_argument("--run", required=True)
+    v.add_argument("--name", default="still_vs_wind", help="output basename in results/m2/")
+    c = sub.add_parser("compare")
+    c.add_argument("--reference", required=True, help="run dir whose flights must all appear in --candidate")
+    c.add_argument("--candidate", required=True)
+    c.add_argument("--name", required=True, help="output basename in results/m2/")
+    c.add_argument("--purpose", required=True)
     args = parser.parse_args()
     if args.mode == "fly":
         mode_fly(args)
     elif args.mode == "reproduce":
         mode_reproduce(args)
+    elif args.mode == "compare":
+        mode_compare(args)
     else:
         mode_still_vs_wind(args)
 

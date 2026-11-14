@@ -327,3 +327,38 @@ def reproduction_text(rep):
             + (f"; failures {o['failure_reasons']}" if o["failure_reasons"] else ""))
     lines.append(f"overall: {'PASS' if rep['pass'] else 'OUTSIDE RANGE -> investigate per plan (b) before M2.4'}")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------- M2.4 equality checks (bit-for-bit)
+
+def _same(a, b):
+    """Exact equality; NaN equals NaN; lists compared element-wise; bool vs int not conflated."""
+    if isinstance(a, (list, tuple)) and isinstance(b, (list, tuple)):
+        return len(a) == len(b) and all(_same(x, y) for x, y in zip(a, b))
+    if isinstance(a, float) and isinstance(b, float) and a != a and b != b:
+        return True
+    return type(a) is type(b) and a == b
+
+
+def row_differences(a, b, ignore=()):
+    """Fields that differ between two flight rows (missing on one side counts as a difference)."""
+    out = {}
+    for k in list(a) + [k for k in b if k not in a]:
+        if k in ignore:
+            continue
+        if k not in a or k not in b:
+            out[k] = {"a": a.get(k, "<missing>"), "b": b.get(k, "<missing>")}
+        elif not _same(a[k], b[k]):
+            out[k] = {"a": a[k], "b": b[k]}
+    return out
+
+
+def subset_equality(reference, candidate, ignore=()):
+    """Every reference flight must exist in candidate with every field identical (JSON values, exact)."""
+    ref, cand = index_flights(reference), index_flights(candidate)
+    missing = [list(k) for k in ref if k not in cand]
+    diffs = {"|".join(map(str, k)): d for k in ref if k in cand for d in [row_differences(ref[k], cand[k], ignore)] if d}
+    fields = sorted({f for r in reference for f in r} - set(ignore))
+    return {"pass": not missing and not diffs, "reference_flights": len(ref), "compared": len(ref) - len(missing),
+            "identical": len(ref) - len(missing) - len(diffs), "missing_in_candidate": missing,
+            "differences": diffs, "fields_compared": fields}

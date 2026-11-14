@@ -339,6 +339,52 @@ Output exactly in the format later PPO/SAC runs will use: `results\eval\eval-v1\
 summary.csv, summary.txt}` with the protocol hash.
 **Pass:** all flights present; the matched-realization check passes; the re-run of 1 cell gives identical numbers.
 
+**M2.4 run details (fixed 2026-11-13, before the M2.4 flights):**
+- Run: `run_protocol.py fly --controller pid --seeds 300000-300029 --check0 --out residual_ppo/results/eval/eval-v1/pid`.
+  Its `realizations.json` is marked CANONICAL; `meta.code_blobs` records the git blob IDs of the evaluation code run.
+- *Pilot equality (added by Claire):* every pilot flight (seeds 300000–300009, 240 flights) must equal the same
+  (scenario, profile, seed) flight of the M2.4 run bit-for-bit on every row field (metrics, realization fields,
+  diagnostics), and the pilot `realizations.json` entries must equal the canonical ones. Any difference is reported.
+  → `results\m2\m2_4_pilot_equality.{json,txt}` (`run_protocol.py compare`).
+- *1-cell re-run:* cell **figure_eight / outside_range / 300029**, flown in a fresh process (diagnostics on, no check 0).
+  It is the last flight of the M2.4 run, so it has the longest history of earlier flights; the re-run has none. Must
+  equal the M2.4 row bit-for-bit. → `results\m2\m2_4_rerun\` (1-flight run) + `results\m2\m2_4_rerun_check.{json,txt}`.
+- *Matched realizations + still-vs-wind + H1 (reported):* `run_protocol.py still-vs-wind --name still_vs_wind_m2_4`
+  → `results\m2\still_vs_wind_m2_4.{json,csv}`, `still_vs_wind_m2_4_summary.txt`. Pilot files stay unchanged.
+
+**M2.4 result (2026-11-13, Confirmed): PASS.** Checks 21/21 and import-path guard before Isaac; protocol hash
+`18658b9c…`; total_mass_kg 1.618614, HESAI 0 kg; Isaac 6.2.0-rc.14, numpy 2.3.1, gymnasium 1.2.3, SB3 2.7.0, torch
+2.14.1+cpu. Flown from git HEAD 501999b plus uncommitted evaluation edits; `meta.code_blobs` records the exact blob IDs
+(run_protocol.py cab3d6f0, protocol_stats.py 0539d779, controllers.py 9fa925b4, run_common.py 4b7374c9,
+eval_protocol_v1.py 57718499).
+- Check 0 PASS; **720/720 flights in 35.8 min**; files `results\eval\eval-v1\pid\` (`realizations.json` CANONICAL).
+- **Matched realizations (consistency check): PASS** (720/720, 180 (scenario, seed) groups).
+- **Pilot equality: PASS, bit-for-bit.** 240/240 pilot flights identical on all 32 row fields; 240/240 realizations
+  entries identical. So adding seeds 300010–300029 changed nothing on the first 10, and the run order/history does not
+  matter.
+- **1-cell re-run: PASS, bit-for-bit** (figure_eight / outside_range / 300029, fresh process, 32/32 fields).
+- **PID-only baseline, per profile** (mean over the 6 scenarios of `summarize()`, 180 flights per profile):
+
+  | profile | RMSE [m] | cross-track RMSE [m] | max dev (mean of scenario maxima / overall) [m] | completed | failed |
+  |---|---|---|---|---|---|
+  | still_air | 0.183 | 0.124 | 0.571 / 0.798 | 116 (64%) | 0 |
+  | training_range | 0.483 | 0.356 | 1.768 / 2.441 | 24 (13%) | 0 |
+  | unseen_gusts | 0.484 | 0.366 | 1.531 / 2.104 | 16 (9%) | 0 |
+  | outside_range | 1.641 | 1.172 | 3.113 / 3.151 | 0 | 110 (61%), all out_of_bounds |
+
+- *Still air vs wind (30 seeds):* still-air RMSE 0.108 (hover) to 0.279 m (turns); training_range adds +0.27 to
+  +0.35 m RMSE per scenario (every CI above 0). Along-track lag: −0.004 to −0.059 m in still air, +0.09 to +0.18 m in
+  training_range. Accel cap binding: 0–11.2% in still air (turns highest), 0–14.0% in training_range, 53.9–62.0% in
+  outside_range on moving routes (38.5% hover). Tilt cap: 0% everywhere.
+- **H1 (reported verdict, 30 seeds): REJECTED.** Primary `wind_share_MSE` = **0.868, 95% CI [0.808, 0.906]** (mean MSE
+  training_range 0.2918 m², still_air 0.0384 m²).
+  - Hover sanity: OK. Still-air MSE 0.01294 m², training_range 0.18815 m², share 0.931 [0.892, 0.954].
+  - Failures in still_air/training_range: 0, so sensitivity = primary (same verdict).
+  - Secondary: RMSE share 0.621 [0.544, 0.679]; paired RMSE difference +0.300 m [+0.220, +0.384]; per-scenario MSE
+    shares 0.773 (turns) to 0.933 (straight), every lower bound ≥ 0.68.
+  - Same verdict as the pilot (0.900 [0.768, 0.948]); the CI is narrower with 30 seeds.
+- D4 (`strong_range` / `beyond_strong`) is to be decided now, after M2.4 (not decided here).
+
 Important: PID failing under `outside_range` (or stronger) is a **result, not a bug**. Do not tune PID, wind or
 limits: they are shared with SAC.
 

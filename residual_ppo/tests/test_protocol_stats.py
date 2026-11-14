@@ -191,6 +191,34 @@ class StillVsWindH1Test(unittest.TestCase):
         self.assertNotIn("position_rmse_diff_vs_still_mean", table[0])
 
 
+class EqualityChecksTest(unittest.TestCase):
+    """M2.4: pilot flights must equal the 30-seed run bit-for-bit; 1-cell re-run must equal the stored row."""
+
+    def test_exact_equality_nan_and_types(self):
+        a = {"x": 0.1, "y": float("nan"), "z": [1.0, 2.0], "b": True, "s": None}
+        self.assertEqual(ps.row_differences(a, dict(a)), {})
+        self.assertIn("x", ps.row_differences(a, {**a, "x": float(np.nextafter(0.1, 1.0))}))  # 1 ulp
+        self.assertIn("z", ps.row_differences(a, {**a, "z": [1.0, 2.0000000000000004]}))
+        self.assertIn("b", ps.row_differences(a, {**a, "b": 1}))      # bool vs int not conflated
+        self.assertIn("y", ps.row_differences(a, {**a, "y": 0.0}))
+        self.assertIn("new", ps.row_differences(a, {**a, "new": 1}))  # missing on one side
+        self.assertEqual(ps.row_differences(a, {**a, "x": 9.0}, ignore=("x",)), {})
+
+    def test_subset_equality(self):
+        ref = [flight("hover", "still_air", s, 0.1) for s in (1, 2)]
+        cand = ref + [flight("hover", "still_air", 3, 0.1)]
+        r = ps.subset_equality(ref, cand)
+        self.assertTrue(r["pass"])
+        self.assertEqual((r["compared"], r["identical"]), (2, 2))
+        bad = [dict(cand[0], position_rmse=0.1000000001)] + cand[1:]
+        r = ps.subset_equality(ref, bad)
+        self.assertFalse(r["pass"])
+        self.assertEqual(list(r["differences"]), ["hover|still_air|1"])
+        r = ps.subset_equality(ref, cand[1:])
+        self.assertEqual(r["missing_in_candidate"], [["hover", "still_air", 1]])
+        self.assertFalse(r["pass"])
+
+
 class ControllersTest(unittest.TestCase):
     def test_pid_returns_float32_zeros(self):
         a = controllers.make_controller("pid").act(np.ones(128, np.float32))

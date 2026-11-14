@@ -1,0 +1,19 @@
+{
+  "note": "NOT canonical (subset run); the canonical realizations.json is the M2.4 30-seed PID run (plan, M2.3 design (d))",
+  "key": [
+    "wind_seed",
+    "wind_speed",
+    "route_seconds",
+    "initial_obs_sha256",
+    "max_decisions"
+  ],
+  "flights": {
+    "figure_eight|outside_range|300029": {
+      "wind_seed": 2005085969107723306,
+      "wind_speed": 9.38543724746916,
+      "route_seconds": 39.71606231319571,
+      "initial_obs_sha256": "6bfee0586049422416e85bedc5c3868cc996f8f9b6e5bb550ac99bcc91b0e891",
+      "max_decisions": 398
+    }
+  }
+}

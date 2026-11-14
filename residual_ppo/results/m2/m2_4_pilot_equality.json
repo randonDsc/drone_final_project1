@@ -1,0 +1,91 @@
+{
+  "created_at": "2026-11-14T03:16:43+00:00",
+  "purpose": "M2.4 pilot equality (added by Claire): the 240 pilot flights (seeds 300000-300009) vs the same flights of the M2.4 30-seed run, bit-for-bit",
+  "reference_run": "residual_ppo/results/m2/pilot_pid/results.json",
+  "reference_sha256_lf": "2fdfb86c4116eb69eda9c8d1b63ff0887014ec10c878115848b08b042eddbe76",
+  "candidate_run": "residual_ppo/results/eval/eval-v1/pid/results.json",
+  "candidate_sha256_lf": "1cf76cf2482ff40eb3203098a7fc39ae1c07179ebda47179b5bf5cb23a48b7da",
+  "tolerance": "bit-exact (JSON values identical; NaN == NaN; types must match)",
+  "protocol_file_sha256": [
+    "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc",
+    "18658b9ce0801677369f6ee16d5d49467965fe96888a091d6d7762fd7376d0dc"
+  ],
+  "packages": [
+    {
+      "numpy": "2.3.1",
+      "gymnasium": "1.2.3",
+      "stable_baselines3": "2.7.0",
+      "torch": "2.14.1+cpu"
+    },
+    {
+      "numpy": "2.3.1",
+      "gymnasium": "1.2.3",
+      "stable_baselines3": "2.7.0",
+      "torch": "2.14.1+cpu"
+    }
+  ],
+  "isaac_sim": [
+    "6.2.0-rc.14+release.52805.02189a84.gl",
+    "6.2.0-rc.14+release.52805.02189a84.gl"
+  ],
+  "total_mass_kg": [
+    1.6186144351959229,
+    1.6186144351959229
+  ],
+  "pass": true,
+  "flights": {
+    "pass": true,
+    "reference_flights": 240,
+    "compared": 240,
+    "identical": 240,
+    "missing_in_candidate": [],
+    "differences": {},
+    "fields_compared": [
+      "accel_cap_binding_frac",
+      "along_track_lag_mean",
+      "along_track_lag_rms",
+      "collided",
+      "completed",
+      "completion_time",
+      "controller",
+      "cross_track_component_rms",
+      "cross_track_max",
+      "cross_track_rmse",
+      "decisions",
+      "diag_lag_steps",
+      "diag_physics_steps",
+      "diag_pid_part",
+      "failed",
+      "failure_reason",
+      "initial_obs_sha256",
+      "max_decisions",
+      "max_deviation",
+      "position_rmse",
+      "residual_change",
+      "residual_norm",
+      "route_seconds",
+      "route_type",
+      "saturation_rate",
+      "scenario",
+      "seed",
+      "tilt_cap_binding_frac",
+      "wind_mean",
+      "wind_profile",
+      "wind_seed",
+      "wind_speed"
+    ]
+  },
+  "realizations": {
+    "pass": true,
+    "compared": 240,
+    "missing_in_candidate": [],
+    "differences": {},
+    "key": [
+      "wind_seed",
+      "wind_speed",
+      "route_seconds",
+      "initial_obs_sha256",
+      "max_decisions"
+    ]
+  }
+}
