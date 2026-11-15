@@ -21,11 +21,13 @@ pre-specification, written before its model exists. (CLAUDE.md recorded continua
 2026-11-12; including it in the ablation line is Claire's 2026-11-15 decision.)
 
 **Team SAC (PID + SAC residual) stays in as descriptive context only, with no cross-algorithm inferential claim.**
-It differs from our PPO in algorithm, trainer (team script, SB3 2.9.0, CUDA torch) and parameter count:
-- PPO: **198,921** parameters = actor 99,848 + critic 99,073 (Confirmed, M3 V-checks).
-- SAC: **501,260** = actor 100,872 + two critics 2 × 100,097 + two target critics 2 × 100,097 (Inference: arithmetic
-  from `net_arch` pi/qf [256, 256], obs 128, action 4, in `models/sac_team/SOURCE.json`; the target critics are
-  not trained by gradient, so 301,066 parameters are gradient-trained).
+It differs from our PPO in algorithm, trainer (team script, SB3 2.9.0, CUDA torch) and parameter count. The
+primary comparison uses **trainable** parameters:
+- PPO: **198,921 trainable** = actor 99,848 + critic 99,073 (Confirmed, M3 V-checks).
+- SAC: **301,066 trainable** = actor 100,872 + two critics 2 × 100,097. That is **501,260 including the two frozen
+  target critics** (2 × 100,097), which follow the critics by Polyak averaging (tau 0.005) and are never updated by
+  gradient. (Inference: arithmetic from `net_arch` pi/qf [256, 256], obs 128, action 4, in
+  `models/sac_team/SOURCE.json`.)
 
 SAC vs PID is reported through the frozen `report` mode in its own, clearly separate descriptive section. No
 PPO-vs-SAC test of any kind is computed or reported.
@@ -111,8 +113,14 @@ There is one primary result per primary profile and no correction for multiple p
 control, which is not bounded by L, shows its **largest advantage there**, and **little or no advantage in
 `training_range`**. Stated as checkable outcomes:
 
-- **P1 (strong wind; secondary profiles, E5 rule 3 order).** Direct fails less than the residual: c > b in both
-  `strong_range` and `beyond_strong`, with McNemar exact p < 0.05 in at least one of them.
+- **P1 (strong wind; secondary profiles, E5 rule 3 order; amended 2026-11-15, see section 10, A1).**
+  - **Decided by `strong_range`:** direct fails less than the residual there, c > b with McNemar exact p < 0.05.
+  - **`beyond_strong` counts toward P1 only if at least one of the two controllers fails fewer than 180 of 180.**
+    It is then evaluated the same way (c > b, McNemar exact p) and reported as corroborating (c > b) or contradicting
+    (b > c) P1. Otherwise (both fail 180/180) it is reported as **uninformative due to a ceiling effect**, and it
+    neither supports nor falsifies P1.
+  - McNemar exact p < 0.05 needs at least 6 discordant pairs, all in one direction (b + c = 6, min(b, c) = 0 gives
+    p = 2 · 0.5^6 = 0.031; b + c = 5 gives 0.0625).
 - **P2 (nominal wind; primary profile `training_range`).** Little or no RMSE advantage for direct: the lower bound of
   the direct − residual 95% CI is ≥ −0.02 m, i.e. direct is not better by more than 2 cm with confidence.
 - **P3 (mechanism; descriptive, not a test).** In the residual run, the mean `residual_norm` (ceiling 2.0 = all four
@@ -123,10 +131,15 @@ control, which is not bounded by L, shows its **largest advantage there**, and *
 
 ## 7. What would falsify the prediction
 
-- **P1 is falsified** if b ≥ c in both `strong_range` and `beyond_strong` (direct fails as often as the residual, or
-  more). If c > b in both but neither McNemar p < 0.05, P1 is **not supported** (inconclusive), not falsified.
-  If both controllers fail all 180 flights of a profile (b = c = 0), that profile cannot inform P1. Median decisions
-  flown (E5 rule 3 (c)) is then reported as the only descriptive contrast.
+- **P1 (amended, A1) is judged on `strong_range`:**
+  - **holds** if c > b with McNemar exact p < 0.05;
+  - is **not supported** (inconclusive, not falsified) if c > b with p ≥ 0.05;
+  - is **falsified** if b ≥ c, provided at least one controller fails fewer than 180 of 180 there;
+  - is **unevaluable (ceiling effect)** if both controllers fail all 180 `strong_range` flights. This is the same
+    ceiling logic as for `beyond_strong`. The canonical PID already fails 179/180 there.
+- **`beyond_strong`** follows the rule in P1: it informs P1 only when at least one controller fails fewer than
+  180/180; otherwise it is reported as uninformative due to a ceiling effect.
+- In any profile at the ceiling, median decisions flown (E5 rule 3 (c)) is reported as the only descriptive contrast.
 - **P2 is falsified** if the upper bound of the `training_range` CI is below −0.02 m (direct is clearly better by more
   than 2 cm in nominal wind). Then any advantage is not specific to strong wind. If failures occur in
   `training_range`, E5 rule 2 applies first.
@@ -134,7 +147,8 @@ control, which is not bounded by L, shows its **largest advantage there**, and *
   in `strong_range` / `beyond_strong` is not higher than in `training_range`, or rotor saturation is substantial for
   the residual in those profiles (then the motors, not L, would be the binding limit).
 - **The whole prediction is falsified** if direct control is worse than the residual in strong wind: b > c with
-  McNemar p < 0.05 in `strong_range` or `beyond_strong`.
+  McNemar p < 0.05 in `strong_range`, or in `beyond_strong` when it is informative (at least one controller below
+  180/180).
 
 Any outcome is reported, whatever its direction.
 
@@ -162,3 +176,28 @@ Changing anything in sections 3–7 after the direct-control model exists invali
 - **Separate descriptive section:** team **SAC vs PID**, through the same frozen report, as context only. It contains
   no PPO-vs-SAC test or paired statistic of any kind.
 - The residual-vs-direct comparison above is future work until the direct-control model exists.
+
+## 10. Amendments (each made before any direct-control code or model existed)
+
+**A1 and A2 (Claire, 2026-11-15; committed on top of 3218b53, the original pre-specification).** State when they
+were made (Confirmed): HEAD 3218b53; no direct-control env, policy, script, config, model or run under `residual_ppo/`
+(a search for direct-control code found nothing; `runs/ppo_path/` holds only the residual run, its killed first
+launch and the smoke runs; `models/` holds only `sac_team`); no flight of any learned controller on the eval seeds
+(`results/eval/eval-v1/` holds only `pid/` and `pid_validation/`); no Isaac process running. The M7 flights of the
+residual controller had not started.
+
+- **A1: P1 rewritten (sections 6 and 7).** Before: P1 required c > b in **both** `strong_range` and `beyond_strong`,
+  with p < 0.05 in at least one; b ≥ c in both falsified it. After: P1 is decided by `strong_range` (c > b, McNemar
+  exact p < 0.05); `beyond_strong` counts only if at least one controller fails fewer than 180/180, and is otherwise
+  reported as uninformative due to a ceiling effect.
+  **Why:** the canonical PID fails **180/180** flights in `beyond_strong` and 179/180 in `strong_range` (Confirmed,
+  `results/eval/eval-v1/pid/`). If both of Claire's controllers also hit that ceiling, there are no discordant pairs
+  (b = c = 0). Under the original wording that would have counted as "b ≥ c", so a prediction that could not be
+  evaluated would have been scored as false. A ceiling says nothing about which controller has more authority, so it
+  must be reported as uninformative, not as a result. The same ceiling logic is applied to `strong_range` (P1 is
+  unevaluable there if both controllers fail all 180 flights).
+- **A2: parameter counts (section 1).** The primary comparison is trainable parameters: SAC 301,066 vs PPO 198,921.
+  SAC's 501,260 is given only as "including the two frozen target critics".
+
+Because A1 and A2 were made before the direct-control model existed and before any learned eval flight, they keep
+the pre-specification valid. They do not touch sections 3–5 (what is compared, endpoints, statistics, profile roles).
