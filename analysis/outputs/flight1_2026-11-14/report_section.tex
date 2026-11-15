@@ -1,21 +1,29 @@
-% Generated from the archived flight1 results; see report.md for full methods.
-\subsection{Paired statistical evaluation of PID and residual SAC}
-We analyzed 420 archived Isaac Sim flights, forming 210 matched cases across seven scenarios, three wind profiles, and 10 environment seeds per condition. The fixed SAC checkpoint had 1,500,000 training decisions. The primary effect was the paired difference in position RMSE (PID+SAC minus PID), so negative differences favor SAC. Pointwise 95\% BCa intervals used 50,000 bootstrap resamples. Two-sided Wilcoxon signed-rank tests were Holm-adjusted across the 21 primary conditions. Overall intervals resampled whole environment-seed blocks to preserve dependence across conditions.
+% Standalone manuscript subsection; maintained directly as LaTeX text.
+\subsection{Paired evaluation of residual SAC control}
+We evaluated residual Soft Actor--Critic (SAC) control against a fixed PID baseline using 420 Isaac Sim flight records. Our dataset comprised 210 controller pairs across seven scenarios, three wind profiles, and ten environment seeds per condition. We analyzed the frozen checkpoint trained for 1,500,000 decisions. Each pair shared its recorded scenario, environment seed, wind seed, and reference-route duration.
 
-SAC produced lower recorded RMSE in all 180 open-air pairs and lower mean error in 20 of the 21 conditions. The primary adjusted signed-rank tests rejected in 20 conditions. For the equally weighted open-air benchmark, the mean paired difference was $-0.769$ m (pointwise 95\% seed-block interval $[-0.873, -0.685]$ m).
+Our primary effect was position RMSE with PID+SAC minus position RMSE with PID, so negative differences favored SAC. We constructed pointwise 95\% bias-corrected and accelerated bootstrap intervals with 50,000 resamples and applied two-sided Wilcoxon signed-rank tests with Holm adjustment across the 21 primary conditions. Overall benchmark intervals resampled ten whole environment-seed blocks to preserve dependence across conditions.
 
-\begin{table}[ht]
+SAC achieved lower recorded RMSE in all 180 open-air pairs. The equally weighted mean flight-level RMSE decreased from 0.884\,m to 0.115\,m, an 87.0\% reduction. The mean paired difference was $-0.769$\,m, with a pointwise 95\% seed-block interval of $[-0.873,-0.685]$\,m. Twenty condition-specific mean differences favored SAC, and the corresponding signed-rank tests rejected after adjustment; separately adjusted sign tests supported the same 20 conditions.
+
+\begin{table}[htbp]
 \centering
+\small
 \begin{tabular}{lrrr}
 \hline
-Open-air wind profile & PID RMSE (m) & PID+SAC RMSE (m) & Difference (m) \\
+Open-air wind profile & PID RMSE (m) & PID+SAC RMSE (m) & Reduction \\
 \hline
-training range & 0.502 & 0.082 & -0.420 \\
-unseen gusts & 0.497 & 0.082 & -0.415 \\
-outside range & 1.653 & 0.181 & -1.471 \\
+Training range & 0.502 & 0.082 & 83.6\% \\
+Unseen gusts & 0.497 & 0.082 & 83.5\% \\
+Outside range & 1.653 & 0.181 & 89.0\% \\
 \hline
 \end{tabular}
-\caption{Descriptive means across six open-air route types. Uncertainty is calculated using whole seed blocks, not by treating every case as independent.}
+\caption{Mean flight-level position RMSE across six open-air scenarios and ten environment seeds per wind profile. Percentage reductions are calculated from unrounded controller means.}
+\label{tab:paired-sac-open-air}
 \end{table}
 
-There were 54 pairs with different recorded decision counts. Failed flights remain in the primary summaries, but their errors cover shorter observed horizons. A survivor-conditioned sensitivity analysis is therefore reported separately. Dijkstra strong-wind cases are further limited by takeoff with the SAC residual disabled; both controllers failed every case in that condition. These results characterize one checkpoint and one PID baseline rather than training-seed robustness or real-flight safety. The archive does not contain the time-series measurements needed for event-recovery or correction--integral analysis.
+For Dijkstra navigation, completion increased from 2/10 to 9/10 in training-range wind and from 0/10 to 7/10 under unseen gusts. Both modes failed all ten outside-range cases. The strong-wind navigation difference was $+0.013$\,m (pointwise 95\% interval $[-0.015,+0.043]$\,m; adjusted $p=0.42578$), providing no reliable evidence of an RMSE difference in that condition. All 14 failed PID+SAC flights had zero recorded mean residual, consistent with the documented residual-disabled launch phase.
+
+Recorded decision counts differed in 54 pairs, so primary error summaries compare the portions actually flown. Our separate sensitivity analysis retained 152 nonfailed, equal-count pairs across 20 conditions; all represented mean differences favored SAC, with 13 adjusted signed-rank rejections. This subset remains subject to survivor selection. Across all cases, completion counts were 8/210 for PID and 190/210 for PID+SAC. Exact paired-outcome tests supported eight condition-specific completion differences after adjustment, whereas failure and collision comparisons did not reject within their respective families.
+
+Our results characterize one trained checkpoint and the specified PID configuration. They support improved recorded open-air tracking while identifying launch reliability as a separate navigation limitation. Independent training runs, sensor-estimation effects, event recovery, and correction--integral alignment remain outside the available flight-summary evidence.

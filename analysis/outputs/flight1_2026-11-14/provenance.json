@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-15T02:08:11.320823+00:00",
+  "created_utc": "2026-11-15T23:06:11.046761+00:00",
   "configuration": {
     "analysis_date": "2026-11-14",
     "bootstrap_resamples": 50000,
@@ -4306,20 +4306,21 @@
   },
   "repository": {
     "branch": "alan/mujoco",
-    "commit": "40b99e4b4c514ae2f795d4b479891b88db7465da"
+    "commit": "3ff9877cf6bfebabc5eb7957f812d888d6046c15"
   },
   "analysis_sources_sha256": {
     "__init__.py": "0b2b14e35848ad241fb1e5b3a689f9f7822bc1fb835aa720d279199e1f7ec300",
     "archive_io.py": "dead6cd05c774851a741c7e7a012d2ec57557568afcd1d28cc3df2e3b4f36c50",
-    "figures.py": "a94df48375c5b1d13273197976e39bd2e0f363861d48e6b758b9fa7d88b61d20",
-    "run_analysis.py": "dcc5d8bea601831e414568a7fe0364d912c343a88c32bd850046228603436fd8",
+    "audit_results.py": "9209c10ebfdb49c7c014244de7aeaee2db76897c3a90b714325febcb7d0a2aa7",
+    "figures.py": "aef3669a36660a1a5759f7d2baaa607f64889cdb02ead9343f2731713b01930a",
+    "run_analysis.py": "aef5cdbe377f64d8a6253e4d124a855bea23c07619741694ee048e0e0cb32712",
     "stats_tools.py": "75c737fefa92f7ce022b5f7c2e93f1326197d59246829677f4a3a1defb00511c",
-    "verify_outputs.py": "a0864d427ff7d5cb8ed04ffd23d427ddfc713b6cd6e2a7523218987666b53839",
-    "write_report.py": "c1445299e1af0cd5df049bb914ec345c600c2bb7d9c62a4f9dd205a7097b7005"
+    "verify_outputs.py": "a0864d427ff7d5cb8ed04ffd23d427ddfc713b6cd6e2a7523218987666b53839"
   },
   "evaluation_not_rerun": true,
   "training_not_rerun": true,
   "model_not_deserialized": true,
   "simulator_imported": false,
-  "analysis_does_not_modify_simulation_sources": true
+  "analysis_does_not_modify_simulation_sources": true,
+  "narrative_reports_generated": false
 }

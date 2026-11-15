@@ -1,81 +1,89 @@
-# Statistical methods and scope
+# Statistical Analysis Protocol
 
-Protocol version: 1. Analysis date: 2026-11-14. This protocol documents a **retrospective exploratory analysis**, written after the archive and original report were available. It is not a preregistration. Package versions, parameters, code hashes, and input hashes are saved with every run.
+**Study:** Paired evaluation of residual SAC flight control
 
-## Fixed data and model
+**Analysis date:** 14 November 2026
 
-The source is the supplied `runs.zip`, specifically `runs/flight_sac/flight1/evaluation/final_model/`. Its `flights.csv` contains 420 rows: seven scenarios × three wind profiles × ten environment seeds × two controllers. Scenarios are hover, straight, turns/waypoints, altitude, circle, figure eight, and Dijkstra. Seeds are 300000–300009.
+**Numerical review:** 15 November 2026
 
-The checkpoint is `flight1/final_model.zip`, SHA-256 `2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d`. Its metadata reports 1,500,000 decisions, training seed 0, 128 observations, and four residual actions. This checkpoint was selected because it is the team's first model with archived evaluation, rather than through a checkpoint sweep in this pipeline. Weight files are hashed as bytes; serialized model objects are never loaded.
+## 1. Study design and scope
 
-The source report identifies Isaac Sim evaluation on 4 November 2026, using simulator ground truth and a frozen deterministic SAC policy. The saved model is a residual controller: its thrust/torque correction is added to the PID command before mixing. The model's four action magnitudes are distinct from a geographic wind vector. The stored policy contract contains the PID gains, residual limits, sampling rates, observation scaling, and curriculum.
+We conducted a retrospective analysis of the first flight SAC checkpoint's archived Isaac Sim evaluation. Our dataset comprises 420 flight records: seven scenarios, three wind profiles, ten environment seeds per condition, and two controller modes. The checkpoint is `flight1/final_model.zip`, trained for 1,500,000 decisions with training seed 0. Its SHA-256 is `2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d`.
 
-The final training stage uses 2–7 m/s mean wind. The archived report defines the evaluation profiles as training-range wind on new seeds, stronger/faster unseen gusts, and outside-range mean wind of 8–10 m/s. These labels are specific to flight1. Flight2 continues the same training lineage to 2.5 million total decisions, with mean-wind stages up to 14 m/s; its configuration snapshots are preserved as evidence. Flight2 has no evaluation table in the archive and contributes no statistical observations here. Earlier hover/PPO experiments are separate tasks.
+The scenarios are hover, straight, turns/waypoints, altitude change, circle, figure eight, and Dijkstra navigation. The environment seeds are 300000–300009. The evaluation documentation describes a frozen deterministic policy and ground-truth simulator state. Our inference concerns variation across these environment seeds for one policy and one PID configuration. The analysis is exploratory and retrospective; the recorded protocol is not a preregistration.
 
-## Data integrity and pairing
+## 2. Source validation and pairing
 
-Pairs are keyed by `(scenario, wind_profile, seed)`. Each key must have exactly one `pid_only` and one `pid_sac` record. The complete scenario/profile/seed grid is required. Within a pair, `wind_seed`, recorded `wind_speed` when present, and `route_seconds` must agree. Wind seeds remain Python integers so values above 2^53 are never rounded through floating point.
+We matched each `pid_only` flight with its `pid_sac` counterpart using `(scenario, wind_profile, seed)`. We required exactly one record per controller, a complete condition–seed grid, and agreement in recorded wind seed, mean wind speed when present, and reference-route duration. Wind seeds were preserved as integers to prevent floating-point rounding.
 
-The loader rejects duplicate/missing flights, undeclared controllers, missing columns, non-finite/negative metrics, invalid outcome flags, and inconsistent failure flags/reasons. It cross-checks each flight against the source JSON and recomputes source summaries. The source summary's `cross_track_max` and `max_deviation` are **maxima across flights**, unlike its mean-RMSE columns. Source files are copied byte for byte and hashed. ZIP names are inspected and only specific data/configuration files are copied; archived scripts and pickle payloads are not executed.
+We checked finite and nonnegative metrics, valid binary outcomes, failure-flag/reason consistency, duplicate identifiers, and missing pairs. Flight-level CSV values were cross-checked against `results.json`; source summaries were independently recomputed. Source `max_deviation` and `cross_track_max` summarize maxima across flights, whereas our secondary paired analyses treat each flight's maximum as an observation. These estimands are distinct.
 
-Recorded pairing fields support matching. The original evaluation report states that routes and initial conditions were shared within a pair. Exact reset vectors and reference hashes are absent, so that stronger claim cannot be independently verified from the summary data. Reproduction from `source_data/` verifies the preserved small-file hashes; it does not rehash the unavailable full ZIP or reload the model. Provenance makes that distinction explicit.
+The archived report states that paired routes and starting conditions were shared. Exact reset vectors and reference hashes are not stored, limiting independent verification of those additional properties. We retained original source bytes and checksums for traceability.
 
-## Estimands and resampling units
+## 3. Effects and confidence intervals
 
-For each condition and environment seed, define `d_i = RMSE_SAC,i − RMSE_PID,i`. The primary effect estimate is the arithmetic mean of the ten differences. Negative differences favor SAC. Also report controller means, median difference, sample standard deviation of differences, SAC/PID win counts, and ties. Differences within 1e-12 count as ties. The percentage reduction is `100 × (mean_PID − mean_SAC) / mean_PID`, omitted when the PID mean is zero.
+For each condition and seed, we defined `d = position_RMSE_PID+SAC − position_RMSE_PID`. Negative differences favor SAC. We report controller means, mean and median paired differences, sample standard deviation of differences, and win/tie counts. Differences within 1e-12 count as ties. Relative mean reduction is `100 × (mean_PID − mean_PID+SAC) / mean_PID`, omitted when the PID mean is zero.
 
-Position RMSE is the source evaluator's time-indexed position tracking metric, in metres. This analysis consumes the recorded flight-level metric rather than reconstructing it from trajectories. The overall benchmark averages **flight-level RMSE values**; it is not the square root of a pooled sum of squared position samples. Secondary maxima are each flight's maximum error and are compared as paired observations.
+Position RMSE is the evaluator's time-indexed tracking metric. Cross-track error measures geometric distance to the reference path independently of progress along that path. Our analysis consumes recorded flight-level values; it does not reconstruct trajectories. Overall summaries are means of flight-level RMSE, not RMSE calculated from concatenated time samples.
 
-Pointwise 95% confidence intervals for mean differences use SciPy's bias-corrected and accelerated (BCa) bootstrap with 50,000 resamples. Resampling paired differences preserves controller pairing. Group-specific generator seeds are derived by SHA-256 from master seed 20261114 and a stable group label. Small samples and skewed differences can limit interval coverage; resampling 50,000 times does not create additional independent flight data. Constant samples get a degenerate-observed-sample label, and non-finite BCa results remain unavailable rather than silently switching methods. See the [SciPy bootstrap documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html).
+We used pointwise 95% bias-corrected and accelerated (BCa) bootstrap intervals with 50,000 resamples. The master resampling seed was 20261114; group-specific seeds were derived by SHA-256 from the master seed and a stable group label. Within conditions, paired differences were resampled as units. Constant observed samples received a degenerate-sample label; groups with fewer than two pairs had no interval. Non-finite BCa results remained unavailable instead of triggering an undeclared alternative method. Method definitions follow the [SciPy bootstrap documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html).
 
-Only ten environment seed identifiers occur across the entire benchmark. For an overview, first average the selected fixed conditions within each seed, then resample the resulting ten whole seed blocks. This preserves any cross-condition dependence induced by reusing seeds. Conditions are equally weighted within the specified benchmark; this does not estimate an unknown deployment distribution. The five overviews overlap and are not five independent experiments.
+The same ten seed identifiers occur across conditions. For each overview benchmark, we first averaged its selected fixed conditions within each seed and then resampled the ten resulting seed blocks. This preserves any dependence associated with seed reuse. Conditions receive equal weight within the benchmark. The five overview summaries overlap and are not independent experiments or estimates of an unspecified deployment distribution.
 
-No confidence interval here is adjusted to provide simultaneous coverage across conditions. A pointwise interval excluding zero does not automatically imply rejection after multiple-testing adjustment.
+All reported intervals are pointwise. We make no claim of simultaneous 95% coverage across conditions. With ten seed observations, coverage and precision remain sensitive to the observed sample despite the large number of bootstrap resamples.
 
-## Paired tests and multiple comparisons
+## 4. Hypothesis tests and multiplicity
 
-The primary test is two-sided Wilcoxon signed-rank on paired differences. Its null is a difference distribution symmetric about zero; interpreting it as a location-shift test relies on the usual symmetry assumption. It is **not a direct test of equality of means**. Environment-seed cases within a condition must be independent draws for the inferential interpretation. Existing data cannot establish that these seeds were never used in earlier model selection.
+We used two-sided Wilcoxon signed-rank tests. The null concerns a paired-difference distribution symmetric about zero; interpreting a rejection as a location shift requires the corresponding symmetry assumption. The test is not a direct test of mean equality. Environment-seed observations within a condition must support the independence assumptions of the analysis.
 
-Differences are rounded to 12 decimal places for rank calculation only, following SciPy's warning about subtraction-induced false ranks. For distinct nonzero absolute differences use the exact signed-rank distribution. For zeros or ties use an exhaustive sign-permutation calculation for these small samples, dropping zeros from ranks (`zero_method='wilcox'`). All-zero differences receive p=1 with an explicit no-rank-information label. Larger future tied samples would use a deterministic Monte Carlo permutation calculation. See the [SciPy Wilcoxon documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wilcoxon.html).
+For rank calculations only, differences were rounded to 12 decimal places to avoid spurious floating-point distinctions. Distinct, nonzero differences used exact signed-rank inference. Tied or zero differences used exhaustive sign permutations for the small samples in this study, dropping zero differences from ranks. All-zero samples received p = 1 with an explicit no-rank-information label. These conventions follow the [SciPy signed-rank documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wilcoxon.html).
 
-A two-sided exact sign test considers the number of negative differences among non-ties under a Binomial(n, 0.5) null. It addresses direction rather than difference magnitude and avoids the signed-rank symmetry interpretation. Its adjusted results are a separate robustness check; they are not an alternative selected after observing p-values. The implementation uses [SciPy binomtest](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
+We also used a two-sided exact sign test on the number of SAC improvements among non-tied pairs, under a Binomial(n, 0.5) null. It measures directional consistency without using effect magnitude. The separately adjusted sign-test results serve as a robustness check; we do not select a test according to the resulting p-value. Exact binomial inference follows [SciPy binomtest](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
 
-Holm's step-down adjustment controls family-wise error at alpha 0.05 within each declared family. It does not require independence between tests. Raw and adjusted p-values, family names, and family sizes are retained. Unavailable tests retain a family slot conservatively. The families are:
+We applied Holm's step-down adjustment at α = 0.05 within each declared family. The adjustment does not require independence among its tests. Unavailable tests conservatively retain a family slot. We retain raw and adjusted p-values, family identifiers, and family sizes. The procedure is consistent with the [statsmodels multiple-testing documentation](https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html).
 
-| Family | Number | Purpose |
+| Analysis family | Tests | Interpretation |
 | --- | ---: | --- |
-| Primary position-RMSE signed-rank tests | 21 | Main condition-specific inference |
-| Primary position-RMSE sign tests | 21 | Direction-only robustness |
-| Secondary continuous signed-rank tests | 84 | Four metrics × 21 conditions |
-| Secondary continuous sign tests | 84 | Same metrics, direction-only |
-| Completion exact McNemar tests | 21 | Secondary paired outcome |
-| Failure exact McNemar tests | 21 | Secondary paired outcome |
-| Reported-collision exact McNemar tests | 21 | Secondary paired outcome |
-| Survivor-conditioned RMSE signed-rank tests | 21 | Exploratory sensitivity |
-| Survivor-conditioned RMSE sign tests | 21 | Exploratory sensitivity robustness |
-| Seed-block overview signed-rank tests | 5 | Exploratory fixed-benchmark summaries |
-| Seed-block overview sign tests | 5 | Overview robustness |
+| Primary position-RMSE signed-rank | 21 | Primary condition-specific inference |
+| Primary position-RMSE sign | 21 | Directional robustness |
+| Secondary continuous signed-rank | 84 | Four metrics across 21 conditions |
+| Secondary continuous sign | 84 | Directional robustness for secondary metrics |
+| Completion exact McNemar | 21 | Secondary paired outcome |
+| Failure exact McNemar | 21 | Secondary paired outcome |
+| Reported-collision exact McNemar | 21 | Secondary paired outcome |
+| Sensitivity position-RMSE signed-rank | 21 | Survivor-conditioned exploratory analysis |
+| Sensitivity position-RMSE sign | 21 | Sensitivity robustness |
+| Seed-block overview signed-rank | 5 | Exploratory benchmark summaries |
+| Seed-block overview sign | 5 | Overview robustness |
 
-There is no claim of one global 5% error rate across all families. Primary claims use the primary family; secondary and sensitivity results remain separately labeled. The Holm algorithm agrees with the method described in the [statsmodels multiple-testing documentation](https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html), although the runtime implementation needs only NumPy/SciPy.
+These families do not provide one global 5% family-wise error rate over the entire study. Primary conclusions use the primary family; secondary, overview, and sensitivity results retain their separate status.
 
-With ten nonzero pairs the smallest possible two-sided exact signed-rank p-value is `2/2^10 = 0.001953125`. The first Holm threshold in an 84-test family is `0.05/84 ≈ 0.000595`. Therefore that secondary family has very limited rejection power at this sample size. Report effect estimates and uncertainty even when adjusted tests do not reject. Non-rejection is not proof of no effect.
+The minimum two-sided exact signed-rank p-value for ten nonzero pairs is `2/2^10 = 0.001953125`. It exceeds the first Holm threshold for an 84-test family, `0.05/84 ≈ 0.000595`. Therefore no secondary-family rejection is attainable under these exact tests at the current sample size. Non-rejection does not establish equivalence or absence of an effect.
 
-## Binary outcomes
+## 5. Binary outcomes
 
-Completion, failure, and collision are analyzed as three recorded binary flags. A flight without failure is not necessarily completed. For each outcome report the 2×2 paired counts, controller rates, and SAC-minus-PID rate difference. For completion positive differences are favorable; for failure/collision negative differences are favorable.
+We analyzed completion, failure, and reported collision as separate flags. For each outcome, we report both-true, PID-only-true, SAC-only-true, and both-false counts; controller rates; and the SAC-minus-PID rate difference. Positive completion differences favor SAC, while negative failure/collision differences favor SAC. No recorded failure does not necessarily imply completion.
 
-Exact McNemar inference conditions on discordant pairs. If `b` pairs are PID-only true and `c` are SAC-only true, use the two-sided binomial test on `c` of `b+c` at p=0.5. If there are no discordant pairs, assign p=1. This matches the exact-binomial formulation in the [statsmodels McNemar documentation](https://www.statsmodels.org/stable/generated/statsmodels.stats.contingency_tables.mcnemar.html). It avoids a small-sample chi-squared approximation.
+For exact McNemar inference, let `b` and `c` denote discordant PID-only-true and SAC-only-true pairs. We used a two-sided Binomial(b+c, 0.5) test on `c`, assigning p = 1 when no discordant pairs were observed. This is the exact formulation described in the [statsmodels McNemar documentation](https://www.statsmodels.org/stable/generated/statsmodels.stats.contingency_tables.mcnemar.html).
 
-Controller-specific 95% rate intervals use exact binomial (Clopper–Pearson) intervals. These marginal intervals do not represent the uncertainty of the paired rate difference. In particular, 0/10 failures does not establish a zero population failure probability. Source collision flags reflect geometric/proxy checks and are not independently revalidated native simulator contacts.
+Controller-rate intervals are exact Clopper–Pearson binomial intervals. They are marginal rate intervals, not confidence intervals for paired rate differences. A zero observed failure count does not establish zero population failure risk. Source collision flags reflect geometric/proxy checks and are not independently revalidated native-contact measurements.
 
-## Failed flights, navigation, and unavailable analyses
+## 6. Observation length and navigation
 
-All available pairs remain in the primary analysis; failures are never dropped to improve a controller's score. Error metrics average only the observed portion of each flight. Fifty-four pairs have different recorded decision counts, so error summaries can compare different horizons. The saved data cannot produce a common-time-window RMSE or a censoring-aware reconstruction. Decision counts are a duration diagnostic, not precise failure timestamps.
+We retained all failed flights in primary analyses. Their errors summarize the observed portions of flight. Decision counts differ in 54/210 pairs, and common-time-window metrics cannot be reconstructed from the saved summaries. Equal counts alone do not verify identical sample times.
 
-The sensitivity subset requires both flights to be nonfailed and to have equal recorded decision counts. This can select easier cases and introduce survivor bias. It is explicitly conditional, excludes empty groups from inference, and does not replace the all-pair analysis. Equal counts alone do not prove identical actual sample times.
+The sensitivity subset requires both flights to be nonfailed and to have equal recorded decision counts. It retains 152 pairs in 20 conditions. Selection can favor easier cases; the resulting effects do not replace the all-pair estimates. Empty groups provide no estimate and retain a multiple-testing family slot.
 
-Dijkstra is kept distinct from open-air routes. The archived report describes a 6.98 m path and a departure of roughly 2.8 seconds with the residual disabled. All 14 failed SAC flights have zero recorded mean residual, consistent with launch-stage failure. Under outside-range wind both modes fail all ten cases. These are full-system launch/navigation outcomes; the archive cannot establish the performance of an engaged airborne SAC policy during those failed cases. Current repository navigation settings use a different longer warehouse route, so a new simulation would be a new experiment.
+The archived Dijkstra route is 6.98 m. Evaluation documentation describes a departure of approximately 2.8 s with the residual disabled. All 14 failed PID+SAC flights have zero recorded mean residual. These findings are consistent with launch-stage failure and limit interpretation of the engaged policy's airborne behavior in those cases. Both controller modes fail all ten outside-range navigation cases.
 
-Residual norm/change and motor saturation are descriptive only. A normalized residual magnitude is neither physical energy nor a signed correction direction. The archive does not provide held-out per-step position/reference errors, event markers, wind vectors, signed corrections, or PID integral vectors. Consequently this analysis cannot estimate error-over-time curves, gust/corner recovery time, headwind/tailwind/crosswind classes, or correction–wind/integral alignment. Final-goal completion time and training rollout summaries are not replacements.
+## 7. Numerical audit and reproducibility
 
-These inferences describe environment-seed variation for one policy and the specified PID baseline in Isaac Sim. Independent policy-training seeds, stronger baseline controllers, sensor-estimation error, MuJoCo transfer, and real flights require additional experiments. Fresh held-out seeds are appropriate for later confirmation if existing cases informed tuning; sample size should follow the precision or power needed for the chosen claim.
+We independently checked all nine tables against the original archived CSV without importing the production statistical functions. The audit reconstructed signed-rank probabilities by enumerating sign assignments, sign/McNemar probabilities from binomial coefficients, BCa limits from explicit resampling and jackknife acceleration, and marginal rate limits from beta quantiles. It also checked paired-flight values, seed-block aggregates, observation lengths, and descriptive effort. All 12,370 field checks passed; numerical comparisons used relative and absolute tolerances of 1e-10.
+
+Exact reproduction additionally requires all nine CSV files to match byte for byte under the recorded software versions and resampling configuration. The original source files, input and code hashes, audit record, and artifact manifest accompany our analysis.
+
+## 8. Interpretation boundaries
+
+Our results concern one trained checkpoint and the specified PID baseline in Isaac Sim. Independent policy-training variation, alternative PID tunings, state-estimation error, and physical flight require separate evidence. The summaries do not support time-resolved tracking curves, event-recovery estimates, headwind/tailwind/crosswind classification, or correction–wind/integral alignment. These require per-step reference, state, wind, correction, integral, and event traces. Final-goal completion time is not a disturbance-recovery measurement.
+
+A confirmation study should declare endpoints and use evaluation cases held out from tuning and model selection. Additional sample size should follow the desired precision or power for those endpoints.

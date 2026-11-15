@@ -21,7 +21,6 @@ def create_figures(output, context):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.backends.backend_pdf import PdfPages
     from matplotlib.colors import TwoSlopeNorm
     from matplotlib.lines import Line2D
 
@@ -29,49 +28,14 @@ def create_figures(output, context):
                          "savefig.facecolor":"white", "pdf.fonttype":42})
     directory = output/"figures"
     directory.mkdir()
-    pairs, primary, summary = context["pairs"], context["primary"], context["summary"]
+    pairs, primary = context["pairs"], context["primary"]
     seeds = sorted({p["seed"] for p in pairs})
 
-    with PdfPages(output/"analysis_report.pdf", metadata={"Title":"Flight1 paired statistical analysis", "Author":"UC San Diego capstone analysis"}) as book:
+    with plt.rc_context():
         def save(fig, name):
             fig.savefig(directory/(name+".png"), dpi=180)
             fig.savefig(directory/(name+".pdf"))
-            book.savefig(fig)
             plt.close(fig)
-
-        fig = plt.figure(figsize=(8.27, 11.69))
-        fig.text(.09, .92, "Flight1: paired statistical analysis", fontsize=21, weight="bold")
-        fig.text(.09, .885, "Archived Isaac Sim evaluation | Analysis date: "+context["config"]["analysis_date"], fontsize=11)
-        model = context["metadata"]["selected_model"]
-        lines = [
-            f"Checkpoint: flight1/final_model.zip; {model['timesteps']:,} training decisions",
-            f"Model SHA-256: {model['model_sha256'][:24]}...",
-            f"One training seed; {len(seeds)} environment seed identifiers ({seeds[0]}–{seeds[-1]}).",
-            f"{summary['flights']} flights form {summary['pairs']} matched cases in {len(primary)} scenario/wind conditions.",
-            "",
-            "Primary comparison: position RMSE(SAC) − position RMSE(PID).",
-            "Negative error differences favor SAC.",
-            f"Lower mean RMSE in {summary['conditions_lower_mean_rmse']}/{len(primary)} conditions.",
-            f"Holm-adjusted primary Wilcoxon rejections: {summary['primary_wilcoxon_holm_rejections']}/{len(primary)}.",
-            f"Open-air cases with lower SAC RMSE: {summary['open_air_sac_lower_rmse']}/{summary['open_air_pairs']}.",
-            "",
-            f"Reported completion: PID {summary['outcomes']['pid_only']['completed']}/{summary['pairs']}; SAC {summary['outcomes']['pid_sac']['completed']}/{summary['pairs']}.",
-            f"Reported failure: PID {summary['outcomes']['pid_only']['failed']}/{summary['pairs']}; SAC {summary['outcomes']['pid_sac']['failed']}/{summary['pairs']}.",
-            "Pooled case counts are descriptive, not independent seed draws.",
-            "",
-            "Interpretation limits",
-            "• Retrospective exploration of one checkpoint and one PID baseline.",
-            "• Bootstrap intervals are pointwise; primary p-values use Holm adjustment.",
-            "• Flights that fail early have shorter observed error histories.",
-            "• Dijkstra strong-wind failures include takeoff with the SAC residual off.",
-            "• No evaluation time series, event recovery, or PID-integral traces exist here.",
-            "• Flight2 is a continuation with winds up to 14 m/s; no evaluation is included.",
-            "",
-            "Full interpretation: report.md. Statistical methods: ../../METHODS.md.",
-            "All plots are supplied as individual PNG and vector PDF files.",
-        ]
-        fig.text(.09, .83, "\n".join(lines), fontsize=11, linespacing=1.65, va="top")
-        book.savefig(fig); plt.close(fig)
 
         def forest(rows, title, name, sensitivity=False):
             fig, axes = plt.subplots(1,3,figsize=(14,7),sharey=True,layout="constrained")

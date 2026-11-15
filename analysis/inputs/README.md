@@ -1,10 +1,5 @@
-# Local input archive
+# Original Analysis Input
 
-`runs.zip` is the unchanged archive supplied by the user. Its size and SHA-256
-are recorded in each output's `provenance.json`. This directory ignores archives
-and model data so they are not accidentally added to Git.
+We preserve the original evaluation archive as `runs.zip`. Its byte size and SHA-256 are recorded in the analytical provenance. Large archives, model weights, and replay buffers in this directory are ignored by Git.
 
-The analysis opens the archive and reads selected CSV/JSON files and model JSON
-metadata. It does not extract replay buffers, load a policy, unpickle objects,
-or run a simulator. Small, original evaluation files are copied to each output's
-`source_data/` directory for review and future CSV-only reproduction.
+Our analysis reads selected CSV/JSON files and model JSON metadata without loading serialized policy objects or replay buffers. Preserved small evaluation and configuration files accompany the published analytical outputs in `source_data/`. Numerical reproduction can use that smaller source bundle.

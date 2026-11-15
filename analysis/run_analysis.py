@@ -76,7 +76,7 @@ def analyze(output, *, archive=None, source_data=None, config=None, make_figures
         else:
             rows, pairs, metadata = load_source_data(source_data, output/"source_data")
         if metadata["selected_run"] != "flight1":
-            raise ValueError("This report's protocol is scoped to the first model")
+            raise ValueError("This analysis protocol is scoped to the first model")
         if sorted({p["seed"] for p in pairs}) != config["expected_evaluation_seeds"]:
             raise ValueError("Evaluation seeds differ from the frozen archived benchmark; declare a separate analysis protocol")
         if (metadata["selected_model"]["model_sha256"] != config["expected_model_sha256"] or
@@ -104,7 +104,8 @@ def analyze(output, *, archive=None, source_data=None, config=None, make_figures
                           dataset=metadata, versions=versions(), repository=git_state(code_root.parent),
                           analysis_sources_sha256={p.name:sha256_file(p) for p in sorted(code_root.glob("*.py"))},
                           evaluation_not_rerun=True, training_not_rerun=True, model_not_deserialized=True,
-                          simulator_imported=False, analysis_does_not_modify_simulation_sources=True)
+                          simulator_imported=False, analysis_does_not_modify_simulation_sources=True,
+                          narrative_reports_generated=False)
         json_write(output/"provenance.json", provenance)
         json_write(output/"validation.json", metadata["validation"])
         summary = dict(flights=len(rows), pairs=len(pairs), independent_seed_identifiers=len(metadata["validation"]["evaluation_seeds"]),
@@ -121,8 +122,6 @@ def analyze(output, *, archive=None, source_data=None, config=None, make_figures
         context = dict(rows=rows, pairs=pairs, primary=primary, secondary=secondary, sensitivity=sensitivity,
                        outcomes=outcomes, overview=overview, lengths=lengths, effort=effort,
                        metadata=metadata, config=config, summary=summary)
-        from .write_report import write_report
-        write_report(output, context)
         if make_figures:
             from .figures import create_figures
             create_figures(output, context)

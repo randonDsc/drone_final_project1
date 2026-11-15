@@ -1,110 +1,129 @@
-# Archived flight statistics
+# Residual SAC Flight-Control Evaluation
 
-This folder contains Alan's paired PID versus PID+SAC analysis of the first trained flight model. The work uses the evaluation records already inside `runs.zip`; it runs without Isaac Sim, MuJoCo, PyTorch, or additional training. It is stored on `alan/mujoco` alongside the existing project.
+We evaluated the first flight SAC checkpoint against its PID baseline using 420 archived Isaac Sim flight records. Our paired analysis covers seven scenarios, three wind profiles, and ten environment seeds per condition. The study's scope, methods, and results are documented in the accompanying manuscripts.
 
-## Start here
+## Manuscripts and results
 
-The completed analysis is in [`outputs/flight1_2026-11-14/`](outputs/flight1_2026-11-14/):
-
-1. Read [`report.md`](outputs/flight1_2026-11-14/report.md) for the findings, statistical methods, and limitations.
-2. Open [`analysis_report.pdf`](outputs/flight1_2026-11-14/analysis_report.pdf) for the eight-page overview and figures.
-3. Use [`report_section.tex`](outputs/flight1_2026-11-14/report_section.tex) as a draft subsection for the team report. Review it with the team before including it.
-4. Inspect [`tables/primary_rmse.csv`](outputs/flight1_2026-11-14/tables/primary_rmse.csv) for the main statistical results and [`tables/paired_flights.csv`](outputs/flight1_2026-11-14/tables/paired_flights.csv) for individual pairs.
-
-The archive provides **420 flights, 210 PID/SAC pairs, 21 scenario/wind conditions, and 10 environment seeds per condition**. SAC has lower recorded position RMSE in all 180 open-air pairs. Twenty of the 21 primary condition comparisons reject the zero-centered paired-difference null after Holm adjustment. The strong-wind Dijkstra condition does not: both modes fail all ten cases, and the recorded SAC correction is zero during those flights. This needs to be interpreted as a launch limitation.
-
-The equally weighted open-air mean of flight-level RMSE is 0.884 m for PID and 0.115 m for PID+SAC. The paired difference is −0.769 m, with a pointwise 95% seed-block bootstrap interval of [−0.873, −0.685] m. Failed flights are retained, and some end early; these averages describe the observed flight portions. They concern this checkpoint and PID configuration.
-
-## What this covers for your assignment
-
-| Question | Available result |
+| Material | Purpose |
 | --- | --- |
-| Does SAC help on the same seed and recorded wind? | Paired flight table, per-seed plot, paired scatter plot |
-| How large and consistent is the improvement? | Mean/median differences, win counts, 95% intervals, Wilcoxon and sign tests |
-| Are multiple comparisons accounted for? | Explicit Holm-adjusted families; see [METHODS.md](METHODS.md) |
-| Does completion/failure differ? | Paired outcome tables and exact McNemar tests |
-| Do shortened flights affect interpretation? | Length diagnostics and a separate survivor-conditioned sensitivity analysis |
-| Does performance vary across the three wind profiles? | Separate effects within each profile; these are not headwind/tailwind/crosswind classifications |
-| Error over time, event recovery, correction/wind/integral alignment? | Unavailable in the saved flight summaries; your teammate needs per-step evaluation traces |
+| [Full report](outputs/flight1_2026-11-14/report.md) | Study design, methods, findings, discussion, and limitations |
+| [Publication PDF](outputs/flight1_2026-11-14/analysis_report.pdf) | Typeset manuscript, primary estimates, and scientific figures |
+| [Full LaTeX manuscript](outputs/flight1_2026-11-14/report.tex) | Directly maintained source of the PDF |
+| [Standalone LaTeX subsection](outputs/flight1_2026-11-14/report_section.tex) | Condensed section for integration into the project manuscript |
+| [Statistical protocol](METHODS.md) | Estimands, assumptions, test families, and references |
+| [Primary results](outputs/flight1_2026-11-14/tables/primary_rmse.csv) | All 21 primary condition comparisons |
+| [Paired flight records](outputs/flight1_2026-11-14/tables/paired_flights.csv) | All 210 matched controller cases |
 
-Completion time is arrival/settling time at the final goal, not recovery time after a gust. Training logs or replay buffers cannot replace held-out evaluation traces. `flight2` is continued training with a broader wind curriculum and has no saved evaluation in this archive; it is excluded from the comparisons.
+Our primary findings are lower SAC RMSE in all 180 open-air pairs and adjusted signed-rank rejections in 20 of 21 conditions. The equally weighted open-air mean flight-level RMSE decreased from 0.884 m to 0.115 m, a reduction of 87.0%. Strong-wind Dijkstra cases failed in both modes during a phase consistent with residual-disabled launch. These results characterize one checkpoint and one PID configuration.
 
-## Layout
+## Separation of analysis and manuscript preparation
+
+Our Python modules process data, calculate statistics, verify numerical results, and export CSV/JSON analytical outputs and scientific plots. They do not write Markdown, LaTeX, report narrative, or a narrative PDF. We maintain `report.md`, `report.tex`, `report_section.tex`, and `METHODS.md` directly as text. The publication PDF is compiled from `report.tex` using LaTeX.
+
+Analysis runs require new output directories and preserve existing artifacts. Numerical reproduction does not modify the maintained manuscripts.
+
+## Repository layout
 
 ```text
 analysis/
-  inputs/                 Original runs.zip, locally copied and ignored by Git
-  outputs/
-    flight1_2026-11-14/
-      source_data/        Original small CSV/JSON/PDF/configuration files
-      tables/             Nine statistical and diagnostic CSV tables
-      figures/            Seven figures, each as PNG and vector PDF
-      report.md           Full interpretation and methods
-      analysis_report.pdf Overview and all figures
-      report_section.tex  Draft report subsection
-      provenance.json     Model/input/code hashes, versions and parameters
-      validation.json     Pairing and data consistency checks
-      summary.json        Machine-readable headline results
-      outputs_manifest.json  Checksums for generated files
-      verification.json   Test and independent reproduction record
-  tests/                  Statistical correctness and input-integrity tests
-  run_analysis.py         Analysis entry point
-  verify_outputs.py       Check hashes and reproduce every numeric CSV
-  METHODS.md              Definitions, inference assumptions and references
-  requirements.txt        Versions used for the completed run
-  .cache/                 Ignored development outputs and plotting cache
+  inputs/                     Local original archive; large inputs ignored by Git
+  outputs/flight1_2026-11-14/
+    source_data/              Preserved original evaluation and configuration files
+    tables/                   Nine analytical and diagnostic CSV files
+    figures/                  Seven plots, each in PNG and vector PDF formats
+    report.md                 Full manuscript in Markdown
+    report.tex                Full manuscript in LaTeX
+    report_section.tex        Condensed manuscript subsection
+    analysis_report.pdf       LaTeX-compiled publication manuscript
+    provenance.json           Input/model/code hashes, versions, and parameters
+    validation.json           Data integrity and pairing checks
+    numerical_audit.json      Independent numerical audit
+    summary.json              Structured analytical summaries
+    outputs_manifest.json     Artifact sizes and checksums
+    verification.json         Software-test and exact reproduction record
+  tests/                      Statistical correctness and data-integrity tests
+  archive_io.py               Input validation and source preservation
+  stats_tools.py              Paired inference and descriptive statistics
+  figures.py                  Scientific plots only
+  run_analysis.py             Numerical analysis entry point
+  audit_results.py            Independent calculations from original flight data
+  verify_outputs.py          Artifact and exact numeric reproduction checks
+  METHODS.md                  Statistical protocol
+  requirements.txt            Recorded package versions
+  .cache/                     Ignored plotting cache and temporary build files
 ```
 
-The local copy of `inputs/runs.zip` is 1,037,617,728 bytes. Its SHA-256 is `0c3b9fcd25ae02491bf9c56b77550b8adbe2037d693438f0f4c5732f4336369c`, matching `/Users/alanlin/Downloads/runs.zip`. The original download is unchanged. Large weights, replay buffers, and unrelated experiments remain inside the ignored archive. The small source bundle and analysis outputs can be shared through Git without uploading the 1 GB ZIP.
+## Analytical outputs
 
-## Reproduce the analysis
+| CSV file | Rows | Contents |
+| --- | ---: | --- |
+| `paired_flights.csv` | 210 | Matched source values, paired differences, and eligibility flags |
+| `primary_rmse.csv` | 21 | Primary position-RMSE effects, intervals, and adjusted tests |
+| `secondary_metrics.csv` | 84 | Cross-track RMSE, flight-level maxima, and saturation comparisons |
+| `paired_outcomes.csv` | 63 | Completion, failure, and collision counts and exact paired tests |
+| `sensitivity_rmse.csv` | 21 | Nonfailed, equal-count conditional comparisons |
+| `seed_cluster_overview.csv` | 5 | Overall fixed-benchmark effects using ten seed blocks |
+| `seed_cluster_values.csv` | 50 | Within-seed benchmark averages |
+| `observed_lengths.csv` | 21 | Decision-count differences and sensitivity eligibility |
+| `control_effort_descriptive.csv` | 42 | Residual magnitude/change, saturation, and clearance summaries |
 
-Run commands from the repository root (`drone_final_project1`). The existing `.venv` already contains the required packages:
+`mean_difference` is PID+SAC minus PID. Negative error differences favor SAC. `wilcoxon_p_holm` and `sign_test_p_holm` apply within the stated `test_family`; confidence intervals remain pointwise. `n_pairs` gives the actual resampling-unit count, including ten seed blocks in overall summaries. `ci_status` identifies insufficient or degenerate samples. Binary-outcome rate intervals are marginal controller intervals rather than paired rate-difference intervals.
 
-```bash
-.venv/bin/python -m analysis.run_analysis \
-  --source-data analysis/outputs/flight1_2026-11-14/source_data \
-  --output analysis/outputs/flight1_reproduced
-```
+The source summary's maximum-error columns are maxima across flights. Our secondary comparisons instead analyze flight-level maxima as paired observations. These summaries serve different purposes.
 
-This reproduces the statistics and figures from the small saved source bundle. To re-read the intact ZIP instead:
+## Input provenance
 
-```bash
-.venv/bin/python -m analysis.run_analysis \
-  --archive analysis/inputs/runs.zip \
-  --output analysis/outputs/flight1_from_archive
-```
+The original archive is stored locally as `inputs/runs.zip`, with size 1,037,617,728 bytes and SHA-256 `0c3b9fcd25ae02491bf9c56b77550b8adbe2037d693438f0f4c5732f4336369c`. It is ignored by Git. We preserve selected small source files byte for byte in `source_data/`, enabling numeric reproduction without distributing large weights or replay buffers. Original archived source documents remain unchanged as provenance records.
 
-Use a new output directory each time; existing outputs are never overwritten. `--no-figures` skips plotting. Defaults are 50,000 BCa bootstrap resamples, master random seed 20261114, and two-sided tests with alpha 0.05. Each group gets a deterministic resampling seed. The checkpoint hash and ten evaluation seeds are fixed to this archived benchmark; additional models or datasets need a separate declared protocol.
+## Reproducing the numerical analysis
 
-To create a separate analysis environment on another machine, use Python 3.11 or a compatible version:
+The following commands run from the repository root. The recorded environment uses Python 3.11 and the versions in `requirements.txt`.
 
 ```bash
 python3 -m venv .venv-analysis
 .venv-analysis/bin/python -m pip install -r analysis/requirements.txt
+.venv-analysis/bin/python -m analysis.run_analysis \
+  --source-data analysis/outputs/flight1_2026-11-14/source_data \
+  --output analysis/outputs/flight1_reproduced
 ```
 
-Then substitute `.venv-analysis/bin/python` in the commands above. No simulator packages are needed. Plot rendering can vary across platforms; numeric tables are checked byte for byte when using the recorded package versions.
+An existing compatible environment can be used by substituting its Python executable. `--no-figures` restricts the run to numerical outputs. The default protocol uses 50,000 BCa bootstrap resamples and master seed 20261114. The checkpoint identity and ten evaluation seeds are fixed to the archived benchmark.
 
-## Verify the work
+Re-reading the original archive uses:
 
 ```bash
-.venv/bin/python -m pytest analysis/tests -q
-.venv/bin/python -m analysis.verify_outputs \
+.venv-analysis/bin/python -m analysis.run_analysis \
+  --archive analysis/inputs/runs.zip \
+  --output analysis/outputs/flight1_from_archive
+```
+
+## Numerical verification
+
+```bash
+.venv-analysis/bin/python -m pytest analysis/tests -q
+.venv-analysis/bin/python -m analysis.audit_results \
+  analysis/outputs/flight1_2026-11-14 \
+  --archive analysis/inputs/runs.zip
+.venv-analysis/bin/python -m analysis.verify_outputs \
   analysis/outputs/flight1_2026-11-14
 ```
 
-The verifier checks every listed output hash and the analysis source hashes, reproduces the tables into a temporary directory from `source_data/`, and requires all nine CSV files to match exactly. It does not need the large ZIP. `verification.json` records the completed verification and is outside the generation manifest so it can describe that manifest without a circular hash.
+The independent audit compares the tables with the original archived CSV using a separate implementation of exact tests and BCa intervals. Its structured record contains 12,370 successful field checks. The verifier checks artifact and current analysis-source hashes, runs the tests, and requires all nine numeric tables to reproduce byte for byte from the preserved source bundle. Plot rendering can vary by platform. `verification.json` is outside the artifact manifest to avoid circular hashing.
 
-## Read the CSV columns
+## Typesetting the manuscript
 
-- `mean_difference` is **SAC minus PID**. A negative error difference favors SAC. `relative_mean_reduction_percent` compares controller means; it is not the average of per-seed percentages.
-- `mean_difference_ci_low/high` are pointwise intervals for the mean difference. They are not simultaneous intervals across all conditions.
-- `wilcoxon_p` is raw; `wilcoxon_p_holm` is adjusted within `test_family`. Use the adjusted value for the primary claim. The signed-rank test addresses the paired-difference distribution, not a direct test of the mean.
-- `sign_test_p_holm` is a separately adjusted direction-only robustness check. Do not choose whichever test gives a favorable conclusion.
-- `n_pairs` is the actual number used. In the overview table it is ten seed blocks, not 180 independent open-air samples.
-- `ci_status` flags unavailable or degenerate estimates. A constant recorded sample does not establish population equivalence.
-- `paired_outcomes.csv` reports `both_true`, `pid_only_true`, `sac_only_true`, and `both_false`. For completion a positive rate difference favors SAC; for failure/collision a negative difference does. Rate confidence intervals are marginal controller intervals, not intervals for the paired rate difference.
-- Source `summary.csv` uses the maximum across flights for its maximum-error columns. Our secondary table instead averages paired **flight-level maxima**. These are distinct summaries, recorded explicitly in the methods.
+LaTeX compilation operates on the directly maintained manuscript and does not invoke Python. These commands run from the repository root with a TeX distribution installed:
 
-This is a retrospective analysis of one trained checkpoint, not a preregistered confirmation study or a comparison of independent training seeds. See [METHODS.md](METHODS.md) and the full report before making broader claims.
+```bash
+mkdir -p analysis/.cache/latex-build
+pdflatex -interaction=nonstopmode -halt-on-error \
+  -jobname=analysis_report -output-directory=analysis/.cache/latex-build \
+  analysis/outputs/flight1_2026-11-14/report.tex
+pdflatex -interaction=nonstopmode -halt-on-error \
+  -jobname=analysis_report -output-directory=analysis/.cache/latex-build \
+  analysis/outputs/flight1_2026-11-14/report.tex
+cp analysis/.cache/latex-build/analysis_report.pdf \
+  analysis/outputs/flight1_2026-11-14/analysis_report.pdf
+```
+
+Artifact checksums are refreshed after manuscript or compiled-PDF revisions. Analytical reproduction and manuscript typesetting remain separate operations.

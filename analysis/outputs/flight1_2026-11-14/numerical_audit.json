@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "source_csv_matches_original_archive": true,
+  "original_checkpoint_hash_matches": true,
+  "numeric_field_checks": 12370,
+  "tables_checked": {
+    "control_effort_descriptive.csv": 42,
+    "observed_lengths.csv": 21,
+    "paired_flights.csv": 210,
+    "paired_outcomes.csv": 63,
+    "primary_rmse.csv": 21,
+    "secondary_metrics.csv": 84,
+    "seed_cluster_overview.csv": 5,
+    "seed_cluster_values.csv": 50,
+    "sensitivity_rmse.csv": 21
+  },
+  "exact_tests": "independent sign-assignment enumeration and binomial coefficients",
+  "confidence_intervals": "independent explicit BCa calculation and beta quantiles",
+  "production_statistics_imported": false
+}
