@@ -1,0 +1,21 @@
+% Generated from the archived flight1 results; see report.md for full methods.
+\subsection{Paired statistical evaluation of PID and residual SAC}
+We analyzed 420 archived Isaac Sim flights, forming 210 matched cases across seven scenarios, three wind profiles, and 10 environment seeds per condition. The fixed SAC checkpoint had 1,500,000 training decisions. The primary effect was the paired difference in position RMSE (PID+SAC minus PID), so negative differences favor SAC. Pointwise 95\% BCa intervals used 50,000 bootstrap resamples. Two-sided Wilcoxon signed-rank tests were Holm-adjusted across the 21 primary conditions. Overall intervals resampled whole environment-seed blocks to preserve dependence across conditions.
+
+SAC produced lower recorded RMSE in all 180 open-air pairs and lower mean error in 20 of the 21 conditions. The primary adjusted signed-rank tests rejected in 20 conditions. For the equally weighted open-air benchmark, the mean paired difference was $-0.769$ m (pointwise 95\% seed-block interval $[-0.873, -0.685]$ m).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrr}
+\hline
+Open-air wind profile & PID RMSE (m) & PID+SAC RMSE (m) & Difference (m) \\
+\hline
+training range & 0.502 & 0.082 & -0.420 \\
+unseen gusts & 0.497 & 0.082 & -0.415 \\
+outside range & 1.653 & 0.181 & -1.471 \\
+\hline
+\end{tabular}
+\caption{Descriptive means across six open-air route types. Uncertainty is calculated using whole seed blocks, not by treating every case as independent.}
+\end{table}
+
+There were 54 pairs with different recorded decision counts. Failed flights remain in the primary summaries, but their errors cover shorter observed horizons. A survivor-conditioned sensitivity analysis is therefore reported separately. Dijkstra strong-wind cases are further limited by takeoff with the SAC residual disabled; both controllers failed every case in that condition. These results characterize one checkpoint and one PID baseline rather than training-seed robustness or real-flight safety. The archive does not contain the time-series measurements needed for event-recovery or correction--integral analysis.

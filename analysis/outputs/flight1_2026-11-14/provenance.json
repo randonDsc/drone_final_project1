@@ -1,0 +1,4325 @@
+{
+  "created_utc": "2026-11-15T02:08:11.320823+00:00",
+  "configuration": {
+    "analysis_date": "2026-11-14",
+    "bootstrap_resamples": 50000,
+    "resampling_seed": 20261114,
+    "expected_evaluation_seeds": [
+      300000,
+      300001,
+      300002,
+      300003,
+      300004,
+      300005,
+      300006,
+      300007,
+      300008,
+      300009
+    ],
+    "expected_model_sha256": "2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d",
+    "expected_model_timesteps": 1500000,
+    "confidence_level": 0.95,
+    "alpha": 0.05,
+    "difference_tolerance": 1e-12,
+    "rank_round_decimals": 12,
+    "interval_method": "BCa",
+    "exploratory": true,
+    "difference_definition": "SAC minus PID; negative favors SAC for errors",
+    "model_selection": "flight1 final model; no checkpoint selection from these test results",
+    "primary_family": "21 scenario/profile position-RMSE Wilcoxon tests, Holm correction",
+    "robustness_test": "two-sided exact paired sign test, separately Holm-adjusted",
+    "secondary_family": "84 tests across four secondary metrics, Holm correction",
+    "binary_families": "21 exact McNemar tests per outcome; three separate secondary families",
+    "sensitivity_family": "21 survivor-conditioned RMSE tests, Holm correction",
+    "overview_family": "five exploratory seed-cluster overview tests, Holm correction",
+    "ci_scope": "pointwise 95% intervals, not simultaneous intervals",
+    "resampling_unit": "environment seed pair; whole seed blocks for cross-condition overviews",
+    "failed_flights": "retained in primary summaries; metrics describe observed portions only"
+  },
+  "input_mode": "archive",
+  "archive_rehashed_this_run": true,
+  "dataset": {
+    "archive_path": "/Users/alanlin/Desktop/drone_final_project1/analysis/inputs/runs.zip",
+    "archive_bytes": 1037617728,
+    "archive_sha256": "0c3b9fcd25ae02491bf9c56b77550b8adbe2037d693438f0f4c5732f4336369c",
+    "archive_inventory": [
+      {
+        "path": "runs/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          22,
+          11,
+          42
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/dora/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          36,
+          18
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/dora/dora_episodes.csv",
+        "bytes": 800,
+        "compressed_bytes": 401,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          41,
+          42
+        ],
+        "crc32": "a3dfc690"
+      },
+      {
+        "path": "runs/dora/dora_log.txt",
+        "bytes": 2622,
+        "compressed_bytes": 383,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          41,
+          44
+        ],
+        "crc32": "666f3d29"
+      },
+      {
+        "path": "runs/dora/dora_statistics.npz",
+        "bytes": 276690,
+        "compressed_bytes": 273758,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          41,
+          42
+        ],
+        "crc32": "939fad05"
+      },
+      {
+        "path": "runs/dora/dora_test_log.txt",
+        "bytes": 279,
+        "compressed_bytes": 211,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          19,
+          54
+        ],
+        "crc32": "fcd6029f"
+      },
+      {
+        "path": "runs/dora/dora_test_transitions.csv",
+        "bytes": 292,
+        "compressed_bytes": 156,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          20,
+          18
+        ],
+        "crc32": "cfe72f3a"
+      },
+      {
+        "path": "runs/dora/dora_transitions.csv",
+        "bytes": 24009,
+        "compressed_bytes": 6408,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          41,
+          52
+        ],
+        "crc32": "fd59177b"
+      },
+      {
+        "path": "runs/dora/training_flight_log.txt",
+        "bytes": 12555,
+        "compressed_bytes": 1167,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          3,
+          41,
+          44
+        ],
+        "crc32": "7befd27d"
+      },
+      {
+        "path": "runs/flight_sac/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          8,
+          23,
+          15,
+          34
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          3,
+          49,
+          38
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          4,
+          22
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_replay_buffer_1450000_steps.pkl",
+        "bytes": 526002824,
+        "compressed_bytes": 127771297,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          4,
+          9,
+          20
+        ],
+        "crc32": "24417885"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_replay_buffer_1500000_steps.pkl",
+        "bytes": 526002824,
+        "compressed_bytes": 127779984,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          4,
+          22
+        ],
+        "crc32": "51b8fc02"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1000000_steps.zip",
+        "bytes": 4468547,
+        "compressed_bytes": 3823422,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          18,
+          51,
+          6
+        ],
+        "crc32": "5e20434c"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_100000_steps.zip",
+        "bytes": 4468492,
+        "compressed_bytes": 3870081,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          1,
+          12,
+          10
+        ],
+        "crc32": "d08e31e4"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1050000_steps.zip",
+        "bytes": 4468562,
+        "compressed_bytes": 3828793,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          19,
+          46,
+          42
+        ],
+        "crc32": "095a160e"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1100000_steps.zip",
+        "bytes": 4468559,
+        "compressed_bytes": 3834989,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          21,
+          27,
+          16
+        ],
+        "crc32": "3b605352"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1150000_steps.zip",
+        "bytes": 4468559,
+        "compressed_bytes": 3838345,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          22,
+          25,
+          40
+        ],
+        "crc32": "8f17ba3b"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1200000_steps.zip",
+        "bytes": 4468567,
+        "compressed_bytes": 3843842,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          23,
+          20,
+          36
+        ],
+        "crc32": "4e3817f2"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1250000_steps.zip",
+        "bytes": 4468559,
+        "compressed_bytes": 3842297,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          0,
+          16,
+          6
+        ],
+        "crc32": "fdd2d9cb"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1300000_steps.zip",
+        "bytes": 4468567,
+        "compressed_bytes": 3844151,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          1,
+          12,
+          18
+        ],
+        "crc32": "923c0bfa"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1350000_steps.zip",
+        "bytes": 4468567,
+        "compressed_bytes": 3845911,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          2,
+          7,
+          46
+        ],
+        "crc32": "f58f2a18"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1400000_steps.zip",
+        "bytes": 4468554,
+        "compressed_bytes": 3851269,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          3,
+          11,
+          14
+        ],
+        "crc32": "4ac06235"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1450000_steps.zip",
+        "bytes": 4468557,
+        "compressed_bytes": 3853800,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          4,
+          9,
+          18
+        ],
+        "crc32": "9f2aa30a"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_1500000_steps.zip",
+        "bytes": 4468566,
+        "compressed_bytes": 3856209,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          4,
+          20
+        ],
+        "crc32": "603f21e6"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_150000_steps.zip",
+        "bytes": 4468532,
+        "compressed_bytes": 3789792,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          2,
+          8,
+          4
+        ],
+        "crc32": "472bcb47"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_200000_steps.zip",
+        "bytes": 4468532,
+        "compressed_bytes": 3795073,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          3,
+          3,
+          58
+        ],
+        "crc32": "c1724c45"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_250000_steps.zip",
+        "bytes": 4468526,
+        "compressed_bytes": 3783630,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          3,
+          59,
+          54
+        ],
+        "crc32": "f26a49cd"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_300000_steps.zip",
+        "bytes": 4468536,
+        "compressed_bytes": 3785147,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          4,
+          55,
+          44
+        ],
+        "crc32": "399ab595"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_350000_steps.zip",
+        "bytes": 4468536,
+        "compressed_bytes": 3784521,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          5,
+          51,
+          36
+        ],
+        "crc32": "31f2b3f0"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_400000_steps.zip",
+        "bytes": 4468536,
+        "compressed_bytes": 3790812,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          6,
+          47,
+          26
+        ],
+        "crc32": "226c242b"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_450000_steps.zip",
+        "bytes": 4468548,
+        "compressed_bytes": 3789298,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          7,
+          43,
+          20
+        ],
+        "crc32": "f3750b1a"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_500000_steps.zip",
+        "bytes": 4468552,
+        "compressed_bytes": 3791926,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          8,
+          39,
+          6
+        ],
+        "crc32": "1ca29b38"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_50000_steps.zip",
+        "bytes": 4468240,
+        "compressed_bytes": 3883515,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          23,
+          4,
+          2
+        ],
+        "crc32": "f250b4da"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_550000_steps.zip",
+        "bytes": 4468548,
+        "compressed_bytes": 3797591,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          9,
+          33,
+          48
+        ],
+        "crc32": "3bb6c5bc"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_600000_steps.zip",
+        "bytes": 4468548,
+        "compressed_bytes": 3806115,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          10,
+          28,
+          42
+        ],
+        "crc32": "5b3e01ad"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_650000_steps.zip",
+        "bytes": 4468552,
+        "compressed_bytes": 3815146,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          11,
+          23,
+          30
+        ],
+        "crc32": "db41026f"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_700000_steps.zip",
+        "bytes": 4468546,
+        "compressed_bytes": 3819798,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          12,
+          39,
+          24
+        ],
+        "crc32": "b9e66a89"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_750000_steps.zip",
+        "bytes": 4468556,
+        "compressed_bytes": 3817541,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          13,
+          35,
+          4
+        ],
+        "crc32": "81ceabd0"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_800000_steps.zip",
+        "bytes": 4468544,
+        "compressed_bytes": 3822234,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          15,
+          8,
+          30
+        ],
+        "crc32": "520db0d4"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_850000_steps.zip",
+        "bytes": 4468542,
+        "compressed_bytes": 3824980,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          16,
+          5,
+          32
+        ],
+        "crc32": "96d68081"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_900000_steps.zip",
+        "bytes": 4468557,
+        "compressed_bytes": 3822253,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          17,
+          0,
+          40
+        ],
+        "crc32": "5387b30e"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_sac_950000_steps.zip",
+        "bytes": 4468553,
+        "compressed_bytes": 3820540,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          17,
+          55,
+          54
+        ],
+        "crc32": "44c1bc3a"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1000000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          18,
+          51,
+          6
+        ],
+        "crc32": "5ee463b1"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_100000_steps.json",
+        "bytes": 383,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          1,
+          12,
+          10
+        ],
+        "crc32": "2f4fb3de"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1050000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          19,
+          46,
+          44
+        ],
+        "crc32": "10c4100c"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1100000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          21,
+          27,
+          16
+        ],
+        "crc32": "a1fd0371"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1150000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          22,
+          25,
+          40
+        ],
+        "crc32": "efdd70cc"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1200000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          23,
+          20,
+          38
+        ],
+        "crc32": "7ba7a470"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1250000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          0,
+          16,
+          6
+        ],
+        "crc32": "3587d7cd"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1300000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          1,
+          12,
+          18
+        ],
+        "crc32": "84bec4b0"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1350000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          2,
+          7,
+          46
+        ],
+        "crc32": "ca9eb70d"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1400000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          3,
+          11,
+          16
+        ],
+        "crc32": "1463ec33"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1450000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          4,
+          9,
+          20
+        ],
+        "crc32": "5a439f8e"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_1500000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 193,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          4,
+          22
+        ],
+        "crc32": "eb7a8cf3"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_150000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          2,
+          8,
+          4
+        ],
+        "crc32": "bd1346e4"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_200000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          3,
+          3,
+          58
+        ],
+        "crc32": "7f50c397"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_250000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          3,
+          59,
+          56
+        ],
+        "crc32": "cace2cd5"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_300000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          4,
+          55,
+          46
+        ],
+        "crc32": "e4cb1847"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_350000_steps.json",
+        "bytes": 378,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          5,
+          51,
+          36
+        ],
+        "crc32": "5155f705"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_400000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 199,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          6,
+          47,
+          26
+        ],
+        "crc32": "c0510436"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_450000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 200,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          7,
+          43,
+          22
+        ],
+        "crc32": "b04deee8"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_500000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 198,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          8,
+          39,
+          6
+        ],
+        "crc32": "dffc9b3b"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_50000_steps.json",
+        "bytes": 321,
+        "compressed_bytes": 178,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          23,
+          4,
+          2
+        ],
+        "crc32": "c406ce5f"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_550000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 200,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          9,
+          33,
+          48
+        ],
+        "crc32": "afe071e5"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_600000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 199,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          10,
+          28,
+          42
+        ],
+        "crc32": "ff0a3a2c"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_650000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 200,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          11,
+          23,
+          32
+        ],
+        "crc32": "8f16d0f2"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_700000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 199,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          12,
+          39,
+          26
+        ],
+        "crc32": "e0a7a521"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_750000_steps.json",
+        "bytes": 385,
+        "compressed_bytes": 200,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          13,
+          35,
+          8
+        ],
+        "crc32": "90bb4fff"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_800000_steps.json",
+        "bytes": 377,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          15,
+          8,
+          32
+        ],
+        "crc32": "d1d44756"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_850000_steps.json",
+        "bytes": 377,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          16,
+          5,
+          32
+        ],
+        "crc32": "9ff434eb"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_900000_steps.json",
+        "bytes": 377,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          17,
+          0,
+          44
+        ],
+        "crc32": "2ecd2796"
+      },
+      {
+        "path": "runs/flight_sac/flight1/checkpoints/flight_state_950000_steps.json",
+        "bytes": 377,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          17,
+          55,
+          56
+        ],
+        "crc32": "60ed542b"
+      },
+      {
+        "path": "runs/flight_sac/flight1/config_snapshot_20261101_221144.json",
+        "bytes": 10579,
+        "compressed_bytes": 1711,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          22,
+          11,
+          44
+        ],
+        "crc32": "384f3ee3"
+      },
+      {
+        "path": "runs/flight_sac/flight1/config_snapshot_20261102_001608.json",
+        "bytes": 10640,
+        "compressed_bytes": 1730,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          0,
+          16,
+          8
+        ],
+        "crc32": "d8fab914"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          3,
+          49,
+          40
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          37,
+          36
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/evaluation_report.pdf",
+        "bytes": 98310,
+        "compressed_bytes": 73775,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          39,
+          0
+        ],
+        "crc32": "c3324450"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/flights.csv",
+        "bytes": 97754,
+        "compressed_bytes": 25220,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          35,
+          10
+        ],
+        "crc32": "5337c238"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/flights_dijkstra.json",
+        "bytes": 41046,
+        "compressed_bytes": 4491,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          35,
+          10
+        ],
+        "crc32": "c8954569"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/flights_open.json",
+        "bytes": 244927,
+        "compressed_bytes": 27805,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          30,
+          36
+        ],
+        "crc32": "9e6e2aa0"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/results.json",
+        "bytes": 327795,
+        "compressed_bytes": 34988,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          35,
+          10
+        ],
+        "crc32": "91fe4d9f"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/final_model/summary.csv",
+        "bytes": 6980,
+        "compressed_bytes": 2661,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          35,
+          10
+        ],
+        "crc32": "3c89e273"
+      },
+      {
+        "path": "runs/flight_sac/flight1/evaluation/pid_only/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          15,
+          31,
+          50
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/eval_log.txt",
+        "bytes": 51617,
+        "compressed_bytes": 10215,
+        "modified_zip_local": [
+          2026,
+          11,
+          4,
+          4,
+          35,
+          10
+        ],
+        "crc32": "4f0b9da2"
+      },
+      {
+        "path": "runs/flight_sac/flight1/final_model.zip",
+        "bytes": 4468548,
+        "compressed_bytes": 3856270,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          4,
+          22
+        ],
+        "crc32": "b23e8b22"
+      },
+      {
+        "path": "runs/flight_sac/flight1/final_replay_buffer.pkl",
+        "bytes": 526002824,
+        "compressed_bytes": 127779960,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          4,
+          24
+        ],
+        "crc32": "76ff3ee1"
+      },
+      {
+        "path": "runs/flight_sac/flight1/flight_contract.json",
+        "bytes": 9414,
+        "compressed_bytes": 1559,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          0,
+          16,
+          8
+        ],
+        "crc32": "9a454a7d"
+      },
+      {
+        "path": "runs/flight_sac/flight1/logs/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          0,
+          16,
+          14
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/logs/log_20261101_221144.txt",
+        "bytes": 408070,
+        "compressed_bytes": 20525,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          23,
+          35,
+          44
+        ],
+        "crc32": "9143df88"
+      },
+      {
+        "path": "runs/flight_sac/flight1/logs/log_20261102_001608.txt",
+        "bytes": 4232549,
+        "compressed_bytes": 204294,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          3,
+          38
+        ],
+        "crc32": "ecb90803"
+      },
+      {
+        "path": "runs/flight_sac/flight1/logs/progress_20261101_221144.csv",
+        "bytes": 89463,
+        "compressed_bytes": 37049,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          23,
+          35,
+          44
+        ],
+        "crc32": "0f7fac9e"
+      },
+      {
+        "path": "runs/flight_sac/flight1/logs/progress_20261102_001608.csv",
+        "bytes": 940525,
+        "compressed_bytes": 374121,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          3,
+          38
+        ],
+        "crc32": "775c6db8"
+      },
+      {
+        "path": "runs/flight_sac/flight1/navigation/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          15,
+          57,
+          40
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/navigation/pid_sac_training_range.json",
+        "bytes": 484,
+        "compressed_bytes": 261,
+        "modified_zip_local": [
+          2026,
+          11,
+          5,
+          8,
+          49,
+          24
+        ],
+        "crc32": "d295c52c"
+      },
+      {
+        "path": "runs/flight_sac/flight1/navigation/pid_training_range.json",
+        "bytes": 433,
+        "compressed_bytes": 229,
+        "modified_zip_local": [
+          2026,
+          11,
+          5,
+          8,
+          46,
+          26
+        ],
+        "crc32": "fa36ebb6"
+      },
+      {
+        "path": "runs/flight_sac/flight1/tensorboard/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          0,
+          16,
+          14
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/tensorboard/flight_20261101_221144/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          22,
+          11,
+          46
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/tensorboard/flight_20261101_221144/events.out.tfevents.1793599907.first_desktop.14296.0",
+        "bytes": 387589,
+        "compressed_bytes": 88674,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          23,
+          35,
+          44
+        ],
+        "crc32": "c34464f7"
+      },
+      {
+        "path": "runs/flight_sac/flight1/tensorboard/flight_20261102_001608/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          2,
+          0,
+          16,
+          14
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight1/tensorboard/flight_20261102_001608/events.out.tfevents.1793607374.first_desktop.42740.0",
+        "bytes": 4119648,
+        "compressed_bytes": 932587,
+        "modified_zip_local": [
+          2026,
+          11,
+          3,
+          5,
+          3,
+          38
+        ],
+        "crc32": "1854f1d2"
+      },
+      {
+        "path": "runs/flight_sac/flight2/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          52
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          50
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_replay_buffer_2450000_steps.pkl",
+        "bytes": 526002824,
+        "compressed_bytes": 127707497,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          20,
+          45,
+          22
+        ],
+        "crc32": "afab4c3b"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_replay_buffer_2500000_steps.pkl",
+        "bytes": 526002824,
+        "compressed_bytes": 127674352,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          50
+        ],
+        "crc32": "046d28be"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1550000_steps.zip",
+        "bytes": 4468539,
+        "compressed_bytes": 3864494,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          0,
+          10,
+          54
+        ],
+        "crc32": "d1167ef3"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1600000_steps.zip",
+        "bytes": 4468556,
+        "compressed_bytes": 3869478,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          1,
+          11,
+          30
+        ],
+        "crc32": "693bc5d0"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1650000_steps.zip",
+        "bytes": 4468556,
+        "compressed_bytes": 3871081,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          2,
+          6,
+          50
+        ],
+        "crc32": "adafd01d"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1700000_steps.zip",
+        "bytes": 4468562,
+        "compressed_bytes": 3879433,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          3,
+          2,
+          40
+        ],
+        "crc32": "c164d89c"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1750000_steps.zip",
+        "bytes": 4468558,
+        "compressed_bytes": 3883200,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          3,
+          58,
+          52
+        ],
+        "crc32": "167eb95a"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1800000_steps.zip",
+        "bytes": 4468574,
+        "compressed_bytes": 3886953,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          4,
+          54,
+          34
+        ],
+        "crc32": "79152786"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1850000_steps.zip",
+        "bytes": 4468556,
+        "compressed_bytes": 3900789,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          5,
+          50,
+          16
+        ],
+        "crc32": "992a8e64"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1900000_steps.zip",
+        "bytes": 4468560,
+        "compressed_bytes": 3896322,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          6,
+          45,
+          56
+        ],
+        "crc32": "46163eea"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_1950000_steps.zip",
+        "bytes": 4468562,
+        "compressed_bytes": 3890259,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          7,
+          41,
+          38
+        ],
+        "crc32": "1df37789"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2000000_steps.zip",
+        "bytes": 4468570,
+        "compressed_bytes": 3889652,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          8,
+          37,
+          20
+        ],
+        "crc32": "e5b7c836"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2050000_steps.zip",
+        "bytes": 4468562,
+        "compressed_bytes": 3891720,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          9,
+          32,
+          58
+        ],
+        "crc32": "54776a56"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2100000_steps.zip",
+        "bytes": 4468566,
+        "compressed_bytes": 3889582,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          10,
+          28,
+          36
+        ],
+        "crc32": "e26f84f0"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2150000_steps.zip",
+        "bytes": 4468570,
+        "compressed_bytes": 3892814,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          11,
+          24,
+          16
+        ],
+        "crc32": "7011d14f"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2200000_steps.zip",
+        "bytes": 4468562,
+        "compressed_bytes": 3893011,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          12,
+          21,
+          32
+        ],
+        "crc32": "4d628057"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2250000_steps.zip",
+        "bytes": 4468566,
+        "compressed_bytes": 3894863,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          13,
+          20,
+          18
+        ],
+        "crc32": "4d737345"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2300000_steps.zip",
+        "bytes": 4468529,
+        "compressed_bytes": 3892815,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          17,
+          59,
+          32
+        ],
+        "crc32": "97e5462a"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2350000_steps.zip",
+        "bytes": 4468567,
+        "compressed_bytes": 3892578,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          18,
+          53,
+          32
+        ],
+        "crc32": "77aec669"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2400000_steps.zip",
+        "bytes": 4468554,
+        "compressed_bytes": 3891866,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          19,
+          47,
+          24
+        ],
+        "crc32": "07bad05f"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2450000_steps.zip",
+        "bytes": 4468554,
+        "compressed_bytes": 3892137,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          20,
+          45,
+          20
+        ],
+        "crc32": "f4a50112"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_sac_2500000_steps.zip",
+        "bytes": 4468536,
+        "compressed_bytes": 3891613,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          50
+        ],
+        "crc32": "0ff30c36"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1550000_steps.json",
+        "bytes": 364,
+        "compressed_bytes": 199,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          0,
+          11,
+          0
+        ],
+        "crc32": "6b929c60"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1600000_steps.json",
+        "bytes": 364,
+        "compressed_bytes": 198,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          1,
+          11,
+          30
+        ],
+        "crc32": "ae3193a9"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1650000_steps.json",
+        "bytes": 364,
+        "compressed_bytes": 200,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          2,
+          6,
+          50
+        ],
+        "crc32": "2f5f445c"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1700000_steps.json",
+        "bytes": 364,
+        "compressed_bytes": 198,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          3,
+          2,
+          40
+        ],
+        "crc32": "24a5d982"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1750000_steps.json",
+        "bytes": 364,
+        "compressed_bytes": 200,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          3,
+          58,
+          52
+        ],
+        "crc32": "a5cb0e77"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1800000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          4,
+          54,
+          34
+        ],
+        "crc32": "45fc45df"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1850000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          5,
+          50,
+          16
+        ],
+        "crc32": "644c8aec"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1900000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          6,
+          45,
+          56
+        ],
+        "crc32": "0e292ba7"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_1950000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          7,
+          41,
+          38
+        ],
+        "crc32": "2f99e494"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2000000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 192,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          8,
+          37,
+          22
+        ],
+        "crc32": "957b487c"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2050000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          9,
+          33,
+          0
+        ],
+        "crc32": "b4cb874f"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2100000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          10,
+          28,
+          40
+        ],
+        "crc32": "deae2604"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2150000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          11,
+          24,
+          18
+        ],
+        "crc32": "ff1ee937"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2200000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          12,
+          21,
+          32
+        ],
+        "crc32": "02d1948c"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2250000_steps.json",
+        "bytes": 359,
+        "compressed_bytes": 194,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          13,
+          20,
+          20
+        ],
+        "crc32": "23615bbf"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2300000_steps.json",
+        "bytes": 382,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          17,
+          59,
+          32
+        ],
+        "crc32": "c267f223"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2350000_steps.json",
+        "bytes": 382,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          18,
+          53,
+          32
+        ],
+        "crc32": "7f28fa58"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2400000_steps.json",
+        "bytes": 382,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          19,
+          47,
+          26
+        ],
+        "crc32": "cf4cd4b8"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2450000_steps.json",
+        "bytes": 382,
+        "compressed_bytes": 196,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          20,
+          45,
+          22
+        ],
+        "crc32": "7203dcc3"
+      },
+      {
+        "path": "runs/flight_sac/flight2/checkpoints/flight_state_2500000_steps.json",
+        "bytes": 382,
+        "compressed_bytes": 195,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          50
+        ],
+        "crc32": "d21ff031"
+      },
+      {
+        "path": "runs/flight_sac/flight2/config_snapshot_20261108_231537.json",
+        "bytes": 13840,
+        "compressed_bytes": 1803,
+        "modified_zip_local": [
+          2026,
+          11,
+          8,
+          23,
+          15,
+          36
+        ],
+        "crc32": "070b98fa"
+      },
+      {
+        "path": "runs/flight_sac/flight2/config_snapshot_20261109_170506.json",
+        "bytes": 13863,
+        "compressed_bytes": 1804,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          17,
+          5,
+          6
+        ],
+        "crc32": "3bc94f72"
+      },
+      {
+        "path": "runs/flight_sac/flight2/config_snapshot_20261110_014328.json",
+        "bytes": 13863,
+        "compressed_bytes": 1804,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          1,
+          43,
+          28
+        ],
+        "crc32": "2364c738"
+      },
+      {
+        "path": "runs/flight_sac/flight2/final_model.zip",
+        "bytes": 4468546,
+        "compressed_bytes": 3891518,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          50
+        ],
+        "crc32": "dcfcd599"
+      },
+      {
+        "path": "runs/flight_sac/flight2/final_replay_buffer.pkl",
+        "bytes": 526002824,
+        "compressed_bytes": 127674378,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          52
+        ],
+        "crc32": "6f451ca4"
+      },
+      {
+        "path": "runs/flight_sac/flight2/flight_contract.json",
+        "bytes": 12367,
+        "compressed_bytes": 1629,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          1,
+          43,
+          28
+        ],
+        "crc32": "f2ed403a"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          1,
+          43,
+          34
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/log_20261108_231537.txt",
+        "bytes": 1856933,
+        "compressed_bytes": 96940,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          13,
+          24,
+          30
+        ],
+        "crc32": "6d5c24ca"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/log_20261109_170506.txt",
+        "bytes": 512172,
+        "compressed_bytes": 27856,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          21,
+          8,
+          16
+        ],
+        "crc32": "41837e53"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/log_20261110_014328.txt",
+        "bytes": 123082,
+        "compressed_bytes": 7311,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          18
+        ],
+        "crc32": "f1cabbd7"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/progress_20261108_231537.csv",
+        "bytes": 420644,
+        "compressed_bytes": 172631,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          13,
+          24,
+          30
+        ],
+        "crc32": "60e7dba6"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/progress_20261109_170506.csv",
+        "bytes": 119964,
+        "compressed_bytes": 50606,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          21,
+          8,
+          16
+        ],
+        "crc32": "9b40a478"
+      },
+      {
+        "path": "runs/flight_sac/flight2/logs/progress_20261110_014328.csv",
+        "bytes": 29415,
+        "compressed_bytes": 13002,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          18
+        ],
+        "crc32": "bad1b895"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          1,
+          43,
+          34
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/flight_20261108_231537/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          8,
+          23,
+          15,
+          44
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/flight_20261108_231537/events.out.tfevents.1794208544.first_desktop.24792.0",
+        "bytes": 1821459,
+        "compressed_bytes": 413426,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          13,
+          24,
+          30
+        ],
+        "crc32": "9c6e9565"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/flight_20261109_170506/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          17,
+          5,
+          12
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/flight_20261109_170506/events.out.tfevents.1794272713.first_desktop.30348.0",
+        "bytes": 523346,
+        "compressed_bytes": 118279,
+        "modified_zip_local": [
+          2026,
+          11,
+          9,
+          21,
+          8,
+          18
+        ],
+        "crc32": "109f72cf"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/flight_20261110_014328/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          1,
+          43,
+          34
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/flight_sac/flight2/tensorboard/flight_20261110_014328/events.out.tfevents.1794303815.first_desktop.17840.0",
+        "bytes": 126096,
+        "compressed_bytes": 29105,
+        "modified_zip_local": [
+          2026,
+          11,
+          10,
+          2,
+          42,
+          18
+        ],
+        "crc32": "92486656"
+      },
+      {
+        "path": "runs/ppo_hover/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          49,
+          40
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/diag/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          48
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/diag/checkpoints/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          36
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/diag/checkpoints/hover_30000_steps.zip",
+        "bytes": 512046,
+        "compressed_bytes": 456443,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          36
+        ],
+        "crc32": "5da2ef6c"
+      },
+      {
+        "path": "runs/ppo_hover/diag/checkpoints/hover_vecnormalize_30000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1460,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          36
+        ],
+        "crc32": "bbb0980d"
+      },
+      {
+        "path": "runs/ppo_hover/diag/final_model.zip",
+        "bytes": 512090,
+        "compressed_bytes": 456479,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          48
+        ],
+        "crc32": "14a7a7bf"
+      },
+      {
+        "path": "runs/ppo_hover/diag/final_vecnormalize.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1473,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          48
+        ],
+        "crc32": "782f74c3"
+      },
+      {
+        "path": "runs/ppo_hover/diag/tensorboard/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          21,
+          28
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/diag/tensorboard/ppo_0/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          21,
+          28
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/diag/tensorboard/ppo_0/events.out.tfevents.1793481689.first_desktop.31060.0",
+        "bytes": 18805,
+        "compressed_bytes": 5126,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          29,
+          48
+        ],
+        "crc32": "425fc4a2"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          1,
+          32,
+          0
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          25,
+          52
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_100000_steps.zip",
+        "bytes": 512082,
+        "compressed_bytes": 455783,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          15,
+          26,
+          32
+        ],
+        "crc32": "a5771a0c"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_150000_steps.zip",
+        "bytes": 512092,
+        "compressed_bytes": 455789,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          15,
+          45,
+          24
+        ],
+        "crc32": "2ae8da98"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_200000_steps.zip",
+        "bytes": 512082,
+        "compressed_bytes": 455967,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          2,
+          32
+        ],
+        "crc32": "8db65f1f"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_250000_steps.zip",
+        "bytes": 512093,
+        "compressed_bytes": 456222,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          21,
+          16
+        ],
+        "crc32": "cf7580ae"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_300000_steps.zip",
+        "bytes": 512083,
+        "compressed_bytes": 456481,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          38,
+          38
+        ],
+        "crc32": "1c433967"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_350000_steps.zip",
+        "bytes": 512094,
+        "compressed_bytes": 456143,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          52,
+          12
+        ],
+        "crc32": "3aa8699a"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_400000_steps.zip",
+        "bytes": 512094,
+        "compressed_bytes": 456671,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          3,
+          50
+        ],
+        "crc32": "955d468e"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_450000_steps.zip",
+        "bytes": 512094,
+        "compressed_bytes": 456891,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          14,
+          50
+        ],
+        "crc32": "542922ff"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_500000_steps.zip",
+        "bytes": 512096,
+        "compressed_bytes": 457016,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          25,
+          52
+        ],
+        "crc32": "4e90c7ef"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_50000_steps.zip",
+        "bytes": 512081,
+        "compressed_bytes": 455929,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          15,
+          7,
+          46
+        ],
+        "crc32": "187baa6f"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_100000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1479,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          15,
+          26,
+          32
+        ],
+        "crc32": "9c6abab7"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_150000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1467,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          15,
+          45,
+          24
+        ],
+        "crc32": "2790537c"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_200000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1481,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          2,
+          32
+        ],
+        "crc32": "a148bce3"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_250000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1478,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          21,
+          16
+        ],
+        "crc32": "40e29cff"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_300000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1466,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          38,
+          38
+        ],
+        "crc32": "c2ec53bd"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_350000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1480,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          16,
+          52,
+          12
+        ],
+        "crc32": "4ecbcc04"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_400000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1478,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          3,
+          50
+        ],
+        "crc32": "7c631f2c"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_450000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1464,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          14,
+          50
+        ],
+        "crc32": "d591a92b"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_500000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1476,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          25,
+          52
+        ],
+        "crc32": "2d70da1e"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/checkpoints/hover_vecnormalize_50000_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1478,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          15,
+          7,
+          46
+        ],
+        "crc32": "46960a81"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/eval_weak.json",
+        "bytes": 27677,
+        "compressed_bytes": 4023,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          1,
+          32,
+          0
+        ],
+        "crc32": "f83d40fa"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/final_model.zip",
+        "bytes": 512097,
+        "compressed_bytes": 456935,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          26,
+          14
+        ],
+        "crc32": "2e4879ec"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/final_vecnormalize.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1478,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          26,
+          14
+        ],
+        "crc32": "3163292d"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/tensorboard/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          49,
+          46
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/tensorboard/ppo_0/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          49,
+          46
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/hover1/tensorboard/ppo_0/events.out.tfevents.1793483386.first_desktop.31092.0",
+        "bytes": 316885,
+        "compressed_bytes": 78548,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          17,
+          26,
+          14
+        ],
+        "crc32": "3ae60b23"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          20,
+          10
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          50
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/hover_2048_steps.zip",
+        "bytes": 180373,
+        "compressed_bytes": 154374,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          17,
+          4
+        ],
+        "crc32": "db5651fa"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/hover_4096_steps.zip",
+        "bytes": 508475,
+        "compressed_bytes": 455230,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          17,
+          36
+        ],
+        "crc32": "7674a4bb"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/hover_6144_steps.zip",
+        "bytes": 508726,
+        "compressed_bytes": 455370,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          50
+        ],
+        "crc32": "4b9c51f9"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/hover_vecnormalize_2048_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1481,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          17,
+          4
+        ],
+        "crc32": "b1e7e6f4"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/hover_vecnormalize_4096_steps.pkl",
+        "bytes": 2442,
+        "compressed_bytes": 1477,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          17,
+          36
+        ],
+        "crc32": "f9975675"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/checkpoints/hover_vecnormalize_6144_steps.pkl",
+        "bytes": 2510,
+        "compressed_bytes": 1484,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          50
+        ],
+        "crc32": "3a2e2e03"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/eval_weak.json",
+        "bytes": 4797,
+        "compressed_bytes": 945,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          20,
+          10
+        ],
+        "crc32": "db580543"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/final_model.zip",
+        "bytes": 508726,
+        "compressed_bytes": 455213,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          52
+        ],
+        "crc32": "290484bc"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/final_vecnormalize.pkl",
+        "bytes": 2510,
+        "compressed_bytes": 1484,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          52
+        ],
+        "crc32": "3a2e2e03"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/tensorboard/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          16,
+          30
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/tensorboard/ppo_0/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          18
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/tensorboard/ppo_0/events.out.tfevents.1793481391.first_desktop.7336.0",
+        "bytes": 2072,
+        "compressed_bytes": 964,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          17,
+          36
+        ],
+        "crc32": "2cf0509a"
+      },
+      {
+        "path": "runs/ppo_hover/smoke/tensorboard/ppo_0/events.out.tfevents.1793481499.first_desktop.1816.0",
+        "bytes": 799,
+        "compressed_bytes": 490,
+        "modified_zip_local": [
+          2026,
+          10,
+          31,
+          14,
+          18,
+          50
+        ],
+        "crc32": "7993e56c"
+      },
+      {
+        "path": "runs/sac_hover/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          9,
+          48,
+          42
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          33,
+          4
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/checkpoints/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          13,
+          4,
+          8
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/checkpoints/sac_100000_steps.zip",
+        "bytes": 4151449,
+        "compressed_bytes": 3647751,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          11,
+          25,
+          8
+        ],
+        "crc32": "87202684"
+      },
+      {
+        "path": "runs/sac_hover/wind1/checkpoints/sac_200000_steps.zip",
+        "bytes": 4151479,
+        "compressed_bytes": 3491791,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          13,
+          4,
+          8
+        ],
+        "crc32": "fc6853ac"
+      },
+      {
+        "path": "runs/sac_hover/wind1/checkpoints/sac_replay_buffer_100000_steps.pkl",
+        "bytes": 165602544,
+        "compressed_bytes": 17718809,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          11,
+          25,
+          8
+        ],
+        "crc32": "9bde2299"
+      },
+      {
+        "path": "runs/sac_hover/wind1/checkpoints/sac_replay_buffer_200000_steps.pkl",
+        "bytes": 165602544,
+        "compressed_bytes": 35274645,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          13,
+          4,
+          8
+        ],
+        "crc32": "378524ea"
+      },
+      {
+        "path": "runs/sac_hover/wind1/eval_gusty.json",
+        "bytes": 19934,
+        "compressed_bytes": 3204,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          43,
+          34
+        ],
+        "crc32": "681836c0"
+      },
+      {
+        "path": "runs/sac_hover/wind1/eval_gusty_episodes.csv",
+        "bytes": 6541,
+        "compressed_bytes": 2590,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          43,
+          34
+        ],
+        "crc32": "e8905b52"
+      },
+      {
+        "path": "runs/sac_hover/wind1/eval_gusty_summary.csv",
+        "bytes": 342,
+        "compressed_bytes": 216,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          43,
+          34
+        ],
+        "crc32": "f90107b4"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          47,
+          54
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/log_20261101_094851.txt",
+        "bytes": 421562,
+        "compressed_bytes": 22764,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          13,
+          52,
+          32
+        ],
+        "crc32": "cf5cd762"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/log_20261101_192650.txt",
+        "bytes": 105534,
+        "compressed_bytes": 5961,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          28,
+          38
+        ],
+        "crc32": "d64fe176"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/log_20261101_203433.txt",
+        "bytes": 2706,
+        "compressed_bytes": 497,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          35,
+          34
+        ],
+        "crc32": "0009638f"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/log_20261101_204755.txt",
+        "bytes": 13530,
+        "compressed_bytes": 1150,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          55,
+          26
+        ],
+        "crc32": "4af56310"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/progress_20261101_094851.csv",
+        "bytes": 111299,
+        "compressed_bytes": 46592,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          13,
+          52,
+          32
+        ],
+        "crc32": "f551c8df"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/progress_20261101_192650.csv",
+        "bytes": 28440,
+        "compressed_bytes": 12159,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          28,
+          38
+        ],
+        "crc32": "81fee986"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/progress_20261101_203433.csv",
+        "bytes": 1168,
+        "compressed_bytes": 583,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          35,
+          34
+        ],
+        "crc32": "2c104f1a"
+      },
+      {
+        "path": "runs/sac_hover/wind1/logs/progress_20261101_204755.csv",
+        "bytes": 4017,
+        "compressed_bytes": 1860,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          55,
+          26
+        ],
+        "crc32": "e8733b9f"
+      },
+      {
+        "path": "runs/sac_hover/wind1/observation_contract.json",
+        "bytes": 1157,
+        "compressed_bytes": 367,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          47,
+          52
+        ],
+        "crc32": "61b9cdf5"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          47,
+          54
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_094851/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          9,
+          48,
+          50
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_094851/events.out.tfevents.1793555331.first_desktop.32116.0",
+        "bytes": 398947,
+        "compressed_bytes": 92609,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          13,
+          52,
+          32
+        ],
+        "crc32": "c3932386"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_192650/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          19,
+          26,
+          50
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_192650/events.out.tfevents.1793590010.first_desktop.38040.0",
+        "bytes": 100084,
+        "compressed_bytes": 23538,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          28,
+          38
+        ],
+        "crc32": "6c17425c"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_203433/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          34,
+          32
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_203433/events.out.tfevents.1793594073.first_desktop.40500.0",
+        "bytes": 2652,
+        "compressed_bytes": 1093,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          35,
+          34
+        ],
+        "crc32": "0ded510b"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_204755/",
+        "bytes": 0,
+        "compressed_bytes": 0,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          47,
+          54
+        ],
+        "crc32": "00000000"
+      },
+      {
+        "path": "runs/sac_hover/wind1/tensorboard/sac_20261101_204755/events.out.tfevents.1793594875.first_desktop.36204.0",
+        "bytes": 12908,
+        "compressed_bytes": 3471,
+        "modified_zip_local": [
+          2026,
+          11,
+          1,
+          20,
+          55,
+          26
+        ],
+        "crc32": "66a9a726"
+      }
+    ],
+    "selected_run": "flight1",
+    "selected_model": {
+      "model_sha256": "2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d",
+      "policy_weights_sha256": "4160cafe84ab60d11c1b77d91802d2493d10673a7d293df8bf2bf6ffa09958dc",
+      "timesteps": 1500000,
+      "gradient_updates": 1494999,
+      "training_seed": 0,
+      "observation_shape": [
+        128
+      ],
+      "action_shape": [
+        4
+      ],
+      "stable_baselines3": "2.9.0",
+      "system_info": "- OS: Windows-11-10.0.26200-SP0 10.0.26200\n- Python: 3.12.13\n- Stable-Baselines3: 2.9.0\n- PyTorch: 2.11.0+cu128\n- GPU Enabled: True\n- Numpy: 2.3.1\n- Cloudpickle: 3.1.2\n- Gymnasium: 1.4.0\n- OpenAI Gym: 0.23.1\n",
+      "deserialized_model": false
+    },
+    "models": {
+      "flight1": {
+        "model_sha256": "2d9e5cd0df1a3cbabf8ae2eaa75884783c9c16bf6a3ced737398291b0b67023d",
+        "policy_weights_sha256": "4160cafe84ab60d11c1b77d91802d2493d10673a7d293df8bf2bf6ffa09958dc",
+        "timesteps": 1500000,
+        "gradient_updates": 1494999,
+        "training_seed": 0,
+        "observation_shape": [
+          128
+        ],
+        "action_shape": [
+          4
+        ],
+        "stable_baselines3": "2.9.0",
+        "system_info": "- OS: Windows-11-10.0.26200-SP0 10.0.26200\n- Python: 3.12.13\n- Stable-Baselines3: 2.9.0\n- PyTorch: 2.11.0+cu128\n- GPU Enabled: True\n- Numpy: 2.3.1\n- Cloudpickle: 3.1.2\n- Gymnasium: 1.4.0\n- OpenAI Gym: 0.23.1\n",
+        "deserialized_model": false,
+        "curriculum": [
+          {
+            "name": "short_slow",
+            "until_step": 150000,
+            "wind": {
+              "no_wind_probability": 0.5,
+              "mean_speed_range": [
+                0.0,
+                2.0
+              ],
+              "gust_scale_range": [
+                0.0,
+                0.25
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "name": "turns",
+            "until_step": 400000,
+            "wind": {
+              "no_wind_probability": 0.2,
+              "mean_speed_range": [
+                0.0,
+                4.0
+              ],
+              "gust_scale_range": [
+                0.0,
+                0.5
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.05
+              ]
+            }
+          },
+          {
+            "name": "climbs_loops",
+            "until_step": 800000,
+            "wind": {
+              "no_wind_probability": 0.1,
+              "mean_speed_range": [
+                1.0,
+                6.0
+              ],
+              "gust_scale_range": [
+                0.25,
+                0.75
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.1
+              ]
+            }
+          },
+          {
+            "name": "full",
+            "until_step": null,
+            "wind": {
+              "no_wind_probability": 0.1,
+              "mean_speed_range": [
+                2.0,
+                7.0
+              ],
+              "gust_scale_range": [
+                0.5,
+                1.0
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.2
+              ]
+            }
+          }
+        ],
+        "evaluation_present": true
+      },
+      "flight2": {
+        "model_sha256": "0d6acd9cd54c71e6145f169f5b5ee8163a9ab629e160158846f7c0e2db7d0ec4",
+        "policy_weights_sha256": "322dc231ca7b1c69d0899f560dd66f58c9641cfb8dc8bd7382ec9719e1163f49",
+        "timesteps": 2500000,
+        "gradient_updates": 2494997,
+        "training_seed": 0,
+        "observation_shape": [
+          128
+        ],
+        "action_shape": [
+          4
+        ],
+        "stable_baselines3": "2.9.0",
+        "system_info": "- OS: Windows-11-10.0.26200-SP0 10.0.26200\n- Python: 3.12.13\n- Stable-Baselines3: 2.9.0\n- PyTorch: 2.11.0+cu128\n- GPU Enabled: True\n- Numpy: 2.3.1\n- Cloudpickle: 3.1.2\n- Gymnasium: 1.4.0\n- OpenAI Gym: 0.23.1\n",
+        "deserialized_model": false,
+        "curriculum": [
+          {
+            "name": "short_slow",
+            "until_step": 150000,
+            "wind": {
+              "no_wind_probability": 0.5,
+              "mean_speed_range": [
+                0.0,
+                2.0
+              ],
+              "gust_scale_range": [
+                0.0,
+                0.25
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "name": "turns",
+            "until_step": 400000,
+            "wind": {
+              "no_wind_probability": 0.2,
+              "mean_speed_range": [
+                0.0,
+                4.0
+              ],
+              "gust_scale_range": [
+                0.0,
+                0.5
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.05
+              ]
+            }
+          },
+          {
+            "name": "climbs_loops",
+            "until_step": 800000,
+            "wind": {
+              "no_wind_probability": 0.1,
+              "mean_speed_range": [
+                1.0,
+                6.0
+              ],
+              "gust_scale_range": [
+                0.25,
+                0.75
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.1
+              ]
+            }
+          },
+          {
+            "name": "full",
+            "until_step": 1500000,
+            "wind": {
+              "no_wind_probability": 0.1,
+              "mean_speed_range": [
+                2.0,
+                7.0
+              ],
+              "gust_scale_range": [
+                0.5,
+                1.0
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.2
+              ]
+            }
+          },
+          {
+            "name": "strong_ramp",
+            "until_step": 1800000,
+            "wind": {
+              "no_wind_probability": 0.05,
+              "mean_speed_range": [
+                2.0,
+                10.0
+              ],
+              "gust_scale_range": [
+                0.5,
+                1.0
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.2
+              ]
+            }
+          },
+          {
+            "name": "strong",
+            "until_step": null,
+            "wind": {
+              "no_wind_probability": 0.05,
+              "mean_speed_range": [
+                2.0,
+                14.0
+              ],
+              "gust_scale_range": [
+                0.5,
+                1.0
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.2
+              ]
+            }
+          }
+        ],
+        "evaluation_present": false
+      }
+    },
+    "contract": {
+      "policy": {
+        "workflow": "flight_sac",
+        "version": 1,
+        "rl_rate_hz": 10,
+        "physics_rate_hz": 120,
+        "history_length": 4,
+        "observation_scales": {
+          "position_error": 1.0,
+          "velocity_error": 1.0,
+          "reference_velocity": 2.0,
+          "reference_acceleration": 1.0,
+          "attitude_error": 0.35,
+          "angular_velocity": 2.0,
+          "pid_thrust": 5.0,
+          "pid_torque": 0.1
+        },
+        "observation_clip": 10.0,
+        "residual_limits": {
+          "thrust": 0.8,
+          "roll_torque": 0.05,
+          "pitch_torque": 0.03,
+          "yaw_torque": 0.02
+        },
+        "pid": {
+          "height": {
+            "kp": 10.0,
+            "ki": 3.0,
+            "kd": 5.0,
+            "integral_limit": 3.0,
+            "integral_zone": 0.5
+          },
+          "xy": {
+            "kp": 0.6,
+            "ki": 0.15,
+            "kd": 1.2,
+            "integral_limit": 1.2,
+            "integral_zone": 2.0
+          },
+          "attitude": {
+            "kp": [
+              0.2,
+              0.2,
+              0.1
+            ],
+            "ki": [
+              0.0,
+              0.0,
+              0.02
+            ],
+            "kd": [
+              0.05,
+              0.05,
+              0.05
+            ],
+            "integral_limit": [
+              0.02,
+              0.02,
+              0.02
+            ],
+            "integral_zone": 0.35
+          }
+        }
+      },
+      "training": {
+        "reward": {
+          "lambda_v": 1.0,
+          "lambda_a": 1.0,
+          "position": {
+            "scale": 0.25,
+            "delta": 1.0
+          },
+          "speed": {
+            "scale": 0.5,
+            "delta": 1.0
+          },
+          "direction": {
+            "scale": 1.0,
+            "delta": 1.0
+          },
+          "attitude": {
+            "scale": 0.2,
+            "delta": 1.0
+          },
+          "rate": {
+            "scale": 1.0,
+            "delta": 1.0
+          },
+          "direction_weight": 1.0,
+          "direction_speed_threshold": 0.3,
+          "direction_epsilon": 1e-06,
+          "reference_rate_limit": 1.0,
+          "action": 0.005,
+          "action_rate": 0.02,
+          "saturation": 0.5,
+          "persistent_saturation": 2.0,
+          "unsafe_tilt": 1.0,
+          "unsafe_rate": 0.5,
+          "route_deviation": 1.0,
+          "soft_tilt_degrees": 20.0,
+          "soft_rate": 3.0,
+          "soft_deviation": 1.0,
+          "cost_cap": 10.0,
+          "scale": 0.1
+        },
+        "failure": {
+          "max_position_error": 3.0,
+          "min_height": 0.5,
+          "max_tilt_degrees": 45.0,
+          "max_speed": 7.0,
+          "max_angular_speed": 6.0
+        },
+        "episode": {
+          "settle_seconds": 3.0,
+          "max_seconds": 60.0,
+          "spacing": 0.05,
+          "start_xy": 3.0,
+          "height_range": [
+            1.2,
+            4.8
+          ],
+          "initial_position_range": [
+            0.1,
+            0.1,
+            0.1
+          ],
+          "initial_velocity_range": [
+            0.1,
+            0.1,
+            0.1
+          ],
+          "initial_angle_range_degrees": [
+            3.0,
+            3.0,
+            5.0
+          ],
+          "initial_angular_velocity_range": [
+            0.1,
+            0.1,
+            0.1
+          ]
+        },
+        "curriculum": [
+          {
+            "name": "short_slow",
+            "until_step": 150000,
+            "route": {
+              "weights": {
+                "hover": 0.2,
+                "straight": 0.45,
+                "altitude": 0.25,
+                "waypoints": 0.1,
+                "circle": 0.0,
+                "figure_eight": 0.0
+              },
+              "speed_range": [
+                0.3,
+                0.7
+              ],
+              "acceleration_range": [
+                0.3,
+                0.4
+              ],
+              "lateral_acceleration": 0.3,
+              "vertical_speed": 0.4,
+              "length_range": [
+                1.0,
+                3.0
+              ],
+              "height_change_range": [
+                0.0,
+                0.5
+              ],
+              "waypoint_count_range": [
+                3,
+                3
+              ],
+              "turn_degrees_range": [
+                20.0,
+                60.0
+              ],
+              "corner_radius_range": [
+                0.2,
+                0.5
+              ],
+              "loop_radius_range": [
+                1.0,
+                1.5
+              ],
+              "hover_seconds_range": [
+                4.0,
+                8.0
+              ]
+            },
+            "wind": {
+              "no_wind_probability": 0.5,
+              "mean_speed_range": [
+                0.0,
+                2.0
+              ],
+              "gust_scale_range": [
+                0.0,
+                0.25
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.0
+              ]
+            }
+          },
+          {
+            "name": "turns",
+            "until_step": 400000,
+            "route": {
+              "weights": {
+                "hover": 0.1,
+                "straight": 0.25,
+                "altitude": 0.15,
+                "waypoints": 0.35,
+                "circle": 0.15,
+                "figure_eight": 0.0
+              },
+              "speed_range": [
+                0.5,
+                1.2
+              ],
+              "acceleration_range": [
+                0.4,
+                0.5
+              ],
+              "lateral_acceleration": 0.4,
+              "vertical_speed": 0.6,
+              "length_range": [
+                2.0,
+                6.0
+              ],
+              "height_change_range": [
+                0.0,
+                1.0
+              ],
+              "waypoint_count_range": [
+                3,
+                4
+              ],
+              "turn_degrees_range": [
+                30.0,
+                90.0
+              ],
+              "corner_radius_range": [
+                0.0,
+                0.6
+              ],
+              "loop_radius_range": [
+                1.0,
+                2.5
+              ],
+              "hover_seconds_range": [
+                3.0,
+                6.0
+              ]
+            },
+            "wind": {
+              "no_wind_probability": 0.2,
+              "mean_speed_range": [
+                0.0,
+                4.0
+              ],
+              "gust_scale_range": [
+                0.0,
+                0.5
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.05
+              ]
+            }
+          },
+          {
+            "name": "climbs_loops",
+            "until_step": 800000,
+            "route": {
+              "weights": {
+                "hover": 0.05,
+                "straight": 0.15,
+                "altitude": 0.15,
+                "waypoints": 0.3,
+                "circle": 0.2,
+                "figure_eight": 0.15
+              },
+              "speed_range": [
+                0.8,
+                1.6
+              ],
+              "acceleration_range": [
+                0.5,
+                0.6
+              ],
+              "lateral_acceleration": 0.5,
+              "vertical_speed": 0.8,
+              "length_range": [
+                3.0,
+                10.0
+              ],
+              "height_change_range": [
+                0.0,
+                1.5
+              ],
+              "waypoint_count_range": [
+                3,
+                5
+              ],
+              "turn_degrees_range": [
+                30.0,
+                120.0
+              ],
+              "corner_radius_range": [
+                0.0,
+                0.8
+              ],
+              "loop_radius_range": [
+                1.5,
+                3.5
+              ],
+              "hover_seconds_range": [
+                2.0,
+                5.0
+              ]
+            },
+            "wind": {
+              "no_wind_probability": 0.1,
+              "mean_speed_range": [
+                1.0,
+                6.0
+              ],
+              "gust_scale_range": [
+                0.25,
+                0.75
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.1
+              ]
+            }
+          },
+          {
+            "name": "full",
+            "until_step": null,
+            "route": {
+              "weights": {
+                "hover": 0.05,
+                "straight": 0.15,
+                "altitude": 0.15,
+                "waypoints": 0.3,
+                "circle": 0.175,
+                "figure_eight": 0.175
+              },
+              "speed_range": [
+                1.0,
+                2.0
+              ],
+              "acceleration_range": [
+                0.5,
+                0.6
+              ],
+              "lateral_acceleration": 0.6,
+              "vertical_speed": 1.0,
+              "length_range": [
+                4.0,
+                16.0
+              ],
+              "height_change_range": [
+                0.0,
+                2.5
+              ],
+              "waypoint_count_range": [
+                3,
+                6
+              ],
+              "turn_degrees_range": [
+                30.0,
+                150.0
+              ],
+              "corner_radius_range": [
+                0.0,
+                1.0
+              ],
+              "loop_radius_range": [
+                2.0,
+                4.0
+              ],
+              "hover_seconds_range": [
+                2.0,
+                5.0
+              ]
+            },
+            "wind": {
+              "no_wind_probability": 0.1,
+              "mean_speed_range": [
+                2.0,
+                7.0
+              ],
+              "gust_scale_range": [
+                0.5,
+                1.0
+              ],
+              "direction_rate_range": [
+                0.0,
+                0.2
+              ]
+            }
+          }
+        ],
+        "sac": {
+          "learning_rate": 0.0003,
+          "gamma": 0.99,
+          "tau": 0.005,
+          "batch_size": 256,
+          "buffer_size": 500000,
+          "learning_starts": 5000,
+          "train_freq": 1,
+          "gradient_steps": 1,
+          "ent_coef": "auto",
+          "target_entropy": -4.0,
+          "policy_kwargs": {
+            "net_arch": {
+              "pi": [
+                256,
+                256
+              ],
+              "qf": [
+                256,
+                256
+              ]
+            }
+          },
+          "device": "auto"
+        }
+      }
+    },
+    "source_files": {
+      "flights.csv": {
+        "archive_member": "runs/flight_sac/flight1/evaluation/final_model/flights.csv",
+        "bytes": 97754,
+        "sha256": "7e23640a2a10133ba19ee650eb78b509a2ba46b7f0b49407efdd51cd4bac68ae"
+      },
+      "summary.csv": {
+        "archive_member": "runs/flight_sac/flight1/evaluation/final_model/summary.csv",
+        "bytes": 6980,
+        "sha256": "bd9f42d9e833533dd65d728187980cbe17c847f561a91fd414518401e0ed0b8f"
+      },
+      "results.json": {
+        "archive_member": "runs/flight_sac/flight1/evaluation/final_model/results.json",
+        "bytes": 327795,
+        "sha256": "ca1d82d25b39c6d2088b897dbbb666f968aa170e104a1eabc91da34a482c16ff"
+      },
+      "evaluation_report.pdf": {
+        "archive_member": "runs/flight_sac/flight1/evaluation/final_model/evaluation_report.pdf",
+        "bytes": 98310,
+        "sha256": "21bdbbcc82299fb5ff2e80cd7f70a96de370fbb3e8b337461f440f5fb9cab7ae"
+      },
+      "flight_contract.json": {
+        "archive_member": "runs/flight_sac/flight1/flight_contract.json",
+        "bytes": 9414,
+        "sha256": "8b9f628329f182a64d45596912f186aef4337601c7898e865da84dd5f2dcf007"
+      },
+      "eval_log.txt": {
+        "archive_member": "runs/flight_sac/flight1/eval_log.txt",
+        "bytes": 51617,
+        "sha256": "97c28e3a61310e34e30fea3e0a8ecfc9fd8515ce28aecb1fac9e834c8666f176"
+      },
+      "config_snapshot_20261101_221144.json": {
+        "archive_member": "runs/flight_sac/flight1/config_snapshot_20261101_221144.json",
+        "bytes": 10579,
+        "sha256": "f93e5f0e60b826a1d0cb4c0f7cf59c4fe3f8d29448c1af0cbac49cc842381197"
+      },
+      "config_snapshot_20261102_001608.json": {
+        "archive_member": "runs/flight_sac/flight1/config_snapshot_20261102_001608.json",
+        "bytes": 10640,
+        "sha256": "dfe110201f30195eb6931bf0175ec417761e4fe28f18b3f1f82b03b77e00b142"
+      },
+      "flight2_config_snapshot_20261108_231537.json": {
+        "archive_member": "runs/flight_sac/flight2/config_snapshot_20261108_231537.json",
+        "bytes": 13840,
+        "sha256": "bdad7eae0b6a16f049d90a32697d01b5fb35d4b8b71752473316b49ff6aa62a7"
+      },
+      "flight2_config_snapshot_20261109_170506.json": {
+        "archive_member": "runs/flight_sac/flight2/config_snapshot_20261109_170506.json",
+        "bytes": 13863,
+        "sha256": "0d7306ff12fc542844b5f0617add4f0145acb233cce0927cafe0020bf3d6cec2"
+      },
+      "flight2_config_snapshot_20261110_014328.json": {
+        "archive_member": "runs/flight_sac/flight2/config_snapshot_20261110_014328.json",
+        "bytes": 13863,
+        "sha256": "db68ae26eae1f205cee39df885f36b40aa7f409bae9d7f11744da5f6268215cd"
+      },
+      "flight2_contract.json": {
+        "archive_member": "runs/flight_sac/flight2/flight_contract.json",
+        "bytes": 12367,
+        "sha256": "8cb7846c0a74776f54b9a3c444d3080f5fdecbd9b7b239932d8ced709ff1c9d8"
+      }
+    },
+    "validation": {
+      "flights": 420,
+      "pairs": 210,
+      "conditions": 21,
+      "evaluation_seeds": [
+        300000,
+        300001,
+        300002,
+        300003,
+        300004,
+        300005,
+        300006,
+        300007,
+        300008,
+        300009
+      ],
+      "pairing_fields_verified": [
+        "scenario",
+        "wind_profile",
+        "seed",
+        "wind_seed",
+        "wind_speed",
+        "route_seconds"
+      ],
+      "duplicate_flights": 0,
+      "missing_pairs": 0,
+      "source_csv_json_summary_agree": true,
+      "exact_initial_states_and_reference_hashes_available": false,
+      "per_timestep_evaluation_traces_available": false,
+      "different_recorded_lengths": 54,
+      "completion_and_failure_overlap": 0
+    }
+  },
+  "versions": {
+    "python": "3.11.17",
+    "platform": "macOS-15.2-arm64-arm-64bit",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "matplotlib": "3.11.2"
+  },
+  "repository": {
+    "branch": "alan/mujoco",
+    "commit": "40b99e4b4c514ae2f795d4b479891b88db7465da"
+  },
+  "analysis_sources_sha256": {
+    "__init__.py": "0b2b14e35848ad241fb1e5b3a689f9f7822bc1fb835aa720d279199e1f7ec300",
+    "archive_io.py": "dead6cd05c774851a741c7e7a012d2ec57557568afcd1d28cc3df2e3b4f36c50",
+    "figures.py": "a94df48375c5b1d13273197976e39bd2e0f363861d48e6b758b9fa7d88b61d20",
+    "run_analysis.py": "dcc5d8bea601831e414568a7fe0364d912c343a88c32bd850046228603436fd8",
+    "stats_tools.py": "75c737fefa92f7ce022b5f7c2e93f1326197d59246829677f4a3a1defb00511c",
+    "verify_outputs.py": "a0864d427ff7d5cb8ed04ffd23d427ddfc713b6cd6e2a7523218987666b53839",
+    "write_report.py": "c1445299e1af0cd5df049bb914ec345c600c2bb7d9c62a4f9dd205a7097b7005"
+  },
+  "evaluation_not_rerun": true,
+  "training_not_rerun": true,
+  "model_not_deserialized": true,
+  "simulator_imported": false,
+  "analysis_does_not_modify_simulation_sources": true
+}

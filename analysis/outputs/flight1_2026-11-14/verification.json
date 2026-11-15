@@ -1,0 +1,25 @@
+{
+  "verified_utc": "2026-11-15T02:08:34.501257+00:00",
+  "status": "passed",
+  "output_manifest_sha256": "295a6e4d4f489a0bc4d8bd0bd82a17c91b2696100d06793b8af64903ea1314e9",
+  "generation_files_verified": 42,
+  "analysis_source_hashes_match": true,
+  "test_command": "python -m pytest analysis/tests -q",
+  "test_return_code": 0,
+  "test_output": "...................                                                      [100%]\n19 passed in 0.48s",
+  "byte_identical_reproduced_tables": {
+    "control_effort_descriptive.csv": "e767db221c8627a9d2642ebb874a87eab2239143dd661f8884ae18f7a1a6e140",
+    "observed_lengths.csv": "4e5c200dc1564d4b5ca4a356aa1886b904c194b514915edfb32ce6197984a32d",
+    "paired_flights.csv": "653c426bc89e55ada5ced7a6debfdfe516c794eb62bbe2b76a85f7fb567dc3fc",
+    "paired_outcomes.csv": "4afe6d21ffb41f320abfe2d69cf5d73fa9250b34187d5ba1d56e203fde5df9ac",
+    "primary_rmse.csv": "218edfe499e7e0885f2cb94685032cffa6b2aa5b6e4605d08496cacffdb5fc97",
+    "secondary_metrics.csv": "974af31e93009ae3171bd1419576bb73bd6a64f0eaccc13e98bea47fdd92976a",
+    "seed_cluster_overview.csv": "e28737ab90042ba725eb38c3b7c3adc68c31c624f2aacc02661404e6aab58c48",
+    "seed_cluster_values.csv": "5c1d597eeada6f7a4ff90f304568056e712e2680d74f77416b6743abfc87c0d0",
+    "sensitivity_rmse.csv": "8f2eeb1e6ae875b5e5fb2b4ad5c957e097d858dfff3bfa313549f34a5bc2e9a1"
+  },
+  "summary_reproduced_exactly": true,
+  "reproduction_input": "preserved source_data only; no full archive or simulator",
+  "full_archive_rehashed_by_verifier": false,
+  "note": "Verification record is intentionally outside the generation manifest to avoid circular hashes."
+}

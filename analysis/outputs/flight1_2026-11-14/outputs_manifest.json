@@ -1,0 +1,170 @@
+{
+  "analysis_report.pdf": {
+    "bytes": 104862,
+    "sha256": "be4b6c6896292b013eff4ca643a2c0ed0eede43f61859673bd367d00e4903703"
+  },
+  "figures/observed_lengths.pdf": {
+    "bytes": 21411,
+    "sha256": "0d0649db9e2c34ecb00eaa585f94c6ee8fa52f4c25d8911c627d8dce94e64791"
+  },
+  "figures/observed_lengths.png": {
+    "bytes": 150081,
+    "sha256": "762ca6dcc251766199a4621f7e12eba3dccce633f168d2f875b27600d9793199"
+  },
+  "figures/outcomes.pdf": {
+    "bytes": 22907,
+    "sha256": "c8835f6eeeb60ea779917e1d301d963d4f1b41c3c64fa73709a5dec6a5f8e762"
+  },
+  "figures/outcomes.png": {
+    "bytes": 260376,
+    "sha256": "941ee9c5f3507045a73e297bdcfb8458f840bb78a6e2bb4b305ef656b2c1ccb7"
+  },
+  "figures/paired_scatter.pdf": {
+    "bytes": 52147,
+    "sha256": "ef16992118c0ad74713bcf6db872048578ff2f0c05875aea290a3a9334845e62"
+  },
+  "figures/paired_scatter.png": {
+    "bytes": 179140,
+    "sha256": "ae5b85500ceb7c7ae32e43dca24eb251d36d82a8503e9b406a41053e3a03a054"
+  },
+  "figures/rmse_effects.pdf": {
+    "bytes": 23796,
+    "sha256": "1a92b0247866318a49ef5903ff188bbfd71c50dd1a60b48b3083c7ae7f69d4d4"
+  },
+  "figures/rmse_effects.png": {
+    "bytes": 122715,
+    "sha256": "a6e7288a7c892911949acbd416d99938729fc768bd0289395ba40b9f1258efb4"
+  },
+  "figures/rmse_sensitivity.pdf": {
+    "bytes": 24433,
+    "sha256": "e849054a29699c77926911a2f76c8d882b866f0ea0e4523626a66ccf2e7ae2b3"
+  },
+  "figures/rmse_sensitivity.png": {
+    "bytes": 124963,
+    "sha256": "e1efb0b9b1210ff9bf5fac8f2f3b5f968257714fdeedb2495955413179477271"
+  },
+  "figures/seed_cluster_overview.pdf": {
+    "bytes": 19441,
+    "sha256": "5529650146c246aa82d59c26bf550bfadace9086976597c2817de11ef236d499"
+  },
+  "figures/seed_cluster_overview.png": {
+    "bytes": 89095,
+    "sha256": "c9e5d909eec34d167afb49bc3985be12f362c389e53cb58ee0399e8ccc479e50"
+  },
+  "figures/seed_differences.pdf": {
+    "bytes": 28690,
+    "sha256": "d5aad6a6483c749262b84a4dd8e6704a37eaf36d569adc01ec83745e13539396"
+  },
+  "figures/seed_differences.png": {
+    "bytes": 234383,
+    "sha256": "5464a205a14fa6e20a2d802c54beef891f8f026462f67d5b52b59191d512c342"
+  },
+  "provenance.json": {
+    "bytes": 100600,
+    "sha256": "78b1f8ee4efb67ff3d9c24224c679f818967de27b43da6a854e5cc685ddd12ca"
+  },
+  "report.md": {
+    "bytes": 15232,
+    "sha256": "98c11b2faea6835c8b2b066cd0266d01f5dd0c4386e7ece7ed51057a57f12dfd"
+  },
+  "report_section.tex": {
+    "bytes": 2130,
+    "sha256": "83b3e54efe5364b4fd9008ae9bb65ebf5cbd64cbc7d4da355eb15bc069171286"
+  },
+  "source_data/config_snapshot_20261101_221144.json": {
+    "bytes": 10579,
+    "sha256": "f93e5f0e60b826a1d0cb4c0f7cf59c4fe3f8d29448c1af0cbac49cc842381197"
+  },
+  "source_data/config_snapshot_20261102_001608.json": {
+    "bytes": 10640,
+    "sha256": "dfe110201f30195eb6931bf0175ec417761e4fe28f18b3f1f82b03b77e00b142"
+  },
+  "source_data/dataset_metadata.json": {
+    "bytes": 89256,
+    "sha256": "862c89bc1d021c9152eddbfe9c5402badd1954d35131e63f0444d259844a55aa"
+  },
+  "source_data/eval_log.txt": {
+    "bytes": 51617,
+    "sha256": "97c28e3a61310e34e30fea3e0a8ecfc9fd8515ce28aecb1fac9e834c8666f176"
+  },
+  "source_data/evaluation_report.pdf": {
+    "bytes": 98310,
+    "sha256": "21bdbbcc82299fb5ff2e80cd7f70a96de370fbb3e8b337461f440f5fb9cab7ae"
+  },
+  "source_data/flight2_config_snapshot_20261108_231537.json": {
+    "bytes": 13840,
+    "sha256": "bdad7eae0b6a16f049d90a32697d01b5fb35d4b8b71752473316b49ff6aa62a7"
+  },
+  "source_data/flight2_config_snapshot_20261109_170506.json": {
+    "bytes": 13863,
+    "sha256": "0d7306ff12fc542844b5f0617add4f0145acb233cce0927cafe0020bf3d6cec2"
+  },
+  "source_data/flight2_config_snapshot_20261110_014328.json": {
+    "bytes": 13863,
+    "sha256": "db68ae26eae1f205cee39df885f36b40aa7f409bae9d7f11744da5f6268215cd"
+  },
+  "source_data/flight2_contract.json": {
+    "bytes": 12367,
+    "sha256": "8cb7846c0a74776f54b9a3c444d3080f5fdecbd9b7b239932d8ced709ff1c9d8"
+  },
+  "source_data/flight_contract.json": {
+    "bytes": 9414,
+    "sha256": "8b9f628329f182a64d45596912f186aef4337601c7898e865da84dd5f2dcf007"
+  },
+  "source_data/flights.csv": {
+    "bytes": 97754,
+    "sha256": "7e23640a2a10133ba19ee650eb78b509a2ba46b7f0b49407efdd51cd4bac68ae"
+  },
+  "source_data/results.json": {
+    "bytes": 327795,
+    "sha256": "ca1d82d25b39c6d2088b897dbbb666f968aa170e104a1eabc91da34a482c16ff"
+  },
+  "source_data/summary.csv": {
+    "bytes": 6980,
+    "sha256": "bd9f42d9e833533dd65d728187980cbe17c847f561a91fd414518401e0ed0b8f"
+  },
+  "summary.json": {
+    "bytes": 6981,
+    "sha256": "de2421bf3313acda9e213e409c8b272e6a74be61fcddf587592f1002039b142e"
+  },
+  "tables/control_effort_descriptive.csv": {
+    "bytes": 4911,
+    "sha256": "e767db221c8627a9d2642ebb874a87eab2239143dd661f8884ae18f7a1a6e140"
+  },
+  "tables/observed_lengths.csv": {
+    "bytes": 897,
+    "sha256": "4e5c200dc1564d4b5ca4a356aa1886b904c194b514915edfb32ce6197984a32d"
+  },
+  "tables/paired_flights.csv": {
+    "bytes": 97895,
+    "sha256": "653c426bc89e55ada5ced7a6debfdfe516c794eb62bbe2b76a85f7fb567dc3fc"
+  },
+  "tables/paired_outcomes.csv": {
+    "bytes": 14547,
+    "sha256": "4afe6d21ffb41f320abfe2d69cf5d73fa9250b34187d5ba1d56e203fde5df9ac"
+  },
+  "tables/primary_rmse.csv": {
+    "bytes": 8901,
+    "sha256": "218edfe499e7e0885f2cb94685032cffa6b2aa5b6e4605d08496cacffdb5fc97"
+  },
+  "tables/secondary_metrics.csv": {
+    "bytes": 32024,
+    "sha256": "974af31e93009ae3171bd1419576bb73bd6a64f0eaccc13e98bea47fdd92976a"
+  },
+  "tables/seed_cluster_overview.csv": {
+    "bytes": 2749,
+    "sha256": "e28737ab90042ba725eb38c3b7c3adc68c31c624f2aacc02661404e6aab58c48"
+  },
+  "tables/seed_cluster_values.csv": {
+    "bytes": 4619,
+    "sha256": "5c1d597eeada6f7a4ff90f304568056e712e2680d74f77416b6743abfc87c0d0"
+  },
+  "tables/sensitivity_rmse.csv": {
+    "bytes": 9085,
+    "sha256": "8f2eeb1e6ae875b5e5fb2b4ad5c957e097d858dfff3bfa313549f34a5bc2e9a1"
+  },
+  "validation.json": {
+    "bytes": 625,
+    "sha256": "6971e70d035db34fc917add4e4d47d3060a5b61305f1aaaacaf6e96d73675eb9"
+  }
+}

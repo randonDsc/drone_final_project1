@@ -1,0 +1,32 @@
+{
+  "flights": 420,
+  "pairs": 210,
+  "conditions": 21,
+  "evaluation_seeds": [
+    300000,
+    300001,
+    300002,
+    300003,
+    300004,
+    300005,
+    300006,
+    300007,
+    300008,
+    300009
+  ],
+  "pairing_fields_verified": [
+    "scenario",
+    "wind_profile",
+    "seed",
+    "wind_seed",
+    "wind_speed",
+    "route_seconds"
+  ],
+  "duplicate_flights": 0,
+  "missing_pairs": 0,
+  "source_csv_json_summary_agree": true,
+  "exact_initial_states_and_reference_hashes_available": false,
+  "per_timestep_evaluation_traces_available": false,
+  "different_recorded_lengths": 54,
+  "completion_and_failure_overlap": 0
+}
