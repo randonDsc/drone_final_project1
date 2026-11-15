@@ -1,0 +1,77 @@
+{
+  "kind": "final",
+  "model": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip",
+  "num_timesteps": 1501184,
+  "counters": {
+    "collected": 1501184,
+    "trained_on": 1501184,
+    "discarded": 0,
+    "gradient_steps": 10305,
+    "sb3_n_updates": 1681,
+    "early_stops": 709,
+    "rollouts": 733,
+    "invalid_steps": 0
+  },
+  "pending": 0,
+  "decisions_trained_on": 1501184,
+  "stage": "full",
+  "stage_stats": {
+    "short_slow": {
+      "decisions": 150041,
+      "episodes": 1787,
+      "failures": 0,
+      "pos_err_sum": 11946.597801088039,
+      "pos_err_n": 150041,
+      "rollouts": 73,
+      "std_sum": 22.214032717049122,
+      "early_stops": 49,
+      "gradient_steps": 3431,
+      "clip_components": 4296,
+      "components": 600164
+    },
+    "turns": {
+      "decisions": 250091,
+      "episodes": 2129,
+      "failures": 0,
+      "pos_err_sum": 14178.050128106954,
+      "pos_err_n": 250091,
+      "rollouts": 122,
+      "std_sum": 29.81993517279625,
+      "early_stops": 122,
+      "gradient_steps": 2327,
+      "clip_components": 9824,
+      "components": 1000364
+    },
+    "climbs_loops": {
+      "decisions": 399979,
+      "episodes": 2561,
+      "failures": 0,
+      "pos_err_sum": 32211.126167410584,
+      "pos_err_n": 399979,
+      "rollouts": 195,
+      "std_sum": 43.40105490386486,
+      "early_stops": 195,
+      "gradient_steps": 2283,
+      "clip_components": 130769,
+      "components": 1599916
+    },
+    "full": {
+      "decisions": 701073,
+      "episodes": 3988,
+      "failures": 0,
+      "pos_err_sum": 64483.640347130706,
+      "pos_err_n": 701073,
+      "rollouts": 343,
+      "std_sum": 72.60845179110765,
+      "early_stops": 343,
+      "gradient_steps": 2264,
+      "clip_components": 695054,
+      "components": 2804292
+    }
+  },
+  "launch": 1,
+  "saved_at": "2026-11-15T09:19:52+00:00",
+  "nonfinite": false,
+  "reason": "completed",
+  "last_checkpoint": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/checkpoints/ppo_1500000_steps.zip"
+}

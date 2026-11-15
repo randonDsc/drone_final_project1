@@ -1,0 +1,50 @@
+tools/audit_ppo_run.py --run-id ppo_s0_1p5m (run 2026-11-15, after the process exited)
+
+PASS  status: state done, result RESULT: DONE, model residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip
+PASS  end model + state file: final_model.zip
+PASS  end counters: collected = trained_on + discarded + pending: 1,501,184 = 1,501,184 + 0 + 0
+PASS  final: pending 0 and num_timesteps >= target: num_timesteps 1,501,184 (target 1,500,000)
+PASS  zip num_timesteps / _n_updates == state: zip 1,501,184 / 1681; state 1,501,184 / 1681
+PASS  checkpoints at every interval: found [50000, 100000, 150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1050000, 1100000, 1150000, 1200000, 1250000, 1300000, 1350000, 1400000, 1450000, 1500000], expected [50000, 100000, 150000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1050000, 1100000, 1150000, 1200000, 1250000, 1300000, 1350000, 1400000, 1450000, 1500000]
+PASS  checkpoint 50,000: trained_on 49,152 (== formula 49,152), discarded 0, pending 848, grad steps 1,566, stage short_slow
+PASS  checkpoint 100,000: trained_on 98,304 (== formula 98,304), discarded 0, pending 1,696, grad steps 2,470, stage short_slow
+PASS  checkpoint 150,000: trained_on 149,504 (== formula 149,504), discarded 0, pending 496, grad steps 3,431, stage turns
+PASS  checkpoint 200,000: trained_on 198,656 (== formula 198,656), discarded 0, pending 1,344, grad steps 3,944, stage turns
+PASS  checkpoint 250,000: trained_on 249,856 (== formula 249,856), discarded 0, pending 144, grad steps 4,412, stage turns
+PASS  checkpoint 300,000: trained_on 299,008 (== formula 299,008), discarded 0, pending 992, grad steps 4,915, stage turns
+PASS  checkpoint 350,000: trained_on 348,160 (== formula 348,160), discarded 0, pending 1,840, grad steps 5,315, stage turns
+PASS  checkpoint 400,000: trained_on 399,360 (== formula 399,360), discarded 0, pending 640, grad steps 5,758, stage climbs_loops
+PASS  checkpoint 450,000: trained_on 448,512 (== formula 448,512), discarded 0, pending 1,488, grad steps 6,061, stage climbs_loops
+PASS  checkpoint 500,000: trained_on 499,712 (== formula 499,712), discarded 0, pending 288, grad steps 6,380, stage climbs_loops
+PASS  checkpoint 550,000: trained_on 548,864 (== formula 548,864), discarded 0, pending 1,136, grad steps 6,685, stage climbs_loops
+PASS  checkpoint 600,000: trained_on 598,016 (== formula 598,016), discarded 0, pending 1,984, grad steps 7,010, stage climbs_loops
+PASS  checkpoint 650,000: trained_on 649,216 (== formula 649,216), discarded 0, pending 784, grad steps 7,253, stage climbs_loops
+PASS  checkpoint 700,000: trained_on 698,368 (== formula 698,368), discarded 0, pending 1,632, grad steps 7,509, stage climbs_loops
+PASS  checkpoint 750,000: trained_on 749,568 (== formula 749,568), discarded 0, pending 432, grad steps 7,841, stage climbs_loops
+PASS  checkpoint 800,000: trained_on 798,720 (== formula 798,720), discarded 0, pending 1,280, grad steps 8,041, stage full
+PASS  checkpoint 850,000: trained_on 849,920 (== formula 849,920), discarded 0, pending 80, grad steps 8,265, stage full
+PASS  checkpoint 900,000: trained_on 899,072 (== formula 899,072), discarded 0, pending 928, grad steps 8,480, stage full
+PASS  checkpoint 950,000: trained_on 948,224 (== formula 948,224), discarded 0, pending 1,776, grad steps 8,653, stage full
+PASS  checkpoint 1,000,000: trained_on 999,424 (== formula 999,424), discarded 0, pending 576, grad steps 8,848, stage full
+PASS  checkpoint 1,050,000: trained_on 1,048,576 (== formula 1,048,576), discarded 0, pending 1,424, grad steps 9,005, stage full
+PASS  checkpoint 1,100,000: trained_on 1,099,776 (== formula 1,099,776), discarded 0, pending 224, grad steps 9,227, stage full
+PASS  checkpoint 1,150,000: trained_on 1,148,928 (== formula 1,148,928), discarded 0, pending 1,072, grad steps 9,382, stage full
+PASS  checkpoint 1,200,000: trained_on 1,198,080 (== formula 1,198,080), discarded 0, pending 1,920, grad steps 9,523, stage full
+PASS  checkpoint 1,250,000: trained_on 1,249,280 (== formula 1,249,280), discarded 0, pending 720, grad steps 9,686, stage full
+PASS  checkpoint 1,300,000: trained_on 1,298,432 (== formula 1,298,432), discarded 0, pending 1,568, grad steps 9,804, stage full
+PASS  checkpoint 1,350,000: trained_on 1,349,632 (== formula 1,349,632), discarded 0, pending 368, grad steps 9,934, stage full
+PASS  checkpoint 1,400,000: trained_on 1,398,784 (== formula 1,398,784), discarded 0, pending 1,216, grad steps 10,037, stage full
+PASS  checkpoint 1,450,000: trained_on 1,449,984 (== formula 1,449,984), discarded 0, pending 16, grad steps 10,187, stage full
+PASS  checkpoint 1,500,000: trained_on 1,499,136 (== formula 1,499,136), discarded 0, pending 864, grad steps 10,303, stage full
+PASS  contract ppo_s0_1p5m/ == run_contract(settings)
+PASS  contract checkpoints/ == run_contract(settings)
+PASS  adapter check_ppo_contract accepts all 31 models
+PASS  lineage: every update of the end model is found in the rollouts CSVs: rows in lineage per launch [733], unexplained updates 0
+PASS  launch 1 (fresh) CSVs: rollouts.csv 733 rows (733 in the lineage), progress.csv 733 rows, monitor True, grad steps per rollout [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 38, 41, 45, 46, 48, 49, 52, 53, 55, 56, 57, 58, 61, 65, 66, 68, 70, 79, 80] (<= 80)
+PASS  launch 1 meta: end done (completed), torch 2.14.1+cpu, mass 1.6186144351959229, reseed None, seeded resets [0]
+PASS  lineage sums == end counters: gradient steps 10,305 / 10,305; epochs 1681 / 1681; early stops 709 / 709
+PASS  trained_on == n_steps x lineage updates: 1,501,184 = 2048 x 733
+PASS  no _partial files left
+PASS  training_summary.txt: training summary: ppo_s0_1p5m  (state: done; written 2026-11-15T09:19:52+00:00)
+46/46 checks passed
+RESULT: PASS

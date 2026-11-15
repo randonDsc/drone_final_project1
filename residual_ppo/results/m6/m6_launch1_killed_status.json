@@ -1,0 +1,25 @@
+{
+  "run_id": "ppo_s0_1p5m",
+  "state": "running",
+  "launch": 1,
+  "pid": 3168,
+  "pid_start": 134391710120682916,
+  "num_timesteps": 12288,
+  "counters": {
+    "collected": 12288,
+    "trained_on": 12288,
+    "discarded": 0,
+    "gradient_steps": 480,
+    "sb3_n_updates": 60,
+    "early_stops": 0,
+    "rollouts": 6,
+    "invalid_steps": 0
+  },
+  "pending": 0,
+  "last_checkpoint": null,
+  "model": null,
+  "updated_at": "2026-11-14T23:07:59+00:00",
+  "launch_wall_clock_s": 266.3132698999834,
+  "error": null,
+  "result": null
+}

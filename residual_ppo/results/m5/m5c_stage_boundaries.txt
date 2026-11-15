@@ -1,0 +1,126 @@
+M5c: stage-boundary smoke runs (Confirmed unless labelled). Read from runs/ppo_path/<id>/ (gitignored).
+Reference for timings and 'kind': smoke_ppo_s0_4 (M5, offset 145000: short_slow -> turns).
+
+====================================================================================================
+smoke_ppo_s0_8: --curriculum-offset 395000 -> crossing 400,000 (turns -> climbs_loops) at 5,000 decisions
+  state ppo_4096_steps_state.json    num_timesteps  4,096  stage turns         expected turns         OK
+  state ppo_8192_steps_state.json    num_timesteps  8,192  stage climbs_loops  expected climbs_loops  OK
+  state final_model_state.json       num_timesteps 10,240  stage climbs_loops  expected climbs_loops  OK
+  rollout stages in order: ['turns', 'turns', 'climbs_loops', 'climbs_loops', 'climbs_loops'] -> crossing turns -> climbs_loops: YES; unexpected stage names: none
+  launch rollout       n stage         collect s update s  grad early approx_kl   vloss     std clip % episodes failed
+       1       1   2,048 turns              45.4     0.24    80 False    0.0132   3.019  0.3659   0.70       18      0
+       1       2   4,096 turns              45.3     0.23    80 False    0.0135   2.079  0.3649   0.62       17      0
+       1       3   6,144 climbs_loops       45.5     0.23    80 False    0.0103   3.217  0.3626   0.59       11      0
+       1       4   8,192 climbs_loops       45.6     0.24    80 False    0.0179   2.190  0.3596   0.62       13      0
+       1       5  10,240 climbs_loops       45.6     0.23    80 False    0.0146   2.123  0.3592   0.59       14      0
+  progress.csv per rollout: saturation_rate [0.0, 0.0, 0.0, 0.0, 0.0]; residual_norm [0.69, 0.68, 0.689, 0.688, 0.679]; position_error [0.352, 0.328, 0.423, 0.377, 0.387]; failure_rate [0.0, 0.0, 0.0, 0.0, 0.0]; invalid_steps ['0', '0', '0', '0', '0']
+  non-finite values in rollouts/progress CSVs: none
+  training_summary.txt:
+    training summary: smoke_ppo_s0_8  (state: done; written 2026-11-14T22:44:55+00:00)
+    decisions collected 10,240 = trained on 10,240 + discarded 0 + pending 0
+    rollouts 5; gradient steps 400; SB3 epochs 50; early stops 0; invalid steps 0
+    launch 1; last checkpoint residual_ppo/runs/ppo_path/smoke_ppo_s0_8/checkpoints/ppo_8192_steps.zip; target 10,240 decisions
+    
+    stage          decisions  episodes fail rate pos err m     std rollouts early st  clip % grad steps
+    turns              5,100        42     0.000     0.341  0.3654        2        0    0.64        160
+    climbs_loops       5,140        31     0.000     0.406  0.3604        3        0    0.60        240
+    (std, early stops, gradient steps and rollouts are assigned to the stage of each rollout's last decision; action clip = share of sampled action components outside [-1, 1])
+  audit (tools/audit_ppo_run.py):
+    PASS  status: state done, result RESULT: DONE, model residual_ppo/runs/ppo_path/smoke_ppo_s0_8/final_model.zip
+    PASS  end model + state file: final_model.zip
+    PASS  end counters: collected = trained_on + discarded + pending: 10,240 = 10,240 + 0 + 0
+    PASS  final: pending 0 and num_timesteps >= target: num_timesteps 10,240 (target 10,240)
+    PASS  zip num_timesteps / _n_updates == state: zip 10,240 / 50; state 10,240 / 50
+    PASS  checkpoints at every interval: found [4096, 8192], expected [4096, 8192]
+    PASS  checkpoint 4,096: trained_on 2,048 (== formula 2,048), discarded 0, pending 2,048, grad steps 80, stage turns
+    PASS  checkpoint 8,192: trained_on 6,144 (== formula 6,144), discarded 0, pending 2,048, grad steps 240, stage climbs_loops
+    PASS  contract smoke_ppo_s0_8/ == run_contract(settings)
+    PASS  contract checkpoints/ == run_contract(settings)
+    PASS  adapter check_ppo_contract accepts all 3 models
+    PASS  lineage: every update of the end model is found in the rollouts CSVs: rows in lineage per launch [5], unexplained updates 0
+    PASS  launch 1 (fresh) CSVs: rollouts.csv 5 rows (5 in the lineage), progress.csv 5 rows, monitor True, grad steps per rollout [80] (<= 80)
+    PASS  launch 1 meta: end done (completed), torch 2.14.1+cpu, mass 1.6186144351959229, reseed None, seeded resets [0]
+    PASS  lineage sums == end counters: gradient steps 400 / 400; epochs 50 / 50; early stops 0 / 0
+    PASS  trained_on == n_steps x lineage updates: 10,240 = 2048 x 5
+    PASS  no _partial files left
+    PASS  training_summary.txt: training summary: smoke_ppo_s0_8  (state: done; written 2026-11-14T22:44:55+00:00)
+    18/18 checks passed
+    RESULT: PASS
+
+====================================================================================================
+smoke_ppo_s0_9: --curriculum-offset 795000 -> crossing 800,000 (climbs_loops -> full) at 5,000 decisions
+  state ppo_4096_steps_state.json    num_timesteps  4,096  stage climbs_loops  expected climbs_loops  OK
+  state ppo_8192_steps_state.json    num_timesteps  8,192  stage full          expected full          OK
+  state final_model_state.json       num_timesteps 10,240  stage full          expected full          OK
+  rollout stages in order: ['climbs_loops', 'climbs_loops', 'full', 'full', 'full'] -> crossing climbs_loops -> full: YES; unexpected stage names: none
+  launch rollout       n stage         collect s update s  grad early approx_kl   vloss     std clip % episodes failed
+       1       1   2,048 climbs_loops       45.7     0.24    80 False    0.0156   5.244  0.3684   0.70       12      0
+       1       2   4,096 climbs_loops       45.7     0.24    80 False    0.0154   2.480  0.3686   0.68       12      0
+       1       3   6,144 full               46.1     0.23    80 False    0.0111   2.622  0.3685   0.62       12      0
+       1       4   8,192 full               46.0     0.24    80 False    0.0113   4.694  0.3678   0.65       14      0
+       1       5  10,240 full               46.0     0.31    80 False    0.0158   2.297  0.3657   0.68       15      0
+  progress.csv per rollout: saturation_rate [0.0, 0.0, 0.0, 0.0, 0.0]; residual_norm [0.69, 0.686, 0.695, 0.695, 0.692]; position_error [0.475, 0.387, 0.442, 0.483, 0.43]; failure_rate [0.0, 0.0, 0.0, 0.0, 0.0]; invalid_steps ['0', '0', '0', '0', '0']
+  non-finite values in rollouts/progress CSVs: none
+  training_summary.txt:
+    training summary: smoke_ppo_s0_9  (state: done; written 2026-11-14T22:49:12+00:00)
+    decisions collected 10,240 = trained on 10,240 + discarded 0 + pending 0
+    rollouts 5; gradient steps 400; SB3 epochs 50; early stops 0; invalid steps 0
+    launch 1; last checkpoint residual_ppo/runs/ppo_path/smoke_ppo_s0_9/checkpoints/ppo_8192_steps.zip; target 10,240 decisions
+    
+    stage          decisions  episodes fail rate pos err m     std rollouts early st  clip % grad steps
+    climbs_loops       5,048        30     0.000     0.418  0.3685        2        0    0.69        160
+    full               5,192        35     0.000     0.468  0.3673        3        0    0.64        240
+    (std, early stops, gradient steps and rollouts are assigned to the stage of each rollout's last decision; action clip = share of sampled action components outside [-1, 1])
+  audit (tools/audit_ppo_run.py):
+    PASS  status: state done, result RESULT: DONE, model residual_ppo/runs/ppo_path/smoke_ppo_s0_9/final_model.zip
+    PASS  end model + state file: final_model.zip
+    PASS  end counters: collected = trained_on + discarded + pending: 10,240 = 10,240 + 0 + 0
+    PASS  final: pending 0 and num_timesteps >= target: num_timesteps 10,240 (target 10,240)
+    PASS  zip num_timesteps / _n_updates == state: zip 10,240 / 50; state 10,240 / 50
+    PASS  checkpoints at every interval: found [4096, 8192], expected [4096, 8192]
+    PASS  checkpoint 4,096: trained_on 2,048 (== formula 2,048), discarded 0, pending 2,048, grad steps 80, stage climbs_loops
+    PASS  checkpoint 8,192: trained_on 6,144 (== formula 6,144), discarded 0, pending 2,048, grad steps 240, stage full
+    PASS  contract smoke_ppo_s0_9/ == run_contract(settings)
+    PASS  contract checkpoints/ == run_contract(settings)
+    PASS  adapter check_ppo_contract accepts all 3 models
+    PASS  lineage: every update of the end model is found in the rollouts CSVs: rows in lineage per launch [5], unexplained updates 0
+    PASS  launch 1 (fresh) CSVs: rollouts.csv 5 rows (5 in the lineage), progress.csv 5 rows, monitor True, grad steps per rollout [80] (<= 80)
+    PASS  launch 1 meta: end done (completed), torch 2.14.1+cpu, mass 1.6186144351959229, reseed None, seeded resets [0]
+    PASS  lineage sums == end counters: gradient steps 400 / 400; epochs 50 / 50; early stops 0 / 0
+    PASS  trained_on == n_steps x lineage updates: 10,240 = 2048 x 5
+    PASS  no _partial files left
+    PASS  training_summary.txt: training summary: smoke_ppo_s0_9  (state: done; written 2026-11-14T22:49:12+00:00)
+    18/18 checks passed
+    RESULT: PASS
+
+====================================================================================================
+smoke_ppo_s0_4: --curriculum-offset 145000 -> crossing 150,000 (short_slow -> turns) at 5,000 decisions   [REFERENCE run from M5]
+  state ppo_4096_steps_state.json    num_timesteps  4,096  stage short_slow    expected short_slow    OK
+  state ppo_8192_steps_state.json    num_timesteps  8,192  stage turns         expected turns         OK
+  state final_model_state.json       num_timesteps 12,121  stage turns         expected turns         OK
+  rollout stages in order: ['short_slow', 'short_slow', 'turns', 'turns', 'turns'] -> crossing short_slow -> turns: YES; unexpected stage names: none
+  launch rollout       n stage         collect s update s  grad early approx_kl   vloss     std clip % episodes failed
+       1       1   2,048 short_slow         45.0     0.24    80 False    0.0118   1.997  0.3665   0.70       24      0
+       1       2   4,096 short_slow         44.9     0.23    80 False    0.0126   0.963  0.3654   0.65       25      0
+       2       3   8,025 turns              45.3     0.23    80 False    0.0117   1.183  0.3653   0.52       15      0
+       2       4  10,073 turns              45.2     0.26    80 False    0.0157   1.184  0.3650   0.57       17      0
+       2       5  12,121 turns              45.1     0.23    80 False    0.0191   0.557  0.3640   0.61       19      0
+  progress.csv per rollout: saturation_rate [0.0, 0.0, 0.0, 0.0, 0.0]; residual_norm [0.69, 0.681, 0.695, 0.692, 0.692]; position_error [0.309, 0.274, 0.301, 0.297, 0.234]; failure_rate [0.0, 0.0, 0.0, 0.0, 0.0]; invalid_steps ['0', '0', '0', '0', '0']
+  non-finite values in rollouts/progress CSVs: none
+  training_summary.txt:
+    training summary: smoke_ppo_s0_4  (state: done; written 2026-11-14T19:14:01+00:00)
+    decisions collected 12,121 = trained on 10,240 + discarded 1,881 + pending 0
+    rollouts 5; gradient steps 400; SB3 epochs 50; early stops 0; invalid steps 0
+    launch 2; last checkpoint residual_ppo/runs/ppo_path/smoke_ppo_s0_4/checkpoints/ppo_8192_steps.zip; target 10,240 decisions
+    
+    stage          decisions  episodes fail rate pos err m     std rollouts early st  clip % grad steps
+    short_slow         5,056        61     0.000     0.290  0.3660        2        0    0.67        160
+    turns              7,065        59     0.000     0.280  0.3648        3        0    0.57        240
+    (std, early stops, gradient steps and rollouts are assigned to the stage of each rollout's last decision; action clip = share of sampled action components outside [-1, 1])
+
+====================================================================================================
+timings (collect s per 2,048-decision rollout / update s):
+  smoke_ppo_s0_8: collect mean 45.48 (min 45.3, max 45.6); update mean 0.235 (max 0.24)
+  smoke_ppo_s0_9: collect mean 45.89 (min 45.7, max 46.1); update mean 0.252 (max 0.31)
+  smoke_ppo_s0_4: collect mean 45.09 (min 44.9, max 45.3); update mean 0.240 (max 0.26)
+projection, 733 rollouts at the M5c mean (45.68 + 0.244 s per rollout): 9.35 h, plus startup (~10 s) and 31 saves (<1 s each) [Inference]

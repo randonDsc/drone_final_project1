@@ -1,0 +1,25 @@
+{
+  "run_id": "ppo_s0_1p5m",
+  "state": "done",
+  "launch": 1,
+  "pid": 1384,
+  "pid_start": 134391773428046085,
+  "num_timesteps": 1501184,
+  "counters": {
+    "collected": 1501184,
+    "trained_on": 1501184,
+    "discarded": 0,
+    "gradient_steps": 10305,
+    "sb3_n_updates": 1681,
+    "early_stops": 709,
+    "rollouts": 733,
+    "invalid_steps": 0
+  },
+  "pending": 0,
+  "last_checkpoint": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/checkpoints/ppo_1500000_steps.zip",
+  "model": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip",
+  "updated_at": "2026-11-15T09:19:52+00:00",
+  "launch_wall_clock_s": 30649.103751000017,
+  "error": null,
+  "result": "RESULT: DONE"
+}

@@ -1,0 +1,189 @@
+{
+  "run_id": "ppo_s0_1p5m",
+  "created_at": "2026-11-15T00:49:03+00:00",
+  "settings": {
+    "run_id": "ppo_s0_1p5m",
+    "smoke": false,
+    "total_decisions": 1500000,
+    "checkpoint_interval": 50000,
+    "curriculum_offset": 0
+  },
+  "ppo": {
+    "learning_rate": 0.0003,
+    "n_steps": 2048,
+    "batch_size": 256,
+    "n_epochs": 10,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "clip_range_vf": null,
+    "normalize_advantage": true,
+    "ent_coef": 0.001,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "use_sde": false,
+    "target_kl": 0.02,
+    "device": "cpu",
+    "seed": 0
+  },
+  "policy_kwargs": {
+    "net_arch": {
+      "pi": [
+        256,
+        256
+      ],
+      "vf": [
+        256,
+        256
+      ]
+    },
+    "activation_fn": "ReLU",
+    "log_std_init": -1.0,
+    "ortho_init": true
+  },
+  "launches": [
+    {
+      "launch": 1,
+      "mode": "fresh",
+      "stamp": "20261114_164903",
+      "started_at": "2026-11-15T00:49:03+00:00",
+      "argv": [
+        "--run-id",
+        "ppo_s0_1p5m",
+        "--mode",
+        "fresh"
+      ],
+      "source_model": null,
+      "start_num_timesteps": 0,
+      "reseed": null,
+      "counters_at_start": {
+        "collected": 0,
+        "trained_on": 0,
+        "discarded": 0,
+        "gradient_steps": 0,
+        "sb3_n_updates": 0,
+        "early_stops": 0,
+        "rollouts": 0,
+        "invalid_steps": 0
+      },
+      "curriculum_offset": 0,
+      "inject_nan_at": null,
+      "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+      "git": {
+        "head": "6c6e5498401a0e756e0396947fe80af73200f584",
+        "branch": "claire/drone-simulation",
+        "residual_ppo_status": [
+          "?? residual_ppo/results/m5/m5c_stage_boundaries.txt",
+          "?? residual_ppo/runs/"
+        ]
+      },
+      "git_blocking_entries": [],
+      "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+      "hardware": {
+        "platform": "Windows-11-10.0.26200-SP0",
+        "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+        "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+      },
+      "pid": 1384,
+      "end_state": "done",
+      "torch_import_pin": {
+        "pinned": true,
+        "meta_path_first": "_PinTorchFinder",
+        "probe": "torch._subclasses.schema_check_mode",
+        "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+        "probe_inside_kit_torch": true
+      },
+      "versions": {
+        "python": "3.12.14",
+        "numpy": "2.3.1",
+        "numpy_file": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+        "gymnasium": "1.2.3",
+        "gymnasium_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py",
+        "stable_baselines3": "2.7.0",
+        "stable_baselines3_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py",
+        "torch": "2.14.1+cpu",
+        "torch_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py",
+        "torch_cuda_available": false,
+        "torch_num_threads": 8,
+        "sb3_auto_device": "cpu"
+      },
+      "torch_origins": {
+        "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+        "torch_modules_with_file": 1046,
+        "outside_package_dir": 0,
+        "outside_examples": [],
+        "synthetic_file_attributes": [
+          [
+            "torch.ops",
+            "_ops.py"
+          ],
+          [
+            "torch.classes",
+            "_classes.py"
+          ]
+        ],
+        "modules_from_ml_archive": 1,
+        "ml_archive_examples": [
+          "omni.isaac.ml_archive"
+        ],
+        "modules_from_ml_archive_pip_prebundle": 0,
+        "prebundle_examples": []
+      },
+      "model_device": "cpu",
+      "total_mass_kg": 1.6186144351959229,
+      "hesai": {
+        "root": "/World/iris/body/HESAI_XT32_SD10",
+        "prims": 258,
+        "rigid_body_prims": 0,
+        "mass_api_prims": 0,
+        "hesai_mass_contribution_kg": 0
+      },
+      "env_build_s": 1.4500497999833897,
+      "loaded_num_timesteps": 0,
+      "torch_origins_end": {
+        "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+        "torch_modules_with_file": 1046,
+        "outside_package_dir": 0,
+        "outside_examples": [],
+        "synthetic_file_attributes": [
+          [
+            "torch.ops",
+            "_ops.py"
+          ],
+          [
+            "torch.classes",
+            "_classes.py"
+          ]
+        ],
+        "modules_from_ml_archive": 1,
+        "ml_archive_examples": [
+          "omni.isaac.ml_archive"
+        ],
+        "modules_from_ml_archive_pip_prebundle": 0,
+        "prebundle_examples": []
+      },
+      "torch_origin_clean_at_end": true,
+      "end_reason": "completed",
+      "ended_at": "2026-11-15T09:19:52+00:00",
+      "end_num_timesteps": 1501184,
+      "end_model": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip",
+      "nonfinite": false,
+      "counters_at_end": {
+        "collected": 1501184,
+        "trained_on": 1501184,
+        "discarded": 0,
+        "gradient_steps": 10305,
+        "sb3_n_updates": 1681,
+        "early_stops": 709,
+        "rollouts": 733,
+        "invalid_steps": 0
+      },
+      "wall_clock_s": 30649.242084999976,
+      "seeded_resets": [
+        0
+      ],
+      "unseeded_resets": 10465,
+      "error_traceback": null
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+M6 main run evidence (condensed). Model zips and console logs are NOT here (gitignored); see
+m6_model_hashes.json for their sha256. Full run folder: residual_ppo/runs/ppo_path/ppo_s0_1p5m/ (untracked).
+
+source -> copy, sha256 of the source at copy time:
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/status.json -> residual_ppo/results/m6/ppo_s0_1p5m/status.json
+    22970489605acfe9d2cd8453d522cb8be59d006b4cf9299b0940512fc763f262
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/run_meta.json -> residual_ppo/results/m6/ppo_s0_1p5m/run_meta.json
+    b14945cb3c470fe7d417e5779f14d2e26d34ab7818f58168fbff873d6d0a6d07
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model_state.json -> residual_ppo/results/m6/ppo_s0_1p5m/final_model_state.json
+    c51ec151e62f80bce6334dee2504708bbf993a00e335f66170423168bab55732
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/ppo_contract.json -> residual_ppo/results/m6/ppo_s0_1p5m/ppo_contract.json
+    eb7dd8fe6231112c958781640637b5b1b70c0b2bb8d4cb9d47bee4f977a84473
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/training_summary.txt -> residual_ppo/results/m6/ppo_s0_1p5m/training_summary.txt
+    515ef425617ae0e17052e19c33c1cc88001c2d6df105f0e45ce14502c69137a8
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/logs/rollouts_20261114_164903.csv -> residual_ppo/results/m6/ppo_s0_1p5m/rollouts.csv
+    24d6476f10b8a69e28f3f45418d5abaf733c2daf689fee52994c5990343e0717
+  residual_ppo/runs/ppo_path/_attempts/ppo_s0_1p5m_launch1_killed/status.json -> residual_ppo/results/m6/m6_launch1_killed_status.json
+    ac06f06be639b5226a3aed966ab70bd4a4a93e3d173c3c095b8d163245cbc5da
+  residual_ppo/runs/ppo_path/ppo_s0_1p5m/logs/progress_20261114_164903.csv -> residual_ppo/results/m6/m6_progress_condensed.csv (columns subset)
+    a04d166d4173672ab7d8fa7e055a2c5f0217d587c8a20358b151e6b994b2c58c
+
+m6_model_hashes.json: final model + 30 checkpoints (size, sha256, counters, contract sha256)
+m6_audit_ppo_s0_1p5m.txt: audit output (46/46 RESULT: PASS)

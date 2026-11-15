@@ -1,0 +1,11 @@
+training summary: ppo_s0_1p5m  (state: done; written 2026-11-15T09:19:52+00:00)
+decisions collected 1,501,184 = trained on 1,501,184 + discarded 0 + pending 0
+rollouts 733; gradient steps 10,305; SB3 epochs 1,681; early stops 709; invalid steps 0
+launch 1; last checkpoint residual_ppo/runs/ppo_path/ppo_s0_1p5m/checkpoints/ppo_1500000_steps.zip; target 1,500,000 decisions
+
+stage          decisions  episodes fail rate pos err m     std rollouts early st  clip % grad steps
+short_slow       150,041     1,787     0.000     0.080  0.3043       73       49    0.72      3,431
+turns            250,091     2,129     0.000     0.057  0.2444      122      122    0.98      2,327
+climbs_loops     399,979     2,561     0.000     0.081  0.2226      195      195    8.17      2,283
+full             701,073     3,988     0.000     0.092  0.2117      343      343   24.79      2,264
+(std, early stops, gradient steps and rollouts are assigned to the stage of each rollout's last decision; action clip = share of sampled action components outside [-1, 1])
