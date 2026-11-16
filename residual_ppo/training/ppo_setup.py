@@ -89,27 +89,52 @@ class SeedGuard(gym.Wrapper):
         return self.env.reset(seed=seed, options=options)
 
 
-def build_training_env(app, forbidden_seeds, monitor_path=None):
-    """PathSacEnv -> SeedGuard -> Monitor -> DummyVecEnv (no VecNormalize). Returns (env, guard, venv).
+ARMS = ("residual", "direct")
+
+
+def arm_configs(arm):
+    """(experiment_config, ppo_config) modules of an arm. residual = PID + PPO residual; direct = PPO direct control."""
+    if arm == "residual":
+        from config import experiment_config, ppo_config
+        return experiment_config, ppo_config
+    if arm == "direct":
+        from config import direct_experiment_config, direct_ppo_config
+        return direct_experiment_config, direct_ppo_config
+    raise ValueError(f"unknown arm {arm!r}; choose from {ARMS}")
+
+
+def make_arm_env(app, arm="residual"):
+    """The arm's env (needs SimulationApp running): PathSacEnv (residual) or direct_control DirectEnv (direct)."""
+    if arm == "residual":
+        import path_sac_env
+        return path_sac_env.make_path_sac_env(app)
+    if arm == "direct":
+        from direct_control import direct_env
+        return direct_env.make_direct_env(app)
+    raise ValueError(f"unknown arm {arm!r}; choose from {ARMS}")
+
+
+def build_training_env(app, forbidden_seeds, monitor_path=None, arm="residual"):
+    """Arm env -> SeedGuard -> Monitor -> DummyVecEnv (no VecNormalize). Returns (env, guard, venv).
 
     monitor_path: optional per-launch Monitor CSV (SB3 appends ".monitor.csv")."""
     from stable_baselines3.common.monitor import Monitor
     from stable_baselines3.common.vec_env import DummyVecEnv
 
-    import path_sac_env
-
-    env = path_sac_env.make_path_sac_env(app)
+    env = make_arm_env(app, arm)
     guard = SeedGuard(env, forbidden_seeds)
     venv = DummyVecEnv([lambda: Monitor(guard, filename=None if monitor_path is None else str(monitor_path))])
     return env, guard, venv
 
 
-def build_model(venv):
+def build_model(venv, config=None):
+    """SB3 PPO from an arm's ppo_config module (default: the residual arm's)."""
     from stable_baselines3 import PPO
 
-    from config import ppo_config
+    if config is None:
+        from config import ppo_config as config
 
-    return PPO(ppo_config.POLICY, venv, verbose=0, **ppo_config.model_kwargs())
+    return PPO(config.POLICY, venv, verbose=0, **config.model_kwargs())
 
 
 def make_curriculum_callback(env):

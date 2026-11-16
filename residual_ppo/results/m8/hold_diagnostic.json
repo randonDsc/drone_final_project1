@@ -1,0 +1,1197 @@
+{
+  "checks": "21/21 OK (18 modules + 1 tests + 2 assets) -> PASS",
+  "total_mass_kg": 1.6186144351959229,
+  "decisions": 300,
+  "seeds": [
+    400000,
+    400001,
+    400002,
+    400003,
+    400004,
+    400005,
+    400006,
+    400007,
+    400008,
+    400009
+  ],
+  "rule_thresholds": {
+    "trend_eps_mps": 0.005,
+    "rule1_speed": 0.02,
+    "rule2_range": [
+      0.02,
+      0.15
+    ],
+    "diverge_factor": 1.5,
+    "diverge_min_deg": 2.0
+  },
+  "tests": {
+    "zero": {
+      "action": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        {
+          "test": "zero",
+          "seed": 400000,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.06341483323433413,
+              "vel_error": 0.06341483323433413
+            },
+            "10s": {
+              "speed": 0.07418530954608872,
+              "vel_error": 0.07418530954608872
+            },
+            "20s": {
+              "speed": 0.05452371376261101,
+              "vel_error": 0.05452371376261101
+            },
+            "30s": {
+              "speed": 0.08514722845853055,
+              "vel_error": 0.08514722845853055
+            }
+          },
+          "last10_trend_change_mps": 0.0021687174796455734,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.06952098020325649,
+          "last10_mean_vel_error": 0.06952098020325649,
+          "last10_roll_p2p_deg": 1.5656312451628662,
+          "last10_pitch_p2p_deg": 2.7777453506323395,
+          "max_abs_roll_pitch_deg_10_20s": 1.1713138726876093,
+          "max_abs_roll_pitch_deg_20_30s": 1.3960718595491677,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.0025341382024274897,
+            0.019454082678127482,
+            9.48094411076382e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0023439347285888735
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.04005264398832847,
+          "min_height": 2.5388927459716797,
+          "travel_xy_m": 0.5351597242013185,
+          "rule": "2 (roughly constant 0.02-0.15 m/s: steady bias)"
+        },
+        {
+          "test": "zero",
+          "seed": 400001,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.20228846551584123,
+              "vel_error": 0.20228846551584123
+            },
+            "10s": {
+              "speed": 0.08155826494586105,
+              "vel_error": 0.08155826494586105
+            },
+            "20s": {
+              "speed": 0.07944753877009521,
+              "vel_error": 0.07944753877009521
+            },
+            "30s": {
+              "speed": 0.013764149946957108,
+              "vel_error": 0.013764149946957108
+            }
+          },
+          "last10_trend_change_mps": 0.013755557743401706,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.0729564537047397,
+          "last10_mean_vel_error": 0.0729564537047397,
+          "last10_roll_p2p_deg": 1.7778826484838328,
+          "last10_pitch_p2p_deg": 2.8455679777867147,
+          "max_abs_roll_pitch_deg_10_20s": 1.4407871088554132,
+          "max_abs_roll_pitch_deg_20_30s": 1.4415671778879773,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            0.006293716485436895,
+            0.026097999423474884,
+            -1.0937144677450081e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002399960785693897
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.08494124489162348,
+          "min_height": 2.6828536987304688,
+          "travel_xy_m": 0.6518214558832669,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400002,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.13538758497065945,
+              "vel_error": 0.13538758497065945
+            },
+            "10s": {
+              "speed": 0.0664703891457358,
+              "vel_error": 0.0664703891457358
+            },
+            "20s": {
+              "speed": 0.09476088483086113,
+              "vel_error": 0.09476088483086113
+            },
+            "30s": {
+              "speed": 0.02862295861690708,
+              "vel_error": 0.02862295861690708
+            }
+          },
+          "last10_trend_change_mps": 0.002244116717567193,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.06974768054841506,
+          "last10_mean_vel_error": 0.06974768054841506,
+          "last10_roll_p2p_deg": 1.4707997427553514,
+          "last10_pitch_p2p_deg": 2.7552339022190373,
+          "max_abs_roll_pitch_deg_10_20s": 1.1129502503602346,
+          "max_abs_roll_pitch_deg_20_30s": 1.3793116731900859,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.001069395732028539,
+            0.019221699532089145,
+            1.1411055892143724e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002350954447741884
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.08149384056067079,
+          "min_height": 3.4165701866149902,
+          "travel_xy_m": 0.49391652877014985,
+          "rule": "2 (roughly constant 0.02-0.15 m/s: steady bias)"
+        },
+        {
+          "test": "zero",
+          "seed": 400003,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.12473517872973544,
+              "vel_error": 0.12473517872973544
+            },
+            "10s": {
+              "speed": 0.028960257340615993,
+              "vel_error": 0.028960257340615993
+            },
+            "20s": {
+              "speed": 0.08174537194888044,
+              "vel_error": 0.08174537194888044
+            },
+            "30s": {
+              "speed": 0.06409421893035898,
+              "vel_error": 0.06409421893035898
+            }
+          },
+          "last10_trend_change_mps": 0.015356000396273457,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.07149513420879787,
+          "last10_mean_vel_error": 0.07149513420879787,
+          "last10_roll_p2p_deg": 1.8183650343736844,
+          "last10_pitch_p2p_deg": 2.606814482321902,
+          "max_abs_roll_pitch_deg_10_20s": 1.2150093255003773,
+          "max_abs_roll_pitch_deg_20_30s": 1.3147091640316022,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            0.004075980020253596,
+            0.024955886648967862,
+            -7.385988080593709e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0024160863676234825
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.04827687410210603,
+          "min_height": 4.479648113250732,
+          "travel_xy_m": 0.5926284552641831,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400004,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.06577138063019708,
+              "vel_error": 0.06577138063019708
+            },
+            "10s": {
+              "speed": 0.12426498996963312,
+              "vel_error": 0.12426498996963312
+            },
+            "20s": {
+              "speed": 0.06469354533217596,
+              "vel_error": 0.06469354533217596
+            },
+            "30s": {
+              "speed": 0.06505619737814076,
+              "vel_error": 0.06505619737814076
+            }
+          },
+          "last10_trend_change_mps": 0.02244299616713297,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.07253125782058269,
+          "last10_mean_vel_error": 0.07253125782058269,
+          "last10_roll_p2p_deg": 1.7295617405767705,
+          "last10_pitch_p2p_deg": 3.031031622934777,
+          "max_abs_roll_pitch_deg_10_20s": 1.219256998747919,
+          "max_abs_roll_pitch_deg_20_30s": 1.5371301797943144,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.005909107605313495,
+            0.023560483156159374,
+            8.767878112524672e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0024719309213569276
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.04681953806785025,
+          "min_height": 4.067707538604736,
+          "travel_xy_m": 0.5208907255607179,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400005,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.16090296150938638,
+              "vel_error": 0.16090296150938638
+            },
+            "10s": {
+              "speed": 0.058162271892354685,
+              "vel_error": 0.058162271892354685
+            },
+            "20s": {
+              "speed": 0.08308028143512276,
+              "vel_error": 0.08308028143512276
+            },
+            "30s": {
+              "speed": 0.016104858954293203,
+              "vel_error": 0.016104858954293203
+            }
+          },
+          "last10_trend_change_mps": 0.012059425040424758,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.07205789869073641,
+          "last10_mean_vel_error": 0.07205789869073641,
+          "last10_roll_p2p_deg": 1.9564891602027707,
+          "last10_pitch_p2p_deg": 2.680915411179005,
+          "max_abs_roll_pitch_deg_10_20s": 1.196100838299934,
+          "max_abs_roll_pitch_deg_20_30s": 1.3513459023399634,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            0.005624032140211525,
+            0.02449768999393218,
+            -1.0464121548313127e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0023965282522095525
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.06232187933406969,
+          "min_height": 1.6084691286087036,
+          "travel_xy_m": 0.6254686935727186,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400006,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.16704742206115847,
+              "vel_error": 0.16704742206115847
+            },
+            "10s": {
+              "speed": 0.08078034515784938,
+              "vel_error": 0.08078034515784938
+            },
+            "20s": {
+              "speed": 0.09159490583074782,
+              "vel_error": 0.09159490583074782
+            },
+            "30s": {
+              "speed": 0.028925146677470558,
+              "vel_error": 0.028925146677470558
+            }
+          },
+          "last10_trend_change_mps": 0.008022153515542571,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.06986921605030859,
+          "last10_mean_vel_error": 0.06986921605030859,
+          "last10_roll_p2p_deg": 1.5549806733738765,
+          "last10_pitch_p2p_deg": 2.7541154763768034,
+          "max_abs_roll_pitch_deg_10_20s": 1.1901777030421103,
+          "max_abs_roll_pitch_deg_20_30s": 1.383790996275939,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.0022738684685716386,
+            0.019267454690364474,
+            1.126907254684279e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002375722034291595
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.06374350700729672,
+          "min_height": 2.0246012210845947,
+          "travel_xy_m": 0.30875210251128976,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400007,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.0896133132411108,
+              "vel_error": 0.0896133132411108
+            },
+            "10s": {
+              "speed": 0.11518825333356186,
+              "vel_error": 0.11518825333356186
+            },
+            "20s": {
+              "speed": 0.056364136048135824,
+              "vel_error": 0.056364136048135824
+            },
+            "30s": {
+              "speed": 0.08190735975334486,
+              "vel_error": 0.08190735975334486
+            }
+          },
+          "last10_trend_change_mps": 0.01706821395375095,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.07034641331755387,
+          "last10_mean_vel_error": 0.07034641331755387,
+          "last10_roll_p2p_deg": 1.8660318522701962,
+          "last10_pitch_p2p_deg": 2.794799353180993,
+          "max_abs_roll_pitch_deg_10_20s": 1.270219409522635,
+          "max_abs_roll_pitch_deg_20_30s": 1.4112098839122227,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.005842828413121181,
+            0.019426424802041216,
+            9.736699829061601e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002423467468524051
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.05173044138762981,
+          "min_height": 2.719223737716675,
+          "travel_xy_m": 0.36505341128086255,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400008,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.14797214260368646,
+              "vel_error": 0.14797214260368646
+            },
+            "10s": {
+              "speed": 0.05554343484940751,
+              "vel_error": 0.05554343484940751
+            },
+            "20s": {
+              "speed": 0.08119647955378968,
+              "vel_error": 0.08119647955378968
+            },
+            "30s": {
+              "speed": 0.03188164592867321,
+              "vel_error": 0.03188164592867321
+            }
+          },
+          "last10_trend_change_mps": 0.01765909761550883,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.0712790800184572,
+          "last10_mean_vel_error": 0.0712790800184572,
+          "last10_roll_p2p_deg": 1.893309898161598,
+          "last10_pitch_p2p_deg": 2.7104374828748785,
+          "max_abs_roll_pitch_deg_10_20s": 1.2765370068315762,
+          "max_abs_roll_pitch_deg_20_30s": 1.364275673165393,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            0.004100919489075642,
+            0.026760713432426794,
+            -9.707204189863201e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002456510530903496
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.062254705050619655,
+          "min_height": 3.0284271240234375,
+          "travel_xy_m": 0.7034840618351701,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "zero",
+          "seed": 400009,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.10344029352830517,
+              "vel_error": 0.10344029352830517
+            },
+            "10s": {
+              "speed": 0.0837019242555763,
+              "vel_error": 0.0837019242555763
+            },
+            "20s": {
+              "speed": 0.09064700728016056,
+              "vel_error": 0.09064700728016056
+            },
+            "30s": {
+              "speed": 0.10510250948271868,
+              "vel_error": 0.10510250948271868
+            }
+          },
+          "last10_trend_change_mps": 0.0242394530886612,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.07228121979428363,
+          "last10_mean_vel_error": 0.07228121979428363,
+          "last10_roll_p2p_deg": 1.572478891734707,
+          "last10_pitch_p2p_deg": 2.7503947871944248,
+          "max_abs_roll_pitch_deg_10_20s": 1.3420143094530608,
+          "max_abs_roll_pitch_deg_20_30s": 1.3943447369588622,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.00019993382796534511,
+            0.017984920414164662,
+            7.333775925818003e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0024778116500316846
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.05869358071449335,
+          "min_height": 3.0408198833465576,
+          "travel_xy_m": 0.4612524313310401,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        }
+      ],
+      "rule_counts": {
+        "2 (roughly constant 0.02-0.15 m/s: steady bias)": 2,
+        "3 (grows or attitude diverges: real defect)": 8
+      }
+    },
+    "vx1": {
+      "action": [
+        0.3333333432674408,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seeds": [
+        {
+          "test": "vx1",
+          "seed": 400000,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.9755096678258827,
+              "vel_error": 0.0560138715294345
+            },
+            "10s": {
+              "speed": 1.0295483066037883,
+              "vel_error": 0.05249468775865621
+            },
+            "20s": {
+              "speed": 1.0597585379240553,
+              "vel_error": 0.059915793184720983
+            },
+            "30s": {
+              "speed": 1.0373908166452195,
+              "vel_error": 0.06780579173498681
+            }
+          },
+          "last10_trend_change_mps": -0.0019595984946934207,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.9864917654977797,
+          "last10_mean_vel_error": 0.07226659405287984,
+          "last10_roll_p2p_deg": 1.5190207367916908,
+          "last10_pitch_p2p_deg": 2.96533222266579,
+          "max_abs_roll_pitch_deg_10_20s": 1.1837668295918917,
+          "max_abs_roll_pitch_deg_20_30s": 1.545829798377094,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.014039868470465783,
+            0.01953609887565864,
+            9.401602328422752e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0022997134274925658
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.1464235907965186,
+          "min_height": 2.5388760566711426,
+          "travel_xy_m": 29.08756327052785,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400001,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 1.082763806987465,
+              "vel_error": 0.2023385070244135
+            },
+            "10s": {
+              "speed": 1.0580701659800105,
+              "vel_error": 0.08635077229209413
+            },
+            "20s": {
+              "speed": 0.9636395495955378,
+              "vel_error": 0.06764530023584435
+            },
+            "30s": {
+              "speed": 0.9218059700760154,
+              "vel_error": 0.08454489965112473
+            }
+          },
+          "last10_trend_change_mps": -0.0012056627228363061,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.999163434283559,
+          "last10_mean_vel_error": 0.0741162001089509,
+          "last10_roll_p2p_deg": 1.3463299364445143,
+          "last10_pitch_p2p_deg": 3.0746188710254625,
+          "max_abs_roll_pitch_deg_10_20s": 1.2184085336299775,
+          "max_abs_roll_pitch_deg_20_30s": 1.6079553023421598,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.0013426244258880615,
+            0.023141203657378175,
+            -1.0433293527516935e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0022748904838637563
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.15736266352896233,
+          "min_height": 2.6828365325927734,
+          "travel_xy_m": 28.992464644542228,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400002,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.9059193455530145,
+              "vel_error": 0.12637176239552786
+            },
+            "10s": {
+              "speed": 0.9859458764756389,
+              "vel_error": 0.05737548414852097
+            },
+            "20s": {
+              "speed": 1.0572803398761406,
+              "vel_error": 0.057285132592580876
+            },
+            "30s": {
+              "speed": 1.0451623018237328,
+              "vel_error": 0.07459153925790861
+            }
+          },
+          "last10_trend_change_mps": 0.003344546295382615,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.9875221214678592,
+          "last10_mean_vel_error": 0.07114031248287651,
+          "last10_roll_p2p_deg": 1.360773091743354,
+          "last10_pitch_p2p_deg": 2.832624634698499,
+          "max_abs_roll_pitch_deg_10_20s": 1.1165432810143598,
+          "max_abs_roll_pitch_deg_20_30s": 1.4810792541447344,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.013005366714874117,
+            0.021860241806964473,
+            8.293141007979471e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0023304163987499875
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.1304051491221484,
+          "min_height": 3.416584014892578,
+          "travel_xy_m": 29.253008728528414,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400003,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 1.027640664095585,
+              "vel_error": 0.10202527177010448
+            },
+            "10s": {
+              "speed": 1.0462931038120453,
+              "vel_error": 0.048809319504625706
+            },
+            "20s": {
+              "speed": 0.9826784737564769,
+              "vel_error": 0.0532617271831231
+            },
+            "30s": {
+              "speed": 0.9143959708086965,
+              "vel_error": 0.0967917622418622
+            }
+          },
+          "last10_trend_change_mps": -0.015001183275491627,
+          "last10_trend": "falling",
+          "last10_mean_speed": 0.9984671533345111,
+          "last10_mean_vel_error": 0.07325085553362029,
+          "last10_roll_p2p_deg": 1.3851928688589308,
+          "last10_pitch_p2p_deg": 3.0996290410729843,
+          "max_abs_roll_pitch_deg_10_20s": 1.061009521388288,
+          "max_abs_roll_pitch_deg_20_30s": 1.6229547790585341,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.0020251489511810905,
+            0.020957634564129506,
+            -9.444299646227339e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0022546312094606042
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.13716724360340138,
+          "min_height": 4.479648113250732,
+          "travel_xy_m": 29.081124597570966,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400004,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 1.0196097968586355,
+              "vel_error": 0.048176286644142335
+            },
+            "10s": {
+              "speed": 1.0482045846200008,
+              "vel_error": 0.06661699134869858
+            },
+            "20s": {
+              "speed": 1.0592886928521696,
+              "vel_error": 0.0593441376618302
+            },
+            "30s": {
+              "speed": 1.0419270490124524,
+              "vel_error": 0.07293987266264491
+            }
+          },
+          "last10_trend_change_mps": 0.0005025435272228572,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.986848017266206,
+          "last10_mean_vel_error": 0.0713126093677992,
+          "last10_roll_p2p_deg": 1.4787297624886016,
+          "last10_pitch_p2p_deg": 2.8708290752090297,
+          "max_abs_roll_pitch_deg_10_20s": 1.1739647190238713,
+          "max_abs_roll_pitch_deg_20_30s": 1.5035845270773285,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.013686834880621127,
+            0.020651381907726425,
+            8.258289373617738e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002327640694252727
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.15071048102135812,
+          "min_height": 4.067707538604736,
+          "travel_xy_m": 29.094844123624505,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400005,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 1.0368374723341152,
+              "vel_error": 0.14310704296002613
+            },
+            "10s": {
+              "speed": 1.0429157320401012,
+              "vel_error": 0.06093379120831528
+            },
+            "20s": {
+              "speed": 0.9703245653537289,
+              "vel_error": 0.06001303367370436
+            },
+            "30s": {
+              "speed": 0.9183866986372226,
+              "vel_error": 0.0919754672921976
+            }
+          },
+          "last10_trend_change_mps": -0.008547090497327589,
+          "last10_trend": "falling",
+          "last10_mean_speed": 0.9979058736784919,
+          "last10_mean_vel_error": 0.0744677424480588,
+          "last10_roll_p2p_deg": 1.4291212977882601,
+          "last10_pitch_p2p_deg": 3.0698364010553383,
+          "max_abs_roll_pitch_deg_10_20s": 1.0310185935106326,
+          "max_abs_roll_pitch_deg_20_30s": 1.5941990766444771,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.0026027049758646746,
+            0.02164569056343914,
+            -9.953792274731907e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0022972169324139285
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.1292835589561724,
+          "min_height": 1.6084691286087036,
+          "travel_xy_m": 28.988036422869634,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400006,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.9920374554493416,
+              "vel_error": 0.15244799658857114
+            },
+            "10s": {
+              "speed": 1.0311245805284073,
+              "vel_error": 0.06812544710514476
+            },
+            "20s": {
+              "speed": 1.0834465244920113,
+              "vel_error": 0.08345247008490105
+            },
+            "30s": {
+              "speed": 0.9910807832568749,
+              "vel_error": 0.027157202538307834
+            }
+          },
+          "last10_trend_change_mps": 0.0039022523125016024,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.9872010265393917,
+          "last10_mean_vel_error": 0.07430107609953272,
+          "last10_roll_p2p_deg": 1.4204836002465577,
+          "last10_pitch_p2p_deg": 2.9965829472599435,
+          "max_abs_roll_pitch_deg_10_20s": 1.1614930717123333,
+          "max_abs_roll_pitch_deg_20_30s": 1.575692697911823,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.013303083063352227,
+            0.01977529517250449,
+            1.0730423375459603e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002271769150082986
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.16140992555540212,
+          "min_height": 2.0246012210845947,
+          "travel_xy_m": 29.039582756159977,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400007,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 0.9939454047186318,
+              "vel_error": 0.08308766734828436
+            },
+            "10s": {
+              "speed": 1.0336631516580042,
+              "vel_error": 0.08279354458000412
+            },
+            "20s": {
+              "speed": 1.041704130959134,
+              "vel_error": 0.04269174116670132
+            },
+            "30s": {
+              "speed": 1.0501844836605263,
+              "vel_error": 0.07984589911918868
+            }
+          },
+          "last10_trend_change_mps": 0.006908335339642957,
+          "last10_trend": "growing",
+          "last10_mean_speed": 0.9842265394032175,
+          "last10_mean_vel_error": 0.07382432198325195,
+          "last10_roll_p2p_deg": 1.6497970005169504,
+          "last10_pitch_p2p_deg": 2.9132333413773903,
+          "max_abs_roll_pitch_deg_10_20s": 1.187214731884319,
+          "max_abs_roll_pitch_deg_20_30s": 1.5336044038480199,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.016369413916427312,
+            0.019846457607656864,
+            7.965695928787411e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0023329062675434224
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.1596053033239919,
+          "min_height": 2.7192084789276123,
+          "travel_xy_m": 28.989469509503234,
+          "rule": "3 (grows or attitude diverges: real defect)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400008,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 1.0275655355094957,
+              "vel_error": 0.14121761135642286
+            },
+            "10s": {
+              "speed": 1.0438819961316461,
+              "vel_error": 0.06021624244795098
+            },
+            "20s": {
+              "speed": 0.9763976910696576,
+              "vel_error": 0.057819604008468896
+            },
+            "30s": {
+              "speed": 0.9143650820661307,
+              "vel_error": 0.09452060325705304
+            }
+          },
+          "last10_trend_change_mps": -0.0072295142623012,
+          "last10_trend": "falling",
+          "last10_mean_speed": 0.998682636425156,
+          "last10_mean_vel_error": 0.07361665105026209,
+          "last10_roll_p2p_deg": 1.3362201532560714,
+          "last10_pitch_p2p_deg": 3.002042665591624,
+          "max_abs_roll_pitch_deg_10_20s": 1.0091632799309747,
+          "max_abs_roll_pitch_deg_20_30s": 1.5631426013375196,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.0017941974767363897,
+            0.02147903352039912,
+            -1.036184162015584e-06
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.002254700031704522
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.1438204086618081,
+          "min_height": 3.0284271240234375,
+          "travel_xy_m": 29.13947511887592,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        },
+        {
+          "test": "vx1",
+          "seed": 400009,
+          "decisions": 300,
+          "stopped_reason": null,
+          "command_velocity": [
+            1.0000000298023224,
+            0.0,
+            0.0
+          ],
+          "command_yaw": 0.0,
+          "at": {
+            "5s": {
+              "speed": 1.0656326270284024,
+              "vel_error": 0.07636244639664369
+            },
+            "10s": {
+              "speed": 1.074434792596845,
+              "vel_error": 0.08310107980801269
+            },
+            "20s": {
+              "speed": 1.0312712844342378,
+              "vel_error": 0.04639473766828926
+            },
+            "30s": {
+              "speed": 0.8901811211078492,
+              "vel_error": 0.11946595722365087
+            }
+          },
+          "last10_trend_change_mps": 0.001972301959148382,
+          "last10_trend": "flat",
+          "last10_mean_speed": 0.9963844792776256,
+          "last10_mean_vel_error": 0.07391954858266135,
+          "last10_roll_p2p_deg": 1.3200368847895332,
+          "last10_pitch_p2p_deg": 2.9099121378425967,
+          "max_abs_roll_pitch_deg_10_20s": 1.316191692204045,
+          "max_abs_roll_pitch_deg_20_30s": 1.508372390441257,
+          "attitude_diverges": false,
+          "steady_state_velocity_error_mps": [
+            -0.004106701895742133,
+            0.01963319510710195,
+            -2.104329183512704e-07
+          ],
+          "max_abs_integrators": {
+            "int_x": 0.0,
+            "int_y": 0.0,
+            "int_height": 0.0,
+            "int_att_roll": 0.0,
+            "int_att_pitch": 0.0,
+            "int_att_yaw": 0.0023069483850987537
+          },
+          "saturated_steps": 0,
+          "max_speed_jump_per_decision": 0.15986320630931886,
+          "min_height": 3.0408198833465576,
+          "travel_xy_m": 28.948418831926215,
+          "rule": "n/a (rules 1-2 are for the zero test; rule 3 not triggered)"
+        }
+      ],
+      "rule_counts": {
+        "n/a (rules 1-2 are for the zero test; rule 3 not triggered)": 9,
+        "3 (grows or attitude diverges: real defect)": 1
+      }
+    }
+  }
+}

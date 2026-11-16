@@ -2,8 +2,11 @@
 
     # Directory: <repo root>
     & "<Isaac Sim>\\python.bat" residual_ppo\\tools\\audit_ppo_run.py --run-id smoke_ppo_s0_1
+    & "<Isaac Sim>\\python.bat" residual_ppo\\tools\\audit_ppo_run.py --arm direct --run-id smoke_direct_s0_1
 
 Prints one line per check (PASS / FAIL) and `RESULT: PASS` or `RESULT: FAIL`; writes nothing.
+--arm direct (M8): the same checks on runs/ppo_direct/<id>/, except that the pid_ppo adapter must REFUSE every
+direct model (its contract carries the direct action mapping), instead of accepting it.
 """
 import argparse
 import csv
@@ -18,9 +21,8 @@ sys.path.insert(1, str(RESIDUAL_DIR / "evaluation"))
 sys.path.insert(2, str(RESIDUAL_DIR / "training"))
 
 import controllers  # noqa: E402
+import ppo_setup  # noqa: E402
 import run_files as rf  # noqa: E402
-from config import experiment_config as ec  # noqa: E402
-from config import ppo_config  # noqa: E402
 
 EXPECTED_MASS = 1.618614
 
@@ -39,7 +41,9 @@ def main(argv=None):
     p = argparse.ArgumentParser()
     p.add_argument("--run-id", required=True)
     p.add_argument("--expect-state", default="done")
+    p.add_argument("--arm", choices=ppo_setup.ARMS, default="residual")
     args = p.parse_args(argv)
+    ec, ppo_config = ppo_setup.arm_configs(args.arm)
     run = ec.run_dir(args.run_id)
     results = []
 
@@ -102,13 +106,19 @@ def main(argv=None):
         stored = json.loads((folder / ec.CONTRACT_FILE).read_text(encoding="utf-8"))
         check(f"contract {folder.name}/ == run_contract(settings)", stored == expected_contract)
     models = [*run.glob("*_model.zip"), *ckpts]
-    refused = []
+    refused, accepted = [], []
     for m in models:
         try:
             controllers.check_ppo_contract(m)
+            accepted.append(m.name)
         except controllers.ControllerRefused as exc:
             refused.append(f"{m.name}: {exc}")
-    check(f"adapter check_ppo_contract accepts all {len(models)} models", not refused, "; ".join(refused))
+    if args.arm == "residual":
+        check(f"adapter check_ppo_contract accepts all {len(models)} models", not refused, "; ".join(refused))
+    else:   # a direct model must never be flown as a residual (pid_ppo) controller
+        check(f"pid_ppo adapter check_ppo_contract REFUSES all {len(models)} direct models", not accepted and models,
+              "accepted: " + ", ".join(accepted) if accepted else f"{len(refused)} refused")
+        check("run_meta arm == direct", meta.get("arm") == "direct", f"arm {meta.get('arm')}")
 
     # per-launch CSVs and lineage sums
     log = run / ec.LOG_DIR

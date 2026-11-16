@@ -8,6 +8,8 @@ Run with Isaac's python.bat, in its own PowerShell window for long runs (README 
         --resume-model residual_ppo/runs/ppo_path/smoke_ppo_s0_1/interrupted_model.zip
 
 Run ids (D1): ppo_s0_1p5m (main) or smoke_ppo_s0_<n> (smoke override: 10,240 decisions, checkpoints every 4,096).
+--arm direct (M8) trains PPO direct control instead (direct_control/direct_env.py, config/direct_*_config.py) with
+the same script and rules; run ids ppo_direct_s0_1p5m or smoke_direct_s0_<n>, folder runs/ppo_direct/<id>/.
 Stop a run ONLY by creating runs/ppo_path/<id>/STOP (D5): it saves interrupted_model.zip and ends cleanly.
 Ctrl+C or closing the window KILLS the process at once and saves nothing (M5 S1b); so does a power loss. Recovery
 is then: resume from the last checkpoint (M5b S7). The next launch records the dead launch as "killed".
@@ -73,6 +75,8 @@ class NonFiniteError(RuntimeError):
 def parse_args(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     p.add_argument("--run-id", required=True)
+    p.add_argument("--arm", choices=ppo_setup.ARMS, default="residual",
+                   help="residual = PID + PPO residual (default); direct = PPO direct control (M8)")
     p.add_argument("--mode", choices=("fresh", "resume"), required=True)
     p.add_argument("--resume-model", default=None, help="model zip inside the same run folder (D2)")
     p.add_argument("--curriculum-offset", type=int, default=0, help="smoke only (D8)")
@@ -85,8 +89,7 @@ def parse_args(argv=None):
 
 def pre_isaac(args):
     check_line = rc.preflight(say)
-    from config import experiment_config as ec
-    from config import ppo_config
+    ec, ppo_config = ppo_setup.arm_configs(args.arm)
 
     import controllers
     import path_sac_config
@@ -185,7 +188,7 @@ def pre_isaac(args):
             else:
                 leftover.unlink()
                 say(f"removed leftover partial file: {rel(leftover)}")
-    say(f"preflight OK: run {args.run_id} ({'smoke' if settings['smoke'] else 'MAIN'}), mode {args.mode}, target "
+    say(f"preflight OK: arm {args.arm}, run {args.run_id} ({'smoke' if settings['smoke'] else 'MAIN'}), mode {args.mode}, target "
         f"{settings['total_decisions']:,} decisions, checkpoints every {settings['checkpoint_interval']:,}"
         + (f", resume from {rel(ctx['source'])} at {ctx['start_timesteps']:,} (reseed {ctx['reseed']})"
            if args.mode == "resume" else ""))
@@ -219,7 +222,8 @@ class RunFiles:
             for folder in (self.run_dir, self.ckpt_dir):
                 rf.atomic_write_json(folder / ec.CONTRACT_FILE, ctx["contract"])
         meta = (json.loads(self.meta_path.read_text(encoding="utf-8")) if self.meta_path.is_file() else
-                {"run_id": ctx["args"].run_id, "created_at": rf.now_iso(), "settings": ctx["settings"],
+                {"run_id": ctx["args"].run_id, "arm": ctx["args"].arm, "created_at": rf.now_iso(),
+                 "settings": ctx["settings"],
                  "ppo": ctx["ppo_config"].PPO, "policy_kwargs": ctx["ppo_config"].policy_kwargs_record(),
                  "launches": []})
         status = (json.loads(self.status_path.read_text(encoding="utf-8")) if self.status_path.is_file()
@@ -311,6 +315,7 @@ def make_callback(ctx, files, env, grad, say_fn):
         def _reset_rollout(self):
             self.t_collect0 = time.perf_counter()
             self.roll_stages, self.roll_episodes, self.roll_failures = [], 0, 0
+            self.roll_integrators = {}   # direct arm only: per-rollout max |inner-loop integrator|
 
         def _on_training_start(self):
             self._reset_rollout()
@@ -338,6 +343,9 @@ def make_callback(ctx, files, env, grad, say_fn):
             lg.record_mean("flight/residual_norm", info["residual_norm"])
             lg.record_mean("flight/saturation_rate", info["saturated_steps"] / max(info["physics_steps"], 1))
             lg.record("flight/stage", stage)
+            for name, value in info.get("integrators", {}).items():   # direct arm (DirectEnv.step) only
+                lg.record_mean(f"inner/{name}", value)
+                self.roll_integrators[name] = max(self.roll_integrators.get(name, 0.0), value)
             failed = done and info["failure_reason"] is not None
             if done:
                 lg.record_mean("flight/failure_rate", float(failed))
@@ -365,6 +373,8 @@ def make_callback(ctx, files, env, grad, say_fn):
                 mask = stages == st
                 rf.add_clip(stage_stats, st, int(out[mask].sum()), int(mask.sum()) * out.shape[1])
             self.rollout_in_launch += 1
+            for name, value in self.roll_integrators.items():
+                self.logger.record(f"inner/{name}_rollout_max", value)
             self.pending_row = {
                 "launch": files.launch, "rollout": counters["rollouts"] + 1, "num_timesteps": int(m.num_timesteps),
                 "stage": self.roll_stages[-1], "collect_s": now - self.t_collect0,
@@ -442,9 +452,10 @@ def train(ctx, app, files):
     ec, settings, counters = ctx["ec"], ctx["settings"], ctx["counters"]
     t_env0 = time.perf_counter()
     env, guard, venv = ppo_setup.build_training_env(app, ctx["forbidden"],
-                                                    monitor_path=files.log_dir / f"monitor_{files.stamp}")
+                                                    monitor_path=files.log_dir / f"monitor_{files.stamp}",
+                                                    arm=ctx["args"].arm)
     if ctx["source"] is None:
-        model = ppo_setup.build_model(venv)
+        model = ppo_setup.build_model(venv, ctx["ppo_config"])
     else:
         model = PPO.load(str(ctx["source"]), env=venv, device="cpu")
         model.set_random_seed(ctx["reseed"])   # D3 (team SAC rule): the next reset uses this seed

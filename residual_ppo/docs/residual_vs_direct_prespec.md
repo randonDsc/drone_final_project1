@@ -277,7 +277,7 @@ Changing anything in sections 3–7 after the direct-control model exists invali
   no PPO-vs-SAC test or paired statistic of any kind.
 - The residual-vs-direct comparison above is future work until the direct-control model exists.
 
-## 10. Amendments (each made before any direct-control code, model or result existed)
+## 10. Amendments (A1–A5 made before any direct-control code existed; A6–A10 after the direct-control env code was written and checked, but before any direct-control model, training run or eval result existed)
 
 **A1 and A2 (Claire, 2026-11-15; committed on top of 3218b53, the original pre-specification).** State when they
 were made (Confirmed): HEAD 3218b53; no direct-control env, policy, script, config, model or run under `residual_ppo/`
@@ -411,3 +411,124 @@ the pre-specification valid. They do not touch sections 3–5 (what is compared,
     `results/eval/eval-v1/` holds no direct-control result. No Isaac (kit) process was running.
   - As for A4, the residual arm's eval results and validation learning curve had been seen; the residual-arm numbers
     used above are quoted from the committed files. No direct-control model or result exists.
+
+**A6–A10 (Claire, 2026-11-16; committed on top of b684b81, with the direct-control code): env checks and the
+inner-loop findings.**
+- **When they were made (Confirmed):**
+  - The direct-control env, configs, check and diagnostic scripts were written and checked: `direct_control/`,
+    `config/direct_*`, `tools/check_direct_env.py`, `tools/hold_diagnostic.py`, `tests/test_direct_control.py`.
+  - **No direct-control model, training run (smoke or main), or eval / validation result exists.** `runs/` holds
+    only `ppo_path/`; `results/eval/eval-v1/` holds no direct-control result.
+  - All Isaac evidence below comes from zero-command and constant-command flights on the **validation seeds
+    400000–400009**, with no model, run by Claire from her own window. Files are in `results/m8/`: gate runs 1
+    (01:04) and 2 (01:33); hold diagnostic v1 (01:35); m8b suite (03:05–03:10).
+- **None of A6–A10 changes sections 3–7** (what is compared, endpoints, statistics, profile roles, P1′, P3). They
+  record env facts and what the comparison may and may not claim.
+
+**A6 — the H2/H3 specification error (code-correctness gate, not an endpoint).**
+- The first gate (`tools/check_direct_env.py`, Part H) required a zero velocity command in still air to settle:
+  "drift after 3 s ≤ 0.10 m" and "final speed ≤ 0.05 m/s". Those were guesses from an ideal 0.83 s velocity loop.
+  Runs 1 and 2 failed them identically: max drift 0.2118 m, max final speed 0.1387 m/s.
+- **Still air was correctly delivered by the env (Confirmed from the code and the logged wind).**
+  - A hypothesis that the test had run in wind was raised: the log prints "gust std=[1. 1. 0.35]". It was refuted
+    from `wind.py`.
+  - That line is printed once, when the sim is built, from the base config (`drone_sim.py:301-314`).
+  - Every still_air reset draws calm wind with gust scale 0 (`hover_task.py:223-224`), and
+    `GustingWind.reset_episode` multiplies both gust strengths by it (`wind.py:196-197`).
+  - The m8b run logged the point wind every decision: exactly 0.000 m/s in every still-air flight.
+- **The thresholds were wrong because the plant has a bounded limit cycle (A7), not because the test was wrong.**
+- **Replacement:** H2/H3 became regression gates on the limit cycle, with bounds set from the m8b T1 measurements
+  plus stated margins. Derivation in the `check_direct_env.py` docstring:
+  - "limit-cycle amplitude within the measured band": 110–120 s RMS amplitude in [0.0539, 0.0874] m/s. Measured
+    0.06739–0.07287, margin 20% relative. Logged wind must be exactly 0.
+  - "limit-cycle amplitude ratio stable": amplitude(110–120 s) / amplitude(20–30 s) in [0.8265, 1.0977]. Measured
+    0.9265–0.9977, margin 0.10 absolute. No early stop allowed.
+  - The seeds are validation seeds, never the 300000-series eval seeds.
+
+**A7 — the limit cycle in the shared inner loop (Confirmed measurements; mechanism partly open).**
+- **Measured:** hover, zero command (direct) or zero residual (residual arm = PID alone), validation seeds
+  400000–400009, no saturated physics step, no integrator activity on xy or height.
+
+  | | Direct arm (T1: still air, 120 s) | Residual arm (T3: still air, 30 s) |
+  |---|---|---|
+  | Present in | 10/10 seeds | 10/10 seeds |
+  | Period | 2.61 s | 2.82–2.88 s |
+  | Velocity RMS amplitude | 0.068–0.075 m/s | 0.087–0.092 m/s |
+  | Tilt gain (actual / commanded) at its own period | pitch 1.99, roll 2.02, phase −88° | pitch 1.79, roll 1.87, phase −76° / −70° |
+  | Max point wind | 0.000 m/s | 0.000 m/s |
+
+  - **Bounded over 120 s (T1):** R = amplitude(110–120 s) / amplitude(20–30 s) = 0.926–0.998 in all 10 seeds.
+    The amplitude converges to the same level from below (v1 zero-command runs) and from above (v1 vx = 1 m/s runs).
+  - **With gusts it is unchanged:** 3/3 seeds hold in T2 (direct, 120 s); 7 hold, 1 grows, 2 decay in T4 (residual,
+    30 s; gust noise in 10 s windows).
+- **The 10 Hz outer loop is not the cause.** In T1 and T3 the action is constant, so no policy feedback acts. T3
+  shows the mode in the pure 120 Hz PID cascade with the residual held at exactly 0.
+- **Consequence, stated plainly:**
+  - Neither arm's still-air RMSE is clean "nominal tracking". Both arms fly through an inner loop that oscillates on
+    its own.
+  - The residual PPO's still-air improvement (validation 0.176 → 0.060 m RMSE, `results/eval/eval-v1/
+    learning_curve.txt`) is therefore a **hypothesis** that the residual damps this mode, **not a demonstrated
+    result**, unless it is tested. A test would be the same diagnostic with the trained residual flying.
+  - The M7 write-up's still-air section must be read with this caveat.
+- **Open question (Inference): the ~18% damping deficit.**
+  - Units are N·m/rad (`controller.py:6`, `sim_config.py:207`, and the mixer's moment arms in metres).
+  - The composite inertia about the vehicle COM is Ixx 0.0349 and Iyy 0.0312 kg·m², from the inertias the run logged.
+  - An ideal rigid-body PD attitude loop (kp 0.2, kd 0.05) predicts a 2.62 s roll period, matching the measured
+    2.61 s. kp / ω² = 0.0345 at 2.61 s, against the measured roll inertia 0.0349.
+  - **Routh** on that ideal model says both arms are stable:
+    - direct: kd 0.05 > 1.2·I = 0.0418 (roll) / 0.0375 (pitch);
+    - residual: 0.0120 > 0.0115 (roll) / 0.0105 (pitch).
+  - The measured tilt gain is about 20% above the ideal model in both arms (direct 1.99 / 2.02 vs 1.64 / 1.66;
+    residual 1.79 / 1.87 vs 1.66 / 1.75). That implies an effective damping of about 0.041 N·m·s/rad, which sits on
+    the direct arm's stability boundary.
+  - What removes about 18% of the attitude damping in the sim, and what caps the amplitude, is not identified.
+
+**A8 — the steady bias (Confirmed measurements; source unidentified).**
+- **Measured:** the direct arm drifts at a steady velocity of about 0.02 m/s in still air (T1, t ≥ 10 s: mean vx
+  +0.012 to +0.013, vy +0.014 to +0.015 m/s), with the same sign on all ten seeds.
+- **Explained by an attitude offset:** actual − commanded tilt is pitch +0.081 to +0.091° and roll −0.096 to
+  −0.109° (T1; v1 30 s: +0.035 to +0.128° and −0.116 to −0.143°), same sign on all ten seeds.
+  - It follows because roll and pitch have no integrator (ki = 0), so a steady disturbance torque holds a steady
+    attitude error.
+  - That error is turned into velocity through g·tan(offset) / kd.
+  - The same-signed offset is present in the residual arm (T3: pitch +0.019 to +0.089°, roll −0.020 to −0.159°),
+    where the position loop absorbs it (mean velocity about 0).
+- **Refuted with numbers (Confirmed):**
+  - **Rotor-mass asymmetry:** rotors 0/1 (0.029236 kg) and 2/3 (0.030071 kg) are diagonal pairs. The COM shift is
+    (+0.0003, −0.0082) mm, giving m·g·d = 4.0e-6 (pitch) and 1.3e-4 (roll) N·m. The offsets imply 2.8–3.8e-4 and
+    4.5–4.9e-4 N·m: about 100× too small in pitch and 3.6× in roll.
+  - **The mixer residual:** the mixer reads the live vehicle COM (`calibrated_com_offset` stays None, because
+    `connect_imu` is only called by `DroneHoverEnv` in IMU mode). Allocation and thrust application use the same
+    `ROTOR_POSITIONS`. A NumPy replay of the code path, including the float32 cast, leaves 2.5e-10 to 7.3e-10 N·m.
+  - **A force-at-COM mismatch:** it would give 2.6e-3 / 8.6e-3 N·m, 6–20× too large and with the wrong pitch-to-roll
+    ratio.
+- **Untested candidate (Inference):** the visual propeller spin drives (`PROPELLER_SPIN`, drive torque limit 0.1 N·m,
+  rotor links clamped by PhysX near 100 rad/s). A slight tilt of the joint axes would leak roll/pitch torque of
+  about the measured size.
+- **Consequence:** the direct policy must cancel about 0.02 m/s of steady drift with its own commands, which it can,
+  since it observes velocity error. The residual arm's PID cancels it through position feedback. This is one of the
+  "interface" differences between the arms, recorded here.
+
+**A9 — `initial_obs_sha256` cannot match between arms; physical identity is proven instead (Confirmed).**
+- Observation features 18–20 (attitude error vs the desired attitude) and 24–27 (command) are controller-derived.
+  In the direct arm they come from the inner loop under the policy's command; in the residual arm, from the PID.
+  No shadow PID is allowed anywhere (plan 3b). So the initial-observation hash differs in every cell by design.
+- **Physical identity is established by the 360-cell reset comparison** in `tools/check_direct_env.py` (run 2,
+  01:33, all PASS). The shared `PathSacEnv` and `DirectEnv` were reset on the same sim for every validation cell:
+  - R1: `PathSacEnv` reproduces all 5 reference fields;
+  - R2: `DirectEnv` reproduces `wind_seed`, `wind_speed`, `route_seconds`, `max_decisions` (360/360);
+  - R3: drone state and mean wind are bit-identical (360/360);
+  - R4: every controller-independent feature is bit-identical (360/360);
+  - R5: seed + 1 is refused.
+- **The future direct eval runner** guards every reset on the remaining four realization fields, plus that one-time
+  check. It must not reconstruct a PID observation to recreate the hash.
+
+**A10 — integrator rationale (Confirmed from the code).**
+- The shared controller's xy and height integrals integrate **position error** (`controller.py:245-253, 278-286`).
+  They belong to the position loop that direct control replaces. In the direct arm they are therefore **inactive by
+  design**: the integrate call targets the current position, so their error input is exactly 0
+  (`direct_control/direct_env.py`, `VelocityPID.integrate`).
+- The yaw attitude integral (ki 0.02) is unchanged: it integrates the true yaw error, as in the residual arm. Roll
+  and pitch have ki = 0 in both arms.
+- Integrating at the substituted target instead would wind the xy integral to its 1.2 m/s² limit (80% of the cap)
+  within 4–8 s at route speeds (plan section 8.1). Integrating on the reference would be a shadow PID.

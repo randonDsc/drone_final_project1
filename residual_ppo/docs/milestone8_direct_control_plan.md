@@ -401,6 +401,8 @@ substituted target. Reimplementation is not the only route. Subclassing and "cal
     bit-identical output to `PIDController` at cap 1.5.
 - **D-env-2 — DECIDED 2026-11-16 (section 3b):** the inner loop's desired attitude and outputs, in both arms, for
   both observation and reward. No shadow PID.
+- **D-env-3, D-env-4, D-env-5: resolved by code reading on 2026-11-16, see section 8** (the text below is the
+  2026-11-15 record).
 - **D-env-3 — inner-loop integrators.** Using the velocity trick (2a, 2e) the integrators wind up on the command.
   Options (corrected 2026-11-16):
   - a second `update(dt)` call with target = current position. Then xy and height errors are 0, so those two
@@ -538,17 +540,172 @@ Observed patterns (Documented):
 later to match the team convention. Workflow and controller name `ppo_direct` remain placeholders until Claire
 confirms the Discord convention.
 
-## 7. Next step
+## 7. Next step (as of 2026-11-15; superseded by section 8)
 
-Claire settles the remaining items:
-- D-env-1 (confirm (a));
-- D-env-3 integrators;
-- D-env-4 yaw;
-- D-env-5 the realization hash;
-- the inner-loop route (2e: substitution or reimplementation);
-- P1′ (c)'s numeric criterion and the direct runner's diagnostic (prespec section 8, item 4);
-- whether P2 stays (item 5);
-- the exact "still improving" rule for the D2 check.
+The items listed here were settled on 2026-11-16: D-env-1 (a), P1′ (c), P2 and the "still improving" rule by prespec
+A5 (b684b81); the inner-loop route (target substitution, no fork) by Claire; D-env-3/4/5 in section 8.
 
-Then a prespec addendum is committed and pushed, recording the decisions and every difference from the residual arm
-with its reason. Only after that is any env, policy or runner code written.
+## 8. Remaining env items resolved by code reading, and what was built (2026-11-16)
+
+### 8.1 D-env-3 — integrators (Confirmed, code + scratch measurement `windup.py` with the shared `controller.py`)
+
+**The integral code** (`controller.py:17-32`, called at `:245-253` xy, `:278-286` height, `:288-296` attitude):
+
+```python
+def integrate(integral, error, ki, limit, zone, dt, blocked):
+    step = np.asarray(ki, dtype=float) * error * dt
+    step = np.where(np.abs(error) <= zone, step, 0.0)          # holds while |error| > zone
+    growing = np.abs(integral + step) > np.abs(integral)
+    step = np.where(blocked & growing, 0.0, step)              # anti-windup while saturated / capped
+    return np.clip(integral + step, -np.asarray(limit), np.asarray(limit))   # clamped
+```
+
+- **Clamped, not leaky, not unbounded.** Each axis is clamped to ±limit and holds while its error is outside
+  `integral_zone`. Growth also stops while the output is blocked (rotor saturation, or for xy the 1.5 m/s² cap).
+- **Gains (Confirmed, `sim_config.py:183-201`):**
+
+  | Integrator | ki | limit | zone |
+  |---|---|---|---|
+  | height | **3.0 N/(m·s)** | 3.0 N | 0.5 m |
+  | xy (horizontal) | **0.15 1/s³** | 1.2 m/s² | 2.0 m |
+
+  Correction to the brief: ki = 3.0 is the **height** loop's; the horizontal loop's ki is 0.15.
+- **What the substituted target would feed them if it were also used for integration.** The position error is
+  2·v_cmd (xy) and 0.5·vz_cmd (height). Results, holding the drone at the commanded velocity and stepping the real
+  shared controller at 120 Hz:
+
+  | Command | Error seen | Integral after 60 s and after 184 s | Time to the limit |
+  |---|---|---|---|
+  | vx 0.5 m/s | 1.0 m (inside the 2 m zone) | **1.2 m/s²** (the limit) | 8.0 s |
+  | vx 1.0 m/s | 2.0 m (at the zone edge) | **1.2 m/s²** | 4.0 s |
+  | vx 2.0 m/s | 4.0 m (outside the zone) | 0 (held) | never |
+  | vx 3.0 m/s | 6.0 m | 0 (held) | never |
+  | vz 0.5 m/s | 0.25 m (inside the 0.5 m zone) | **3.0 N** (the limit) | 4.0 s |
+  | vz 1.0 m/s | 0.5 m (at the zone edge) | **3.0 N** | 2.0 s |
+  | vz 1.5 m/s | 0.75 m | 0 (held) | never |
+
+  - A sustained **3 m/s** command therefore does **nothing** to the xy integral, because it sits outside the zone.
+    The damage comes from **slow** commands, which are exactly the route speeds (1–2 m/s, `full` stage): ≤ 1 m/s
+    saturates the integral within 4–8 s.
+  - Route length does not matter beyond that, because the integral is clamped. The longest eval route is 39.7 s and
+    the episode limit is 60 s (`EPISODE["max_seconds"]`); no route is 184 s long.
+  - A saturated xy integral is **1.2 m/s² = 80% of the 1.5 m/s² cap**. It adds a steady overspeed of
+    1.2 / kd = **1.0 m/s** in the direction the command once pointed. A saturated height integral adds
+    3.0 / 5 = **0.6 m/s**. This is hidden, history-dependent state that the policy does not observe.
+- **Minimal handling that does not alter the inner loop: none exists in the strict sense, stated plainly.**
+  - In the residual arm the xy and height integrators integrate the true tracking error p_ref − p. A velocity-commanded
+    inner loop has no position error of its own.
+  - The only position error available is the reference's, and feeding it in would be a shadow PID position loop,
+    which section 3b excludes.
+  - So in the direct arm these two integrators cannot do what they do in the residual arm. Every option changes
+    their *behaviour*; none needs a code change.
+
+  | Option | What happens | Cost |
+  |---|---|---|
+  | **A — integrate call at the current position (BUILT)** | Same two-call pattern as `ReferencePID` (read with `dt = 0` at the substituted target, integrate with `dt` at p itself). xy and height errors are exactly 0, so those integrators stay at 0 from every reset. The yaw integrator still integrates the true yaw error, as in the residual arm (roll/pitch ki = 0). | No inner-loop integral action on xy and height. The policy must cancel steady wind and thrust bias itself, by biasing its command: holding 0.9 m/s² of drag needs a 0.75 m/s command offset. It observes velocity error, so it can. |
+  | B — `dt = 0` only (no integrate call) | All integrators stay 0, yaw included. | Steady yaw disturbance torque is no longer trimmed. |
+  | C — one integrating call at the substituted target | Wind-up as in the table above. | Hidden bias up to 80% of the cap, depending on command history. |
+  | D — integrate on p_ref (as the residual env does) | The inner loop gets an integral pull toward the reference. | A shadow PID position loop; **excluded** (section 3b). |
+  | E — integrate velocity error | Needs a reimplementation of `update`. | Excluded (no fork, A5). |
+
+  **Built: A** (Proposed; Claire to confirm in the addendum). Verified:
+  - unit test, 60 s of steps: xy and height integrals exactly 0, yaw integral > 0 and ≤ its limit;
+  - the Isaac check H4 asserts it on real flights.
+
+### 8.2 D-env-4 — yaw (Confirmed, code)
+
+**What we pass:** `target["yaw"] = yaw_cmd = π·a₃` [rad], the yaw ANGLE itself, in the controller's convention (world
+yaw, `arctan2(R[1,0], R[0,0])`, `controller.py:115`). It goes into both the read and the integrate call
+(`VelocityPID._target`). No conversion is needed:
+- the attitude error is `target_yaw − yaw`, wrapped to (−π, π] (`:264-270`). A command anywhere in ±π reaches the
+  controller as an angle and is approached the short way;
+- the horizontal acceleration is rotated into the commanded heading's axes with cos/sin of the same angle
+  (`:226-232`), which is continuous across ±π.
+
+Tested: the yaw angle arrives exactly (`target["yaw"] == π·a₃`), and the yaw error recovered from the yaw torque
+matches wrap(yaw_cmd − yaw) within 1.8e-15 rad. A command of 0.999π at a heading of −0.999π gives the small torque of
+the −0.002π error, not a spin.
+
+Caveats (Inference, unchanged from 2b):
+- the a₃ = ±1 flip costs 0.08 in action_rate;
+- a large yaw error asks for up to 0.1 · π = 0.31 N·m of yaw torque, which may saturate the mixer (it would show in
+  `saturation_rate`).
+
+### 8.3 D-env-5 — realizations (Confirmed by design; to be proven in Isaac by `tools/check_direct_env.py`)
+
+- **Same wind realization, route and initial state: yes, by construction.** `DirectEnv` inherits `PathSacEnv.reset`
+  unchanged (`path_sac_env.py:79-141`): wind, then route, then initial state, from the same `np_random` stream in the
+  same order. The four non-observation key fields (`wind_seed`, `wind_speed`, `route_seconds`, `max_decisions`)
+  therefore match the PID reference.
+- **Same initial-observation hash: NO, and it cannot.** The initial observation's features 18–20 and 24–27 come from
+  the inner loop under the zero command (D-env-2). The PID reference hashed the PID's lead-point command. By Claire's
+  own decision those 7 features differ, so `initial_obs_sha256` cannot match. That is a consequence of D-env-2, not
+  a bug.
+- **How it is proven (Isaac, before any training; Claire runs it):** one sim, the shared `PathSacEnv` and `DirectEnv`
+  side by side. For all 360 validation cells (seeds 400000–400009, reset only, no flights):
+  - R1: `PathSacEnv` reproduces all 5 key fields of `pid_validation/realizations.json` through the frozen
+    `run_protocol.make_realization_guard`, so the check itself is sound;
+  - R2: `DirectEnv` reproduces the 4 non-observation fields through the same guard;
+  - R3: `DirectEnv`'s drone state after reset (every value `read_drone_state()` returns) and the mean wind are
+    bit-identical to `PathSacEnv`'s;
+  - R4: every controller-independent observation feature (0–17, 21–23, 28–31, all 4 frames) is bit-identical;
+  - R5: a reset with seed + 1 is refused (negative test).
+- **For the eval runner (not built yet; decision for Claire):**
+  - (i) guard on the 4 fields per flight, plus R1–R4 once. This is weaker per flight, but uses no PID at all;
+  - (ii) additionally reconstruct the residual-style initial observation once per reset with a hash-only shared
+    `PathCore`. Its output never reaches the policy, reward or dynamics, so the frozen 5-field guard can be used
+    unchanged. It is the strongest proof, but it is a PID computation at reset, which "no shadow PID anywhere" may
+    forbid.
+
+  Recommendation (Proposed): (i) + R1–R4, which keeps the rule literal.
+- **First Isaac run of the check (2026-11-16 01:04): 7/10, RESULT: FAIL.**
+  - **R2 0/360 was a bug in the check script, not in the env.** The 4-field guard was handed the full stored
+    reference rows (5 fields). The frozen `row_differences` (`evaluation/protocol_stats.py:345-355`) counts a field
+    missing on one side as a difference, so every cell was refused for lacking `initial_obs_sha256`.
+  - All 360 refusals named only that field. `wind_seed`, `wind_speed` and `route_seconds` come before it in the row's
+    field order, so they matched in all 360 cells.
+  - **Fix:** the reference rows are cut down to the 4 compared fields before they reach the guard. Offline, the fixed
+    construction accepts 360/360 NumPy-rebuilt realizations; the first-run construction accepts 0/360.
+  - **Why `initial_obs_sha256` is excluded:** features 18–20 and 24–27 are controller-derived, and no shadow PID is
+    allowed, so the hash cannot match between arms. Physical identity is proven instead by R3 (simulator state and
+    mean wind bit-identical, 360/360 in the first run) and R4 (controller-independent features bit-identical,
+    360/360).
+  - **R5's first-run PASS was vacuous:** the broken guard refused every reset, so refusing seed + 1 proved nothing.
+    R5 now passes only if R2 also passes.
+  - **H2/H3 (hold thresholds) failed:** max drift 0.2118 m, max final speed 0.1387 m/s. The thresholds are unchanged
+    pending `tools/hold_diagnostic.py`, whose decision rule Claire fixed before its run.
+
+### 8.4 What was built (2026-11-16; NOT committed, by instruction)
+
+| File | What |
+|---|---|
+| `direct_control/direct_env.py` (new) | `action_to_command`; `VelocityPID(ReferencePID)` (target substitution, yaw angle, integrate at p); `DirectCore(PathCore)` (only `apply_action` differs: correction 0, sets the command); `DirectEnv(PathSacEnv)` (only the core differs; `step` adds read-only integrator magnitudes to info); `make_direct_env`. No fork of `controller.py`; no shared module edited. |
+| `config/direct_ppo_config.py` (new) | `PPO` = the residual arm's dict (asserted equal); net_arch pi [64, 128, 256, 64], vf [128, 256, 256, 128]; `log_std_init = ln 0.4`; SB3's state-independent learned log_std (one value per action dimension, as the residual arm). Policy contract = `policy_contract()` + arm + action mapping, so `pid_ppo` refuses direct models. |
+| `config/direct_experiment_config.py` (new) | `runs/ppo_direct/<id>/`; ids `ppo_direct_s0_1p5m`, `smoke_direct_s0_<n>`; every other rule imported from `experiment_config`. |
+| `training/train_path_ppo.py`, `training/ppo_setup.py` (edited) | `--arm residual\|direct` (default residual: residual behaviour unchanged); `arm_configs`, `make_arm_env`; direct-arm `inner/*` integrator columns in progress.csv. |
+| `tools/audit_ppo_run.py`, `tools/launch_ppo_run.ps1` (edited) | `--arm` / `-Arm`. The direct audit requires `pid_ppo` to REFUSE every direct model. |
+| `tools/check_direct_env.py` (new) | Isaac: R1–R5 (above) and the zero-command hold H1–H4. |
+| `tests/test_direct_control.py` (new, 19 tests) | Gate 4 (mapping, hold), integrators, DirectCore, configs, SB3 policy (214,665 parameters; residual 198,921). |
+
+**Single-log_std reading (Inference, flagged):** "single state-independent log_std" is implemented as SB3's standard
+state-independent log_std **vector** (4 learned values), exactly as in the residual arm. A single scalar shared
+across the 4 dimensions would need a custom policy class, i.e. a second difference from the residual arm. Say if a
+scalar is what was meant.
+
+### 8.5 Gate, hold diagnostics and the limit cycle (2026-11-16; full record in prespec A6–A10)
+
+- **Gate `tools/check_direct_env.py`:**
+  - run 1: 7/10 (R2 failed on a script bug, now fixed);
+  - run 2: 8/10 (R1–R5 PASS; the old H2/H3 settling thresholds failed).
+- **Hold diagnostic `tools/hold_diagnostic.py`:**
+  - v1: 30 s;
+  - `--suite m8b`: T1–T4. It found a bounded limit cycle in the shared inner loop, in both arms.
+    - Direct: period 2.61 s, 0.068–0.075 m/s RMS.
+    - Residual: period 2.82–2.88 s, 0.087–0.092 m/s RMS.
+    - Still air, 120 s, 10/10 seeds hold.
+  - It also found a steady bias of about 0.02 m/s (source unidentified).
+- **Claire's decision (rule 2, launch authorized):**
+  - H2/H3 replaced by limit-cycle regression gates: amplitude band [0.0539, 0.0874] m/s and ratio band
+    [0.8265, 1.0977];
+  - both bands derived from T1 (validation seeds) plus stated margins, as recorded in the script docstring.
+  - Expected re-run: 10/10.
