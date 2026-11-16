@@ -84,6 +84,32 @@ have identical realizations (`wind_seed`, `wind_speed`, `route_seconds`, `max_de
 (exact CI), (b) paired McNemar test, (c) median decisions flown (IQR), (d) position RMSE labelled "over flown portion
 only".
 
+**Ceiling fallback: decisions survived (added by amendment A3, section 10).**
+- **When it applies:** only in a profile where **both** controllers fail **all 180** flights. Then every pair is
+  "both failed", there are no discordant pairs (b = c = 0, McNemar p = 1), and the failure test cannot tell the
+  controllers apart.
+- **Statistic:** the paired difference **direct − residual in decisions survived per flight**, using the existing
+  per-flight `decisions` field (decisions flown before the episode ended), paired by (scenario, profile, seed). Per seed
+  it is the mean over the 6 scenarios of `decisions(direct) − decisions(residual)`
+  (`protocol_stats.per_seed_mean` with value `f["decisions"]`). It is reported as the mean over the 30 eval seeds with
+  `protocol_stats.bootstrap_mean`: 95% percentile seed bootstrap, each resample keeping a seed's 6 scenarios together,
+  **10,000 resamples, RNG seed 0**, exactly the E5 settings. Each controller's `protocol_stats.decisions_median_iqr`
+  is reported next to it. `protocol_stats.py` is used unchanged.
+- **Sign:** positive means direct control survives longer. This is the opposite of the RMSE difference, where
+  negative is better.
+- **Reading:** direct "survives longer" only if the CI is entirely above 0, and "survives less long" only if it is
+  entirely below 0. Otherwise the result is inconclusive.
+- **Pairing is valid:** the realization guard (section 4, implementation) makes `route_seconds` and `max_decisions`
+  identical for both controllers in every pair, so both have the same maximum possible number of decisions.
+- **Scope, stated as a rule:** this is a **graded fallback for ceiling cases only**. It **never replaces an
+  informative failure test**: when at least one controller fails fewer than 180 of 180 flights in a profile, the
+  McNemar comparison decides there and the fallback is not used, not even as a tie-breaker. It is not computed for the
+  primary profiles' endpoints, and it does not change E5 rules 2 or 3. E5 rule 3 (c), median decisions, is still
+  reported as before.
+- **Not covered:** b = c = 0 *without* a full double ceiling, where both controllers fail exactly the same flights but
+  not all of them. That case is not a ceiling. It is reported as the McNemar result (p = 1) and the fallback does not
+  apply.
+
 ## 5. Profile roles (quoted from `eval_protocol_v1.md`, E5)
 
 > One primary result per profile; `still_air` is reported but is not a primary endpoint. […]
@@ -118,7 +144,13 @@ control, which is not bounded by L, shows its **largest advantage there**, and *
   - **`beyond_strong` counts toward P1 only if at least one of the two controllers fails fewer than 180 of 180.**
     It is then evaluated the same way (c > b, McNemar exact p) and reported as corroborating (c > b) or contradicting
     (b > c) P1. Otherwise (both fail 180/180) it is reported as **uninformative due to a ceiling effect**, and it
-    neither supports nor falsifies P1.
+    neither supports nor falsifies P1 through the failure test.
+  - **At a double ceiling (A3):** the ceiling fallback in section 4 (decisions survived, direct − residual) is
+    reported for that profile as a **graded** result. In `strong_range` it decides P1 in place of "unevaluable",
+    labelled "graded (ceiling fallback)": P1 holds (graded) if the CI is entirely above 0, is falsified (graded) if
+    the CI is entirely below 0, and is inconclusive otherwise. In `beyond_strong` it is reported as graded
+    corroboration (CI entirely above 0) or graded contradiction (CI entirely below 0), and is otherwise inconclusive.
+    A graded verdict is always reported as such, never as a failure-test result.
   - McNemar exact p < 0.05 needs at least 6 discordant pairs, all in one direction (b + c = 6, min(b, c) = 0 gives
     p = 2 · 0.5^6 = 0.031; b + c = 5 gives 0.0625).
 - **P2 (nominal wind; primary profile `training_range`).** Little or no RMSE advantage for direct: the lower bound of
@@ -135,11 +167,16 @@ control, which is not bounded by L, shows its **largest advantage there**, and *
   - **holds** if c > b with McNemar exact p < 0.05;
   - is **not supported** (inconclusive, not falsified) if c > b with p ≥ 0.05;
   - is **falsified** if b ≥ c, provided at least one controller fails fewer than 180 of 180 there;
-  - is **unevaluable (ceiling effect)** if both controllers fail all 180 `strong_range` flights. This is the same
-    ceiling logic as for `beyond_strong`. The canonical PID already fails 179/180 there.
+  - is **unevaluable by the failure test (ceiling effect)** if both controllers fail all 180 `strong_range` flights.
+    This is the same ceiling logic as for `beyond_strong`. The canonical PID already fails 179/180 there. P1 is then
+    judged by the graded ceiling fallback (section 4, A3): it holds if the CI is entirely above 0, is falsified if
+    the CI is entirely below 0, and is inconclusive otherwise.
 - **`beyond_strong`** follows the rule in P1: it informs P1 only when at least one controller fails fewer than
   180/180; otherwise it is reported as uninformative due to a ceiling effect.
-- In any profile at the ceiling, median decisions flown (E5 rule 3 (c)) is reported as the only descriptive contrast.
+- In any profile at the double ceiling (both controllers fail 180/180), the failure test is uninformative. That
+  profile is judged by the **ceiling fallback** (section 4, A3): the paired difference in decisions survived per
+  flight with its seed-bootstrap CI, labelled "graded (ceiling fallback)". Median decisions flown (E5 rule 3 (c)) is
+  reported as well. Whenever at least one controller is below 180/180, the fallback is not used.
 - **P2 is falsified** if the upper bound of the `training_range` CI is below −0.02 m (direct is clearly better by more
   than 2 cm in nominal wind). Then any advantage is not specific to strong wind. If failures occur in
   `training_range`, E5 rule 2 applies first.
@@ -201,3 +238,32 @@ residual controller had not started.
 
 Because A1 and A2 were made before the direct-control model existed and before any learned eval flight, they keep
 the pre-specification valid. They do not touch sections 3–5 (what is compared, endpoints, statistics, profile roles).
+
+**A3 (Claire, 2026-11-15; committed on top of 5fefb29): ceiling fallback, written BLIND.**
+- **What:** section 4 gains the ceiling fallback, the paired difference direct − residual in decisions survived per
+  flight. It uses the E5 bootstrap settings and the existing `decisions` field, through `per_seed_mean`,
+  `bootstrap_mean` and `decisions_median_iqr` in `protocol_stats.py`. P1 (section 6) and section 7 now use it at a
+  double ceiling.
+  - Before A3, a double ceiling made `strong_range` "unevaluable" and `beyond_strong` "uninformative", and median
+    decisions was only a descriptive contrast.
+  - The fallback is a **graded fallback for ceiling cases only**. It **never replaces an informative failure test**:
+    if at least one controller fails fewer than 180/180, McNemar decides and the fallback is not used. Sections 3, 5
+    and the primary endpoint are unchanged.
+- **When it was made (Confirmed):**
+  - HEAD **5fefb29**.
+  - **No direct-control env, policy, script, config, model or run exists**: a search of `residual_ppo/` (outside
+    `results/`) for direct-control code finds only this document; `runs/` holds only `ppo_path/` (the residual run,
+    its killed first launch, the smoke runs); `models/` holds only `sac_team`. No Isaac process was running.
+  - **Claire had not seen any `pid_ppo` or `pid_sac` result.** The six M7 flight runs had finished (12:04:44 to
+    15:10:53 local, as reported by Claire). Their output folders exist on disk: `results/eval/eval-v1/pid_ppo/`,
+    `pid_sac/`, and `ppo_validation/ppo_150000`, `ppo_400000`, `ppo_800000`, `ppo_final`. Only the folders' existence
+    was checked; **no `results.json`, report, log or failure count in them was opened or summarised**, by Claire or
+    by Claude, before this amendment was committed and pushed.
+- **Why:**
+  - A1 made a double ceiling "unevaluable", which is honest but throws away information. Two controllers that both
+    fail every flight can still differ a lot in how long they stay in the air.
+  - Decisions survived is a graded, already-recorded per-flight quantity. Paired by (scenario, profile, seed), it is
+    measured against identical realizations and identical `max_decisions`.
+  - It is fixed now, before any result is seen, so that using it cannot be a choice made after looking at the
+    numbers. Limiting it to the double ceiling keeps the failure test as the primary strong-wind endpoint wherever
+    that test can say anything.
