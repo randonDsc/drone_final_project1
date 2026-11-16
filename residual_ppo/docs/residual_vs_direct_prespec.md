@@ -120,7 +120,7 @@ only".
 
 There is one primary result per primary profile and no correction for multiple profiles, the same as E5.
 
-## 6. Pre-registered prediction (Claire, 2026-11-15)
+## 6. Pre-registered prediction (Claire, 2026-11-15; P1 replaced by P1′ on 2026-11-16, A4)
 
 **Basis (Confirmed, from `ppo_s0_1p5m`):**
 - Both residual controllers (PPO and the team SAC) share the residual limit
@@ -135,57 +135,84 @@ There is one primary result per primary profile and no correction for multiple p
   the normalized residual action after it is clipped to [−1, 1] per component (`PathCore.apply_action`,
   `PathTrace.record`), so its ceiling is 2.0.
 
-**Prediction.** The residual controller is **authority-limited in `strong_range` and `beyond_strong`**. Direct
-control, which is not bounded by L, shows its **largest advantage there**, and **little or no advantage in
-`training_range`**. Stated as checkable outcomes:
+**P1 is RETIRED (amendment A4, 2026-11-16, section 10).** P1 predicted that direct control, "not bounded by L",
+would fail *less* than the residual in strong wind. A4 records, as a code fact, that the direct arm is the one with
+**less** horizontal authority, so P1 would fail by construction. Its text up to A3 is in commit c3198fa. It is
+replaced by P1′ below.
 
-- **P1 (strong wind; secondary profiles, E5 rule 3 order; amended 2026-11-15, see section 10, A1).**
-  - **Decided by `strong_range`:** direct fails less than the residual there, c > b with McNemar exact p < 0.05.
-  - **`beyond_strong` counts toward P1 only if at least one of the two controllers fails fewer than 180 of 180.**
-    It is then evaluated the same way (c > b, McNemar exact p) and reported as corroborating (c > b) or contradicting
-    (b > c) P1. Otherwise (both fail 180/180) it is reported as **uninformative due to a ceiling effect**, and it
-    neither supports nor falsifies P1 through the failure test.
+**Prediction (A4).** Direct control enters the control cascade **upstream** of the PID's 1.5 m/s² horizontal
+acceleration cap; the residual enters **downstream** of the whole cascade and is not subject to that cap (it is bounded
+by L instead). So direct control is **comparable to or better than** the residual where the cap does not bind, and
+**fails more** where drag exceeds the cap. Stated as checkable outcomes:
+
+- **P1′ (a) (where the cap does not bind; primary profiles `training_range` and `unseen_gusts`).** Direct control is
+  comparable to or better than the residual in position RMSE (primary endpoint, section 4, direct − residual).
+  E5 rule 2 applies first if either controller has a failure in the profile.
+- **P1′ (b) (strong wind; secondary profiles, E5 rule 3 order).** Direct control **fails more** than the residual,
+  because its horizontal authority is capped below the drag.
+  - **Decided by `strong_range`:** b > c (b = pairs where only direct failed) with McNemar exact p < 0.05.
+  - **`beyond_strong` counts only under the A1 ceiling rule:** it is evaluated the same way (b > c, McNemar exact p)
+    only if at least one controller fails fewer than 180 of 180, and is then reported as corroborating (b > c) or
+    contradicting (c > b) P1′ (b). Otherwise it is uninformative through the failure test.
   - **At a double ceiling (A3):** the ceiling fallback in section 4 (decisions survived, direct − residual) is
-    reported for that profile as a **graded** result. In `strong_range` it decides P1 in place of "unevaluable",
-    labelled "graded (ceiling fallback)": P1 holds (graded) if the CI is entirely above 0, is falsified (graded) if
-    the CI is entirely below 0, and is inconclusive otherwise. In `beyond_strong` it is reported as graded
-    corroboration (CI entirely above 0) or graded contradiction (CI entirely below 0), and is otherwise inconclusive.
-    A graded verdict is always reported as such, never as a failure-test result.
+    reported as a **graded** result. In `strong_range` it decides P1′ (b), labelled "graded (ceiling fallback)": holds
+    (graded) if the CI is entirely **below** 0 (direct survives less long), falsified (graded) if it is entirely above
+    0, inconclusive otherwise. In `beyond_strong` it is graded corroboration (CI entirely below 0) or graded
+    contradiction (CI entirely above 0), otherwise inconclusive. A graded verdict is always reported as such.
+  - Known when A4 was written (Confirmed, `results/eval/eval-v1/pid_ppo/report_vs_pid.txt`): the residual fails
+    **16/180** in `strong_range` and **107/180** in `beyond_strong`. Neither profile can therefore reach a double
+    ceiling, so the A3 fallback cannot apply in either; both are decided by McNemar.
   - McNemar exact p < 0.05 needs at least 6 discordant pairs, all in one direction (b + c = 6, min(b, c) = 0 gives
     p = 2 · 0.5^6 = 0.031; b + c = 5 gives 0.0625).
+- **P1′ (c) (mechanism evidence; reported either way, not a test of (b)).** In `strong_range` and `beyond_strong`, the
+  direct arm's `accel_cap_binding_frac` should approach 1.0, while the residual's stays low. A failure here means the
+  authority explanation is not supported, whatever (b) shows.
+  - **Recorded at writing (Confirmed, A4 step 1 tables, section 10):** `accel_cap_binding_frac` is computed by the
+    frozen `Diagnostics` (`evaluation/run_protocol.py:137-149`) on the **PID part** of the command (final − correction).
+    For the residual arm it therefore says how often the PID part is capped *before* the residual is added; it does not
+    measure a limit on the residual itself.
+  - Its residual-arm values are already known: mean **0.128** in `strong_range` and **0.539** in `beyond_strong`
+    (`pid_ppo`). PID, which is fully subject to the cap, has mean 0.716 and 0.742 there, and no PID flight exceeds 0.917.
+  - **"Approaches 1.0" and "stays low" have no numeric criterion yet.** That criterion, and how the direct runner
+    computes `accel_cap_binding_frac`, must be fixed in the addendum before any direct-control code is written
+    (section 8, item 4). Until then (c) is descriptive.
 - **P2 (nominal wind; primary profile `training_range`).** Little or no RMSE advantage for direct: the lower bound of
   the direct − residual 95% CI is ≥ −0.02 m, i.e. direct is not better by more than 2 cm with confidence.
 - **P3 (mechanism; descriptive, not a test).** In the residual run, the mean `residual_norm` (ceiling 2.0 = all four
   components at their limits) is higher in `strong_range` and
   `beyond_strong` than in `training_range`, and rotor `saturation_rate` stays at or near 0 in those profiles.
 
-`unseen_gusts`, `outside_range` and `still_air` are reported with no prediction attached.
+`outside_range` and `still_air` are reported with no prediction attached. (Before A4 this sentence also listed
+`unseen_gusts`, which P1′ (a) now covers.)
 
 ## 7. What would falsify the prediction
 
-- **P1 (amended, A1) is judged on `strong_range`:**
-  - **holds** if c > b with McNemar exact p < 0.05;
-  - is **not supported** (inconclusive, not falsified) if c > b with p ≥ 0.05;
-  - is **falsified** if b ≥ c, provided at least one controller fails fewer than 180 of 180 there;
-  - is **unevaluable by the failure test (ceiling effect)** if both controllers fail all 180 `strong_range` flights.
-    This is the same ceiling logic as for `beyond_strong`. The canonical PID already fails 179/180 there. P1 is then
-    judged by the graded ceiling fallback (section 4, A3): it holds if the CI is entirely above 0, is falsified if
-    the CI is entirely below 0, and is inconclusive otherwise.
-- **`beyond_strong`** follows the rule in P1: it informs P1 only when at least one controller fails fewer than
-  180/180; otherwise it is reported as uninformative due to a ceiling effect.
+- **P1 is retired (A4).** Its falsifiers no longer apply.
+- **P1′ (a) is falsified** if the direct − residual paired RMSE 95% CI lies **entirely above +0.02 m** in
+  `training_range` **or** in `unseen_gusts`. Otherwise it holds. If either controller fails in that profile, E5 rule 2
+  applies first.
+- **P1′ (b) is judged on `strong_range`:**
+  - **holds** if b > c with McNemar exact p < 0.05;
+  - is **not supported** (inconclusive, not falsified) if b > c with p ≥ 0.05, or b = c, or c > b with p ≥ 0.05;
+  - is **falsified** if c > b (direct fails fewer) with McNemar exact p < 0.05 in `strong_range`, **or** in
+    `beyond_strong` when that profile is informative (at least one controller below 180/180);
+  - at a double ceiling only, it is judged by the graded fallback (section 4, A3) with the signs in section 6. Per
+    the residual's known failure counts (16/180, 107/180), this cannot occur in either profile.
 - In any profile at the double ceiling (both controllers fail 180/180), the failure test is uninformative. That
   profile is judged by the **ceiling fallback** (section 4, A3): the paired difference in decisions survived per
   flight with its seed-bootstrap CI, labelled "graded (ceiling fallback)". Median decisions flown (E5 rule 3 (c)) is
   reported as well. Whenever at least one controller is below 180/180, the fallback is not used.
+- **P1′ (c)** is reported in every case. If it fails, the authority explanation is not supported, even if (b) holds.
+  Its numeric criterion is open (section 8, item 4).
 - **P2 is falsified** if the upper bound of the `training_range` CI is below −0.02 m (direct is clearly better by more
   than 2 cm in nominal wind). Then any advantage is not specific to strong wind. If failures occur in
   `training_range`, E5 rule 2 applies first.
-- **The authority explanation is not supported** (even if P1 holds) if P3 fails: the residual's mean `residual_norm`
-  in `strong_range` / `beyond_strong` is not higher than in `training_range`, or rotor saturation is substantial for
-  the residual in those profiles (then the motors, not L, would be the binding limit).
-- **The whole prediction is falsified** if direct control is worse than the residual in strong wind: b > c with
-  McNemar p < 0.05 in `strong_range`, or in `beyond_strong` when it is informative (at least one controller below
-  180/180).
+- **P3** stays a descriptive report on the residual arm. It was written as the mechanism for the retired P1, and
+  under A4 it no longer bears on the P1′ mechanism, which is (c). Its values are already known from M7 (Confirmed,
+  `pid_ppo`): mean `residual_norm` 1.137 in `training_range`, 1.464 in `strong_range`, 1.660 in `beyond_strong`; rotor
+  saturation 0 in every profile.
+- The bullet "the whole prediction is falsified if direct control is worse than the residual in strong wind" is
+  retired with P1 (A4). Under P1′ that outcome is the prediction (b).
 
 Any outcome is reported, whatever its direction.
 
@@ -204,6 +231,13 @@ controllers `pid`, `pid_ppo`, `pid_sac` (frozen `controllers.py`), so it cannot 
 3. **The training budget and hyperparameters:** Proposed default is the same as the residual run (SB3 PPO, MlpPolicy
    256×256, the same hyperparameters, 1.5M decisions = 733 rollouts, seed 0, same curriculum). Any difference must be
    written down with its reason.
+4. **(Added by A4.) The numeric criterion for P1′ (c)** ("approaches 1.0", "stays low"; for example a threshold on the
+   mean or a paired direct − residual seed-bootstrap CI), and **how the direct runner computes
+   `accel_cap_binding_frac`**: on the whole inner-loop command (the direct arm has no correction) against the inner
+   loop's desired attitude, with the same `acceleration_capped` test (`path_sac_policy.py:212-233`).
+5. **(Added by A4.) Whether P2 stays.** P2 predicts that direct is *not* better than the residual by more than 2 cm in
+   `training_range`, and it was justified by the retired P1 premise. P1′ (a) allows direct to be better there. A4 does
+   not change P2; Claire decides whether to keep or retire it.
 
 Changing anything in sections 3–7 after the direct-control model exists invalidates this pre-specification.
 
@@ -214,7 +248,7 @@ Changing anything in sections 3–7 after the direct-control model exists invali
   no PPO-vs-SAC test or paired statistic of any kind.
 - The residual-vs-direct comparison above is future work until the direct-control model exists.
 
-## 10. Amendments (each made before any direct-control code or model existed)
+## 10. Amendments (each made before any direct-control code, model or result existed)
 
 **A1 and A2 (Claire, 2026-11-15; committed on top of 3218b53, the original pre-specification).** State when they
 were made (Confirmed): HEAD 3218b53; no direct-control env, policy, script, config, model or run under `residual_ppo/`
@@ -267,3 +301,63 @@ the pre-specification valid. They do not touch sections 3–5 (what is compared,
   - It is fixed now, before any result is seen, so that using it cannot be a choice made after looking at the
     numbers. Limiting it to the double ceiling keeps the failure test as the primary strong-wind endpoint wherever
     that test can say anything.
+
+**A4 (Claire, 2026-11-16; committed on top of 1efd663): P1 retired, replaced by P1′.**
+- **What:** section 6 retires P1 and adds P1′ (a), (b), (c). Section 7 replaces P1's falsifiers with P1′'s and
+  retires the "whole prediction is falsified" bullet. Section 8 gains items 4 (numeric criterion for (c), and how
+  the direct runner computes the diagnostic) and 5 (whether P2 stays). Sections 3–5 (what is compared, endpoints,
+  statistics, profile roles), P2 and P3 are unchanged.
+- **Reason, as a code fact (Confirmed by reading the code; not an outcome):**
+  - Direct control enters the cascade **upstream** of a **1.5 m/s² horizontal acceleration cap**. The cap is
+    `min(1.5, a_vert · tan(max_tilt))`, with 1.5 a literal in the shared `controller.py:213-216`. At our mass of
+    **1.618614 kg** it is worth 1.5 × 1.618614 = **2.43 N**. At hover a_vert · tan 10° = 1.73 m/s² > 1.5, so the 1.5
+    is the binding term.
+  - The residual enters **downstream of the whole cascade**: `final = command + self.correction`, added once before
+    the mixer (`path_sac_policy.py:575-576`). It is not subject to the cap; it is bounded by L instead.
+  - Drag is 0.5 · ρ · Cd · A · v² with ρ = 1.225 kg/m³ and Cd · A = 1.0 × 0.03 = **0.03 m²** (`sim_config.py:245-250`;
+    `wind.py:89-90`), i.e. 0.018375 · v² N. It reaches 2.43 N at **v ≈ 11.5 m/s** (Inference, arithmetic: steady
+    airspeed equal to the mean wind, gusts and the drone's own motion ignored). That is inside `strong_range`
+    (10–14 m/s) and below all of `beyond_strong` (14–16 m/s).
+  - The shared gains carry the same warning (Documented, `sim_config.py:192-194`): "The limit is about 10 m/s of
+    steady wind by the drag model, and controller.py caps the total at 1.5 m/s^2." That comment does not state how
+    its 10 m/s was computed; the 11.5 m/s above uses the configured Cd·A and our measured mass.
+  - P1 assumed direct control was the arm with **more** authority. The opposite is true, so P1 would fail by
+    construction.
+- **Verification that decided A4 (Claire's condition: write A4 only if PID's `accel_cap_binding_frac` is high in
+  `outside_range`, `strong_range` and `beyond_strong`).**
+  - Computed from the **committed** `results/eval/eval-v1/{pid,pid_ppo,pid_sac}/flights.csv` (HEAD 1efd663; working
+    copies checked equal to the HEAD blobs), 180 flights per cell. The value per flight is the fraction of its
+    physics steps on which the frozen `Diagnostics` (`evaluation/run_protocol.py:137-149`) found the PID part's
+    horizontal demand at the cap (≥ 0.98 × cap, `path_sac_policy.py:212-233`), split into the 1.5 cap and the tilt
+    cap.
+  - **`accel_cap_binding_frac`: mean, and flights above 0.9 (of 180).**
+
+    | Profile | PID mean | PID > 0.9 | PID max | PID+PPO mean | > 0.9 | PID+SAC mean | > 0.9 |
+    |---|---|---|---|---|---|---|---|
+    | training_range | 0.053 | 0 | 0.353 | 0.000 | 0 | 0.000 | 0 |
+    | unseen_gusts | 0.046 | 0 | 0.349 | 0.000 | 0 | 0.000 | 0 |
+    | outside_range | **0.548** | 0 | 0.878 | 0.005 | 0 | 0.002 | 0 |
+    | still_air | 0.028 | 0 | 0.432 | 0.000 | 0 | 0.000 | 0 |
+    | strong_range | **0.716** | 1 | 0.917 | 0.128 | 0 | 0.119 | 0 |
+    | beyond_strong | **0.742** | 0 | 0.810 | 0.539 | 3 | 0.569 | 1 |
+
+  - **`tilt_cap_binding_frac`: 0.000 in every flight** of all three controllers and all six profiles (0 flights
+    above 0.9). The tilt cap never binds; only the 1.5 m/s² cap does.
+  - Supporting detail (Confirmed): in `outside_range`, PID's failed flights have mean 0.684 (n = 110) and its
+    completed flights 0.334 (n = 70). Per scenario, PID's strong_range and beyond_strong means are 0.705–0.746 in all
+    six scenarios, hover included. Step-weighted PID fractions are 0.470 / 0.702 / 0.742.
+  - **Reading (Inference; "high" had no numeric threshold before this was computed):** the cap binds on the
+    **majority** of PID's physics steps in the three profiles (55%, 72%, 74%), against 3–5% in `still_air`,
+    `training_range` and `unseen_gusts`. The condition was judged met on that basis. It does **not** bind on nearly
+    every step: almost no PID flight is above 0.9 (0, 1 and 0 of 180).
+  - Script (not committed): session scratchpad `cap_binding.py`.
+- **When it was made (Confirmed):**
+  - HEAD **1efd663**.
+  - **No direct-control env, policy, script, config, model or result exists:** a search of `residual_ppo/` (outside
+    `results/`) for direct-control code finds nothing; `runs/` holds only `ppo_path/` (the residual run, its killed
+    first launch, smoke runs); `models/` holds only `sac_team`; `results/eval/eval-v1/` holds only `pid`, `pid_ppo`,
+    `pid_sac`, `pid_validation` and `ppo_validation`. No Isaac (kit) process was running.
+  - **Unlike A1–A3, the residual arm's eval results HAD been seen** (M7, committed 0ec9121, write-up 1efd663),
+    including its failure counts (16/180 `strong_range`, 107/180 `beyond_strong`) and, in step 1, its
+    `accel_cap_binding_frac`. P1′ is a prediction about the direct arm only, whose results do not exist, but its
+    comparator is known. That is why the residual-arm values are written into P1′ (b) and (c) explicitly.
