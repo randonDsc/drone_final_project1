@@ -110,6 +110,22 @@ only".
   not all of them. That case is not a ceiling. It is reported as the McNemar result (p = 1) and the fallback does not
   apply.
 
+**Undertraining check (added by A5; descriptive, not an endpoint, never changes a verdict).**
+- Both arms train with target_kl 0.02 (parity). Because a direct policy starts from "hover in place" rather than from a
+  working PID, the same KL throttle may undertrain it. This check makes that visible; it does not correct for it.
+- **Reported for BOTH arms:**
+  - total gradient steps (optimizer-hook count; residual arm 10,305) with SB3 epochs alongside;
+  - the change from the **800k checkpoint to the final model** on the **validation seeds 400000–400009** (never the
+    eval seeds), in the same quantities `evaluation/learning_curve.py` reports for each profile: mean position RMSE,
+    paired difference vs PID, failures.
+- **Flag rule:** an arm is flagged **"possibly undertrained"** if its mean validation `training_range` position RMSE
+  improves by **more than 0.02 m** from the 800k checkpoint to the final model, i.e.
+  RMSE(800k) − RMSE(final) > 0.02 m. If either model fails in `training_range`, the failure counts are reported with it
+  (E5 rule 2).
+- **Known before writing (Confirmed, `results/eval/eval-v1/learning_curve.txt`):** the residual arm moves from 0.122 to
+  0.097 m, a change of **0.0250 m** (paired diff vs PID −0.3523 → −0.3773, same PID flights). It **will be flagged**.
+  That is the intended behaviour: the flag says "still improving at the end of the budget", for either arm.
+
 ## 5. Profile roles (quoted from `eval_protocol_v1.md`, E5)
 
 > One primary result per profile; `still_air` is reported but is not a primary endpoint. […]
@@ -120,7 +136,7 @@ only".
 
 There is one primary result per primary profile and no correction for multiple profiles, the same as E5.
 
-## 6. Pre-registered prediction (Claire, 2026-11-15; P1 replaced by P1′ on 2026-11-16, A4)
+## 6. Pre-registered prediction (Claire, 2026-11-15; P1 replaced by P1′ on 2026-11-16, A4; P2 retired and P1′ (c) restated, A5)
 
 **Basis (Confirmed, from `ppo_s0_1p5m`):**
 - Both residual controllers (PPO and the team SAC) share the residual limit
@@ -164,20 +180,33 @@ by L instead). So direct control is **comparable to or better than** the residua
     ceiling, so the A3 fallback cannot apply in either; both are decided by McNemar.
   - McNemar exact p < 0.05 needs at least 6 discordant pairs, all in one direction (b + c = 6, min(b, c) = 0 gives
     p = 2 · 0.5^6 = 0.031; b + c = 5 gives 0.0625).
-- **P1′ (c) (mechanism evidence; reported either way, not a test of (b)).** In `strong_range` and `beyond_strong`, the
-  direct arm's `accel_cap_binding_frac` should approach 1.0, while the residual's stays low. A failure here means the
-  authority explanation is not supported, whatever (b) shows.
+- **P1′ (c) (mechanism evidence; reported either way, not a test of (b); restated by A5, section 10).** In each of
+  `strong_range` and `beyond_strong`, the direct arm's mean `accel_cap_binding_frac` (mean over the profile's 180 eval
+  flights, as in the A4 tables) is **within 0.15 of PID's** and **strictly exceeds the residual arm's**:
+  - `strong_range`: direct **≥ 0.57** (PID 0.716465 − 0.15 = 0.5665, rounded to two decimals as written by Claire)
+    **and > 0.128161** (residual, `pid_ppo`);
+  - `beyond_strong`: direct **≥ 0.59** (PID 0.742279 − 0.15 = 0.5923, rounded the same way) **and > 0.539473**
+    (residual).
+  - **Supported** if both conditions hold in both profiles. **Falsified** if the direct arm's mean is at or below the
+    residual arm's in **both** profiles. Any other outcome is reported as **not supported** (mixed). If (c) is not
+    supported, the authority explanation is not supported, whatever (b) shows.
+  - The two-decimal thresholds 0.57 and 0.59 are the operative ones; they are fixed here so the rounding cannot be
+    chosen after the result. "Within 0.15" is a lower bound only: a direct mean above PID's also satisfies it.
   - **Recorded at writing (Confirmed, A4 step 1 tables, section 10):** `accel_cap_binding_frac` is computed by the
     frozen `Diagnostics` (`evaluation/run_protocol.py:137-149`) on the **PID part** of the command (final − correction).
     For the residual arm it therefore says how often the PID part is capped *before* the residual is added; it does not
-    measure a limit on the residual itself.
-  - Its residual-arm values are already known: mean **0.128** in `strong_range` and **0.539** in `beyond_strong`
-    (`pid_ppo`). PID, which is fully subject to the cap, has mean 0.716 and 0.742 there, and no PID flight exceeds 0.917.
-  - **"Approaches 1.0" and "stays low" have no numeric criterion yet.** That criterion, and how the direct runner
-    computes `accel_cap_binding_frac`, must be fixed in the addendum before any direct-control code is written
-    (section 8, item 4). Until then (c) is descriptive.
-- **P2 (nominal wind; primary profile `training_range`).** Little or no RMSE advantage for direct: the lower bound of
-  the direct − residual 95% CI is ≥ −0.02 m, i.e. direct is not better by more than 2 cm with confidence.
+    measure a limit on the residual itself. PID, which is wholly subject to the cap, averages 0.716 and 0.742 there and
+    no PID flight exceeds 0.917, which is why A4's "approaches 1.0" was wrong (A5).
+  - **How the direct runner computes it:** with the same frozen `Diagnostics` class, unchanged. The direct env exposes
+    `core.correction` = 0 (so the "PID part" is the whole inner-loop command), `core.desired` = the inner loop's desired
+    attitude, and `core.pid.acceleration_capped` = the shared `ReferencePID.acceleration_capped`
+    (`path_sac_policy.py:212-233`). This is to be verified with `--check0`-style diagnostics-off-vs-on equality before
+    the direct eval flights.
+- **P2 is RETIRED (A5), superseded by P1′ (a).** It read: "Little or no RMSE advantage for direct in
+  `training_range`: the lower bound of the direct − residual 95% CI is ≥ −0.02 m." It existed only to operationalise
+  the retired P1's claim that direct control would not help in `training_range`. P1′ (a) predicts direct control is
+  comparable to *or better than* the residual there, so keeping both would make the pre-specification
+  self-contradictory. P1′ (a)'s own falsifier (section 7) stands.
 - **P3 (mechanism; descriptive, not a test).** In the residual run, the mean `residual_norm` (ceiling 2.0 = all four
   components at their limits) is higher in `strong_range` and
   `beyond_strong` than in `training_range`, and rotor `saturation_rate` stays at or near 0 in those profiles.
@@ -202,11 +231,11 @@ by L instead). So direct control is **comparable to or better than** the residua
   profile is judged by the **ceiling fallback** (section 4, A3): the paired difference in decisions survived per
   flight with its seed-bootstrap CI, labelled "graded (ceiling fallback)". Median decisions flown (E5 rule 3 (c)) is
   reported as well. Whenever at least one controller is below 180/180, the fallback is not used.
-- **P1′ (c)** is reported in every case. If it fails, the authority explanation is not supported, even if (b) holds.
-  Its numeric criterion is open (section 8, item 4).
-- **P2 is falsified** if the upper bound of the `training_range` CI is below −0.02 m (direct is clearly better by more
-  than 2 cm in nominal wind). Then any advantage is not specific to strong wind. If failures occur in
-  `training_range`, E5 rule 2 applies first.
+- **P1′ (c)** (restated by A5) is reported in every case: supported if, in both `strong_range` and `beyond_strong`,
+  the direct mean `accel_cap_binding_frac` is ≥ 0.57 / ≥ 0.59 and > 0.128161 / > 0.539473; **falsified** if the direct
+  mean is at or below the residual's in both profiles; otherwise not supported (mixed). If it is not supported, the
+  authority explanation is not supported, even if (b) holds.
+- **P2 is retired (A5)**; its falsifier no longer applies.
 - **P3** stays a descriptive report on the residual arm. It was written as the mechanism for the retired P1, and
   under A4 it no longer bears on the P1′ mechanism, which is (c). Its values are already known from M7 (Confirmed,
   `pid_ppo`): mean `residual_norm` 1.137 in `training_range`, 1.464 in `strong_range`, 1.660 in `beyond_strong`; rotor
@@ -231,13 +260,13 @@ controllers `pid`, `pid_ppo`, `pid_sac` (frozen `controllers.py`), so it cannot 
 3. **The training budget and hyperparameters:** Proposed default is the same as the residual run (SB3 PPO, MlpPolicy
    256×256, the same hyperparameters, 1.5M decisions = 733 rollouts, seed 0, same curriculum). Any difference must be
    written down with its reason.
-4. **(Added by A4.) The numeric criterion for P1′ (c)** ("approaches 1.0", "stays low"; for example a threshold on the
-   mean or a paired direct − residual seed-bootstrap CI), and **how the direct runner computes
-   `accel_cap_binding_frac`**: on the whole inner-loop command (the direct arm has no correction) against the inner
-   loop's desired attitude, with the same `acceleration_capped` test (`path_sac_policy.py:212-233`).
-5. **(Added by A4.) Whether P2 stays.** P2 predicts that direct is *not* better than the residual by more than 2 cm in
-   `training_range`, and it was justified by the retired P1 premise. P1′ (a) allows direct to be better there. A4 does
-   not change P2; Claire decides whether to keep or retire it.
+4. ~~(Added by A4.) The numeric criterion for P1′ (c) and how the direct runner computes `accel_cap_binding_frac`.~~
+   **Fixed by A5** (section 6, P1′ (c)).
+5. ~~(Added by A4.) Whether P2 stays.~~ **Fixed by A5: P2 retired.**
+6. **(A5.) Inner loop: D-env-1 option (a).** Direct control uses the shared, capped inner loop **unchanged**: the
+   shared `PIDController.update` (1.5 m/s² cap included), driven by target substitution through its public target
+   interface, the same technique `ReferencePID` uses (`path_sac_policy.py:112-122`). No fork or reimplementation of
+   `controller.py`.
 
 Changing anything in sections 3–7 after the direct-control model exists invalidates this pre-specification.
 
@@ -361,3 +390,24 @@ the pre-specification valid. They do not touch sections 3–5 (what is compared,
     including its failure counts (16/180 `strong_range`, 107/180 `beyond_strong`) and, in step 1, its
     `accel_cap_binding_frac`. P1′ is a prediction about the direct arm only, whose results do not exist, but its
     comparator is known. That is why the residual-arm values are written into P1′ (b) and (c) explicitly.
+
+**A5 (Claire, 2026-11-16; committed on top of 9fb18b9): P1′ (c) restated, P2 retired, undertraining check, D-env-1.**
+- **(a) P1′ (c) restated (section 6, section 7).** A4's "approaches 1.0" was wrong: PID, wholly subject to the cap,
+  averages only 0.716 and 0.742 in `strong_range` and `beyond_strong`. New criterion: the direct arm's mean is within
+  0.15 of PID's (≥ 0.57 / ≥ 0.59) **and** strictly exceeds the residual arm's (0.128161 / 0.539473), in each strong
+  profile. Falsified if direct is at or below the residual in both. The direct runner computes the quantity with the
+  frozen `Diagnostics` class unchanged.
+- **(b) P2 retired, superseded by P1′ (a).** P2 only existed to operationalise the retired P1's claim that direct
+  control would not help in `training_range`; keeping it beside P1′ (a), which allows direct to be better there, would
+  make the pre-specification self-contradictory. P1′ (a)'s own falsifier stands.
+- **(c) Undertraining check (section 4).** Reported for both arms: gradient steps, and the 800k → final change on the
+  validation seeds; an arm is flagged "possibly undertrained" if validation `training_range` RMSE improves by more than
+  0.02 m over that interval. The residual arm moves 0.0250 m and will be flagged, as intended.
+- **D-env-1 confirmed as option (a)** (section 8, item 6): direct control uses the shared capped inner loop unchanged,
+  through target substitution; no fork of `controller.py`.
+- **When it was made (Confirmed):**
+  - HEAD **9fb18b9**, before any direct-control code was written: a search of `residual_ppo/` (outside `results/`) for
+    direct-control code finds nothing; `runs/` holds only `ppo_path/`; `models/` holds only `sac_team`;
+    `results/eval/eval-v1/` holds no direct-control result. No Isaac (kit) process was running.
+  - As for A4, the residual arm's eval results and validation learning curve had been seen; the residual-arm numbers
+    used above are quoted from the committed files. No direct-control model or result exists.
