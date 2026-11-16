@@ -1,0 +1,34 @@
+SECONDARY learning curve: validation seeds 400000-400009 only; descriptive; no checkpoint selection. The primary PPO result is the final model on the eval seeds (frozen report mode).
+PID reference: residual_ppo/results/eval/eval-v1/pid_validation (realizations sha 72124da73b2f)
+
+ppo_150000: residual_ppo/runs/ppo_path/ppo_s0_1p5m/checkpoints/ppo_150000_steps.zip (num_timesteps 150000)
+  still_air       RMSE 0.076 vs pid 0.176 m; paired diff -0.1004 [-0.1111, -0.0901]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  training_range  RMSE 0.216 vs pid 0.474 m; paired diff -0.2582 [-0.3576, -0.1727]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  unseen_gusts    RMSE 0.209 vs pid 0.461 m; paired diff -0.2516 [-0.3425, -0.1810]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  outside_range   RMSE 0.603 vs pid 1.635 m; paired diff -1.0323 [-1.0879, -0.9781]; failed 0/60 vs pid 34/60 (McNemar p 1.16e-10) [RMSE only with the failure comparison]
+  strong_range    RMSE 1.282 vs pid 1.662 m; paired diff -0.3796 [-0.6268, -0.1195]; failed 13/60 vs pid 59/60 (McNemar p 2.84e-14) [RMSE only with the failure comparison]
+  beyond_strong   RMSE 1.823 vs pid 1.622 m; paired diff +0.2012 [+0.0844, +0.3147]; failed 42/60 vs pid 60/60 (McNemar p 7.63e-06) [RMSE only with the failure comparison]
+
+ppo_400000: residual_ppo/runs/ppo_path/ppo_s0_1p5m/checkpoints/ppo_400000_steps.zip (num_timesteps 400000)
+  still_air       RMSE 0.051 vs pid 0.176 m; paired diff -0.1255 [-0.1342, -0.1170]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  training_range  RMSE 0.152 vs pid 0.474 m; paired diff -0.3223 [-0.4409, -0.2202]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  unseen_gusts    RMSE 0.151 vs pid 0.461 m; paired diff -0.3093 [-0.4126, -0.2281]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  outside_range   RMSE 0.432 vs pid 1.635 m; paired diff -1.2034 [-1.2644, -1.1348]; failed 0/60 vs pid 34/60 (McNemar p 1.16e-10) [RMSE only with the failure comparison]
+  strong_range    RMSE 0.936 vs pid 1.662 m; paired diff -0.7252 [-0.9271, -0.4753]; failed 4/60 vs pid 59/60 (McNemar p 5.55e-17) [RMSE only with the failure comparison]
+  beyond_strong   RMSE 1.637 vs pid 1.622 m; paired diff +0.0153 [-0.1349, +0.1596]; failed 33/60 vs pid 60/60 (McNemar p 1.49e-08) [RMSE only with the failure comparison]
+
+ppo_800000: residual_ppo/runs/ppo_path/ppo_s0_1p5m/checkpoints/ppo_800000_steps.zip (num_timesteps 800000)
+  still_air       RMSE 0.061 vs pid 0.176 m; paired diff -0.1158 [-0.1251, -0.1066]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  training_range  RMSE 0.122 vs pid 0.474 m; paired diff -0.3523 [-0.4848, -0.2373]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  unseen_gusts    RMSE 0.122 vs pid 0.461 m; paired diff -0.3384 [-0.4529, -0.2473]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  outside_range   RMSE 0.321 vs pid 1.635 m; paired diff -1.3146 [-1.3800, -1.2375]; failed 0/60 vs pid 34/60 (McNemar p 1.16e-10) [RMSE only with the failure comparison]
+  strong_range    RMSE 0.733 vs pid 1.662 m; paired diff -0.9284 [-1.1145, -0.6834]; failed 3/60 vs pid 59/60 (McNemar p 2.78e-17) [RMSE only with the failure comparison]
+  beyond_strong   RMSE 1.481 vs pid 1.622 m; paired diff -0.1404 [-0.3636, +0.0889]; failed 32/60 vs pid 60/60 (McNemar p 7.45e-09) [RMSE only with the failure comparison]
+
+ppo_final: residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip (num_timesteps 1501184)
+  still_air       RMSE 0.060 vs pid 0.176 m; paired diff -0.1166 [-0.1259, -0.1072]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  training_range  RMSE 0.097 vs pid 0.474 m; paired diff -0.3773 [-0.5215, -0.2510]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  unseen_gusts    RMSE 0.100 vs pid 0.461 m; paired diff -0.3607 [-0.4846, -0.2610]; failed 0/60 vs pid 0/60 (McNemar p 1)
+  outside_range   RMSE 0.236 vs pid 1.635 m; paired diff -1.3991 [-1.4722, -1.3144]; failed 0/60 vs pid 34/60 (McNemar p 1.16e-10) [RMSE only with the failure comparison]
+  strong_range    RMSE 0.632 vs pid 1.662 m; paired diff -1.0300 [-1.2262, -0.7624]; failed 3/60 vs pid 59/60 (McNemar p 2.78e-17) [RMSE only with the failure comparison]
+  beyond_strong   RMSE 1.424 vs pid 1.622 m; paired diff -0.1976 [-0.4390, +0.0496]; failed 32/60 vs pid 60/60 (McNemar p 7.45e-09) [RMSE only with the failure comparison]

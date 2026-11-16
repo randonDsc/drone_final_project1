@@ -1,0 +1,41 @@
+E5 report: pid_ppo vs pid (protocol eval-v1 d3f677dc; 30 seeds x 6 scenarios = 180 paired flights per profile)
+Realizations identical to the canonical PID run; consistency checks PASS for both runs.
+
+training_range [PRIMARY]
+  PRIMARY ENDPOINT: paired RMSE difference pid_ppo - pid = -0.3825 m [-0.4557, -0.3141] -> improves on PID: YES
+  RMSE (time-indexed, failed flights included): pid_ppo 0.100 m, pid 0.483 m; paired diff -0.3825 m [-0.4557, -0.3141]
+  failures: pid_ppo 0/180 rate CI [0.000, 0.020]; pid 0/180 rate CI [0.000, 0.020]
+  paired failures (180 pairs): both 0, controller only 0, PID only 0, neither 180; McNemar exact p = 1
+  decisions flown, median (IQR): pid_ppo 154 (84-214); pid 154 (84-214)
+
+unseen_gusts [PRIMARY]
+  PRIMARY ENDPOINT: paired RMSE difference pid_ppo - pid = -0.3813 m [-0.4411, -0.3235] -> improves on PID: YES
+  RMSE (time-indexed, failed flights included): pid_ppo 0.103 m, pid 0.484 m; paired diff -0.3813 m [-0.4411, -0.3235]
+  failures: pid_ppo 0/180 rate CI [0.000, 0.020]; pid 0/180 rate CI [0.000, 0.020]
+  paired failures (180 pairs): both 0, controller only 0, PID only 0, neither 180; McNemar exact p = 1
+  decisions flown, median (IQR): pid_ppo 154 (84-214); pid 154 (84-214)
+
+outside_range [PRIMARY]
+  PRIMARY ENDPOINT: paired RMSE difference pid_ppo - pid = -1.3889 m [-1.4397, -1.3350] -> improves on PID: YES  [interpret only with the paired failure comparison below]
+  RMSE (time-indexed, failed flights included): pid_ppo 0.252 m, pid 1.641 m; paired diff -1.3889 m [-1.4397, -1.3350]  [interpret only with the paired failure comparison]
+  failures: pid_ppo 0/180 rate CI [0.000, 0.020]; pid 110/180 rate CI [0.536, 0.683]
+  paired failures (180 pairs): both 0, controller only 0, PID only 110, neither 70; McNemar exact p = 1.541e-33
+  decisions flown, median (IQR): pid_ppo 154 (84-214); pid 62 (39-95)
+
+still_air [REPORTED, NOT PRIMARY]
+  RMSE (time-indexed, failed flights included): pid_ppo 0.062 m, pid 0.183 m; paired diff -0.1213 m [-0.1285, -0.1142]
+  failures: pid_ppo 0/180 rate CI [0.000, 0.020]; pid 0/180 rate CI [0.000, 0.020]
+  paired failures (180 pairs): both 0, controller only 0, PID only 0, neither 180; McNemar exact p = 1
+  decisions flown, median (IQR): pid_ppo 154 (84-214); pid 154 (84-214)
+
+strong_range [SECONDARY]
+  failures: pid_ppo 16/180 rate CI [0.052, 0.140]; pid 179/180 rate CI [0.969, 1.000]
+  paired failures (180 pairs): both 16, controller only 0, PID only 163, neither 1; McNemar exact p = 1.711e-49
+  decisions flown, median (IQR): pid_ppo 132 (77-207); pid 23 (21-29)
+  RMSE (over flown portion only): pid_ppo 0.690 m, pid 1.651 m; paired diff -0.9608 m [-1.1060, -0.8062]  [interpret only with the paired failure comparison]
+
+beyond_strong [SECONDARY]
+  failures: pid_ppo 107/180 rate CI [0.519, 0.667]; pid 180/180 rate CI [0.980, 1.000]
+  paired failures (180 pairs): both 107, controller only 0, PID only 73, neither 0; McNemar exact p = 2.118e-22
+  decisions flown, median (IQR): pid_ppo 66 (41-120); pid 18 (17-19)
+  RMSE (over flown portion only): pid_ppo 1.515 m, pid 1.604 m; paired diff -0.0890 m [-0.2340, 0.0460]  [interpret only with the paired failure comparison]
