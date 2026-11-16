@@ -630,3 +630,49 @@ for both controllers. Summarize any completed folder using
 `drone_code/summarize_wind_events.py <folder> --plot` as above. Plots are aligned
 to event time (zero), and tables separately report moving-only RMSE so endpoint
 hovering does not hide tracking error. Keep hover and each route type separate.
+
+
+### Colin: mixed-wind SAC adaptation
+
+`train_path_sac.py --wind-adaptation` continues the existing path SAC model and
+matching replay buffer, preserving its PID, observations, rewards and learning
+settings. Half the episodes are eligible for a random abrupt direction/speed
+change; the remaining episodes retain original wind. Short episodes under four
+seconds keep original wind. This is adaptation training, not evidence of an
+improvement or a forgetting-prevention guarantee. The wind mixture is recorded
+in `flight_contract.json` and per-launch configuration snapshots.
+
+Initial 1,000-step pipeline pilot (only if flight3 has no model yet):
+
+```powershell
+& C:\isaacsim\python.bat -u -B drone_code/train_path_sac.py --wind-adaptation --additional-steps 1000 --run-name flight3 --resume-model C:\Users\colin\Downloads\runs\runs\flight_sac\flight1\final_model.zip
+```
+
+Continue flight3 after its pilot has finished; additional steps are beyond the
+loaded checkpoint, not the lifetime total:
+
+```powershell
+& C:\isaacsim\python.bat -u -B drone_code/train_path_sac.py --wind-adaptation --additional-steps 10000 --run-name flight3 --resume-model runs/flight_sac/flight3/final_model.zip
+```
+
+A matching replay buffer is required. Ctrl+C is handled by the trainer and saves
+`interrupted_model.zip` plus `interrupted_replay_buffer.pkl`; resume from that
+model if it is newer. The trainer refuses to resume an older checkpoint over
+newer results. Models and buffers are checkpointed every 500 decisions; two
+checkpoint buffers are retained. Source flight1 is never overwritten. Training
+logs are in `flight3/logs` and `flight3/tensorboard`; outputs remain git-ignored.
+Evaluate the adapted model on separate seeds and original wind/route conditions
+before claiming that more training improved performance.
+
+
+For a training run started in the background, request a graceful stop from another
+PowerShell terminal in this repository:
+
+```powershell
+New-Item -ItemType File runs/flight_sac/flight3/STOP_TRAINING
+```
+
+The trainer notices this on its next decision, ends learning and saves the final
+model and replay buffer. Wait for the save message before closing processes.
+Remove the marker only when you are ready to resume. A saved checkpoint after a
+short pilot does not imply better performance; compare against the original model.

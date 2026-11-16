@@ -19,6 +19,7 @@ import sim_config
 # before the rename still load and resume: this folder, the contract file, the
 # "workflow" value in policy_contract(), and flight_sac_* checkpoint names.
 RUN_DIR = "runs/flight_sac"
+WIND_TRAINING = None  # Enabled explicitly by train_path_sac.py --wind-adaptation.
 CONTRACT_FILE = "flight_contract.json"
 
 # Bump when the meaning of an observation, the PID adapter, or the reference
@@ -608,13 +609,17 @@ def policy_contract():
 
 def training_contract():
     """What must also stay the same for training to continue."""
-    return {
+    result = {
         "reward": reward_settings(),
         "failure": FAILURE,
         "episode": EPISODE,
         "curriculum": CURRICULUM,
         "sac": SAC,
     }
+
+    if WIND_TRAINING is not None:
+        result["wind_training"] = WIND_TRAINING
+    return result
 
 
 def write_contract(run_dir):

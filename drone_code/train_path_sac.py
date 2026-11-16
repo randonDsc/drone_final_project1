@@ -2,7 +2,7 @@
 
     /c/isaacsim/python.bat drone_code/train_path_sac.py
 
-Takes no arguments: set path_sac_config.PATH_TRAIN first. mode "fresh" starts a new
+By default reads path_sac_config.PATH_TRAIN; --wind-adaptation enables explicit continuation options. mode "fresh" starts a new
 randomly initialized model and refuses a folder that already has one. mode "resume"
 continues resume_model, and refuses a missing or incompatible one. When resuming,
 total_timesteps is the total to reach.
@@ -11,7 +11,9 @@ Saves under runs/flight_sac/<run_name>/: checkpoints/, final_* or interrupted_* 
 crashed_*, TensorBoard logs, logs/progress_<time>.csv, logs/log_<time>.txt,
 flight_contract.json, and config_snapshot_<time>.json for each launch.
 """
+import argparse
 import json
+import zipfile
 import time
 from pathlib import Path
 
@@ -20,7 +22,27 @@ from isaacsim import SimulationApp
 import path_sac_config
 
 
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--wind-adaptation", action="store_true")
+parser.add_argument("--additional-steps", type=int, default=1000)
+parser.add_argument("--run-name", default="flight3")
+parser.add_argument("--resume-model", type=Path)
+args = parser.parse_args()
 run = path_sac_config.train_settings()
+if args.wind_adaptation:
+    if args.additional_steps <= 0 or Path(args.run_name).name != args.run_name or args.run_name in (".", ".."):
+        parser.error("Use positive additional steps and a simple run name")
+    if args.resume_model is None:
+        parser.error("--wind-adaptation requires --resume-model")
+    source = args.resume_model.resolve()
+    if not source.is_file():
+        parser.error(f"Missing checkpoint: {source}")
+    with zipfile.ZipFile(source) as archive:
+        parent_steps = int(json.loads(archive.read("data"))["num_timesteps"])
+    run = {**run, "mode": "resume", "resume_model": str(source),
+           "run_name": args.run_name, "total_timesteps": parent_steps + args.additional_steps,
+           "seed": 730000, "checkpoint_interval": 500, "keep_replay_buffers": 2, "gui": False}
+
 
 project_dir = Path(__file__).resolve().parents[1]
 run_dir = project_dir / path_sac_config.RUN_DIR / run["run_name"]
@@ -67,8 +89,36 @@ else:
             '"resume" with resume_model in PATH_TRAIN.'
         )
 
+if args.wind_adaptation:
+    from wind_events import ADAPTATION_SETTINGS
+    import model_contract
+    saved_contract = json.loads((model_contract.run_folder(checkpoint) / path_sac_config.CONTRACT_FILE).read_text())
+    previous = saved_contract.get("training", {}).get("wind_training")
+    if previous is not None and previous != ADAPTATION_SETTINGS:
+        raise SystemExit("The source model used a different wind-adaptation configuration")
+    existing_models = [*run_dir.glob("*_model.zip"), *checkpoint_dir.glob("flight_sac_*_steps.zip")]
+    same_run = model_contract.run_folder(checkpoint).resolve() == run_dir.resolve()
+    if same_run:
+        if previous != ADAPTATION_SETTINGS:
+            raise SystemExit("Cannot adapt in place over an original baseline run")
+        for existing_model in existing_models:
+            with zipfile.ZipFile(existing_model) as archive:
+                steps = int(json.loads(archive.read("data"))["num_timesteps"])
+            if steps > parent_steps:
+                raise SystemExit(f"A newer checkpoint exists: {existing_model}; resume from that instead")
+    elif existing_models:
+        raise SystemExit("Destination already contains trained checkpoints; choose a new run name")
+    if (run_dir / "STOP_TRAINING").exists():
+        raise SystemExit("STOP_TRAINING exists; remove it only when ready to resume")
+    path_sac_config.WIND_TRAINING = ADAPTATION_SETTINGS
+elif checkpoint is not None:
+    import model_contract
+    source_contract = json.loads((model_contract.run_folder(checkpoint) / path_sac_config.CONTRACT_FILE).read_text())
+    if source_contract.get("training", {}).get("wind_training") is not None:
+        raise SystemExit("This checkpoint requires --wind-adaptation to preserve its training curriculum")
+
 # SimulationApp must exist before any omni, pxr, or isaacsim.core import.
-simulation_app = SimulationApp({"headless": not run["gui"]})
+simulation_app = SimulationApp({"headless": not run["gui"], "create_new_stage": False})
 
 
 def write_json(path, value):
@@ -120,6 +170,8 @@ def main():
                     info["saturated_steps"] / max(info["physics_steps"], 1),
                 )
                 self.logger.record("flight/stage", info["stage"])
+                self.logger.record_mean("wind/event_episode", float(info.get("wind_event_episode", False)))
+                self.logger.record_mean("wind/event_active", float(info.get("wind_event_active", False)))
 
                 if done:
                     self.logger.record_mean(
@@ -137,6 +189,9 @@ def main():
             if self.num_timesteps % run["checkpoint_interval"] == 0:
                 self.save_checkpoint()
 
+            if args.wind_adaptation and (run_dir / "STOP_TRAINING").exists():
+                print("Stop requested; ending learning and saving model/buffer.", flush=True)
+                return False
             return True
 
         def save_checkpoint(self):

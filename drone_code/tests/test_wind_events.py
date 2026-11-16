@@ -5,7 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from wind_events import WindEvent, event_metrics, trajectory_event_time
+from wind_events import WindEvent, event_metrics, trajectory_event_time, training_event, ADAPTATION_SETTINGS
 from path_sac_policy import PathCore
 
 
@@ -80,6 +80,19 @@ class WindEventTests(unittest.TestCase):
             trajectory_event_time(reference, 20)
         with self.assertRaises(ValueError):
             trajectory_event_time(reference, 20, 19)
+
+    def test_training_mix_is_seeded_and_contains_original_episodes(self):
+        def draw(seed):
+            rng = np.random.default_rng(seed)
+            return [training_event(rng, None, 20, [4, 0, 0], ADAPTATION_SETTINGS) for _ in range(100)]
+        events = draw(730000)
+        self.assertEqual(events, draw(730000))
+        self.assertTrue(any(e is None for e in events))
+        self.assertTrue(any(e is not None for e in events))
+        for event in events:
+            if event is not None:
+                self.assertGreater(event.event_s, 0)
+                self.assertLess(event.event_s, 18)
 
     def test_invalid_schedule_rejected(self):
         with self.assertRaises(ValueError):

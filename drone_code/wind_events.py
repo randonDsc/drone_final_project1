@@ -89,3 +89,22 @@ def trajectory_event_time(reference, duration, requested=None):
     if np.linalg.norm(reference.sample(event).velocity) <= 0.05:
         raise ValueError("Wind event would occur while the reference is stationary; choose another event time")
     return event
+
+
+ADAPTATION_SETTINGS = {
+    "version": 1, "event_probability": 0.5,
+    "scenarios": ["turn90", "turn180", "speed_up", "speed_down"],
+    "event_fraction_range": [0.25, 0.6],
+    "mean_wind_scenarios": {name: list(values) for name, values in SCENARIOS.items()},
+}
+
+
+def training_event(rng, reference, duration, mean_wind, settings):
+    """Mix original episodes with seeded abrupt-event episodes; no policy input."""
+    if duration < 4 or rng.random() >= settings["event_probability"]:
+        return None
+    scenario = str(rng.choice(settings["scenarios"]))
+    time = float(rng.uniform(*settings["event_fraction_range"]) * (duration - 2))
+    time = max(0.5, time)
+    heading = float(np.arctan2(mean_wind[1], mean_wind[0]))
+    return WindEvent(scenario, heading, time)

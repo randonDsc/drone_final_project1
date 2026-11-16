@@ -117,6 +117,14 @@ class PathSacEnv(gym.Env):
         core = self.core
         core.begin(reference)
         core.apply_wind(wind, profile)
+        if path_sac_config.WIND_TRAINING is not None:
+            from wind_events import training_event
+            core.wind_event = training_event(
+                self.np_random, reference,
+                min(reference.duration, path_sac_config.EPISODE["max_seconds"]),
+                wind["mean_wind"], path_sac_config.WIND_TRAINING)
+            if core.wind_event is not None:
+                self.sim.wind.mean_wind = core.wind_event.at(0)
 
         self.sim.teleport(
             initial["position"],
@@ -273,6 +281,9 @@ class PathSacEnv(gym.Env):
             "route_type": self.route_type,
             "stage": self.stage_name,
             "completed": core.completion.completed,
+            "wind_event_episode": core.wind_event is not None,
+            "wind_event_active": core.wind_event is not None and core.time > core.wind_event.event_s,
+
         }
 
         return observation, float(reward), terminated, truncated, info
