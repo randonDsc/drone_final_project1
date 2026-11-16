@@ -152,9 +152,11 @@ def audit(output, archive):
                 check(row[field], expected)
             raw_wilcoxon.append(wp); raw_sign.append(sp)
         for field, pvalues in (("wilcoxon", raw_wilcoxon), ("sign_test", raw_sign)):
-            for row, corrected in zip(table, holm(pvalues)):
-                check(row[field+"_p_holm"], corrected)
-                check(row[field+"_reject_holm"], corrected is not None and corrected<=.05)
+            for family in dict.fromkeys(row["test_family"] for row in table):
+                selected = [i for i, row in enumerate(table) if row["test_family"]==family]
+                for i, corrected in zip(selected, holm([pvalues[j] for j in selected])):
+                    check(table[i][field+"_p_holm"], corrected)
+                    check(table[i][field+"_reject_holm"], corrected is not None and corrected<=.05)
 
     for filename in ("primary_rmse.csv", "secondary_metrics.csv", "sensitivity_rmse.csv"):
         vectors = []
@@ -166,6 +168,16 @@ def audit(output, archive):
                 check(row["excluded_pairs"], 10-len(group))
             vectors.append(tuple([float(g[c][row["metric"]]) for g in group] for c in ("pid_only", "pid_sac")))
         continuous(tables[filename], vectors)
+        if filename=="secondary_metrics.csv":
+            for row in tables[filename]:
+                check(row["test_family"], "secondary_"+row["metric"])
+                check(row["family_size"], 21)
+                check(row["joint_family_size"], 84)
+            for test in ("wilcoxon", "sign_test"):
+                joint = holm([float(r[test+"_p"]) for r in tables[filename]])
+                for row, corrected in zip(tables[filename], joint):
+                    check(row[test+"_p_holm_joint"], corrected)
+                    check(row[test+"_reject_holm_joint"], corrected<=.05)
 
     seed_values = {}
     for row in tables["seed_cluster_values.csv"]:

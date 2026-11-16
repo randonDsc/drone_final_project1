@@ -5,6 +5,7 @@
 \usepackage{amsmath,booktabs,graphicx,tabularx}
 \usepackage[hidelinks]{hyperref}
 \usepackage{microtype}
+\usepackage{pdflscape}
 \usepackage[font=small,labelfont=bf]{caption}
 \graphicspath{{figures/}{analysis/outputs/flight1_2026-11-14/figures/}}
 \setlength{\parskip}{0.35em}
@@ -18,37 +19,39 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-We assessed whether a trained residual Soft Actor--Critic (SAC) policy improved multirotor control relative to a fixed proportional--integral--derivative (PID) baseline. Our retrospective analysis comprised 420 Isaac Sim flight records, forming 210 controller pairs across seven scenarios, three wind profiles, and ten environment seeds per condition. We estimated paired differences in position root mean squared error (RMSE), constructed pointwise 95\% bootstrap intervals, and applied Holm-adjusted two-sided Wilcoxon signed-rank tests. SAC achieved lower recorded RMSE in all 180 open-air pairs. The equally weighted open-air mean flight-level RMSE decreased from 0.884\,m to 0.115\,m, an 87.0\% reduction; the mean paired difference was $-0.769$\,m (95\% seed-block interval: $-0.873$ to $-0.685$\,m). Twenty of the 21 primary condition comparisons rejected after adjustment. Both modes failed all strong-wind Dijkstra cases, with zero recorded SAC corrections consistent with launch-stage failure. Our findings support improved tracking for the evaluated checkpoint and baseline, subject to one training lineage, ten environment seeds, and unequal observed flight lengths.
+We evaluated a residual Soft Actor--Critic (SAC) policy against a proportional--integral--derivative (PID) baseline using 420 Isaac Sim flight records. The retrospective study comprised 210 controller pairs across seven scenarios, three wind profiles, and ten environment seeds per condition. Paired differences were assessed with bootstrap confidence intervals and Holm-adjusted Wilcoxon signed-rank tests. SAC achieved lower position RMSE in all 180 open-air pairs. Mean flight-level RMSE decreased from 0.884\,m to 0.115\,m, an 87.0\% reduction, with a mean paired difference of $-0.769$\,m (95\% seed-block interval: $-0.873$ to $-0.685$\,m). Twenty of 21 primary comparisons were significant. Exploratory metric-wise tests supported reductions in cross-track RMSE and maximum position error in 20 conditions each, and maximum cross-track error in 18. Both modes failed all strong-wind Dijkstra cases during a phase consistent with residual-disabled launch. The results characterize one trained policy and PID configuration across the evaluated conditions.
 \end{abstract}
 
 \section{Objective and experimental scope}
-We examined the magnitude, consistency, and uncertainty of residual SAC's contribution to PID flight control. The policy adds four learned thrust and torque corrections to the PID command before motor mixing. We analyzed the fixed \texttt{flight1/final\_model.zip} checkpoint, trained for 1,500,000 decisions with training seed 0. Its observation and action dimensions are 128 and four. The recorded evaluation, dated 4 November 2026, used a frozen deterministic policy and simulator ground-truth state\cite{source}.
+Our objective was to measure residual SAC's contribution to tracking accuracy and flight outcomes under wind disturbance. The policy adds four learned thrust and torque corrections to a shared PID baseline before motor mixing. We analyzed the fixed \texttt{flight1/final\_model.zip} checkpoint, trained for 1,500,000 decisions with training seed 0. Its observation and action dimensions are 128 and four. Evaluation used a frozen deterministic policy and simulator ground-truth state\cite{source}.
 
-Our benchmark comprised six open-air scenarios---hover, straight flight, turns/waypoints, altitude changes, circle, and figure eight---and one Dijkstra obstacle-navigation scenario with a planned route of 6.98\,m. The three wind profiles were training-range mean wind of 2--7\,m/s, stronger and faster unseen gusts, and outside-range mean wind of 8--10\,m/s. The outside-range label refers to this checkpoint's final-stage mean-wind training maximum of 7\,m/s. It does not bound instantaneous wind during gusts. Training calm-flight probabilities do not determine evaluation weights.
+Our benchmark comprised six open-air scenarios---hover, straight flight, turns/waypoints, altitude changes, circle, and figure eight---and one Dijkstra obstacle-navigation scenario with a planned route of 6.98\,m. The three wind profiles were training-range mean wind of 2--7\,m/s, stronger and faster unseen gusts, and outside-range mean wind of 8--10\,m/s. The outside-range label refers to this checkpoint's final-stage mean-wind training maximum of 7\,m/s. Wind-speed ranges describe the configured mean wind.
 
 \section{Data integrity and statistical methods}
 \subsection{Paired design and validation}
 Our dataset contains seven scenarios $\times$ three wind profiles $\times$ ten seeds $\times$ two controllers, yielding 420 records and 210 pairs. Seeds 300000--300009 recur across conditions. We matched flights by scenario, wind profile, and environment seed, then verified agreement in recorded wind seed, mean wind speed when present, and reference-route duration.
 
-We found no duplicate flights or missing pairs. Flight CSV records agreed with the archived JSON and recomputed source summaries. The evaluation documentation states that paired routes and initial conditions were shared. Exact reset vectors and reference hashes are absent from the summaries, limiting independent verification of those additional properties.
+All pairs were complete and unique. Flight CSV records agreed with the archived JSON and recomputed source summaries. The evaluation documentation describes shared routes and initial conditions; exact reset vectors and reference hashes were unavailable for independent verification.
 
-We independently audited all nine analytical tables against the original archived flight CSV. The audit enumerated exact-test sign assignments, calculated binomial probabilities, reconstructed BCa intervals with an explicit jackknife, and checked 12,370 fields. All comparisons passed within the specified numerical tolerances.
+An independent audit checked 12,958 fields across the nine analytical tables against the original archived flight CSV. It enumerated exact-test sign assignments, calculated binomial probabilities, and reconstructed BCa intervals with an explicit jackknife. All comparisons passed within the specified numerical tolerances.
 
 \subsection{Effects, uncertainty, and multiplicity}
 For condition $c$ and seed $i$, our primary effect was
 \begin{equation}
 d_{c,i}=\mathrm{RMSE}_{\mathrm{PID+SAC},c,i}-\mathrm{RMSE}_{\mathrm{PID},c,i}.
 \end{equation}
-Negative values favor SAC. We report controller means, paired mean and median differences, paired-difference standard deviations, and win counts. Percentage reduction is calculated from controller means rather than by averaging seed-specific percentages.
+Negative values favor SAC. We report controller means, paired mean and median differences, paired-difference standard deviations, and win counts. Percentage reduction is the difference between controller means divided by the PID mean.
 
-We constructed pointwise 95\% bias-corrected and accelerated (BCa) intervals with 50,000 bootstrap resamples and deterministic resampling seeds\cite{bootstrap}. For each condition, we resampled complete paired differences. For overall benchmarks, we first averaged the selected fixed conditions within each environment seed and then resampled the ten resulting seed blocks. This preserves dependence associated with reused seeds. Overall results are means of flight-level RMSE, rather than RMSE calculated from concatenated time samples. Conditions receive equal weight within each benchmark.
+We constructed pointwise 95\% bias-corrected and accelerated (BCa) intervals with 50,000 bootstrap resamples and deterministic resampling seeds\cite{bootstrap}. For each condition, we resampled complete paired differences. For overall benchmarks, we first averaged the selected conditions within each environment seed and then resampled the ten resulting seed blocks. This preserves dependence associated with reused seeds. Benchmark estimates are equally weighted means of flight-level RMSE.
 
-Our primary tests were two-sided Wilcoxon signed-rank tests\cite{wilcoxon}, Holm-adjusted across 21 scenario--wind comparisons at $\alpha=0.05$\cite{holm}. The signed-rank null concerns a difference distribution symmetric about zero; it is not a direct test of equality of means. A separately Holm-adjusted exact sign-test family provided a direction-only robustness check\cite{binomial}. We interpreted both families without selecting the more favorable test. Confidence intervals remain pointwise, without simultaneous coverage across conditions.
+Primary inference used two-sided Wilcoxon signed-rank tests\cite{wilcoxon}, Holm-adjusted across 21 scenario--wind comparisons at $\alpha=0.05$\cite{holm}. The null specifies a difference distribution symmetric about zero. A separately adjusted exact sign-test family assessed the direction of the differences\cite{binomial}. Both test results are reported alongside mean effects and pointwise confidence intervals.
 
-Secondary continuous outcomes were cross-track RMSE, maximum position error, maximum cross-track error, and motor saturation fraction, with 84 comparisons in a separate Holm family. We analyzed completion, failure, and reported collision using exact McNemar tests with a separate 21-test family per outcome\cite{mcnemar}. Controller-rate intervals were exact binomial intervals, not intervals for paired rate differences. These families do not imply one global 5\% error rate across all reported analyses.
+Secondary outcomes were cross-track RMSE, maximum position error, maximum cross-track error, and motor saturation fraction. Each metric was evaluated as a separate exploratory endpoint, with Holm adjustment across its 21 conditions. Exact sign tests used the same metric-wise grouping. A joint adjustment across all 84 secondary comparisons provided a sensitivity check (Appendix~\ref{app:joint}). Error control therefore applies within each metric in the main secondary analysis.
+
+We analyzed completion, failure, and reported collision with exact McNemar tests and a separate 21-test family per outcome\cite{mcnemar}. Controller-rate intervals were exact binomial intervals. Completion required remaining within 0.15\,m of the final goal at a speed below 0.2\,m/s for 0.5\,s.
 
 \subsection{Terminated flights and sensitivity analysis}
-We retained failed flights in primary analyses. Their recorded errors describe the portions actually flown. We examined decision-count differences and defined a separate sensitivity subset requiring both flights to be nonfailed and to have equal recorded counts. This subset conditions on survival and may introduce selection bias. Equal counts alone do not establish identical sample times.
+Failed flights were retained in primary analyses. We examined observation lengths through recorded decision counts. A separate sensitivity subset required both flights to be nonfailed and to have equal counts. Its estimates are conditional on those selection criteria.
 
 \section{Results}
 \subsection{Open-air tracking}
@@ -69,7 +72,7 @@ Outside range & 60 & 1.653 & 0.181 & 89.0\% \\
 \label{tab:open}
 \end{table}
 
-SAC's absolute error increased under outside-range wind, although its relative advantage over PID remained large. Similar training-range and unseen-gust averages do not establish equivalence. Figure~\ref{fig:overview} shows benchmark uncertainty with repeated seed dependence preserved.
+SAC's absolute error increased under outside-range wind, while its relative advantage over PID remained large. Training-range and unseen-gust means were similar. Figure~\ref{fig:overview} shows benchmark uncertainty with repeated seed dependence preserved.
 
 \begin{figure}[htbp]
 \centering\includegraphics[width=\linewidth]{seed_cluster_overview.pdf}
@@ -87,7 +90,7 @@ Twenty of the 21 mean differences favored SAC. The corresponding primary signed-
 \end{figure}
 
 \subsection{Navigation and completion}
-We observed improved Dijkstra tracking and completion in training-range wind and unseen gusts (Table~\ref{tab:nav}). Both modes failed all ten outside-range navigation cases. In that condition, the mean RMSE difference was $+0.013$\,m (pointwise 95\% interval $[-0.015,+0.043]$\,m; adjusted $p=0.42578$). We did not detect a reliable difference, which does not establish equivalence.
+We observed improved Dijkstra tracking and completion in training-range wind and unseen gusts (Table~\ref{tab:nav}). Both modes failed all ten outside-range navigation cases. In that condition, the mean RMSE difference was $+0.013$\,m (pointwise 95\% interval $[-0.015,+0.043]$\,m; adjusted $p=0.42578$). The interval and test indicate uncertainty about the direction of this small recorded difference.
 
 \begin{table}[htbp]
 \centering\small
@@ -106,28 +109,47 @@ Outside range & 0.431 & 0.444 & 0/10 & 0/10 \\
 \label{tab:nav}
 \end{table}
 
-All 14 failed PID+SAC flights had zero recorded mean residual magnitude. The evaluation documentation describes a departure of approximately 2.8\,s with the residual disabled. These observations are consistent with launch-stage failure. They characterize the complete navigation system but do not isolate the performance of an engaged airborne policy during those failed cases.
+All 14 failed PID+SAC flights had zero recorded mean residual magnitude. This is consistent with the documented departure of approximately 2.8\,s with the residual disabled. Launch failures limit assessment of subsequent airborne policy behavior in those cases.
 
-Across all cases, recorded completion counts were 8/210 for PID and 190/210 for PID+SAC; failure counts were 57/210 and 14/210; reported collision counts were 5/210 and 0/210. These pooled counts are descriptive. Within open-air scenarios, PID completed 6/180 and failed 37/180, whereas PID+SAC completed 174/180 and failed 0/180. All 37 PID open-air failures occurred under outside-range wind. A flight without failure did not necessarily satisfy the completion criterion.
+Across all cases, recorded completion counts were 8/210 for PID and 190/210 for PID+SAC; failure counts were 57/210 and 14/210; reported collision counts were 5/210 and 0/210. These pooled counts are descriptive. Within open-air scenarios, PID completed 6/180 and failed 37/180, whereas PID+SAC completed 174/180 and failed 0/180. All 37 PID open-air failures occurred under outside-range wind. Completion counts reflect the final-goal settling criterion.
 
-Eight condition-specific completion comparisons rejected after adjustment of exact McNemar tests. No individual failure or collision comparison rejected within its adjusted family. Collision flags reflect the source workflow's geometric checks or proxies rather than an independently revalidated contact measurement.
+Eight condition-specific completion comparisons were significant after adjustment of exact McNemar tests. Failure and collision comparisons were nonsignificant within their respective families. Collision flags reflect the source workflow's geometric checks or proxies.
 
-\subsection{Observation length and secondary measurements}
-Decision counts differed in 54/210 pairs. Early termination changes exposure duration and the route segments contributing to RMSE. The saved summaries do not permit common-time-window reconstruction. Our sensitivity subset retained 152 nonfailed, equal-count pairs across 20 conditions. Every represented mean difference favored SAC; 13 signed-rank comparisons rejected after the separate sensitivity-family adjustment. Strong-wind Dijkstra had no eligible pairs. This conditional result remains subject to survivor selection.
+\subsection{Observation length and sensitivity analysis}
+Decision counts differed in 54/210 pairs. Early termination changes exposure duration and the route segments contributing to RMSE. Common-time-window reconstruction requires additional time-series data. Our sensitivity subset retained 152 nonfailed, equal-count pairs across 20 conditions. All represented mean differences favored SAC, and 13 signed-rank comparisons were significant after the separate sensitivity-family adjustment. Strong-wind Dijkstra had no eligible pairs. Selection by survival and decision count limits extrapolation to the full benchmark.
 
-None of the 84 secondary continuous signed-rank comparisons rejected after Holm adjustment. With ten nonzero pairs, the minimum two-sided exact $p$-value is $2/2^{10}=0.001953125$, exceeding the first Holm threshold $0.05/84\approx0.000595$. Accordingly, no rejection is attainable in that family at the current sample size under these exact tests. This does not establish absence of an effect.
+\subsection{Secondary tracking and control measurements}
+Metric-wise comparisons supported improved path adherence and lower peak tracking errors. Cross-track RMSE and maximum position error were significantly lower with SAC in 20 of 21 conditions. Maximum cross-track error was significantly lower in 18 conditions (Table~\ref{tab:secondary}). All three tracking metrics had lower SAC means in 20 conditions; outside-range Dijkstra was the sole positive mean difference.
 
-Recorded motor saturation was zero in all flights. Mean normalized SAC residual magnitude increased from 1.039 in training-range open-air wind to 1.324 in outside-range wind. These measurements describe action magnitude and clipping, not physical energy, correction direction, wind alignment, or operational safety.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrr}
+\toprule
+Metric & Lower SAC mean & Signed-rank & Sign test \\
+\midrule
+Cross-track RMSE & 20/21 & 20/21 & 20/21 \\
+Maximum position error & 20/21 & 20/21 & 18/21 \\
+Maximum cross-track error & 20/21 & 18/21 & 17/21 \\
+Motor saturation fraction & 0/21 & 0/21 & 0/21 \\
+\bottomrule
+\end{tabular}
+\caption{Exploratory secondary results. The last two columns count comparisons with within-metric Holm-adjusted $p\leq0.05$. Each metric has 21 tests.}
+\label{tab:secondary}
+\end{table}
+
+For maximum cross-track error, figure-eight flight under outside-range wind and Dijkstra under unseen gusts had negative means with adjusted signed-rank $p=0.08203$ and $p=0.46484$. Outside-range Dijkstra had a positive mean difference with adjusted $p=0.57031$. Sign tests supported fewer peak-error comparisons, reflecting variation in the frequency and ranked magnitude of improvements. Condition-level estimates and confidence intervals appear in Figures~\ref{fig:secondary-cross}--\ref{fig:secondary-cross-max}.
+
+Recorded motor saturation was zero throughout, giving zero paired differences and adjusted $p=1$ in every condition. Mean normalized SAC residual magnitude increased from 1.039 in training-range open-air wind to 1.324 in outside-range wind, indicating larger corrections under stronger mean wind.
 
 \section{Discussion and limitations}
-Our findings indicate a substantial and consistent improvement in recorded open-air tracking for the evaluated residual policy and PID configuration. They also identify launch reliability as a separate navigation requirement. Aggregate RMSE alone cannot establish mission reliability, particularly when failures shorten observation horizons.
+Our findings indicate a substantial and consistent improvement in recorded open-air tracking for the evaluated residual policy and PID configuration. Secondary results support improved average path adherence and lower flight-level peak errors. Direction-only tests were less conclusive for some peak-error endpoints, indicating greater seed-to-seed variation in those outcomes.
 
-Our inference concerns environment-seed variation for one trained policy, not variation across independent training runs. The baseline gains, acceleration limits, and residual authority define the comparison; superiority over other PID tunings or disturbance-rejection controllers has not been established. Ground-truth state evaluation does not assess sensor-estimation noise, latency, or physical flight. Small binary-outcome samples further limit precision.
+Launch reliability remains a separate navigation requirement. Baseline gains, acceleration limits, and residual authority define the controller comparison. Inference is limited to ten environment seeds for one policy using simulator ground truth. Independent training runs, alternative baseline tunings, state-estimation effects, and physical flight warrant separate evaluation. Unequal observation horizons and small binary-outcome samples limit precision. Main secondary p-values control error within each metric; Appendix~\ref{app:joint} addresses the full secondary set.
 
-The saved summaries lack per-step reference, state, wind, correction, integral, and event traces needed for error-over-time curves, recovery after disturbances, directional wind classification, or correction--integral alignment. Final-goal completion time is not post-event recovery time. Our analysis is retrospective. Confirmation should use declared endpoints and evaluation cases held out from tuning and model selection.
+Time-resolved tracking, disturbance recovery, directional wind effects, and correction--integral alignment require per-step reference, state, wind, correction, integral, and event traces. The available summaries support flight-level comparisons. As a retrospective study, the findings should be confirmed with declared endpoints and evaluation cases held out from tuning and model selection.
 
 \section{Conclusion}
-We found that residual SAC substantially reduced recorded open-air position-tracking error relative to the specified PID baseline. Mean flight-level RMSE decreased by 87.0\% across the equally weighted open-air benchmark, and 20 of 21 primary condition comparisons rejected after multiplicity adjustment. Strong-wind obstacle navigation remained unsuccessful during the residual-disabled launch phase. The results support the evaluated policy's tracking contribution while identifying takeoff reliability and broader validation as distinct requirements.
+Residual SAC reduced mean open-air flight-level position RMSE by 87.0\% relative to the specified PID baseline, with significant primary differences in 20 of 21 conditions. Exploratory metric-wise analyses also supported improved path adherence and lower peak errors. Strong-wind obstacle navigation remained unsuccessful during the residual-disabled launch phase. These findings support the policy's tracking contribution and identify takeoff reliability as a priority for further evaluation.
 
 \section*{Data and analytical materials}
 The accompanying nine CSV tables contain paired records, primary and secondary effects, outcomes, seed-block summaries, observation-length diagnostics, and control-effort measurements. We retain original evaluation files and configuration evidence with input, code, and artifact checksums to support traceability and reproducibility. Full inference details are documented in the accompanying statistical methods file.
@@ -144,7 +166,7 @@ The accompanying nine CSV tables contain paired records, primary and secondary e
 \clearpage
 \appendix
 \section{Complete primary condition estimates}\label{app:primary}
-We report mean position RMSE, the SAC-minus-PID mean difference, pointwise 95\% BCa intervals, SAC win counts, and primary-family Holm-adjusted signed-rank $p$-values. Each row contains ten pairs. Intervals are not multiplicity-adjusted.
+We report mean position RMSE, the SAC-minus-PID mean difference, pointwise 95\% BCa intervals, SAC win counts, and primary-family Holm-adjusted signed-rank $p$-values. Each row contains ten pairs.
 
 \begin{table}[htbp]
 \centering
@@ -180,19 +202,42 @@ Dijkstra & Outside & 0.431 & 0.444 & $+0.013$ & $[-0.015,+0.043]$ & 3/10 & 0.425
 \end{table}
 
 \clearpage
+\section{Joint secondary-family sensitivity}\label{app:joint}
+We also adjusted all 84 secondary signed-rank tests as one family. This joint analysis yielded no significant comparisons for any metric. With ten pairs, the minimum two-sided exact $p$-value is $0.001953125$, exceeding the first joint Holm threshold of $0.05/84\approx0.000595$. The joint correction provides a conservative assessment of claims spanning all four secondary metrics.
+
+The accompanying CSV retains metric-wise adjusted $p$-values and joint-adjustment sensitivity values in separate fields. All effects and intervals use the same paired observations and bootstrap draws.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Metric & Metric-wise significant & Joint significant \\
+\midrule
+Cross-track RMSE & 20/21 & 0/21 \\
+Maximum position error & 20/21 & 0/21 \\
+Maximum cross-track error & 18/21 & 0/21 \\
+Motor saturation fraction & 0/21 & 0/21 \\
+\bottomrule
+\end{tabular}
+\caption{Signed-rank comparisons at adjusted $p\leq0.05$ under metric-wise and joint Holm scopes.}
+\end{table}
+\clearpage
 \section{Supplementary figures}
 \begin{figure}[htbp]
 \centering\includegraphics[width=.88\linewidth,height=.60\textheight,keepaspectratio]{seed_differences.pdf}
 \caption{Individual paired differences by environment seed. Blue favors SAC; crosses mark a failure in either member. Reused seed identifiers remain grouped in overall inference.}
 \end{figure}
-\begin{figure}[htbp]
-\centering\includegraphics[width=\linewidth]{paired_scatter.pdf}
-\caption{Individual controller comparisons. Points below the diagonal favor SAC; hollow markers denote a failure in either paired flight.}
-\end{figure}
+\clearpage
+\begin{landscape}
+\captionsetup{hypcap=false}
+\begin{center}
+\includegraphics[width=\linewidth,height=.80\textheight,keepaspectratio]{paired_scatter.pdf}
+\captionof{figure}{Individual controller comparisons. Points below the diagonal favor SAC; hollow markers denote a failure in either paired flight.}
+\end{center}
+\end{landscape}
 \clearpage
 \begin{figure}[htbp]
 \centering\includegraphics[width=.90\linewidth,height=.61\textheight,keepaspectratio]{outcomes.pdf}
-\caption{Completion and failure counts. Absence of recorded failure does not necessarily satisfy the completion criterion.}
+\caption{Completion and failure counts by scenario and wind profile. Completion uses the final-goal settling criterion.}
 \end{figure}
 \begin{figure}[htbp]
 \centering\includegraphics[width=\linewidth]{observed_lengths.pdf}
@@ -201,6 +246,33 @@ Dijkstra & Outside & 0.431 & 0.444 & $+0.013$ & $[-0.015,+0.043]$ & 3/10 & 0.425
 \clearpage
 \begin{figure}[htbp]
 \centering\includegraphics[width=\linewidth]{rmse_sensitivity.pdf}
-\caption{Survivor-conditioned sensitivity estimates. All represented means favor SAC, but subgroup sizes are small and selection can bias comparisons. Strong-wind Dijkstra has no eligible pairs.}
+\caption{Survivor-conditioned sensitivity estimates. All represented means favor SAC. Subgroup sizes are shown beside the estimates; strong-wind Dijkstra has no eligible pairs.}
+\end{figure}
+\clearpage
+\begin{landscape}
+\captionsetup{hypcap=false}
+\section{Secondary metric effects}
+\begin{center}
+\includegraphics[width=\linewidth,height=.74\textheight,keepaspectratio]{secondary_cross_track_rmse.pdf}
+\captionof{figure}{Cross-track RMSE differences with pointwise 95\% BCa intervals. Filled markers indicate within-metric Holm-adjusted signed-rank $p\leq0.05$.}
+\label{fig:secondary-cross}
+\end{center}
+\clearpage
+\begin{center}
+\includegraphics[width=\linewidth,height=.80\textheight,keepaspectratio]{secondary_max_deviation.pdf}
+\captionof{figure}{Paired differences in flight-level maximum position error. Negative differences favor SAC; marker fill follows the metric-wise significance convention.}
+\label{fig:secondary-position-max}
+\end{center}
+\clearpage
+\begin{center}
+\includegraphics[width=\linewidth,height=.80\textheight,keepaspectratio]{secondary_cross_track_max.pdf}
+\captionof{figure}{Paired differences in flight-level maximum cross-track error. Filled markers identify the 18 conditions significant under within-metric signed-rank adjustment.}
+\label{fig:secondary-cross-max}
+\end{center}
+\end{landscape}
+\clearpage
+\begin{figure}[htbp]
+\centering\includegraphics[width=\linewidth]{secondary_saturation_rate.pdf}
+\caption{Mean recorded motor saturation fraction by controller and condition. All flight-level measurements were zero.}
 \end{figure}
 \end{document}

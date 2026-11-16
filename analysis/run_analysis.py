@@ -9,7 +9,7 @@ import zipfile
 
 from .archive_io import (load_archive, load_source_data, json_write, write_csv,
                          sha256_file, SCENARIOS, PROFILES, METRICS, OUTCOMES)
-from .stats_tools import (PRIMARY, SECONDARY, continuous_table, outcome_table,
+from .stats_tools import (PRIMARY, SECONDARY, continuous_table, secondary_table, outcome_table,
                           cluster_overview, diagnostic_tables)
 
 
@@ -23,7 +23,8 @@ DEFAULTS = dict(analysis_date="2026-11-14", bootstrap_resamples=50000, resamplin
                 model_selection="flight1 final model; no checkpoint selection from these test results",
                 primary_family="21 scenario/profile position-RMSE Wilcoxon tests, Holm correction",
                 robustness_test="two-sided exact paired sign test, separately Holm-adjusted",
-                secondary_family="84 tests across four secondary metrics, Holm correction",
+                secondary_family="21 tests per secondary metric; four separate Holm families; exploratory",
+                secondary_joint_sensitivity="84 secondary tests in one Holm family",
                 binary_families="21 exact McNemar tests per outcome; three separate secondary families",
                 sensitivity_family="21 survivor-conditioned RMSE tests, Holm correction",
                 overview_family="five exploratory seed-cluster overview tests, Holm correction",
@@ -85,7 +86,7 @@ def analyze(output, *, archive=None, source_data=None, config=None, make_figures
         tables = output/"tables"
         tables.mkdir()
         primary = continuous_table(pairs, [PRIMARY], config, "primary_position_rmse", SCENARIOS, PROFILES)
-        secondary = continuous_table(pairs, SECONDARY, config, "secondary_continuous_84", SCENARIOS, PROFILES)
+        secondary = secondary_table(pairs, config, SCENARIOS, PROFILES)
         sensitivity = continuous_table(pairs, [PRIMARY], config, "survivor_conditioned_sensitivity", SCENARIOS, PROFILES, subset=True)
         outcomes = outcome_table(pairs, config, SCENARIOS, PROFILES)
         overview, seed_overview = cluster_overview(pairs, config)
@@ -116,6 +117,13 @@ def analyze(output, *, archive=None, source_data=None, config=None, make_figures
                        open_air_pairs=sum(p["scenario"]!="dijkstra" for p in pairs),
                        open_air_sac_lower_rmse=sum(p["scenario"]!="dijkstra" and p["sac"][PRIMARY]<p["pid"][PRIMARY] for p in pairs),
                        outcomes={c:{o:sum(r[o] for r in rows if r["controller"]==c) for o in OUTCOMES} for c in ("pid_only", "pid_sac")},
+                       secondary_metrics={metric:dict(
+                           conditions=sum(r["metric"]==metric for r in secondary),
+                           lower_mean_error=sum(r["metric"]==metric and r["mean_difference"]<0 for r in secondary),
+                           wilcoxon_holm_rejections=sum(r["metric"]==metric and r["wilcoxon_reject_holm"] for r in secondary),
+                           sign_holm_rejections=sum(r["metric"]==metric and r["sign_test_reject_holm"] for r in secondary),
+                           joint_holm_rejections=sum(r["metric"]==metric and r["wilcoxon_reject_holm_joint"] for r in secondary))
+                           for metric in SECONDARY},
                        overviews=overview,
                        note="Exploratory retrospective analysis; confidence intervals are pointwise and concern this checkpoint over environment seeds.")
         json_write(output/"summary.json", summary)

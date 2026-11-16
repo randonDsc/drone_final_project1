@@ -1,5 +1,5 @@
 {
-  "created_utc": "2026-11-15T23:06:11.046761+00:00",
+  "created_utc": "2026-11-16T02:27:40.705182+00:00",
   "configuration": {
     "analysis_date": "2026-11-14",
     "bootstrap_resamples": 50000,
@@ -28,7 +28,8 @@
     "model_selection": "flight1 final model; no checkpoint selection from these test results",
     "primary_family": "21 scenario/profile position-RMSE Wilcoxon tests, Holm correction",
     "robustness_test": "two-sided exact paired sign test, separately Holm-adjusted",
-    "secondary_family": "84 tests across four secondary metrics, Holm correction",
+    "secondary_family": "21 tests per secondary metric; four separate Holm families; exploratory",
+    "secondary_joint_sensitivity": "84 secondary tests in one Holm family",
     "binary_families": "21 exact McNemar tests per outcome; three separate secondary families",
     "sensitivity_family": "21 survivor-conditioned RMSE tests, Holm correction",
     "overview_family": "five exploratory seed-cluster overview tests, Holm correction",
@@ -4306,15 +4307,15 @@
   },
   "repository": {
     "branch": "alan/mujoco",
-    "commit": "3ff9877cf6bfebabc5eb7957f812d888d6046c15"
+    "commit": "d23529abca5b38c0381a8394d81f3a3bd0421453"
   },
   "analysis_sources_sha256": {
     "__init__.py": "0b2b14e35848ad241fb1e5b3a689f9f7822bc1fb835aa720d279199e1f7ec300",
     "archive_io.py": "dead6cd05c774851a741c7e7a012d2ec57557568afcd1d28cc3df2e3b4f36c50",
-    "audit_results.py": "9209c10ebfdb49c7c014244de7aeaee2db76897c3a90b714325febcb7d0a2aa7",
-    "figures.py": "aef3669a36660a1a5759f7d2baaa607f64889cdb02ead9343f2731713b01930a",
-    "run_analysis.py": "aef5cdbe377f64d8a6253e4d124a855bea23c07619741694ee048e0e0cb32712",
-    "stats_tools.py": "75c737fefa92f7ce022b5f7c2e93f1326197d59246829677f4a3a1defb00511c",
+    "audit_results.py": "a8f62160b4a60e2e2c1167cc2ae513aad57dbdec8c6ced32595a00ffa28d9f8a",
+    "figures.py": "aeb5ab3a8708b928393b86ea3b122964b24be3f0f8495005bd50a470e4b34d6d",
+    "run_analysis.py": "e5149614d5506aa14d3e26410c7f4b82538a446276169f0d5d884221cae07d22",
+    "stats_tools.py": "4b0a8b66e6ed42e77110ef5b9dedee952d177f551ca71a1dbe1033f4720a7c1d",
     "verify_outputs.py": "a0864d427ff7d5cb8ed04ffd23d427ddfc713b6cd6e2a7523218987666b53839"
   },
   "evaluation_not_rerun": true,

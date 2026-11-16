@@ -2,7 +2,7 @@
   "status": "passed",
   "source_csv_matches_original_archive": true,
   "original_checkpoint_hash_matches": true,
-  "numeric_field_checks": 12370,
+  "numeric_field_checks": 12958,
   "tables_checked": {
     "control_effort_descriptive.csv": 42,
     "observed_lengths.csv": 21,

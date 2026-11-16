@@ -20,6 +20,36 @@
       "collided": 0
     }
   },
+  "secondary_metrics": {
+    "cross_track_rmse": {
+      "conditions": 21,
+      "lower_mean_error": 20,
+      "wilcoxon_holm_rejections": 20,
+      "sign_holm_rejections": 20,
+      "joint_holm_rejections": 0
+    },
+    "max_deviation": {
+      "conditions": 21,
+      "lower_mean_error": 20,
+      "wilcoxon_holm_rejections": 20,
+      "sign_holm_rejections": 18,
+      "joint_holm_rejections": 0
+    },
+    "cross_track_max": {
+      "conditions": 21,
+      "lower_mean_error": 20,
+      "wilcoxon_holm_rejections": 18,
+      "sign_holm_rejections": 17,
+      "joint_holm_rejections": 0
+    },
+    "saturation_rate": {
+      "conditions": 21,
+      "lower_mean_error": 0,
+      "wilcoxon_holm_rejections": 0,
+      "sign_holm_rejections": 0,
+      "joint_holm_rejections": 0
+    }
+  },
   "overviews": [
     {
       "benchmark": "open_air_all_profiles",

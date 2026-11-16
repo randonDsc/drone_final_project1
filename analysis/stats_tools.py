@@ -146,6 +146,21 @@ def continuous_table(pairs, metrics, config, family, scenarios, profiles, subset
     return rows
 
 
+def secondary_table(pairs, config, scenarios, profiles):
+    """Metric-wise Holm families with a joint-family sensitivity calculation."""
+    # Keep stable resampling labels so paired estimates and BCa draws are fixed.
+    rows = continuous_table(pairs, SECONDARY, config, "secondary_continuous_84", scenarios, profiles)
+    for row in rows:
+        row.update(joint_test_family="secondary_joint_sensitivity", joint_family_size=len(rows))
+        for test in ("wilcoxon", "sign_test"):
+            row[test+"_p_holm_joint"] = row[test+"_p_holm"]
+            row[test+"_reject_holm_joint"] = row[test+"_reject_holm"]
+    for metric in SECONDARY:
+        group = [row for row in rows if row["metric"]==metric]
+        adjust_family(group, "secondary_"+metric, config)
+    return rows
+
+
 def outcome_table(pairs, config, scenarios, profiles):
     rows = []
     for outcome in ("completed", "failed", "collided"):

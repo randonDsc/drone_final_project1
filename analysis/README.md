@@ -12,15 +12,16 @@ We evaluated the first flight SAC checkpoint against its PID baseline using 420 
 | [Standalone LaTeX subsection](outputs/flight1_2026-11-14/report_section.tex) | Condensed section for integration into the project manuscript |
 | [Statistical protocol](METHODS.md) | Estimands, assumptions, test families, and references |
 | [Primary results](outputs/flight1_2026-11-14/tables/primary_rmse.csv) | All 21 primary condition comparisons |
+| [Secondary results](outputs/flight1_2026-11-14/tables/secondary_metrics.csv) | Metric-wise tests and joint-adjustment sensitivity results |
 | [Paired flight records](outputs/flight1_2026-11-14/tables/paired_flights.csv) | All 210 matched controller cases |
 
-Our primary findings are lower SAC RMSE in all 180 open-air pairs and adjusted signed-rank rejections in 20 of 21 conditions. The equally weighted open-air mean flight-level RMSE decreased from 0.884 m to 0.115 m, a reduction of 87.0%. Strong-wind Dijkstra cases failed in both modes during a phase consistent with residual-disabled launch. These results characterize one checkpoint and one PID configuration.
+SAC achieved lower RMSE in all 180 open-air pairs, with significant primary differences in 20 of 21 conditions. Mean open-air flight-level RMSE decreased from 0.884 m to 0.115 m, an 87.0% reduction. Exploratory metric-wise tests supported lower cross-track RMSE in 20 conditions, maximum position error in 20, and maximum cross-track error in 18. Motor saturation was zero throughout. Strong-wind Dijkstra cases failed in both modes during a phase consistent with residual-disabled launch. These results characterize one checkpoint and one PID configuration.
 
 ## Separation of analysis and manuscript preparation
 
-Our Python modules process data, calculate statistics, verify numerical results, and export CSV/JSON analytical outputs and scientific plots. They do not write Markdown, LaTeX, report narrative, or a narrative PDF. We maintain `report.md`, `report.tex`, `report_section.tex`, and `METHODS.md` directly as text. The publication PDF is compiled from `report.tex` using LaTeX.
+Python modules process data, calculate statistics, verify results, and export CSV/JSON outputs and scientific plots. The Markdown and LaTeX manuscripts are maintained directly as text. The publication PDF is compiled from `report.tex` using LaTeX.
 
-Analysis runs require new output directories and preserve existing artifacts. Numerical reproduction does not modify the maintained manuscripts.
+Analysis runs require new output directories and preserve the maintained manuscripts.
 
 ## Repository layout
 
@@ -30,7 +31,8 @@ analysis/
   outputs/flight1_2026-11-14/
     source_data/              Preserved original evaluation and configuration files
     tables/                   Nine analytical and diagnostic CSV files
-    figures/                  Seven plots, each in PNG and vector PDF formats
+    figures/                  Eleven plots, each in PNG and vector PDF formats
+    figure_export_checks.json Axis-label bounds and export-padding checks
     report.md                 Full manuscript in Markdown
     report.tex                Full manuscript in LaTeX
     report_section.tex        Condensed manuscript subsection
@@ -59,7 +61,7 @@ analysis/
 | --- | ---: | --- |
 | `paired_flights.csv` | 210 | Matched source values, paired differences, and eligibility flags |
 | `primary_rmse.csv` | 21 | Primary position-RMSE effects, intervals, and adjusted tests |
-| `secondary_metrics.csv` | 84 | Cross-track RMSE, flight-level maxima, and saturation comparisons |
+| `secondary_metrics.csv` | 84 | Four metric-wise 21-test families, with joint 84-test sensitivity fields |
 | `paired_outcomes.csv` | 63 | Completion, failure, and collision counts and exact paired tests |
 | `sensitivity_rmse.csv` | 21 | Nonfailed, equal-count conditional comparisons |
 | `seed_cluster_overview.csv` | 5 | Overall fixed-benchmark effects using ten seed blocks |
@@ -67,9 +69,9 @@ analysis/
 | `observed_lengths.csv` | 21 | Decision-count differences and sensitivity eligibility |
 | `control_effort_descriptive.csv` | 42 | Residual magnitude/change, saturation, and clearance summaries |
 
-`mean_difference` is PID+SAC minus PID. Negative error differences favor SAC. `wilcoxon_p_holm` and `sign_test_p_holm` apply within the stated `test_family`; confidence intervals remain pointwise. `n_pairs` gives the actual resampling-unit count, including ten seed blocks in overall summaries. `ci_status` identifies insufficient or degenerate samples. Binary-outcome rate intervals are marginal controller intervals rather than paired rate-difference intervals.
+`mean_difference` is PID+SAC minus PID. Negative error differences favor SAC. `wilcoxon_p_holm` and `sign_test_p_holm` apply within the stated `test_family`; confidence intervals remain pointwise. Secondary rows use `family_size = 21`, with joint sensitivity results in fields ending in `_holm_joint` and `joint_family_size = 84`. `n_pairs` gives the actual resampling-unit count, including ten seed blocks in overviews. `ci_status` identifies insufficient or degenerate samples. Binary-outcome intervals describe marginal controller rates.
 
-The source summary's maximum-error columns are maxima across flights. Our secondary comparisons instead analyze flight-level maxima as paired observations. These summaries serve different purposes.
+The source summary's maximum-error columns are maxima across flights. Secondary comparisons analyze each flight's maximum as a paired observation.
 
 ## Input provenance
 
@@ -108,7 +110,7 @@ Re-reading the original archive uses:
   analysis/outputs/flight1_2026-11-14
 ```
 
-The independent audit compares the tables with the original archived CSV using a separate implementation of exact tests and BCa intervals. Its structured record contains 12,370 successful field checks. The verifier checks artifact and current analysis-source hashes, runs the tests, and requires all nine numeric tables to reproduce byte for byte from the preserved source bundle. Plot rendering can vary by platform. `verification.json` is outside the artifact manifest to avoid circular hashing.
+The independent audit compares the tables with the original archived CSV using a separate implementation of exact tests, both correction scopes, and BCa intervals. Its record contains 12,958 successful field checks. The verifier checks artifact and source hashes, runs the tests, and requires all nine tables to reproduce byte for byte. Plot checks cover label bounds and padding; a regression test verifies clear margins in the scatter-plot export. `verification.json` is outside the manifest to avoid circular hashing.
 
 ## Typesetting the manuscript
 

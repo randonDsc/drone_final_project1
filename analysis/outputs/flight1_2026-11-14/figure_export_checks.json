@@ -1,0 +1,79 @@
+{
+  "rmse_effects": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 7,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "seed_differences": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 3,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "paired_scatter": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 10,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "outcomes": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 5,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "seed_cluster_overview": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 2,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "observed_lengths": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 3,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "rmse_sensitivity": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 7,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "secondary_cross_track_rmse": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 7,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "secondary_max_deviation": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 7,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "secondary_cross_track_max": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 7,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  },
+  "secondary_saturation_rate": {
+    "axis_labels_within_export": true,
+    "text_elements_checked": 3,
+    "x_axis_labels_separated": true,
+    "padding_inches": 0.2,
+    "png_dpi": 220
+  }
+}
