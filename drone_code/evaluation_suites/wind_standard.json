@@ -1,0 +1,7 @@
+{
+  "name": "wind_standard_v1",
+  "routes": ["hover", "straight", "waypoints"],
+  "scenarios": ["control", "turn90", "turn180", "speed_up", "speed_down"],
+  "seeds": [440000, 440001, 440002, 440003, 440004],
+  "duration_s": 20
+}

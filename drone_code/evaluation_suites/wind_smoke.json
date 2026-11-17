@@ -1,0 +1,7 @@
+{
+  "name": "wind_smoke_v1",
+  "routes": ["hover"],
+  "scenarios": ["control", "turn90"],
+  "seeds": [440000],
+  "duration_s": 8
+}

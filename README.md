@@ -676,3 +676,46 @@ The trainer notices this on its next decision, ends learning and saves the final
 model and replay buffer. Wait for the save message before closing processes.
 Remove the marker only when you are ready to resume. A saved checkpoint after a
 short pilot does not imply better performance; compare against the original model.
+
+### Reusable model evaluation pipeline
+
+Supply one or more compatible **path-SAC** checkpoints. Every model receives the
+same suite, seeds and routes; PID is repeated to verify reproducibility. The first
+model is the baseline for model-to-model comparisons. Hover SAC and PPO need their
+own adapters and are not accepted by this pipeline.
+
+Preview the standard suite (no simulation or output creation):
+
+```powershell
+& C:\isaacsim\python.bat -B drone_code/run_evaluation_suite.py --model original=runs/flight_sac/flight1/final_model.zip --model adapted=runs/flight_sac/flight3/final_model.zip --dry-run
+```
+
+Remove `--dry-run` to execute. The standard suite runs three routes, five wind
+conditions and five fixed seeds: **150 flights per model**, including PID checks.
+Outputs get a unique timestamp under `runs/benchmarks/`; checkpoints and contracts
+are copied there so later training cannot change an experiment in progress.
+
+For a quick pipeline check, add
+`--suite drone_code/evaluation_suites/wind_smoke.json` (four flights per model).
+This one-seed smoke test is not evidence of performance improvement.
+
+The terminal prints each active batch and its log path. `status.json` records the
+current batch. Each simulator shutdown is the end of that batch, not necessarily
+the whole pipeline. After interruption, resume with the printed output folder:
+
+```powershell
+& C:\isaacsim\python.bat -B drone_code/run_evaluation_suite.py --resume runs/benchmarks/OUTPUT_FOLDER
+```
+
+Completed batches are validated and skipped; incomplete batches are preserved
+under an interrupted name and rerun. Resume refuses changed source code or frozen
+models. Use `--resume OUTPUT_FOLDER --report-only` to regenerate reports without
+simulating, once all batches are complete.
+
+Final outputs: `comparison.png`, `metrics.csv`, `paired_models.csv`,
+`comparisons.csv` and `report.json`. Negative paired RMSE differences favor the
+candidate over the first model. Inspect failures and recovery alongside RMSE;
+bootstrap intervals are descriptive and per condition, with no multiple-test
+adjustment. These are fixed-duration segments, not full-route completion tests.
+To change routes, seeds or supported wind scenarios, copy and edit a suite JSON.
+New event types still require implementation in the wind generator and validator.
