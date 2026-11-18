@@ -1,0 +1,101 @@
+{
+ "case": "indoor_I2_uturn_w7",
+ "file": "indoor_I2_uturn_w7.mp4",
+ "label": "descriptive demo, not eval-v1",
+ "encoder": "omni.videoencoding (NVENC H.264)",
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "frames_encoded": 637,
+ "hold_frames": 60,
+ "hold_seconds": 2.0,
+ "play_frames": 577,
+ "frames_failed": 0,
+ "mp4_boxes": {
+  "trun_samples": 637,
+  "fragments": 637,
+  "timescale": 30,
+  "duration": 637,
+  "codec": "avc1",
+  "samples": 0,
+  "seconds": 21.233333333333334,
+  "frames": 637
+ },
+ "seconds": 21.233333333333334,
+ "replay_end_time_code": 1152,
+ "replay_hz": 60.0,
+ "rt_subframes": 32,
+ "frame_mean_brightness_min_max": [
+  76.34786731610082,
+  77.26842833719135
+ ],
+ "layer": "results/m9_demo/video_v2/indoor_I2_uturn_w7.usda",
+ "layer_sha256": "38521a2918bffb761914905dc7281ae62ebe44969675bc8f72232e7b7336d218",
+ "layer_check": {
+  "time_codes_per_second": 60.0,
+  "samples": {
+   "pid": {
+    "time_codes": [
+     0,
+     288,
+     576,
+     864,
+     1152
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "pid_ppo": {
+    "time_codes": [
+     0,
+     288,
+     576,
+     864,
+     1152
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "ppo_direct": {
+    "time_codes": [
+     0,
+     288,
+     576,
+     864,
+     1152
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   }
+  },
+  "ok": true,
+  "wind_arrow_physics_schemas": []
+ },
+ "layout": "results/m9_demo/video_v2/indoor_I2_uturn_w7_layout.json",
+ "camera": "/World/M9Replay/CameraV2 (fixed)",
+ "overlay": "OpenCV, drawn by code on top of the render (not occluded by the scene)",
+ "tags_without_free_spot": 0,
+ "bytes": 31923197,
+ "sha256": "5fa90d7692956a5114718fd54f327ce7c3eb0c6d1ce3e74f1f1a6b139bc29476",
+ "verified": true
+}

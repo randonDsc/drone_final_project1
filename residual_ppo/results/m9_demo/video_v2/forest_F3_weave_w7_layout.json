@@ -1,0 +1,263 @@
+{
+ "case": "forest_F3_weave_w7",
+ "label": "descriptive demo, not eval-v1",
+ "size": [
+  1920,
+  1080
+ ],
+ "panels": {
+  "legend": [
+   24,
+   24,
+   560,
+   310
+  ],
+  "wind": [
+   1296,
+   24,
+   1896,
+   196
+  ],
+  "inset": [
+   1416,
+   600,
+   1896,
+   960
+  ],
+  "caption": [
+   0,
+   984,
+   1920,
+   1080
+  ]
+ },
+ "panel_gap_px": 12,
+ "edge_px": 24,
+ "camera": {
+  "position": [
+   -14.117343968191001,
+   -5.361115554373361,
+   5.515343904495239
+  ],
+  "right": [
+   0.23344536385590592,
+   -0.9723699203976764,
+   0.0
+  ],
+  "up": [
+   0.3432663129041903,
+   0.08241095043604502,
+   0.9356156655771591
+  ],
+  "forward": [
+   0.9097645302600813,
+   0.2184151394799455,
+   -0.353020291664105
+  ],
+  "scale_px": 2314.655994753125,
+  "focal_mm": 25.262300192735275,
+  "horizontal_aperture_mm": 20.955,
+  "vertical_aperture_mm": 11.7871875,
+  "down_pitch_deg": 20.672161318738667,
+  "obstacle_clearance_m": 11.561497042749929
+ },
+ "search": {
+  "candidates_feasible": 512,
+  "candidate_positions": 4213,
+  "wind_visibility_px_per_m": 148.45652919063951,
+  "path_visibility_px_per_m": 65.84803397705079,
+  "wind_visibility_p10_px_per_m": 117.51292413889155,
+  "path_visibility_p10_px_per_m": 47.43808382606291,
+  "start_margin_px": 234.08005832712706,
+  "score": 74.66316324631919,
+  "occluded_targets": 0,
+  "occlusion_targets": 183,
+  "occlusion_checked": 40
+ },
+ "framing_ok": true,
+ "framing": {
+  "reference": {
+   "points": 239,
+   "min_margin_px": 133.37706184731906,
+   "min_depth_m": 10.373328084498281,
+   "x_px": [
+    740.8043138667939,
+    1160.4362204872195
+   ],
+   "y_px": [
+    157.37706184731906,
+    624.2702397688421
+   ],
+   "ok": true
+  },
+  "ring": {
+   "points": 48,
+   "min_margin_px": 97.51089301824072,
+   "min_depth_m": 9.701149015652636,
+   "x_px": [
+    1034.7440247579545,
+    1306.4891069817593
+   ],
+   "y_px": [
+    578.5791237536043,
+    684.0829220943538
+   ],
+   "ok": true
+  },
+  "wind_arrow": {
+   "points": 25,
+   "min_margin_px": 1.9400000000000546,
+   "min_depth_m": 16.004504203706045,
+   "x_px": [
+    573.94,
+    763.4449471487876
+   ],
+   "y_px": [
+    275.6954533825552,
+    287.3318551162948
+   ],
+   "ok": true
+  },
+  "flown_pid": {
+   "points": 907,
+   "min_margin_px": 130.43441192626182,
+   "min_depth_m": 10.246070534773938,
+   "x_px": [
+    717.4961772286589,
+    1267.2354370592088
+   ],
+   "y_px": [
+    154.43441192626182,
+    636.9418388749971
+   ],
+   "ok": true
+  },
+  "flown_pid_ppo": {
+   "points": 907,
+   "min_margin_px": 133.13637448242577,
+   "min_depth_m": 10.258404673237091,
+   "x_px": [
+    743.5628227818654,
+    1188.532312857385
+   ],
+   "y_px": [
+    157.13637448242577,
+    629.2363885765088
+   ],
+   "ok": true
+  },
+  "flown_ppo_direct": {
+   "points": 907,
+   "min_margin_px": 128.61161652704567,
+   "min_depth_m": 10.246428642671644,
+   "x_px": [
+    744.9690409274097,
+    1198.8838919062657
+   ],
+   "y_px": [
+    152.61161652704567,
+    629.0664687787367
+   ],
+   "ok": true
+  }
+ },
+ "wind_arrow": {
+  "tail": [
+   0.7254237288135594,
+   1.0,
+   1.5
+  ],
+  "tip": [
+   0.7254237288135594,
+   -0.3999999999999999,
+   1.5
+  ],
+  "length_m": 1.4,
+  "direction_xy": [
+   0.0,
+   -1.0
+  ],
+  "anchor_ref_index": 129,
+  "anchor": [
+   0.7254237288135594,
+   -1.2,
+   1.5
+  ],
+  "upwind_gap_m": 0.8,
+  "raised_m": 0.0,
+  "obstacle_clearance_m": 1.161451637183222,
+  "min_dist_reference_m": 0.8,
+  "min_dist_flown_m": 0.9435283247694379,
+  "candidates_tried": 1
+ },
+ "start": [
+  -4.698382377624512,
+  -4.056976318359375,
+  1.5256437063217163
+ ],
+ "same_start_all_controllers": true,
+ "clearance_panel": {
+  "source": "results/m9_demo/summary_table.csv (== flights_<scene>.json)",
+  "measured_from": "drone centre to nearest obstacle surface",
+  "pid": {
+   "min_clearance_m": 0.8971408452986827,
+   "obstacle_contact": false
+  },
+  "pid_ppo": {
+   "min_clearance_m": 1.1652055877355234,
+   "obstacle_contact": false
+  },
+  "ppo_direct": {
+   "min_clearance_m": 1.0760187103412022,
+   "obstacle_contact": false
+  }
+ },
+ "wind": {
+  "speed_mps": 7.0,
+  "gust_scale": 0.75
+ },
+ "inset": {
+  "transform": {
+   "scale_px_per_m": 37.080570575713836,
+   "world_center": [
+    -0.11141948699951154,
+    -1.6082394003868101
+   ],
+   "px_center": [
+    1656.0,
+    795.0
+   ],
+   "world_lo": [
+    -6.098382377624511,
+    -5.572579692827688
+   ],
+   "world_hi": [
+    5.875543403625488,
+    2.3561008920540676
+   ]
+  },
+  "footprint_band_z_m": [
+   1.160755467414856,
+   1.8699323415756226
+  ],
+  "footprint_counts": {
+   "rects": 0,
+   "circles": 4,
+   "segments": 3
+  }
+ },
+ "sources": {
+  "pid": {
+   "file": "results/m9_demo/flights/forest/forest_F3_weave_w7__pid.npz",
+   "sha256": "d8d03753361654b17115ddd681ebe6aded1f5c80661624f5ceac289c8978d9e6"
+  },
+  "pid_ppo": {
+   "file": "results/m9_demo/flights/forest/forest_F3_weave_w7__pid_ppo.npz",
+   "sha256": "15ad330eb3af49453b3948a596f48f3d27bfaa0ddaa2c4acea74973477690e5b"
+  },
+  "ppo_direct": {
+   "file": "results/m9_demo/flights/forest/forest_F3_weave_w7__ppo_direct.npz",
+   "sha256": "35c1e895a92caa280a1d24367edd5cd44da618f38292bb2e70210b30be573bb3"
+  }
+ }
+}

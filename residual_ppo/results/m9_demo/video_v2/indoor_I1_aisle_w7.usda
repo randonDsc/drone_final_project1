@@ -1,0 +1,145 @@
+#usda 1.0
+(
+    customLayerData = {
+        string m9 = "indoor_I1_aisle_w7; video v2 overlay layer; descriptive demo, not eval-v1; no controller perceives obstacles; crosswind toward obstacles (worst side)"
+    }
+    defaultPrim = "World"
+    endTimeCode = 1008
+    framesPerSecond = 60
+    metersPerUnit = 1
+    startTimeCode = 0
+    subLayers = [
+        @../replay/indoor_I1_aisle_w7.usda@
+    ]
+    timeCodesPerSecond = 60
+    upAxis = "Z"
+)
+
+over "World"
+{
+    over "M9Replay"
+    {
+        over "Looks"
+        {
+            over "tint_pid"
+            {
+                over "Shader"
+                {
+                    color3f inputs:diffuseColor = (1, 0.17064494, 0)
+                    color3f inputs:emissiveColor = (0.2, 0.034128986, 0)
+                    float inputs:roughness = 0.7
+                }
+            }
+
+            over "tint_pid_ppo"
+            {
+                over "Shader"
+                {
+                    color3f inputs:diffuseColor = (0.010022826, 0.10048151, 0.8900054)
+                    color3f inputs:emissiveColor = (0.0020045652, 0.020096302, 0.17800108)
+                    float inputs:roughness = 0.7
+                }
+            }
+
+            over "tint_ppo_direct"
+            {
+                over "Shader"
+                {
+                    color3f inputs:diffuseColor = (0.010022826, 0.52252156, 0.033104766)
+                    color3f inputs:emissiveColor = (0.0020045652, 0.10450431, 0.0066209533)
+                    float inputs:roughness = 0.7
+                }
+            }
+        }
+
+        over "pid"
+        {
+            over "flown_path" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "pid_ppo"
+        {
+            over "flown_path" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "ppo_direct"
+        {
+            over "flown_path" (
+                active = false
+            )
+            {
+            }
+        }
+
+        def Scope "LooksV2"
+        {
+            def Material "wind_arrow"
+            {
+                token outputs:surface.connect = </World/M9Replay/LooksV2/wind_arrow/Shader.outputs:surface>
+
+                def Shader "Shader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.26327342, 0.60382736, 1)
+                    color3f inputs:emissiveColor = (0.065818354, 0.15095684, 0.25)
+                    float inputs:roughness = 0.5
+                    token outputs:surface
+                }
+            }
+        }
+
+        def Xform "WindArrowV2" (
+            customData = {
+                string note = "non-physical marker of the mean wind direction"
+            }
+        )
+        {
+            float xformOp:rotateZ = 180
+            double3 xformOp:translate = (-2.8000000000000003, 1.8750788643533127, 2.1993690851735015)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZ"]
+
+            def Cylinder "shaft" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token axis = "X"
+                double height = 1.1199999999999999
+                rel material:binding = </World/M9Replay/LooksV2/wind_arrow>
+                double radius = 0.035
+                double3 xformOp:translate = (0.5599999999999999, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+
+            def Cone "head" (
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token axis = "X"
+                double height = 0.28
+                rel material:binding = </World/M9Replay/LooksV2/wind_arrow>
+                double radius = 0.1
+                double3 xformOp:translate = (1.2599999999999998, 0, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate"]
+            }
+        }
+
+        def Camera "CameraV2"
+        {
+            float2 clippingRange = (0.05, 500)
+            float focalLength = 12.597999
+            float horizontalAperture = 20.955
+            float verticalAperture = 11.787188
+            matrix4d xformOp:transform = ( (0.5664062369248324, 0.8241261886220159, -0, 0), (-0.32385835196479973, 0.22258167858950595, 0.9195505229289588, 0), (0.7578256677068246, -0.5208391513544534, 0.3929718002364524, 0), (-0.30789794921874947, -5.722670466698368, 4.743296444416046, 1) )
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+        }
+    }
+}
+

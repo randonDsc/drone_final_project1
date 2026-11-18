@@ -1,0 +1,101 @@
+{
+ "case": "forest_F1_north_edge_w7",
+ "file": "forest_F1_north_edge_w7.mp4",
+ "label": "descriptive demo, not eval-v1",
+ "encoder": "omni.videoencoding (NVENC H.264)",
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "frames_encoded": 565,
+ "hold_frames": 60,
+ "hold_seconds": 2.0,
+ "play_frames": 505,
+ "frames_failed": 0,
+ "mp4_boxes": {
+  "trun_samples": 565,
+  "fragments": 565,
+  "timescale": 30,
+  "duration": 565,
+  "codec": "avc1",
+  "samples": 0,
+  "seconds": 18.833333333333332,
+  "frames": 565
+ },
+ "seconds": 18.833333333333332,
+ "replay_end_time_code": 1008,
+ "replay_hz": 60.0,
+ "rt_subframes": 32,
+ "frame_mean_brightness_min_max": [
+  148.70818206661522,
+  150.7484022955247
+ ],
+ "layer": "results/m9_demo/video_v2/forest_F1_north_edge_w7.usda",
+ "layer_sha256": "1b025ea922cd3cd0b11d8e174f435edd5ac3ac826c5942a4e2dcb80d5959bbe1",
+ "layer_check": {
+  "time_codes_per_second": 60.0,
+  "samples": {
+   "pid": {
+    "time_codes": [
+     0,
+     252,
+     504,
+     756,
+     1008
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "pid_ppo": {
+    "time_codes": [
+     0,
+     252,
+     504,
+     756,
+     1008
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "ppo_direct": {
+    "time_codes": [
+     0,
+     252,
+     504,
+     756,
+     1008
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   }
+  },
+  "ok": true,
+  "wind_arrow_physics_schemas": []
+ },
+ "layout": "results/m9_demo/video_v2/forest_F1_north_edge_w7_layout.json",
+ "camera": "/World/M9Replay/CameraV2 (fixed)",
+ "overlay": "OpenCV, drawn by code on top of the render (not occluded by the scene)",
+ "tags_without_free_spot": 0,
+ "bytes": 26849072,
+ "sha256": "419b7b9ea27f042cf9e847414ec181fcbc396e82022c3adcaea4f6cb06426825",
+ "verified": true
+}

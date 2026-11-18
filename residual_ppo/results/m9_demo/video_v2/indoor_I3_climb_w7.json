@@ -1,0 +1,101 @@
+{
+ "case": "indoor_I3_climb_w7",
+ "file": "indoor_I3_climb_w7.mp4",
+ "label": "descriptive demo, not eval-v1",
+ "encoder": "omni.videoencoding (NVENC H.264)",
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "frames_encoded": 595,
+ "hold_frames": 60,
+ "hold_seconds": 2.0,
+ "play_frames": 535,
+ "frames_failed": 0,
+ "mp4_boxes": {
+  "trun_samples": 595,
+  "fragments": 595,
+  "timescale": 30,
+  "duration": 595,
+  "codec": "avc1",
+  "samples": 0,
+  "seconds": 19.833333333333332,
+  "frames": 595
+ },
+ "seconds": 19.833333333333332,
+ "replay_end_time_code": 1068,
+ "replay_hz": 60.0,
+ "rt_subframes": 32,
+ "frame_mean_brightness_min_max": [
+  93.588811406893,
+  95.10898791152263
+ ],
+ "layer": "results/m9_demo/video_v2/indoor_I3_climb_w7.usda",
+ "layer_sha256": "3b97e9f4db4e0062d726073a33cde493396b34cd0c77d752663c33818b2d6377",
+ "layer_check": {
+  "time_codes_per_second": 60.0,
+  "samples": {
+   "pid": {
+    "time_codes": [
+     0,
+     267,
+     534,
+     801,
+     1068
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "pid_ppo": {
+    "time_codes": [
+     0,
+     267,
+     534,
+     801,
+     1068
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "ppo_direct": {
+    "time_codes": [
+     0,
+     267,
+     534,
+     801,
+     1068
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   }
+  },
+  "ok": true,
+  "wind_arrow_physics_schemas": []
+ },
+ "layout": "results/m9_demo/video_v2/indoor_I3_climb_w7_layout.json",
+ "camera": "/World/M9Replay/CameraV2 (fixed)",
+ "overlay": "OpenCV, drawn by code on top of the render (not occluded by the scene)",
+ "tags_without_free_spot": 0,
+ "bytes": 30417553,
+ "sha256": "fcd2d34e6fe040b199c9d4e352656df63641ba1783f52f1b60e3901e1e6fa247",
+ "verified": true
+}

@@ -1,0 +1,101 @@
+{
+ "case": "forest_F2_sw_corner_w7",
+ "file": "forest_F2_sw_corner_w7.mp4",
+ "label": "descriptive demo, not eval-v1",
+ "encoder": "omni.videoencoding (NVENC H.264)",
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "frames_encoded": 589,
+ "hold_frames": 60,
+ "hold_seconds": 2.0,
+ "play_frames": 529,
+ "frames_failed": 0,
+ "mp4_boxes": {
+  "trun_samples": 589,
+  "fragments": 589,
+  "timescale": 30,
+  "duration": 589,
+  "codec": "avc1",
+  "samples": 0,
+  "seconds": 19.633333333333333,
+  "frames": 589
+ },
+ "seconds": 19.633333333333333,
+ "replay_end_time_code": 1056,
+ "replay_hz": 60.0,
+ "rt_subframes": 32,
+ "frame_mean_brightness_min_max": [
+  163.41215197402263,
+  165.59031426826132
+ ],
+ "layer": "results/m9_demo/video_v2/forest_F2_sw_corner_w7.usda",
+ "layer_sha256": "372544b9e22e13cae8b1b145c3a09d0306f8cb89c615a494f6a738bf6c5e18af",
+ "layer_check": {
+  "time_codes_per_second": 60.0,
+  "samples": {
+   "pid": {
+    "time_codes": [
+     0,
+     264,
+     528,
+     792,
+     1056
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "pid_ppo": {
+    "time_codes": [
+     0,
+     264,
+     528,
+     792,
+     1056
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   },
+   "ppo_direct": {
+    "time_codes": [
+     0,
+     264,
+     528,
+     792,
+     1056
+    ],
+    "max_abs_diff": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "flown_path_inactive": true
+   }
+  },
+  "ok": true,
+  "wind_arrow_physics_schemas": []
+ },
+ "layout": "results/m9_demo/video_v2/forest_F2_sw_corner_w7_layout.json",
+ "camera": "/World/M9Replay/CameraV2 (fixed)",
+ "overlay": "OpenCV, drawn by code on top of the render (not occluded by the scene)",
+ "tags_without_free_spot": 0,
+ "bytes": 27722484,
+ "sha256": "68d88c008203bad0bf2b1a760e957a2df83e6cfe178cda18d0e57388398590e5",
+ "verified": true
+}
