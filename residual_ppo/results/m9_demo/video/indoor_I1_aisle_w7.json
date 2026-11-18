@@ -1,0 +1,35 @@
+{
+ "case": "indoor_I1_aisle_w7",
+ "file": "indoor_I1_aisle_w7.mp4",
+ "encoder": "omni.videoencoding (NVENC H.264)",
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "frames_encoded": 505,
+ "frames_failed": 0,
+ "mp4_boxes": {
+  "trun_samples": 505,
+  "fragments": 505,
+  "timescale": 30,
+  "duration": 505,
+  "codec": "avc1",
+  "samples": 0,
+  "seconds": 16.833333333333332,
+  "frames": 505
+ },
+ "seconds": 16.833333333333332,
+ "replay_end_time_code": 1008,
+ "replay_hz": 60.0,
+ "frame_mean_brightness_min_max": [
+  97.77249469521605,
+  98.53609166023662
+ ],
+ "rt_subframes": 32,
+ "bytes": 28454346,
+ "sha256": "1bab77a81058f0e4a281bbdc0d80f9e673f33668f1e0868412ff40e93817c27e",
+ "camera": "/World/M9Replay/OverviewCamera (fixed)",
+ "overlay": "OpenCV putText, drawn by code",
+ "verified": true
+}

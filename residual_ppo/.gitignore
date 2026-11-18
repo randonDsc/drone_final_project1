@@ -27,3 +27,6 @@ results/m5/smoke_fly/
 
 # M5 smoke runs (test artifacts with model zips); evidence is condensed in results/m5/m5_runs.json
 runs/ppo_path/smoke_*/
+
+# M9 demo videos (large binaries; kept outside git; sha256 and frame facts are in the committed video/*.json)
+results/**/*.mp4

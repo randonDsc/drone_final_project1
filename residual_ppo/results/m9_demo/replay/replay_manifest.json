@@ -1,0 +1,581 @@
+{
+ "label": "descriptive demo, not eval-v1",
+ "hz": 60,
+ "colors": {
+  "pid": [
+   1.0,
+   0.45,
+   0.0
+  ],
+  "pid_ppo": [
+   0.1,
+   0.35,
+   0.95
+  ],
+  "ppo_direct": [
+   0.1,
+   0.75,
+   0.2
+  ]
+ },
+ "files": [
+  {
+   "case": "indoor_I1_aisle_calm",
+   "file": "indoor_I1_aisle_calm.usda",
+   "sha256": "5d2e0308240a23953ca4667664b1d7b6848ad90e52949057a9bd98b8eb80c059",
+   "size_bytes": 739519,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I1_aisle_calm__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I1_aisle_calm__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I1_aisle_calm__ppo_direct.npz"
+   },
+   "frames": 1009,
+   "seconds": 16.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -5.0202577114105225,
+     -7.087178468704224,
+     8.2
+    ],
+    "target": [
+     -5.0202577114105225,
+     1.9128215312957764,
+     2.2202574014663696
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "indoor_I1_aisle_w3p5",
+   "file": "indoor_I1_aisle_w3p5.usda",
+   "sha256": "37deca22025915a9840dd4fc0b9e815e79107dc48a77e45d89264cebcdaf0127",
+   "size_bytes": 738018,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I1_aisle_w3p5__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I1_aisle_w3p5__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I1_aisle_w3p5__ppo_direct.npz"
+   },
+   "frames": 1009,
+   "seconds": 16.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -5.1589601039886475,
+     -7.176172494888306,
+     8.2
+    ],
+    "target": [
+     -5.1589601039886475,
+     1.8238275051116943,
+     2.2006324529647827
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "indoor_I1_aisle_w7",
+   "file": "indoor_I1_aisle_w7.usda",
+   "sha256": "aee4a92c0ae7c0636113652cbddab97cd8b239ca3ad127424d43edd2222b6fd9",
+   "size_bytes": 736047,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I1_aisle_w7__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I1_aisle_w7__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I1_aisle_w7__ppo_direct.npz"
+   },
+   "frames": 1009,
+   "seconds": 16.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -5.65789794921875,
+     -7.082252502441406,
+     8.2
+    ],
+    "target": [
+     -5.65789794921875,
+     1.9177474975585938,
+     2.243296444416046
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "indoor_I2_uturn_calm",
+   "file": "indoor_I2_uturn_calm.usda",
+   "sha256": "84ffc52ec04a67ec153b766a184824e4568a982edfd2fbf865b0efbeb313968e",
+   "size_bytes": 839950,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I2_uturn_calm__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I2_uturn_calm__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I2_uturn_calm__ppo_direct.npz"
+   },
+   "frames": 1153,
+   "seconds": 19.2,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -9.053935766220093,
+     -5.751486778259277,
+     8.2
+    ],
+    "target": [
+     -0.05393576622009277,
+     -5.751486778259277,
+     2.026936948299408
+    ],
+    "focal_mm": 14.266436496398759
+   }
+  },
+  {
+   "case": "indoor_I2_uturn_w3p5",
+   "file": "indoor_I2_uturn_w3p5.usda",
+   "sha256": "1972dc0f21bbbbdb8280f0bea0e00916df0dd626718058ba2be9758080be2d59",
+   "size_bytes": 838144,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I2_uturn_w3p5__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I2_uturn_w3p5__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I2_uturn_w3p5__ppo_direct.npz"
+   },
+   "frames": 1153,
+   "seconds": 19.2,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -9.001213550567627,
+     -5.598264813423157,
+     8.2
+    ],
+    "target": [
+     -0.0012135505676269531,
+     -5.598264813423157,
+     2.026754915714264
+    ],
+    "focal_mm": 14.679730761983171
+   }
+  },
+  {
+   "case": "indoor_I2_uturn_w7",
+   "file": "indoor_I2_uturn_w7.usda",
+   "sha256": "6235a2c7669ff4663028f05aebdd520f378512469a52ea99ab131db29755e897",
+   "size_bytes": 836681,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I2_uturn_w7__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I2_uturn_w7__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I2_uturn_w7__ppo_direct.npz"
+   },
+   "frames": 1153,
+   "seconds": 19.2,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -9.026107549667358,
+     -5.489749312400818,
+     8.2
+    ],
+    "target": [
+     -0.0261075496673584,
+     -5.489749312400818,
+     2.0376976132392883
+    ],
+    "focal_mm": 14.688907905261805
+   }
+  },
+  {
+   "case": "indoor_I3_climb_calm",
+   "file": "indoor_I3_climb_calm.usda",
+   "sha256": "cba77d6b72e7efaf51db639c4232117dd4ff24f2604b2cb9e8817c86d57bbade",
+   "size_bytes": 775488,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I3_climb_calm__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I3_climb_calm__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I3_climb_calm__ppo_direct.npz"
+   },
+   "frames": 1069,
+   "seconds": 17.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     2.603948735609287,
+     -5.916199236381345,
+     8.2
+    ],
+    "target": [
+     4.579558491706848,
+     2.864288568496704,
+     2.5044496655464172
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "indoor_I3_climb_w3p5",
+   "file": "indoor_I3_climb_w3p5.usda",
+   "sha256": "fc3fe758b15547d70f5d29804b2e2bf67e4d04d32517e4eedc53f1d0a7520dba",
+   "size_bytes": 775204,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I3_climb_w3p5__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I3_climb_w3p5__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I3_climb_w3p5__ppo_direct.npz"
+   },
+   "frames": 1069,
+   "seconds": 17.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     2.6961605781462135,
+     -5.787093549239927,
+     8.2
+    ],
+    "target": [
+     4.671770334243774,
+     2.9933942556381226,
+     2.4883965253829956
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "indoor_I3_climb_w7",
+   "file": "indoor_I3_climb_w7.usda",
+   "sha256": "dfe26849338c04fd073ec5820873ddc96aab29e6043c9d76166503ba313c79d1",
+   "size_bytes": 775843,
+   "sources": {
+    "pid": "results/m9_demo/flights/indoor/indoor_I3_climb_w7__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/indoor/indoor_I3_climb_w7__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/indoor/indoor_I3_climb_w7__ppo_direct.npz"
+   },
+   "frames": 1069,
+   "seconds": 17.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     3.037928366079563,
+     -5.798313289153867,
+     8.2
+    ],
+    "target": [
+     5.013538122177124,
+     2.982174515724182,
+     2.512978494167328
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "forest_F1_north_edge_calm",
+   "file": "forest_F1_north_edge_calm.usda",
+   "sha256": "49abff88fe0afb2701088293e897499a1bf0e13f859e2ca48974421311650933",
+   "size_bytes": 739610,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F1_north_edge_calm__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F1_north_edge_calm__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F1_north_edge_calm__ppo_direct.npz"
+   },
+   "frames": 1009,
+   "seconds": 16.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -3.123021960258484,
+     14.543570518493652,
+     9.175970494747162
+    ],
+    "target": [
+     7.876978039741516,
+     14.543570518493652,
+     2.175970494747162
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "forest_F1_north_edge_w3p5",
+   "file": "forest_F1_north_edge_w3p5.usda",
+   "sha256": "add2036435a214cb937a3f7a7c9fbf037fe3efdd537e864a575f0c950cf7c5e4",
+   "size_bytes": 739256,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F1_north_edge_w3p5__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F1_north_edge_w3p5__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F1_north_edge_w3p5__ppo_direct.npz"
+   },
+   "frames": 1009,
+   "seconds": 16.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -3.1103886496275663,
+     14.418477535247803,
+     9.2004354596138
+    ],
+    "target": [
+     7.889611350372434,
+     14.418477535247803,
+     2.2004354596138
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "forest_F1_north_edge_w7",
+   "file": "forest_F1_north_edge_w7.usda",
+   "sha256": "183b27078f5d5cf6eba6429e3deba62070aaf124e86fdef537c43dfa9d18eda4",
+   "size_bytes": 737642,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F1_north_edge_w7__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F1_north_edge_w7__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F1_north_edge_w7__ppo_direct.npz"
+   },
+   "frames": 1009,
+   "seconds": 16.8,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -3.110551506280899,
+     13.918736934661865,
+     9.19704294204712
+    ],
+    "target": [
+     7.889448493719101,
+     13.918736934661865,
+     2.197042942047119
+    ],
+    "focal_mm": 8.0
+   }
+  },
+  {
+   "case": "forest_F2_sw_corner_calm",
+   "file": "forest_F2_sw_corner_calm.usda",
+   "sha256": "9d07775c68ebe59fd6392289bc07b6d91cd2243797faec1386d5adf768de9f2a",
+   "size_bytes": 779857,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F2_sw_corner_calm__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F2_sw_corner_calm__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F2_sw_corner_calm__ppo_direct.npz"
+   },
+   "frames": 1057,
+   "seconds": 17.6,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -3.610874265432358,
+     2.0260963439941406,
+     9.169282913208008
+    ],
+    "target": [
+     -3.610874265432358,
+     -8.97390365600586,
+     2.169282913208008
+    ],
+    "focal_mm": 18.78426923583526
+   }
+  },
+  {
+   "case": "forest_F2_sw_corner_w3p5",
+   "file": "forest_F2_sw_corner_w3p5.usda",
+   "sha256": "8cc4edbdb6ce1ded049d085ce9a89aca1172fd2c9015b697d6c207b011e9194b",
+   "size_bytes": 780218,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F2_sw_corner_w3p5__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F2_sw_corner_w3p5__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F2_sw_corner_w3p5__ppo_direct.npz"
+   },
+   "frames": 1057,
+   "seconds": 17.6,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -3.5212128162384033,
+     1.9536399841308594,
+     9.128211200237274
+    ],
+    "target": [
+     -3.5212128162384033,
+     -9.04636001586914,
+     2.128211200237274
+    ],
+    "focal_mm": 18.765820305995618
+   }
+  },
+  {
+   "case": "forest_F2_sw_corner_w7",
+   "file": "forest_F2_sw_corner_w7.usda",
+   "sha256": "4019c9940bee4a8300992ca2c2500f9f4c1ca88f346f1d1b627e725a03807a59",
+   "size_bytes": 779491,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F2_sw_corner_w7__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F2_sw_corner_w7__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F2_sw_corner_w7__ppo_direct.npz"
+   },
+   "frames": 1057,
+   "seconds": 17.6,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -3.365223228931427,
+     1.9313452243804932,
+     9.15242314338684
+    ],
+    "target": [
+     -3.365223228931427,
+     -9.068654775619507,
+     2.152423143386841
+    ],
+    "focal_mm": 18.310017239921546
+   }
+  },
+  {
+   "case": "forest_F3_weave_calm",
+   "file": "forest_F3_weave_calm.usda",
+   "sha256": "cbc3526dc02366f31d07124805236e56caa3aaf54238974def5aa37fe56bf46b",
+   "size_bytes": 666638,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F3_weave_calm__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F3_weave_calm__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F3_weave_calm__ppo_direct.npz"
+   },
+   "frames": 907,
+   "seconds": 15.1,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -10.821505069732666,
+     -1.285598635673523,
+     8.512665152549744
+    ],
+    "target": [
+     0.17849493026733398,
+     -1.285598635673523,
+     1.5126651525497437
+    ],
+    "focal_mm": 17.73050703470978
+   }
+  },
+  {
+   "case": "forest_F3_weave_w3p5",
+   "file": "forest_F3_weave_w3p5.usda",
+   "sha256": "f60f8da282e291a2196e4502dffc8e17007661f00702e78876c77d2bf44c9796",
+   "size_bytes": 667223,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F3_weave_w3p5__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F3_weave_w3p5__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F3_weave_w3p5__ppo_direct.npz"
+   },
+   "frames": 907,
+   "seconds": 15.1,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -10.78243021965027,
+     -1.3897518515586853,
+     8.5128653049469
+    ],
+    "target": [
+     0.21756978034973162,
+     -1.3897518515586853,
+     1.5128653049468994
+    ],
+    "focal_mm": 18.060923036046866
+   }
+  },
+  {
+   "case": "forest_F3_weave_w7",
+   "file": "forest_F3_weave_w7.usda",
+   "sha256": "5dbf3d4207e60026a1316d060b3c7a9e1573005528906e2bbc1adbdaf7e71bc6",
+   "size_bytes": 667391,
+   "sources": {
+    "pid": "results/m9_demo/flights/forest/forest_F3_weave_w7__pid.npz",
+    "pid_ppo": "results/m9_demo/flights/forest/forest_F3_weave_w7__pid_ppo.npz",
+    "ppo_direct": "results/m9_demo/flights/forest/forest_F3_weave_w7__ppo_direct.npz"
+   },
+   "frames": 907,
+   "seconds": 15.1,
+   "schemas_removed": {
+    "pid": 38,
+    "pid_ppo": 38,
+    "ppo_direct": 38
+   },
+   "camera": {
+    "position": [
+     -10.812886476516724,
+     -1.498511254787445,
+     8.51534390449524
+    ],
+    "target": [
+     0.18711352348327637,
+     -1.498511254787445,
+     1.5153439044952393
+    ],
+    "focal_mm": 17.807869884159125
+   }
+  }
+ ]
+}

@@ -1,0 +1,221 @@
+{
+ "case": "forest_F3_weave_w7",
+ "layer_stack": [
+  "forest_F3_weave_w7.usda",
+  "forest.usd"
+ ],
+ "iris_active": false,
+ "samples": {
+  "pid": {
+   "rows": [
+    {
+     "time_code": 0,
+     "t_s": 0.0,
+     "npz_position": [
+      -4.698382377624512,
+      -4.056976318359375,
+      1.5256437063217163
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 226,
+     "t_s": 3.7666666666666666,
+     "npz_position": [
+      -2.503464698791504,
+      -3.23232102394104,
+      1.4980871677398682
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 453,
+     "t_s": 7.55,
+     "npz_position": [
+      2.1893422603607178,
+      -1.6957123279571533,
+      1.5054875612258911
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 680,
+     "t_s": 11.333333333333334,
+     "npz_position": [
+      4.933159828186035,
+      0.7126913666725159,
+      1.5019776821136475
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 906,
+     "t_s": 15.1,
+     "npz_position": [
+      4.983598232269287,
+      1.0823287963867188,
+      1.4993855953216553
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    }
+   ],
+   "physics_schemas_left": []
+  },
+  "pid_ppo": {
+   "rows": [
+    {
+     "time_code": 0,
+     "t_s": 0.0,
+     "npz_position": [
+      -4.698382377624512,
+      -4.056976318359375,
+      1.5256437063217163
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 226,
+     "t_s": 3.7666666666666666,
+     "npz_position": [
+      -2.557189464569092,
+      -2.2902979850769043,
+      1.5273840427398682
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 453,
+     "t_s": 7.55,
+     "npz_position": [
+      2.0840048789978027,
+      -1.3123726844787598,
+      1.51323401927948
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 680,
+     "t_s": 11.333333333333334,
+     "npz_position": [
+      4.917860507965088,
+      0.9642224311828613,
+      1.5033923387527466
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 906,
+     "t_s": 15.1,
+     "npz_position": [
+      4.99233865737915,
+      1.0521876811981201,
+      1.4997578859329224
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    }
+   ],
+   "physics_schemas_left": []
+  },
+  "ppo_direct": {
+   "rows": [
+    {
+     "time_code": 0,
+     "t_s": 0.0,
+     "npz_position": [
+      -4.698382377624512,
+      -4.056976318359375,
+      1.5256437063217163
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 226,
+     "t_s": 3.7666666666666666,
+     "npz_position": [
+      -2.651494026184082,
+      -2.371877908706665,
+      1.5347543954849243
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 453,
+     "t_s": 7.55,
+     "npz_position": [
+      2.046104907989502,
+      -1.3390445709228516,
+      1.4728988409042358
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 680,
+     "t_s": 11.333333333333334,
+     "npz_position": [
+      4.921156406402588,
+      1.0663524866104126,
+      1.5426803827285767
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    },
+    {
+     "time_code": 906,
+     "t_s": 15.1,
+     "npz_position": [
+      5.002674579620361,
+      0.949196994304657,
+      1.5459792613983154
+     ],
+     "usd_translate_equal": true,
+     "usd_orient_equal": true,
+     "composed_body_world_equal": true,
+     "composed_max_abs_diff": 0.0
+    }
+   ],
+   "physics_schemas_left": []
+  }
+ },
+ "result": "PASS"
+}

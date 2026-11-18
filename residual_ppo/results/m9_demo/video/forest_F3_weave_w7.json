@@ -1,0 +1,35 @@
+{
+ "case": "forest_F3_weave_w7",
+ "file": "forest_F3_weave_w7.mp4",
+ "encoder": "omni.videoencoding (NVENC H.264)",
+ "fps": 30,
+ "size": [
+  1920,
+  1080
+ ],
+ "frames_encoded": 454,
+ "frames_failed": 0,
+ "mp4_boxes": {
+  "trun_samples": 454,
+  "fragments": 454,
+  "timescale": 30,
+  "duration": 454,
+  "codec": "avc1",
+  "samples": 0,
+  "seconds": 15.133333333333333,
+  "frames": 454
+ },
+ "seconds": 15.133333333333333,
+ "replay_end_time_code": 906,
+ "replay_hz": 60.0,
+ "frame_mean_brightness_min_max": [
+  148.8064715149177,
+  149.02110018004115
+ ],
+ "rt_subframes": 32,
+ "bytes": 24178184,
+ "sha256": "cdc48439cb3a4b651d534849148d642138b362189c6f08aa0ec62b50644dc9ad",
+ "camera": "/World/M9Replay/OverviewCamera (fixed)",
+ "overlay": "OpenCV putText, drawn by code",
+ "verified": true
+}
