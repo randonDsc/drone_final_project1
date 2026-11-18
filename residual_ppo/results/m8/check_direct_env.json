@@ -139,7 +139,111 @@
       }
     }
   ],
-  "passed": 8,
+  "limit_cycle": {
+    "bands": {
+      "amplitude_mps": [
+        0.05391200000000001,
+        0.08744400000000001
+      ],
+      "ratio": [
+        0.8265,
+        1.0977000000000001
+      ]
+    },
+    "measured_in_m8b_T1": {
+      "amplitude_mps": [
+        0.06739,
+        0.07287
+      ],
+      "ratio": [
+        0.9265,
+        0.9977
+      ]
+    },
+    "seeds": [
+      {
+        "seed": 400000,
+        "amplitude_110_120_mps": 0.06887444463411108,
+        "ratio": 0.9565999298560494,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.6172523961661343
+      },
+      {
+        "seed": 400001,
+        "amplitude_110_120_mps": 0.07056702210612038,
+        "ratio": 0.9454000241995101,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      },
+      {
+        "seed": 400002,
+        "amplitude_110_120_mps": 0.06738609917598236,
+        "ratio": 0.9373652181171357,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      },
+      {
+        "seed": 400003,
+        "amplitude_110_120_mps": 0.07286874295126136,
+        "ratio": 0.9976848317698843,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      },
+      {
+        "seed": 400004,
+        "amplitude_110_120_mps": 0.06843556854819965,
+        "ratio": 0.9264740031325459,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      },
+      {
+        "seed": 400005,
+        "amplitude_110_120_mps": 0.07254090933062789,
+        "ratio": 0.9756355854168508,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      },
+      {
+        "seed": 400006,
+        "amplitude_110_120_mps": 0.06753204688409159,
+        "ratio": 0.9348039956391648,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      },
+      {
+        "seed": 400007,
+        "amplitude_110_120_mps": 0.07045598706157134,
+        "ratio": 0.9657106046078897,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.6172523961661343
+      },
+      {
+        "seed": 400008,
+        "amplitude_110_120_mps": 0.07165867203021876,
+        "ratio": 0.9929816621059235,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.6172523961661343
+      },
+      {
+        "seed": 400009,
+        "amplitude_110_120_mps": 0.07008288025175147,
+        "ratio": 0.9501492137584605,
+        "stopped_reason": null,
+        "max_wind_mps": 0.0,
+        "dominant_pitch_period_s": 2.608917197452229
+      }
+    ]
+  },
+  "passed": 10,
   "checks_total": 10,
-  "result": "FAIL"
+  "result": "PASS"
 }
