@@ -67,6 +67,9 @@ TESTS = ["test_path_sac"]
 ASSETS = {
     "sim_scene/dij3d_boxes.usd": "copy",   # opened by hover_env.make_hover_sim
     "sim_asset/iris.usd": "check",         # already on Claire's branch; must stay identical
+    # M9 visual demo only (residual_ppo/demo/); never loaded by training or eval-v1. Built by the team's
+    # sim_scene/build_forest_scene.py from dij3d_boxes.usd; its only local reference is ../sim_asset/iris.usd.
+    "sim_scene/forest.usd": "copy",
 }
 
 

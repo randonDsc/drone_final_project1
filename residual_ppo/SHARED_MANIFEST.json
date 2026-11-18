@@ -4,7 +4,7 @@
   "source_path": "drone_code",
   "source_commit": "61d2722b260dcb467ab487cb24bf22f61d410a65",
   "identity": "git blob id (git hash-object, autocrlf-normalized)",
-  "copied_at": "2026-11-13T05:30:06+00:00",
+  "copied_at": "2026-11-18T03:00:23+00:00",
   "files": {
     "path_sac_env.py": "2a19c77eb4b503e83c649c0fcfa704aff852ab2d",
     "path_sac_policy.py": "8762796985f2547482b3c961f450fe6569dead8a",
@@ -34,6 +34,10 @@
     "sim_asset/iris.usd": {
       "blob_id": "003d97f30dfd6bb196e018a29a1743a1228528a3",
       "mode": "check"
+    },
+    "sim_scene/forest.usd": {
+      "blob_id": "67c4b69d87f468e2bd8e8735ffa30c4006f44c6c",
+      "mode": "copy"
     }
   }
 }
