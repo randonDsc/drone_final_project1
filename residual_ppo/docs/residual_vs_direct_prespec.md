@@ -532,3 +532,23 @@ inner-loop findings.**
   and pitch have ki = 0 in both arms.
 - Integrating at the substituted target instead would wind the xy integral to its 1.2 m/s² limit (80% of the cap)
   within 4–8 s at route speeds (plan section 8.1). Integrating on the reference would be a shadow PID.
+
+**A11 (Claire, 2026-11-17): a descriptive demo of the direct model ran BEFORE its protocol evaluation. A note, not
+an amendment: nothing in sections 3–9 changes.**
+- **What ran (Confirmed).** The M9 visual demo (`residual_ppo/demo/`, results `results/m9_demo/`) flew the final
+  direct model (`ppo_direct_s0_1p5m`), PID and PID + PPO residual (`ppo_s0_1p5m` final) on 6 hand-placed tracks in
+  two scenes with ACTIVE obstacles (the training warehouse `dij3d_boxes.usd` and the team's `forest.usd`), at 3 fixed
+  winds (calm, 3.5 and 7 m/s mean; one direction per track), one flight per controller and case: 54 flights.
+- **Not protocol eval-v1 and not this pre-specification's evaluation.** Different scenes (obstacles active), fixed
+  hand-placed tracks instead of the eval scenarios, fixed winds instead of the profiles, n = 1 per cell, no
+  statistics. Seeds were 600000–600017 (cases), 600100–600102 (winds) and 600900–600901 (in-scene checks); **no
+  eval seed (300000–300029) and no validation seed (400000–400009) was used by the direct model**, so the
+  evaluation's flights remain unseen. The demo's numbers are not inputs to P1′ or to any endpoint in section 4.
+- **What has now been seen (stated so the record is complete).** In the demo, the direct model flew all 18 cases
+  without a failure or an obstacle contact, with a larger position RMSE than the residual in all 18 cases and a
+  smaller one than PID in 17 of 18 (the exception: F1 north edge, calm, 0.125 vs 0.118 m). That is descriptive, on different tasks and conditions, and does not bear on P1′ (a)–(c):
+  the demo has no strong_range or beyond_strong wind, and it did not compute `accel_cap_binding_frac`.
+- **No change to P1′, the endpoints, the profile roles, the falsification rules (sections 6–7), A1–A10 or the
+  frozen protocol files.** The direct adapter written for the demo (`demo/direct_controller.py`: contract checked
+  before loading, DirectEnv required, deterministic) is meant to be reused by the direct eval runner (section 8 item
+  2, option (b)), which does not exist yet.

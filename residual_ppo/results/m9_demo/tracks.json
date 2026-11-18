@@ -1,0 +1,402 @@
+{
+ "label": "descriptive demo, not eval-v1",
+ "note": "no controller perceives obstacles",
+ "track_limits": {
+  "speed": 1.5,
+  "acceleration": 0.55,
+  "lateral_acceleration": 0.6,
+  "vertical_speed": 1.0,
+  "corner_radius": 0.8,
+  "start_hold": 0.5,
+  "end_hold": 3.0,
+  "spacing": 0.05
+ },
+ "full_stage_ranges": {
+  "speed_range": [
+   1.0,
+   2.0
+  ],
+  "acceleration_range": [
+   0.5,
+   0.6
+  ],
+  "length_range": [
+   4.0,
+   16.0
+  ],
+  "height_change_range": [
+   0.0,
+   2.5
+  ],
+  "waypoint_count_range": [
+   3,
+   6
+  ],
+  "turn_degrees_range": [
+   30.0,
+   150.0
+  ],
+  "corner_radius_range": [
+   0.0,
+   1.0
+  ],
+  "height_range": [
+   1.2,
+   4.8
+  ]
+ },
+ "scenes": {
+  "indoor": {
+   "geometry_file": "geometry_indoor.json",
+   "wind_label": "artificial uniform disturbance (no sheltering)",
+   "tracks": {
+    "I1_aisle": {
+     "label": "straight down the west aisle, slight climb",
+     "points": [
+      [
+       -5.0,
+       -6.0,
+       2.0
+      ],
+      [
+       -5.0,
+       9.8,
+       2.4
+      ]
+     ],
+     "min_clearance_required_m": 2.0,
+     "min_clearance_m": 3.657220561153037,
+     "closest_obstacle": "/World/BoxWarehouse/SM_PaletteA_466_2927",
+     "closest_at": [
+      -5.0,
+      2.4731861198738176,
+      2.2145110410094637
+     ],
+     "clearance_ok": true,
+     "wind_direction_xy": [
+      -1.0,
+      0.0
+     ],
+     "wind_rule": {
+      "side": "left",
+      "hit_distance_m": {
+       "left": 5.3199997311753755,
+       "right": 14.40193975169537
+      }
+     },
+     "segments": 1,
+     "polyline_length_m": 15.80506248010428,
+     "path_length_m": 15.80506248010428,
+     "turns_deg": [],
+     "height_range_m": [
+      2.0,
+      2.4
+     ],
+     "height_change_m": 0.3999999999999999,
+     "duration_s": 16.763991080609912,
+     "max_ref_speed_mps": 1.5000000000000002,
+     "max_ref_accel_mps2": 0.5500000000000105,
+     "in_distribution_flags": []
+    },
+    "I2_uturn": {
+     "label": "U-turn through the south cross-aisle (two 90 deg turns)",
+     "points": [
+      [
+       -4.5,
+       -4.0,
+       2.0
+      ],
+      [
+       -4.5,
+       -7.5,
+       2.0
+      ],
+      [
+       4.5,
+       -7.5,
+       2.0
+      ],
+      [
+       4.5,
+       -4.0,
+       2.0
+      ]
+     ],
+     "min_clearance_required_m": 2.0,
+     "min_clearance_m": 3.589183306743996,
+     "closest_obstacle": "/World/BoxWarehouse/SM_SignCVer_139_1942",
+     "closest_at": [
+      4.5,
+      -4.0,
+      2.0
+     ],
+     "clearance_ok": true,
+     "wind_direction_xy": [
+      -0.0,
+      1.0
+     ],
+     "wind_rule": {
+      "side": "left",
+      "hit_distance_m": {
+       "left": 3.7365545542533467,
+       "right": 4.6899996893772915
+      }
+     },
+     "segments": 3,
+     "polyline_length_m": 16.0,
+     "path_length_m": 15.396899945308176,
+     "turns_deg": [
+      90.0,
+      90.0
+     ],
+     "height_range_m": [
+      2.0,
+      2.0
+     ],
+     "height_change_m": 0.0,
+     "duration_s": 19.191821076437922,
+     "max_ref_speed_mps": 1.5,
+     "max_ref_accel_mps2": 0.8114481206155805,
+     "in_distribution_flags": []
+    },
+    "I3_climb": {
+     "label": "zig-zag climb 1.5 -> 3.5 m in the east aisle",
+     "points": [
+      [
+       3.3,
+       -3.0,
+       1.5
+      ],
+      [
+       6.0,
+       1.0,
+       2.5
+      ],
+      [
+       3.3,
+       5.0,
+       3.5
+      ],
+      [
+       6.0,
+       9.0,
+       3.5
+      ]
+     ],
+     "min_clearance_required_m": 2.0,
+     "min_clearance_m": 2.156750625486076,
+     "closest_obstacle": "/World/BoxWarehouse/SM_RackShelf_01_1886",
+     "closest_at": [
+      6.0,
+      9.0,
+      3.5
+     ],
+     "clearance_ok": true,
+     "wind_direction_xy": [
+      0.9756097560975611,
+      -0.21951219512195125
+     ],
+     "wind_rule": {
+      "side": "right",
+      "hit_distance_m": {
+       "left": 4.541776546492478,
+       "right": 3.5767713677156383
+      }
+     },
+     "segments": 3,
+     "polyline_length_m": 14.682948629086747,
+     "path_length_m": 14.330119906663725,
+     "turns_deg": [
+      68.03869997965292,
+      68.03869997965292
+     ],
+     "height_range_m": [
+      1.5,
+      3.5
+     ],
+     "height_change_m": 2.0,
+     "duration_s": 17.776490033813364,
+     "max_ref_speed_mps": 1.5000000000000002,
+     "max_ref_accel_mps2": 0.8136997334131858,
+     "in_distribution_flags": []
+    }
+   }
+  },
+  "forest": {
+   "geometry_file": "geometry_forest.json",
+   "wind_label": "uniform wind field (no sheltering by trees)",
+   "tracks": {
+    "F1_north_edge": {
+     "label": "straight along the north edge of the forest",
+     "points": [
+      [
+       0.0,
+       14.5,
+       2.0
+      ],
+      [
+       15.8,
+       14.5,
+       2.4
+      ]
+     ],
+     "min_clearance_required_m": 2.0,
+     "min_clearance_m": 3.3015237854873116,
+     "closest_obstacle": "/World/Forest/Trees/Tree_34/Branch_1",
+     "closest_at": [
+      1.0965299684542587,
+      14.5,
+      2.0277602523659306
+     ],
+     "clearance_ok": true,
+     "wind_direction_xy": [
+      0.0,
+      -1.0
+     ],
+     "wind_rule": {
+      "side": "right",
+      "hit_distance_m": {
+       "left": null,
+       "right": 16.03497450738389
+      }
+     },
+     "segments": 1,
+     "polyline_length_m": 15.80506248010428,
+     "path_length_m": 15.80506248010428,
+     "turns_deg": [],
+     "height_range_m": [
+      2.0,
+      2.4
+     ],
+     "height_change_m": 0.3999999999999999,
+     "duration_s": 16.763991080609905,
+     "max_ref_speed_mps": 1.5000000000000002,
+     "max_ref_accel_mps2": 0.5500000000000124,
+     "in_distribution_flags": []
+    },
+    "F2_sw_corner": {
+     "label": "around the south-west corner of the forest (two ~45 deg turns)",
+     "points": [
+      [
+       -8.0,
+       -4.5,
+       2.0
+      ],
+      [
+       -8.0,
+       -9.5,
+       2.1
+      ],
+      [
+       -4.5,
+       -13.5,
+       2.2
+      ],
+      [
+       0.8,
+       -13.5,
+       2.3
+      ]
+     ],
+     "min_clearance_required_m": 2.0,
+     "min_clearance_m": 2.6288949158736017,
+     "closest_obstacle": "/World/Forest/Trees/Tree_29/Branch_3",
+     "closest_at": [
+      -0.28794650495896734,
+      -13.5,
+      2.2794727074536043
+     ],
+     "clearance_ok": true,
+     "wind_direction_xy": [
+      1.0,
+      0.0
+     ],
+     "wind_rule": {
+      "side": "left",
+      "hit_distance_m": {
+       "left": null,
+       "right": null
+      }
+     },
+     "segments": 3,
+     "polyline_length_m": 15.617956756300229,
+     "path_length_m": 15.455808751503644,
+     "turns_deg": [
+      41.185925165709655,
+      48.81407483429036
+     ],
+     "height_range_m": [
+      2.0,
+      2.3
+     ],
+     "height_change_m": 0.2999999999999998,
+     "duration_s": 17.577522118676242,
+     "max_ref_speed_mps": 1.5000000000000002,
+     "max_ref_accel_mps2": 0.7560418162857879,
+     "in_distribution_flags": []
+    },
+    "F3_weave": {
+     "label": "S-curve weaving ~6 m into the forest between trunks and branches at 1.5 m (ends inside)",
+     "points": [
+      [
+       -4.6,
+       -4.0,
+       1.5
+      ],
+      [
+       -1.5,
+       -1.2,
+       1.5
+      ],
+      [
+       3.0,
+       -1.2,
+       1.5
+      ],
+      [
+       5.0,
+       1.2,
+       1.5
+      ]
+     ],
+     "min_clearance_required_m": 1.0,
+     "min_clearance_m": 1.2144317162007652,
+     "closest_obstacle": "/World/Forest/Trees/Tree_30/Trunk",
+     "closest_at": [
+      4.366871284992164,
+      0.4402455419905962,
+      1.5
+     ],
+     "clearance_ok": true,
+     "wind_direction_xy": [
+      0.0,
+      -1.0
+     ],
+     "wind_rule": {
+      "side": "right",
+      "hit_distance_m": {
+       "left": null,
+       "right": 8.359825797145715
+      }
+     },
+     "segments": 3,
+     "polyline_length_m": 11.801419585203744,
+     "path_length_m": 11.630987648650262,
+     "turns_deg": [
+      42.08916217383224,
+      50.19442890773481
+     ],
+     "height_range_m": [
+      1.5,
+      1.5
+     ],
+     "height_change_m": 0.0,
+     "duration_s": 15.06623947606941,
+     "max_ref_speed_mps": 1.5000000000000002,
+     "max_ref_accel_mps2": 0.759704449744473,
+     "in_distribution_flags": []
+    }
+   }
+  }
+ }
+}

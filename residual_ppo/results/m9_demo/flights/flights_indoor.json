@@ -1,0 +1,1804 @@
+{
+ "meta": {
+  "label": "descriptive demo, not eval-v1",
+  "note": "no controller perceives obstacles",
+  "wind_label": "artificial uniform disturbance (no sheltering)",
+  "wind_direction_rule": "crosswind toward obstacles (worst side): perpendicular to the main leg, toward the nearer obstacle along that perpendicular",
+  "scene": "indoor",
+  "usd": "sim_scene/dij3d_boxes.usd",
+  "checks_line": "22/22 OK (18 modules + 1 tests + 3 assets) -> PASS",
+  "git": {
+   "head": "548d22f14a57ad2624887e15006333cd70518407",
+   "branch": "claire/drone-simulation",
+   "residual_ppo_status": [
+    "M residual_ppo/results/m8/check_direct_env.json",
+    "?? residual_ppo/demo/",
+    "?? residual_ppo/notebooks/",
+    "?? residual_ppo/results/m8/hold_diagnostic_vx1.csv",
+    "?? residual_ppo/results/m8/hold_diagnostic_zero.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T1.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T2.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T3.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T4.csv",
+    "?? residual_ppo/results/m9_demo/",
+    "?? residual_ppo/runs/",
+    "?? residual_ppo/tests/test_m9_demo.py"
+   ]
+  },
+  "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+  "hardware": {
+   "platform": "Windows-11-10.0.26200-SP0",
+   "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+   "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+  },
+  "versions": {
+   "python": "3.12.14",
+   "numpy": "2.3.1",
+   "numpy_file": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+   "gymnasium": "1.2.3",
+   "gymnasium_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py",
+   "stable_baselines3": "2.7.0",
+   "stable_baselines3_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py",
+   "torch": "2.14.1+cpu",
+   "torch_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py",
+   "torch_cuda_available": false,
+   "torch_num_threads": 8,
+   "sb3_auto_device": "cpu"
+  },
+  "torch_import_pin": {
+   "pinned": true,
+   "meta_path_first": "_PinTorchFinder",
+   "probe": "torch._subclasses.schema_check_mode",
+   "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+   "probe_inside_kit_torch": true
+  },
+  "torch_origins_start": {
+   "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+   "torch_modules_with_file": 1046,
+   "outside_package_dir": 0,
+   "outside_examples": [],
+   "synthetic_file_attributes": [
+    [
+     "torch.ops",
+     "_ops.py"
+    ],
+    [
+     "torch.classes",
+     "_classes.py"
+    ]
+   ],
+   "modules_from_ml_archive": 1,
+   "ml_archive_examples": [
+    "omni.isaac.ml_archive"
+   ],
+   "modules_from_ml_archive_pip_prebundle": 0,
+   "prebundle_examples": []
+  },
+  "torch_origins_end": {
+   "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+   "torch_modules_with_file": 1046,
+   "outside_package_dir": 0,
+   "outside_examples": [],
+   "synthetic_file_attributes": [
+    [
+     "torch.ops",
+     "_ops.py"
+    ],
+    [
+     "torch.classes",
+     "_classes.py"
+    ]
+   ],
+   "modules_from_ml_archive": 1,
+   "ml_archive_examples": [
+    "omni.isaac.ml_archive"
+   ],
+   "modules_from_ml_archive_pip_prebundle": 0,
+   "prebundle_examples": []
+  },
+  "torch_origin_clean": true,
+  "total_mass_kg": 1.6186144351959229,
+  "physics_dt": 0.008333333333333333,
+  "decimation": 12,
+  "controllers": {
+   "pid": {
+    "name": "pid",
+    "model": null,
+    "contract": null,
+    "device": null,
+    "action": "np.zeros(4, float32) at every decision (team PID-only)",
+    "equivalence": "M2.2: bit-exact equal to a pure PID loop (results/m2/zero_residual.json)"
+   },
+   "pid_ppo": {
+    "name": "pid_ppo",
+    "model": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip",
+    "model_sha256": "6b9e199310d1a93b4ada7c3e7b99c4341d89de3b085e0720e4c7eb29b4756234",
+    "saved_sb3_version": "2.7.0",
+    "num_timesteps": 1501184,
+    "runtime_sb3_version": "2.7.0",
+    "loaded_num_timesteps": 1501184,
+    "contract": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/ppo_contract.json",
+    "contract_sha256": "eb7dd8fe6231112c958781640637b5b1b70c0b2bb8d4cb9d47bee4f977a84473",
+    "contract_rule": "ppo_contract.json 'policy' == policy_contract()",
+    "device": "cpu",
+    "deterministic": true,
+    "spaces_checked_against_env": true,
+    "action": "PPO.predict(obs, deterministic=True)[0]"
+   },
+   "ppo_direct": {
+    "name": "ppo_direct",
+    "model": "residual_ppo/runs/ppo_direct/ppo_direct_s0_1p5m/final_model.zip",
+    "model_sha256": "94e5ea555386e1fc427bdc71f7e53c779eeaba1edff8c8cc26c0a009e2ad5100",
+    "saved_sb3_version": "2.7.0",
+    "num_timesteps": 1501184,
+    "runtime_sb3_version": "2.7.0",
+    "loaded_num_timesteps": 1501184,
+    "contract": "residual_ppo/runs/ppo_direct/ppo_direct_s0_1p5m/ppo_contract.json",
+    "contract_sha256": "2cc10ec10e74fb6e6a3b2777adb57ed296f100f1e44bdb9f48caba6b8f485964",
+    "contract_rule": "ppo_contract.json 'policy' == direct_ppo_config.policy_contract()",
+    "device": "cpu",
+    "deterministic": true,
+    "spaces_checked_against_env": true,
+    "env_type_checked": true,
+    "action": "PPO.predict(obs, deterministic=True)[0] -> DirectCore (velocity + yaw command)"
+   }
+  },
+  "contract_proof": {
+   "direct adapter refuses ppo_s0_1p5m": {
+    "refused": true,
+    "message": "ppo_contract.json policy group differs from direct_ppo_config.policy_contract(): ['action_mapping', 'arm']"
+   },
+   "pid_ppo adapter refuses ppo_direct_s0_1p5m": {
+    "refused": true,
+    "message": "ppo_contract.json policy group differs from policy_contract(): ['action_mapping', 'arm']"
+   }
+  },
+  "track_limits": {
+   "speed": 1.5,
+   "acceleration": 0.55,
+   "lateral_acceleration": 0.6,
+   "vertical_speed": 1.0,
+   "corner_radius": 0.8,
+   "start_hold": 0.5,
+   "end_hold": 3.0,
+   "spacing": 0.05
+  },
+  "wind_levels": {
+   "calm": {
+    "speed": 0.0,
+    "gust_scale": 0.0,
+    "seed": 600100
+   },
+   "w3p5": {
+    "speed": 3.5,
+    "gust_scale": 0.75,
+    "seed": 600101
+   },
+   "w7": {
+    "speed": 7.0,
+    "gust_scale": 0.75,
+    "seed": 600102
+   }
+  },
+  "collision_half_size": [
+   0.25,
+   0.25,
+   0.06
+  ],
+  "geometry_file": "geometry_indoor.json",
+  "geometry_sha256": "837a73d553ba0ef2461bd716f27c0192cbd06733cfe700222dd50e525ae1e491",
+  "tracks": {
+   "I1_aisle": {
+    "label": "straight down the west aisle, slight climb",
+    "points": [
+     [
+      -5.0,
+      -6.0,
+      2.0
+     ],
+     [
+      -5.0,
+      9.8,
+      2.4
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 3.657220561153037,
+    "closest_obstacle": "/World/BoxWarehouse/SM_PaletteA_466_2927",
+    "closest_at": [
+     -5.0,
+     2.4731861198738176,
+     2.2145110410094637
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     -1.0,
+     0.0
+    ],
+    "wind_rule": {
+     "side": "left",
+     "hit_distance_m": {
+      "left": 5.3199997311753755,
+      "right": 14.40193975169537
+     }
+    },
+    "segments": 1,
+    "polyline_length_m": 15.80506248010428,
+    "path_length_m": 15.80506248010428,
+    "turns_deg": [],
+    "height_range_m": [
+     2.0,
+     2.4
+    ],
+    "height_change_m": 0.3999999999999999,
+    "duration_s": 16.763991080609912,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.5500000000000105,
+    "in_distribution_flags": []
+   },
+   "I2_uturn": {
+    "label": "U-turn through the south cross-aisle (two 90 deg turns)",
+    "points": [
+     [
+      -4.5,
+      -4.0,
+      2.0
+     ],
+     [
+      -4.5,
+      -7.5,
+      2.0
+     ],
+     [
+      4.5,
+      -7.5,
+      2.0
+     ],
+     [
+      4.5,
+      -4.0,
+      2.0
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 3.589183306743996,
+    "closest_obstacle": "/World/BoxWarehouse/SM_SignCVer_139_1942",
+    "closest_at": [
+     4.5,
+     -4.0,
+     2.0
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     -0.0,
+     1.0
+    ],
+    "wind_rule": {
+     "side": "left",
+     "hit_distance_m": {
+      "left": 3.7365545542533467,
+      "right": 4.6899996893772915
+     }
+    },
+    "segments": 3,
+    "polyline_length_m": 16.0,
+    "path_length_m": 15.396899945308176,
+    "turns_deg": [
+     90.0,
+     90.0
+    ],
+    "height_range_m": [
+     2.0,
+     2.0
+    ],
+    "height_change_m": 0.0,
+    "duration_s": 19.191821076437922,
+    "max_ref_speed_mps": 1.5,
+    "max_ref_accel_mps2": 0.8114481206155805,
+    "in_distribution_flags": []
+   },
+   "I3_climb": {
+    "label": "zig-zag climb 1.5 -> 3.5 m in the east aisle",
+    "points": [
+     [
+      3.3,
+      -3.0,
+      1.5
+     ],
+     [
+      6.0,
+      1.0,
+      2.5
+     ],
+     [
+      3.3,
+      5.0,
+      3.5
+     ],
+     [
+      6.0,
+      9.0,
+      3.5
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 2.156750625486076,
+    "closest_obstacle": "/World/BoxWarehouse/SM_RackShelf_01_1886",
+    "closest_at": [
+     6.0,
+     9.0,
+     3.5
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     0.9756097560975611,
+     -0.21951219512195125
+    ],
+    "wind_rule": {
+     "side": "right",
+     "hit_distance_m": {
+      "left": 4.541776546492478,
+      "right": 3.5767713677156383
+     }
+    },
+    "segments": 3,
+    "polyline_length_m": 14.682948629086747,
+    "path_length_m": 14.330119906663725,
+    "turns_deg": [
+     68.03869997965292,
+     68.03869997965292
+    ],
+    "height_range_m": [
+     1.5,
+     3.5
+    ],
+    "height_change_m": 2.0,
+    "duration_s": 17.776490033813364,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.8136997334131858,
+    "in_distribution_flags": []
+   }
+  },
+  "pairing": {
+   "indoor_I1_aisle_calm": {
+    "seed": 600000,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 16.763991080609912,
+     "max_decisions": 168,
+     "wind_seed": 600100,
+     "wind_mean": [
+      -0.0,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.0,
+     "initial_state": {
+      "position": [
+       -5.044404659094856,
+       -6.066780648717795,
+       2.0081805676766207
+      ],
+      "orientation": [
+       0.9991385867994416,
+       -0.001369039920143751,
+       0.019219392459559267,
+       -0.036753571956984504
+      ],
+      "linear_velocity": [
+       0.04057811239514958,
+       0.05267872169394791,
+       -0.08227139432990871
+      ],
+      "angular_velocity": [
+       -0.0699032587992259,
+       -0.09371966513811579,
+       -0.05976300647511321
+      ]
+     },
+     "reset_state_sha256": "e1137c738ce57a510763d8a04382667b242e9a5e19f14e2a82672aae4e4d0ee5",
+     "initial_obs_sha256": "e4e55c9c9f74977f7985892cfc08911980cad9040eeab69fd78fee403cbb1363"
+    }
+   },
+   "indoor_I1_aisle_w3p5": {
+    "seed": 600001,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 16.763991080609912,
+     "max_decisions": 168,
+     "wind_seed": 600101,
+     "wind_mean": [
+      -3.5,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -4.980937245779544,
+       -6.095662386837924,
+       1.938861998885807
+      ],
+      "orientation": [
+       0.9996076616264242,
+       0.025893975201668994,
+       -0.008048833940577456,
+       0.007017203018631083
+      ],
+      "linear_velocity": [
+       0.08581185786877804,
+       0.09153851461970519,
+       -0.032135892715131203
+      ],
+      "angular_velocity": [
+       0.07719424720705781,
+       0.009672461383178593,
+       -0.029309446619068202
+      ]
+     },
+     "reset_state_sha256": "ea2701088a43cc83ed2bdf9dfd19dd53c6cbf79e479a8b42ffc65b238f7f133c",
+     "initial_obs_sha256": "56c58db78404fcbe73162e8091cf44fbbfcef901546c78dbb90ebeed29b5c6e5"
+    }
+   },
+   "indoor_I1_aisle_w7": {
+    "seed": 600002,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 16.763991080609912,
+     "max_decisions": 168,
+     "wind_seed": 600102,
+     "wind_mean": [
+      -7.0,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -5.060307482192122,
+       -5.9584041759117685,
+       2.0105504910883347
+      ],
+      "orientation": [
+       0.9995141496748664,
+       0.002852388145532811,
+       0.02458887985624222,
+       0.01893978534755676
+      ],
+      "linear_velocity": [
+       -0.004017811122445619,
+       0.052628898943158975,
+       -0.049834050590444524
+      ],
+      "angular_velocity": [
+       -0.02621248755492263,
+       0.03316649857301909,
+       -0.03078754071072709
+      ]
+     },
+     "reset_state_sha256": "0c7a522670d935b1ca93e5f9d0241d2c3cf9d83647a15768fe74c6645977a23f",
+     "initial_obs_sha256": "3b3824f585f964c86b9fc238c5178314f2564a7626d17a2674d4db18e4d421d8"
+    }
+   },
+   "indoor_I2_uturn_calm": {
+    "seed": 600003,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 19.191821076437922,
+     "max_decisions": 192,
+     "wind_seed": 600100,
+     "wind_mean": [
+      -0.0,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.0,
+     "initial_state": {
+      "position": [
+       -4.578388331002256,
+       -3.9316039995997625,
+       2.084210504042502
+      ],
+      "orientation": [
+       0.999846012262983,
+       -0.0046881354091226225,
+       -0.011849258386351525,
+       0.01206516572161318
+      ],
+      "linear_velocity": [
+       0.06867948963274043,
+       -0.08011561536644703,
+       0.023670102467270415
+      ],
+      "angular_velocity": [
+       0.08892072203227003,
+       -0.04773966091095488,
+       -0.0599673534272426
+      ]
+     },
+     "reset_state_sha256": "738aa6e2dc0739c84fe20573f5d14855459a7825b731d1b7c5270ec87d52cebf",
+     "initial_obs_sha256": "98bf5e978a32e9af1ed00962a96a55b52e02a7928abd08f73edd64de15f2afdb"
+    }
+   },
+   "indoor_I2_uturn_w3p5": {
+    "seed": 600004,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 19.191821076437922,
+     "max_decisions": 192,
+     "wind_seed": 600101,
+     "wind_mean": [
+      -0.0,
+      3.5,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -4.497245953560729,
+       -3.942047125843915,
+       1.981789143002658
+      ],
+      "orientation": [
+       0.998921314657406,
+       -0.025382116236651923,
+       -0.004566874317011493,
+       -0.03861475051636929
+      ],
+      "linear_velocity": [
+       -0.021858558347168433,
+       0.06972786194983457,
+       0.09452722718491766
+      ],
+      "angular_velocity": [
+       -0.03241432373806634,
+       0.07445559307388622,
+       0.010433833568290599
+      ]
+     },
+     "reset_state_sha256": "04fca42a1bb220a0f84f98235afb38ce5d81f9caf7ec72616e3a6fd7a5e87d23",
+     "initial_obs_sha256": "ee10df02678debe100b1e334338b4ea3065e03aa029c231923df102e5d1a9b02"
+    }
+   },
+   "indoor_I2_uturn_w7": {
+    "seed": 600005,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 19.191821076437922,
+     "max_decisions": 192,
+     "wind_seed": 600102,
+     "wind_mean": [
+      -0.0,
+      7.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -4.532428269822588,
+       -4.025145284514122,
+       1.9964988689925542
+      ],
+      "orientation": [
+       0.9992176641949104,
+       0.010354134422342568,
+       0.008484927811406157,
+       -0.03721367304186008
+      ],
+      "linear_velocity": [
+       -0.016090259715024716,
+       0.08629588245631623,
+       -0.059488225940223405
+      ],
+      "angular_velocity": [
+       0.03308661749834124,
+       0.042152755392613234,
+       0.06428363376611859
+      ]
+     },
+     "reset_state_sha256": "086b7d98d20dc244243e5347c6b2e3eaaaad20ca9c4e1a509d0cb24982cb932c",
+     "initial_obs_sha256": "dd724681b021c231ea83f185e0d2bbe8d5e6b7e743250539ffa2572522248d13"
+    }
+   },
+   "indoor_I3_climb_calm": {
+    "seed": 600006,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 17.776490033813364,
+     "max_decisions": 178,
+     "wind_seed": 600100,
+     "wind_mean": [
+      0.0,
+      -0.0,
+      0.0
+     ],
+     "gust_scale": 0.0,
+     "initial_state": {
+      "position": [
+       3.2186557079140274,
+       -3.0876739307455163,
+       1.4406224911223846
+      ],
+      "orientation": [
+       0.9996124199545385,
+       0.020984109992711324,
+       -0.014679531684559925,
+       -0.010917341707909464
+      ],
+      "linear_velocity": [
+       -0.036860317650324936,
+       -0.0245354281704111,
+       0.035952308120178744
+      ],
+      "angular_velocity": [
+       0.08711741524487618,
+       -0.04787200631606066,
+       0.056075376349442985
+      ]
+     },
+     "reset_state_sha256": "b57d2a6ccdd8688ffa70367ba30e560bf152c9e5365d8f50d4cf7d2af6295e17",
+     "initial_obs_sha256": "15d8f1d8099676202311257001c6b7cde88adb453f1783bdbfeba0557ea0c11a"
+    }
+   },
+   "indoor_I3_climb_w3p5": {
+    "seed": 600007,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 17.776490033813364,
+     "max_decisions": 178,
+     "wind_seed": 600101,
+     "wind_mean": [
+      3.414634146341464,
+      -0.7682926829268294,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       3.2007248353955324,
+       -2.9627470478422833,
+       1.4077914869691073
+      ],
+      "orientation": [
+       0.9993205826449699,
+       0.0161848288968879,
+       0.006354025536213356,
+       0.03249693485824653
+      ],
+      "linear_velocity": [
+       -0.054535667040280726,
+       -0.07363574701410061,
+       -0.009651262908872596
+      ],
+      "angular_velocity": [
+       0.024483971042806085,
+       0.011873120639420837,
+       0.04004205619744586
+      ]
+     },
+     "reset_state_sha256": "0f4695134ab05fb97ed23d06b025095b31349e0bd8c665cc0b4645e1f9310b1a",
+     "initial_obs_sha256": "fc85e4b800303ef4ac684549a097bcd2dbcb62a61197b3daafbeedc9a754172e"
+    }
+   },
+   "indoor_I3_climb_w7": {
+    "seed": 600008,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 17.776490033813364,
+     "max_decisions": 178,
+     "wind_seed": 600102,
+     "wind_mean": [
+      6.829268292682928,
+      -1.5365853658536588,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       3.297468164246132,
+       -2.9556638044723713,
+       1.481107476611466
+      ],
+      "orientation": [
+       0.9998138481331622,
+       -0.00045945198126560576,
+       0.015559077845100857,
+       -0.011400573741925699
+      ],
+      "linear_velocity": [
+       -0.07792629793347515,
+       -0.04895100405880773,
+       -0.04917021772159136
+      ],
+      "angular_velocity": [
+       -0.011780795673593386,
+       0.040618642202347205,
+       -0.030404515208603308
+      ]
+     },
+     "reset_state_sha256": "801160f83ecde0f8c6b2e67df4958297cea5aafc448d719db6a0c855849128f8",
+     "initial_obs_sha256": "49bc286c04a9fb8591cdde4e52c8d1534322c811199543ed6022f1fdd9aeed99"
+    }
+   }
+  },
+  "record_columns": [
+   "t",
+   "pos_x",
+   "pos_y",
+   "pos_z",
+   "quat_w",
+   "quat_x",
+   "quat_y",
+   "quat_z",
+   "vel_x",
+   "vel_y",
+   "vel_z",
+   "angvel_x",
+   "angvel_y",
+   "angvel_z",
+   "ref_pos_x",
+   "ref_pos_y",
+   "ref_pos_z",
+   "ref_vel_x",
+   "ref_vel_y",
+   "ref_vel_z",
+   "rotor_saturated"
+  ],
+  "record_hz": 60
+ },
+ "rows": [
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.833333333333075,
+   "position_rmse": 0.10009343045998938,
+   "cross_track_rmse": 0.03818009547547305,
+   "cross_track_max": 0.09241788773620871,
+   "max_deviation": 0.19376024117340354,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.6033769856541835,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 6.438459099997999,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600000,
+   "controller": "pid",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_calm__pid.npz",
+   "series_sha256": "c37f10cd70f585eb5b0b178d06c8c49fc99f172d3513fa4c8aff6e40f7fd5161"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.045236583678858196,
+   "cross_track_rmse": 0.03882807485876351,
+   "cross_track_max": 0.0825855776786663,
+   "max_deviation": 0.09507981035214047,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.0773933955601283,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.622550872126812,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.99144269998942,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600000,
+   "controller": "pid_ppo",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_calm__pid_ppo.npz",
+   "series_sha256": "a040fb46216e08490d9d8a4cae180c210642922a5c9e7d80490419ab4603c8ff"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.09768874985555137,
+   "cross_track_rmse": 0.08656769738468068,
+   "cross_track_max": 0.13062947767090827,
+   "max_deviation": 0.15761639344407413,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.40436770350095774,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5774313825491557,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.987029199997778,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600000,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_calm__ppo_direct.npz",
+   "series_sha256": "2c32385dcf551111480fff7353a5fac03d8b6a51a0f9563120ad1cc9fb21c427"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.28499630457144454,
+   "cross_track_rmse": 0.24197881149984962,
+   "cross_track_max": 0.3505630738072391,
+   "max_deviation": 0.5069311390773608,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.3670440145354084,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 6.230274100002134,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600001,
+   "controller": "pid",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_w3p5__pid.npz",
+   "series_sha256": "282c97084a6d80cf708efeac64bfc92520fe29f75a01c6c401d0ae1ca8efd4fe"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.07089119822052112,
+   "cross_track_rmse": 0.06786034743531598,
+   "cross_track_max": 0.12127884713216583,
+   "max_deviation": 0.1276158799036083,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.0771975637901396,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5774137458834985,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.8619599000085145,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600001,
+   "controller": "pid_ppo",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_w3p5__pid_ppo.npz",
+   "series_sha256": "417f6e7a858260397e4130b9aecd2a4fe45e8055744cf10dd2cc397bef358d36"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.1297951996617211,
+   "cross_track_rmse": 0.12323464546055501,
+   "cross_track_max": 0.17683068346872174,
+   "max_deviation": 0.18699009769168415,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.40639818242440623,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5325489588176398,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.744960099997115,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600001,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_w3p5__ppo_direct.npz",
+   "series_sha256": "e15d831089c34a1ba05f53894303d8f9d64856c2e674ce0f36733d9e1d24369d"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.9953560825175615,
+   "cross_track_rmse": 0.9756630572477035,
+   "cross_track_max": 1.3155953202071342,
+   "max_deviation": 1.3549935939925866,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.381753518673601,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.48267019999912,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600002,
+   "controller": "pid",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_w7__pid.npz",
+   "series_sha256": "ebd23bb294f754926651e2966fc3fb6e87d9aa174454017d99982108cc9dd2c0"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.16420653112823144,
+   "cross_track_rmse": 0.16230314223039155,
+   "cross_track_max": 0.22616789400775605,
+   "max_deviation": 0.22619093562187753,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1324674799328758,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.43526959887053,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.796695800003363,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600002,
+   "controller": "pid_ppo",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_w7__pid_ppo.npz",
+   "series_sha256": "c1634c4bc11c9d2404c7c9f2c2d7831cd1d0bff58a6a5f5acccf1a6d87d4d68b"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.2604012070117503,
+   "cross_track_rmse": 0.2527377180668408,
+   "cross_track_max": 0.34149561853843796,
+   "max_deviation": 0.3446646697472988,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.48959346603424775,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.3188611234324696,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 5.546914799997467,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600002,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I1_aisle_w7__ppo_direct.npz",
+   "series_sha256": "551ea9745faf553b2928627b18da7f64e2e9c38368e36bb9515fdad048cd813e"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 18.08333333333295,
+   "position_rmse": 0.18009435843475538,
+   "cross_track_rmse": 0.10246108610342983,
+   "cross_track_max": 0.2927156913567933,
+   "max_deviation": 0.403829488155578,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.464135709669483,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 6.488994200000889,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600003,
+   "controller": "pid",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_calm__pid.npz",
+   "series_sha256": "f1f22ec26fb43d6f9273242b29710566c07438296e86fdcd7f0f947d23294210"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.69166666666636,
+   "position_rmse": 0.05450748069486483,
+   "cross_track_rmse": 0.03956034207354665,
+   "cross_track_max": 0.12840738701779056,
+   "max_deviation": 0.12840738701779056,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1458781647185485,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5790105126706844,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 6.640490100005991,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600003,
+   "controller": "pid_ppo",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_calm__pid_ppo.npz",
+   "series_sha256": "be7535928dc7710aade32e7677dc4ca77841494d3182ffec00ec3bcf7aa9b8de"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.69166666666636,
+   "position_rmse": 0.11916776925767825,
+   "cross_track_rmse": 0.07016381287833842,
+   "cross_track_max": 0.1944004466213194,
+   "max_deviation": 0.24659589977321122,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.3708023636524255,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5499187173073143,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 7.554576400012593,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600003,
+   "controller": "ppo_direct",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_calm__ppo_direct.npz",
+   "series_sha256": "2881375c505ffd895d07689130e534584b919fea10a2dd29e6069d1c96c1750b"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.32610456117771514,
+   "cross_track_rmse": 0.17108107315248247,
+   "cross_track_max": 0.453531216834603,
+   "max_deviation": 0.7888719954173079,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.4472239994216363,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 7.225253199998406,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600004,
+   "controller": "pid",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_w3p5__pid.npz",
+   "series_sha256": "78d707337aae39fddbdcc31170251bc29b5cb73d30d6dc2ad12b10cedb4a6490"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.69166666666636,
+   "position_rmse": 0.07949319985049262,
+   "cross_track_rmse": 0.05865132527860637,
+   "cross_track_max": 0.17432688169564214,
+   "max_deviation": 0.20494664858364475,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1451566778123379,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5444838252394324,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 7.531158500001766,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600004,
+   "controller": "pid_ppo",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_w3p5__pid_ppo.npz",
+   "series_sha256": "38961ec303861c60faecb5b44cb6668ce559d197a9281b17da225c00ad74d450"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.69166666666636,
+   "position_rmse": 0.16320278400987764,
+   "cross_track_rmse": 0.10600800897083655,
+   "cross_track_max": 0.2205961730866454,
+   "max_deviation": 0.31313430030581535,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.39581445907242596,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.490104145337896,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 6.613882699995884,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600004,
+   "controller": "ppo_direct",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_w3p5__ppo_direct.npz",
+   "series_sha256": "b0996cd5388ce2138fa18abb7475e9519c70271220d85c8e40803270e0f8e43b"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 18.599999999999586,
+   "position_rmse": 0.8035295438897818,
+   "cross_track_rmse": 0.42138868478631286,
+   "cross_track_max": 1.2632125355504955,
+   "max_deviation": 1.5902027598028203,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.989714279672245,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 6.1454317000025185,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600005,
+   "controller": "pid",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_w7__pid.npz",
+   "series_sha256": "05b3b7ba5389762654563555a1eba55c2f6e3ec8fcc4b165f668723bc4d77921"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.69166666666636,
+   "position_rmse": 0.1332080976678188,
+   "cross_track_rmse": 0.09558240688717562,
+   "cross_track_max": 0.18784464909056048,
+   "max_deviation": 0.2878115187644189,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1492681136975686,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.484619255520228,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 6.403801399996155,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600005,
+   "controller": "pid_ppo",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_w7__pid_ppo.npz",
+   "series_sha256": "8e55e486029250f9a316edd6a66a63d4a495b639e37ed2b30db21b4e4b1bae53"
+  },
+  {
+   "decisions": 192,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.69166666666636,
+   "position_rmse": 0.2954989690742264,
+   "cross_track_rmse": 0.17461264339316243,
+   "cross_track_max": 0.31918215916446535,
+   "max_deviation": 0.599032290698323,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.46802141587249935,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.4850983166830436,
+   "flown_seconds": 19.19999999999955,
+   "env_step_wall_s": 6.925908800010802,
+   "scene": "indoor",
+   "track": "I2_uturn",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    -0.0,
+    1.0
+   ],
+   "case_seed": 600005,
+   "controller": "ppo_direct",
+   "route_seconds": 19.191821076437922,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I2_uturn_w7__ppo_direct.npz",
+   "series_sha256": "392ed017c460d9a3d29d1e068d34507cdd86bd028ee4d993accb2061ee7ceda3"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.23869445545547607,
+   "cross_track_rmse": 0.1383098265478752,
+   "cross_track_max": 0.3935072574927962,
+   "max_deviation": 0.6206553073648879,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.0595879545807954,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 6.132417100001476,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600006,
+   "controller": "pid",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_calm__pid.npz",
+   "series_sha256": "2acc577152376fbd4c04980af8f7a98f7115d21c3f32c0893037b9c47f453f6c"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.061837626967889275,
+   "cross_track_rmse": 0.04999794652216604,
+   "cross_track_max": 0.1739765216381285,
+   "max_deviation": 0.18646016353348327,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1835803376154954,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.1460615613658316,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 6.576792699997895,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600006,
+   "controller": "pid_ppo",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_calm__pid_ppo.npz",
+   "series_sha256": "af856673b01174f0edb36d1b546b2417703b3eb4439fa470d6be81f51c92e8f0"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.12100254386209096,
+   "cross_track_rmse": 0.099209223194669,
+   "cross_track_max": 0.2274094810938,
+   "max_deviation": 0.2721078309863021,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.3840399810186263,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.16382938417135,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 6.1810103000025265,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600006,
+   "controller": "ppo_direct",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_calm__ppo_direct.npz",
+   "series_sha256": "8503955dd577accc308d8fe9a90c770477cc95e49636c582896abec82881b639"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.23697511905887758,
+   "cross_track_rmse": 0.1854890236526585,
+   "cross_track_max": 0.3709995315031032,
+   "max_deviation": 0.3903957346597857,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.9941759100556489,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 5.9548394000012195,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600007,
+   "controller": "pid",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_w3p5__pid.npz",
+   "series_sha256": "4b6dcd1149d1504e05c25b0acc3995e9144a56b8596108c51dac7fb40c293762"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.06188032167414632,
+   "cross_track_rmse": 0.05273775728057634,
+   "cross_track_max": 0.13834784377026266,
+   "max_deviation": 0.13834784377026266,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.2012986192542516,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.1051999951450893,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 6.538160799987963,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600007,
+   "controller": "pid_ppo",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_w3p5__pid_ppo.npz",
+   "series_sha256": "62728d6671bbbfa8b742ada0de5c187e25878b964a158588fc13366baf2a0aeb"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.10307474090820684,
+   "cross_track_rmse": 0.08671764930367198,
+   "cross_track_max": 0.20701539423123566,
+   "max_deviation": 0.25539581791253796,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.3873707793150725,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.100972741597645,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 5.851321000009193,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600007,
+   "controller": "ppo_direct",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_w3p5__ppo_direct.npz",
+   "series_sha256": "a86574e0521ae9f637a227e0cb79c3b1366e6b9a645823d0e09011f12f4873ce"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.6629181061906232,
+   "cross_track_rmse": 0.5611673004547728,
+   "cross_track_max": 1.0056522798136949,
+   "max_deviation": 1.031840999865266,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.3829519259811835,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 5.689145900003496,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600008,
+   "controller": "pid",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_w7__pid.npz",
+   "series_sha256": "838d918de298d45d5d95a761b79451164bc89362c7424456d8606824204ff51c"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.274999999999773,
+   "position_rmse": 0.13590004448991905,
+   "cross_track_rmse": 0.11639273648318399,
+   "cross_track_max": 0.2860522572733327,
+   "max_deviation": 0.29132063486689025,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.2432826476150685,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.0568802018015298,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 5.87685899999633,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600008,
+   "controller": "pid_ppo",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_w7__pid_ppo.npz",
+   "series_sha256": "ee7a4eaa07752fb7b90951fa3f458662f573eabbfc82b5286b1c5e4feaab4971"
+  },
+  {
+   "decisions": 178,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 17.224999999999664,
+   "position_rmse": 0.1779977270858055,
+   "cross_track_rmse": 0.16238513647621053,
+   "cross_track_max": 0.31746617511460323,
+   "max_deviation": 0.31872319365375545,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.45533159676562535,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.9510412640551624,
+   "flown_seconds": 17.79999999999963,
+   "env_step_wall_s": 5.764880400005495,
+   "scene": "indoor",
+   "track": "I3_climb",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.9756097560975611,
+    -0.21951219512195125
+   ],
+   "case_seed": 600008,
+   "controller": "ppo_direct",
+   "route_seconds": 17.776490033813364,
+   "series_file": "results/m9_demo/flights/indoor/indoor_I3_climb_w7__ppo_direct.npz",
+   "series_sha256": "6d023d73130bc9e49d15e0b9662d8d60ae3c4f83a5bf5393746202b28da47f05"
+  }
+ ]
+}

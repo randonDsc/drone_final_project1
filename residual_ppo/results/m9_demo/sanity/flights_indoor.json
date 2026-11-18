@@ -1,0 +1,400 @@
+{
+ "meta": {
+  "label": "descriptive demo, not eval-v1",
+  "note": "no controller perceives obstacles",
+  "wind_label": "artificial uniform disturbance (no sheltering)",
+  "wind_direction_rule": "crosswind toward obstacles (worst side): perpendicular to the main leg, toward the nearer obstacle along that perpendicular",
+  "scene": "indoor",
+  "usd": "sim_scene/dij3d_boxes.usd",
+  "checks_line": "22/22 OK (18 modules + 1 tests + 3 assets) -> PASS",
+  "git": {
+   "head": "548d22f14a57ad2624887e15006333cd70518407",
+   "branch": "claire/drone-simulation",
+   "residual_ppo_status": [
+    "M residual_ppo/results/m8/check_direct_env.json",
+    "?? residual_ppo/demo/",
+    "?? residual_ppo/notebooks/",
+    "?? residual_ppo/results/m8/hold_diagnostic_vx1.csv",
+    "?? residual_ppo/results/m8/hold_diagnostic_zero.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T1.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T2.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T3.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T4.csv",
+    "?? residual_ppo/results/m9_demo/",
+    "?? residual_ppo/runs/",
+    "?? residual_ppo/tests/test_m9_demo.py"
+   ]
+  },
+  "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+  "hardware": {
+   "platform": "Windows-11-10.0.26200-SP0",
+   "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+   "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+  },
+  "versions": {
+   "python": "3.12.14",
+   "numpy": "2.3.1",
+   "numpy_file": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+   "gymnasium": "1.2.3",
+   "gymnasium_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py",
+   "stable_baselines3": "2.7.0",
+   "stable_baselines3_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py",
+   "torch": "2.14.1+cpu",
+   "torch_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py",
+   "torch_cuda_available": false,
+   "torch_num_threads": 8,
+   "sb3_auto_device": "cpu"
+  },
+  "torch_import_pin": {
+   "pinned": true,
+   "meta_path_first": "_PinTorchFinder",
+   "probe": "torch._subclasses.schema_check_mode",
+   "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+   "probe_inside_kit_torch": true
+  },
+  "torch_origins_start": {
+   "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+   "torch_modules_with_file": 1046,
+   "outside_package_dir": 0,
+   "outside_examples": [],
+   "synthetic_file_attributes": [
+    [
+     "torch.ops",
+     "_ops.py"
+    ],
+    [
+     "torch.classes",
+     "_classes.py"
+    ]
+   ],
+   "modules_from_ml_archive": 1,
+   "ml_archive_examples": [
+    "omni.isaac.ml_archive"
+   ],
+   "modules_from_ml_archive_pip_prebundle": 0,
+   "prebundle_examples": []
+  },
+  "torch_origins_end": {
+   "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+   "torch_modules_with_file": 1046,
+   "outside_package_dir": 0,
+   "outside_examples": [],
+   "synthetic_file_attributes": [
+    [
+     "torch.ops",
+     "_ops.py"
+    ],
+    [
+     "torch.classes",
+     "_classes.py"
+    ]
+   ],
+   "modules_from_ml_archive": 1,
+   "ml_archive_examples": [
+    "omni.isaac.ml_archive"
+   ],
+   "modules_from_ml_archive_pip_prebundle": 0,
+   "prebundle_examples": []
+  },
+  "torch_origin_clean": true,
+  "total_mass_kg": 1.6186144351959229,
+  "physics_dt": 0.008333333333333333,
+  "decimation": 12,
+  "controllers": {
+   "ppo_direct": {
+    "name": "ppo_direct",
+    "model": "residual_ppo/runs/ppo_direct/ppo_direct_s0_1p5m/final_model.zip",
+    "model_sha256": "94e5ea555386e1fc427bdc71f7e53c779eeaba1edff8c8cc26c0a009e2ad5100",
+    "saved_sb3_version": "2.7.0",
+    "num_timesteps": 1501184,
+    "runtime_sb3_version": "2.7.0",
+    "loaded_num_timesteps": 1501184,
+    "contract": "residual_ppo/runs/ppo_direct/ppo_direct_s0_1p5m/ppo_contract.json",
+    "contract_sha256": "2cc10ec10e74fb6e6a3b2777adb57ed296f100f1e44bdb9f48caba6b8f485964",
+    "contract_rule": "ppo_contract.json 'policy' == direct_ppo_config.policy_contract()",
+    "device": "cpu",
+    "deterministic": true,
+    "spaces_checked_against_env": true,
+    "env_type_checked": true,
+    "action": "PPO.predict(obs, deterministic=True)[0] -> DirectCore (velocity + yaw command)"
+   }
+  },
+  "contract_proof": {
+   "direct adapter refuses ppo_s0_1p5m": {
+    "refused": true,
+    "message": "ppo_contract.json policy group differs from direct_ppo_config.policy_contract(): ['action_mapping', 'arm']"
+   },
+   "pid_ppo adapter refuses ppo_direct_s0_1p5m": {
+    "refused": true,
+    "message": "ppo_contract.json policy group differs from policy_contract(): ['action_mapping', 'arm']"
+   }
+  },
+  "track_limits": {
+   "speed": 1.5,
+   "acceleration": 0.55,
+   "lateral_acceleration": 0.6,
+   "vertical_speed": 1.0,
+   "corner_radius": 0.8,
+   "start_hold": 0.5,
+   "end_hold": 3.0,
+   "spacing": 0.05
+  },
+  "wind_levels": {
+   "calm": {
+    "speed": 0.0,
+    "gust_scale": 0.0,
+    "seed": 600100
+   },
+   "w3p5": {
+    "speed": 3.5,
+    "gust_scale": 0.75,
+    "seed": 600101
+   },
+   "w7": {
+    "speed": 7.0,
+    "gust_scale": 0.75,
+    "seed": 600102
+   }
+  },
+  "collision_half_size": [
+   0.25,
+   0.25,
+   0.06
+  ],
+  "geometry_file": "geometry_indoor.json",
+  "geometry_sha256": "837a73d553ba0ef2461bd716f27c0192cbd06733cfe700222dd50e525ae1e491",
+  "tracks": {
+   "I1_aisle": {
+    "label": "straight down the west aisle, slight climb",
+    "points": [
+     [
+      -5.0,
+      -6.0,
+      2.0
+     ],
+     [
+      -5.0,
+      9.8,
+      2.4
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 3.657220561153037,
+    "closest_obstacle": "/World/BoxWarehouse/SM_PaletteA_466_2927",
+    "closest_at": [
+     -5.0,
+     2.4731861198738176,
+     2.2145110410094637
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     -1.0,
+     0.0
+    ],
+    "wind_rule": {
+     "side": "left",
+     "hit_distance_m": {
+      "left": 5.3199997311753755,
+      "right": 14.40193975169537
+     }
+    },
+    "segments": 1,
+    "polyline_length_m": 15.80506248010428,
+    "path_length_m": 15.80506248010428,
+    "turns_deg": [],
+    "height_range_m": [
+     2.0,
+     2.4
+    ],
+    "height_change_m": 0.3999999999999999,
+    "duration_s": 16.763991080609912,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.5500000000000105,
+    "in_distribution_flags": []
+   },
+   "I2_uturn": {
+    "label": "U-turn through the south cross-aisle (two 90 deg turns)",
+    "points": [
+     [
+      -4.5,
+      -4.0,
+      2.0
+     ],
+     [
+      -4.5,
+      -7.5,
+      2.0
+     ],
+     [
+      4.5,
+      -7.5,
+      2.0
+     ],
+     [
+      4.5,
+      -4.0,
+      2.0
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 3.589183306743996,
+    "closest_obstacle": "/World/BoxWarehouse/SM_SignCVer_139_1942",
+    "closest_at": [
+     4.5,
+     -4.0,
+     2.0
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     -0.0,
+     1.0
+    ],
+    "wind_rule": {
+     "side": "left",
+     "hit_distance_m": {
+      "left": 3.7365545542533467,
+      "right": 4.6899996893772915
+     }
+    },
+    "segments": 3,
+    "polyline_length_m": 16.0,
+    "path_length_m": 15.396899945308176,
+    "turns_deg": [
+     90.0,
+     90.0
+    ],
+    "height_range_m": [
+     2.0,
+     2.0
+    ],
+    "height_change_m": 0.0,
+    "duration_s": 19.191821076437922,
+    "max_ref_speed_mps": 1.5,
+    "max_ref_accel_mps2": 0.8114481206155805,
+    "in_distribution_flags": []
+   },
+   "I3_climb": {
+    "label": "zig-zag climb 1.5 -> 3.5 m in the east aisle",
+    "points": [
+     [
+      3.3,
+      -3.0,
+      1.5
+     ],
+     [
+      6.0,
+      1.0,
+      2.5
+     ],
+     [
+      3.3,
+      5.0,
+      3.5
+     ],
+     [
+      6.0,
+      9.0,
+      3.5
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 2.156750625486076,
+    "closest_obstacle": "/World/BoxWarehouse/SM_RackShelf_01_1886",
+    "closest_at": [
+     6.0,
+     9.0,
+     3.5
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     0.9756097560975611,
+     -0.21951219512195125
+    ],
+    "wind_rule": {
+     "side": "right",
+     "hit_distance_m": {
+      "left": 4.541776546492478,
+      "right": 3.5767713677156383
+     }
+    },
+    "segments": 3,
+    "polyline_length_m": 14.682948629086747,
+    "path_length_m": 14.330119906663725,
+    "turns_deg": [
+     68.03869997965292,
+     68.03869997965292
+    ],
+    "height_range_m": [
+     1.5,
+     3.5
+    ],
+    "height_change_m": 2.0,
+    "duration_s": 17.776490033813364,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.8136997334131858,
+    "in_distribution_flags": []
+   }
+  },
+  "pairing": {},
+  "record_columns": [
+   "t",
+   "pos_x",
+   "pos_y",
+   "pos_z",
+   "quat_w",
+   "quat_x",
+   "quat_y",
+   "quat_z",
+   "vel_x",
+   "vel_y",
+   "vel_z",
+   "angvel_x",
+   "angvel_y",
+   "angvel_z",
+   "ref_pos_x",
+   "ref_pos_y",
+   "ref_pos_z",
+   "ref_vel_x",
+   "ref_vel_y",
+   "ref_vel_z",
+   "rotor_saturated"
+  ],
+  "record_hz": 60
+ },
+ "rows": [
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.09768874985555137,
+   "cross_track_rmse": 0.08656769738468068,
+   "cross_track_max": 0.13062947767090827,
+   "max_deviation": 0.15761639344407413,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.40436770350095774,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.5774313825491557,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 6.353296699991915,
+   "scene": "indoor",
+   "track": "I1_aisle",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    -1.0,
+    0.0
+   ],
+   "case_seed": 600000,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609912,
+   "series_file": "results/m9_demo/sanity/indoor/indoor_I1_aisle_calm__ppo_direct.npz",
+   "series_sha256": "2c32385dcf551111480fff7353a5fac03d8b6a51a0f9563120ad1cc9fb21c427"
+  }
+ ]
+}

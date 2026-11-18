@@ -1,0 +1,1804 @@
+{
+ "meta": {
+  "label": "descriptive demo, not eval-v1",
+  "note": "no controller perceives obstacles",
+  "wind_label": "uniform wind field (no sheltering by trees)",
+  "wind_direction_rule": "crosswind toward obstacles (worst side): perpendicular to the main leg, toward the nearer obstacle along that perpendicular",
+  "scene": "forest",
+  "usd": "sim_scene/forest.usd",
+  "checks_line": "22/22 OK (18 modules + 1 tests + 3 assets) -> PASS",
+  "git": {
+   "head": "548d22f14a57ad2624887e15006333cd70518407",
+   "branch": "claire/drone-simulation",
+   "residual_ppo_status": [
+    "M residual_ppo/results/m8/check_direct_env.json",
+    "?? residual_ppo/demo/",
+    "?? residual_ppo/notebooks/",
+    "?? residual_ppo/results/m8/hold_diagnostic_vx1.csv",
+    "?? residual_ppo/results/m8/hold_diagnostic_zero.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T1.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T2.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T3.csv",
+    "?? residual_ppo/results/m8/hold_m8b_T4.csv",
+    "?? residual_ppo/results/m9_demo/",
+    "?? residual_ppo/runs/",
+    "?? residual_ppo/tests/test_m9_demo.py"
+   ]
+  },
+  "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+  "hardware": {
+   "platform": "Windows-11-10.0.26200-SP0",
+   "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+   "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+  },
+  "versions": {
+   "python": "3.12.14",
+   "numpy": "2.3.1",
+   "numpy_file": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py",
+   "gymnasium": "1.2.3",
+   "gymnasium_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\gymnasium\\__init__.py",
+   "stable_baselines3": "2.7.0",
+   "stable_baselines3_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\stable_baselines3\\__init__.py",
+   "torch": "2.14.1+cpu",
+   "torch_file": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\__init__.py",
+   "torch_cuda_available": false,
+   "torch_num_threads": 8,
+   "sb3_auto_device": "cpu"
+  },
+  "torch_import_pin": {
+   "pinned": true,
+   "meta_path_first": "_PinTorchFinder",
+   "probe": "torch._subclasses.schema_check_mode",
+   "probe_origin": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch\\_subclasses\\schema_check_mode.py",
+   "probe_inside_kit_torch": true
+  },
+  "torch_origins_start": {
+   "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+   "torch_modules_with_file": 1046,
+   "outside_package_dir": 0,
+   "outside_examples": [],
+   "synthetic_file_attributes": [
+    [
+     "torch.ops",
+     "_ops.py"
+    ],
+    [
+     "torch.classes",
+     "_classes.py"
+    ]
+   ],
+   "modules_from_ml_archive": 1,
+   "ml_archive_examples": [
+    "omni.isaac.ml_archive"
+   ],
+   "modules_from_ml_archive_pip_prebundle": 0,
+   "prebundle_examples": []
+  },
+  "torch_origins_end": {
+   "torch_package_dir": "<ISAAC_ROOT>\\kit\\python\\Lib\\site-packages\\torch",
+   "torch_modules_with_file": 1046,
+   "outside_package_dir": 0,
+   "outside_examples": [],
+   "synthetic_file_attributes": [
+    [
+     "torch.ops",
+     "_ops.py"
+    ],
+    [
+     "torch.classes",
+     "_classes.py"
+    ]
+   ],
+   "modules_from_ml_archive": 1,
+   "ml_archive_examples": [
+    "omni.isaac.ml_archive"
+   ],
+   "modules_from_ml_archive_pip_prebundle": 0,
+   "prebundle_examples": []
+  },
+  "torch_origin_clean": true,
+  "total_mass_kg": 1.6186144351959229,
+  "physics_dt": 0.008333333333333333,
+  "decimation": 12,
+  "controllers": {
+   "pid": {
+    "name": "pid",
+    "model": null,
+    "contract": null,
+    "device": null,
+    "action": "np.zeros(4, float32) at every decision (team PID-only)",
+    "equivalence": "M2.2: bit-exact equal to a pure PID loop (results/m2/zero_residual.json)"
+   },
+   "pid_ppo": {
+    "name": "pid_ppo",
+    "model": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/final_model.zip",
+    "model_sha256": "6b9e199310d1a93b4ada7c3e7b99c4341d89de3b085e0720e4c7eb29b4756234",
+    "saved_sb3_version": "2.7.0",
+    "num_timesteps": 1501184,
+    "runtime_sb3_version": "2.7.0",
+    "loaded_num_timesteps": 1501184,
+    "contract": "residual_ppo/runs/ppo_path/ppo_s0_1p5m/ppo_contract.json",
+    "contract_sha256": "eb7dd8fe6231112c958781640637b5b1b70c0b2bb8d4cb9d47bee4f977a84473",
+    "contract_rule": "ppo_contract.json 'policy' == policy_contract()",
+    "device": "cpu",
+    "deterministic": true,
+    "spaces_checked_against_env": true,
+    "action": "PPO.predict(obs, deterministic=True)[0]"
+   },
+   "ppo_direct": {
+    "name": "ppo_direct",
+    "model": "residual_ppo/runs/ppo_direct/ppo_direct_s0_1p5m/final_model.zip",
+    "model_sha256": "94e5ea555386e1fc427bdc71f7e53c779eeaba1edff8c8cc26c0a009e2ad5100",
+    "saved_sb3_version": "2.7.0",
+    "num_timesteps": 1501184,
+    "runtime_sb3_version": "2.7.0",
+    "loaded_num_timesteps": 1501184,
+    "contract": "residual_ppo/runs/ppo_direct/ppo_direct_s0_1p5m/ppo_contract.json",
+    "contract_sha256": "2cc10ec10e74fb6e6a3b2777adb57ed296f100f1e44bdb9f48caba6b8f485964",
+    "contract_rule": "ppo_contract.json 'policy' == direct_ppo_config.policy_contract()",
+    "device": "cpu",
+    "deterministic": true,
+    "spaces_checked_against_env": true,
+    "env_type_checked": true,
+    "action": "PPO.predict(obs, deterministic=True)[0] -> DirectCore (velocity + yaw command)"
+   }
+  },
+  "contract_proof": {
+   "direct adapter refuses ppo_s0_1p5m": {
+    "refused": true,
+    "message": "ppo_contract.json policy group differs from direct_ppo_config.policy_contract(): ['action_mapping', 'arm']"
+   },
+   "pid_ppo adapter refuses ppo_direct_s0_1p5m": {
+    "refused": true,
+    "message": "ppo_contract.json policy group differs from policy_contract(): ['action_mapping', 'arm']"
+   }
+  },
+  "track_limits": {
+   "speed": 1.5,
+   "acceleration": 0.55,
+   "lateral_acceleration": 0.6,
+   "vertical_speed": 1.0,
+   "corner_radius": 0.8,
+   "start_hold": 0.5,
+   "end_hold": 3.0,
+   "spacing": 0.05
+  },
+  "wind_levels": {
+   "calm": {
+    "speed": 0.0,
+    "gust_scale": 0.0,
+    "seed": 600100
+   },
+   "w3p5": {
+    "speed": 3.5,
+    "gust_scale": 0.75,
+    "seed": 600101
+   },
+   "w7": {
+    "speed": 7.0,
+    "gust_scale": 0.75,
+    "seed": 600102
+   }
+  },
+  "collision_half_size": [
+   0.25,
+   0.25,
+   0.06
+  ],
+  "geometry_file": "geometry_forest.json",
+  "geometry_sha256": "fc00c43d815552865f18301fb19f4b9ab13651ca32cfec6b18f0494bc761ccfc",
+  "tracks": {
+   "F1_north_edge": {
+    "label": "straight along the north edge of the forest",
+    "points": [
+     [
+      0.0,
+      14.5,
+      2.0
+     ],
+     [
+      15.8,
+      14.5,
+      2.4
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 3.3015237854873116,
+    "closest_obstacle": "/World/Forest/Trees/Tree_34/Branch_1",
+    "closest_at": [
+     1.0965299684542587,
+     14.5,
+     2.0277602523659306
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     0.0,
+     -1.0
+    ],
+    "wind_rule": {
+     "side": "right",
+     "hit_distance_m": {
+      "left": null,
+      "right": 16.03497450738389
+     }
+    },
+    "segments": 1,
+    "polyline_length_m": 15.80506248010428,
+    "path_length_m": 15.80506248010428,
+    "turns_deg": [],
+    "height_range_m": [
+     2.0,
+     2.4
+    ],
+    "height_change_m": 0.3999999999999999,
+    "duration_s": 16.763991080609905,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.5500000000000124,
+    "in_distribution_flags": []
+   },
+   "F2_sw_corner": {
+    "label": "around the south-west corner of the forest (two ~45 deg turns)",
+    "points": [
+     [
+      -8.0,
+      -4.5,
+      2.0
+     ],
+     [
+      -8.0,
+      -9.5,
+      2.1
+     ],
+     [
+      -4.5,
+      -13.5,
+      2.2
+     ],
+     [
+      0.8,
+      -13.5,
+      2.3
+     ]
+    ],
+    "min_clearance_required_m": 2.0,
+    "min_clearance_m": 2.6288949158736017,
+    "closest_obstacle": "/World/Forest/Trees/Tree_29/Branch_3",
+    "closest_at": [
+     -0.28794650495896734,
+     -13.5,
+     2.2794727074536043
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     1.0,
+     0.0
+    ],
+    "wind_rule": {
+     "side": "left",
+     "hit_distance_m": {
+      "left": null,
+      "right": null
+     }
+    },
+    "segments": 3,
+    "polyline_length_m": 15.617956756300229,
+    "path_length_m": 15.455808751503644,
+    "turns_deg": [
+     41.185925165709655,
+     48.81407483429036
+    ],
+    "height_range_m": [
+     2.0,
+     2.3
+    ],
+    "height_change_m": 0.2999999999999998,
+    "duration_s": 17.577522118676242,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.7560418162857879,
+    "in_distribution_flags": []
+   },
+   "F3_weave": {
+    "label": "S-curve weaving ~6 m into the forest between trunks and branches at 1.5 m (ends inside)",
+    "points": [
+     [
+      -4.6,
+      -4.0,
+      1.5
+     ],
+     [
+      -1.5,
+      -1.2,
+      1.5
+     ],
+     [
+      3.0,
+      -1.2,
+      1.5
+     ],
+     [
+      5.0,
+      1.2,
+      1.5
+     ]
+    ],
+    "min_clearance_required_m": 1.0,
+    "min_clearance_m": 1.2144317162007652,
+    "closest_obstacle": "/World/Forest/Trees/Tree_30/Trunk",
+    "closest_at": [
+     4.366871284992164,
+     0.4402455419905962,
+     1.5
+    ],
+    "clearance_ok": true,
+    "wind_direction_xy": [
+     0.0,
+     -1.0
+    ],
+    "wind_rule": {
+     "side": "right",
+     "hit_distance_m": {
+      "left": null,
+      "right": 8.359825797145715
+     }
+    },
+    "segments": 3,
+    "polyline_length_m": 11.801419585203744,
+    "path_length_m": 11.630987648650262,
+    "turns_deg": [
+     42.08916217383224,
+     50.19442890773481
+    ],
+    "height_range_m": [
+     1.5,
+     1.5
+    ],
+    "height_change_m": 0.0,
+    "duration_s": 15.06623947606941,
+    "max_ref_speed_mps": 1.5000000000000002,
+    "max_ref_accel_mps2": 0.759704449744473,
+    "in_distribution_flags": []
+   }
+  },
+  "pairing": {
+   "forest_F1_north_edge_calm": {
+    "seed": 600009,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 16.763991080609905,
+     "max_decisions": 168,
+     "wind_seed": 600100,
+     "wind_mean": [
+      0.0,
+      -0.0,
+      0.0
+     ],
+     "gust_scale": 0.0,
+     "initial_state": {
+      "position": [
+       -0.07181715630389436,
+       14.599477182738319,
+       1.9023743910952398
+      ],
+      "orientation": [
+       0.9999780713778825,
+       0.0016702582324682694,
+       0.0056900569134740705,
+       -0.0029479235283221355
+      ],
+      "linear_velocity": [
+       0.08020595955254028,
+       0.008703189638946257,
+       0.08346387466205837
+      ],
+      "angular_velocity": [
+       -0.09516071689326587,
+       0.040786317313710574,
+       0.08117982335359478
+      ]
+     },
+     "reset_state_sha256": "eb9a90163069c9c944aaabd4576fac31e9c5335ed49e7c2be3ebad326513ded5",
+     "initial_obs_sha256": "345549c2fc4064363e79b929b1274f1215e22a0a552ddfae5e2dc041822938ca"
+    }
+   },
+   "forest_F1_north_edge_w3p5": {
+    "seed": 600010,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 16.763991080609905,
+     "max_decisions": 168,
+     "wind_seed": 600101,
+     "wind_mean": [
+      0.0,
+      -3.5,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       0.07548852587384036,
+       14.593067169034988,
+       1.954070413803138
+      ],
+      "orientation": [
+       0.999240280515221,
+       -0.008117696690170817,
+       -0.013985237834843296,
+       -0.0354595250815888
+      ],
+      "linear_velocity": [
+       0.03670842696330434,
+       -0.09330445493335256,
+       0.00741313333206968
+      ],
+      "angular_velocity": [
+       0.09323807438287277,
+       -0.018866546360984587,
+       0.05186550293902156
+      ]
+     },
+     "reset_state_sha256": "0ef37528cbeabae648d54415b937d12f8e1f75f9ef0aeff7575382c69f1d37b9",
+     "initial_obs_sha256": "5485dd062f81b8d31f13bd45bda0eb761137eb507a75522455fba399223789ce"
+    }
+   },
+   "forest_F1_north_edge_w7": {
+    "seed": 600011,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 16.763991080609905,
+     "max_decisions": 168,
+     "wind_seed": 600102,
+     "wind_mean": [
+      0.0,
+      -7.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -0.06134641308244855,
+       14.549096188884963,
+       1.934295141248328
+      ],
+      "orientation": [
+       0.9992786949367531,
+       0.014696955719421333,
+       0.021007218072234456,
+       -0.02801403446393428
+      ],
+      "linear_velocity": [
+       -0.09378921018563979,
+       0.044756455539957274,
+       0.03471534032159404
+      ],
+      "angular_velocity": [
+       -0.08654500159508663,
+       0.012341499150367488,
+       1.9178014234608187e-05
+      ]
+     },
+     "reset_state_sha256": "b624eb3839c64a6b9f6d326edfaecc2260b249086f31a74e6503a3d7d1bcb4b7",
+     "initial_obs_sha256": "baf5b7fb0fd51870692d2424dff7b0648b78b7f3bfb269541e3752a2520a5e6c"
+    }
+   },
+   "forest_F2_sw_corner_calm": {
+    "seed": 600012,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 17.577522118676242,
+     "max_decisions": 176,
+     "wind_seed": 600100,
+     "wind_mean": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.0,
+     "initial_state": {
+      "position": [
+       -8.026740563044036,
+       -4.424632186902252,
+       2.072898991484205
+      ],
+      "orientation": [
+       0.9991088320255803,
+       0.01092216263577954,
+       -0.010209070371775838,
+       -0.03947180023741551
+      ],
+      "linear_velocity": [
+       0.012560353398112081,
+       0.07351332594195853,
+       -0.0707765182365381
+      ],
+      "angular_velocity": [
+       -0.025255593943360452,
+       0.0715562873336005,
+       0.06797689582793107
+      ]
+     },
+     "reset_state_sha256": "796a4a2396bbcee58477e764edac86fe156c6f335d2bc49d06458df34e54743a",
+     "initial_obs_sha256": "858b2d8a55cd06b39da056518ef1fbf6689b7304435d88a56eca9d3926931eb5"
+    }
+   },
+   "forest_F2_sw_corner_w3p5": {
+    "seed": 600013,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 17.577522118676242,
+     "max_decisions": 176,
+     "wind_seed": 600101,
+     "wind_mean": [
+      3.5,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -7.939072333250717,
+       -4.504027995956883,
+       1.9221066364667203
+      ],
+      "orientation": [
+       0.9998475308240493,
+       0.017407388333746263,
+       -0.001377028214622596,
+       -4.159021975373866e-05
+      ],
+      "linear_velocity": [
+       0.012396085980225902,
+       -0.03080645764922181,
+       0.02779714091896554
+      ],
+      "angular_velocity": [
+       0.012431830166460212,
+       0.09147688067957788,
+       0.01257056721311238
+      ]
+     },
+     "reset_state_sha256": "9fa4b82ace89db09a1bb14886a1c6d2ea74f5b0c6abac13608744ba9205a8745",
+     "initial_obs_sha256": "df621091c99b086776c22548db83af28f37d66a642b1f85477dd5be99953137d"
+    }
+   },
+   "forest_F2_sw_corner_w7": {
+    "seed": 600014,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 17.577522118676242,
+     "max_decisions": 176,
+     "wind_seed": 600102,
+     "wind_mean": [
+      7.0,
+      0.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -7.931895065982254,
+       -4.484275748045885,
+       2.07103263618053
+      ],
+      "orientation": [
+       0.9992522279327113,
+       0.004397272260794835,
+       0.006156890989753168,
+       -0.03791756402404586
+      ],
+      "linear_velocity": [
+       0.08569831784329968,
+       -0.010433328569287137,
+       0.05885070956649749
+      ],
+      "angular_velocity": [
+       -0.06593505899617802,
+       -0.03559813887145473,
+       -0.06265478721927042
+      ]
+     },
+     "reset_state_sha256": "4c66a9be954b6604bfc50241b2d01f35d23a35eb66830e17c22312e2b8eb3076",
+     "initial_obs_sha256": "447afd41ed20983eb6a1c158efc04a7030f12625b46b460f8ff329f5e0e5a65f"
+    }
+   },
+   "forest_F3_weave_calm": {
+    "seed": 600015,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 15.06623947606941,
+     "max_decisions": 151,
+     "wind_seed": 600100,
+     "wind_mean": [
+      0.0,
+      -0.0,
+      0.0
+     ],
+     "gust_scale": 0.0,
+     "initial_state": {
+      "position": [
+       -4.647831795344158,
+       -4.0625904070332925,
+       1.5469500812946586
+      ],
+      "orientation": [
+       0.9998122793473407,
+       -0.0012672915193808036,
+       -0.012287879963787577,
+       -0.014926755993034231
+      ],
+      "linear_velocity": [
+       -0.04325798615498995,
+       -0.007451171027087672,
+       -0.047446877073336106
+      ],
+      "angular_velocity": [
+       -0.009102438061161483,
+       0.01366512879765898,
+       0.06489470967929253
+      ]
+     },
+     "reset_state_sha256": "af99ceb71fd221001c004f640f294e332e64ce7b1ddaaab597897bb65bee6c5b",
+     "initial_obs_sha256": "8fb8ed97c8a4985b838762d97410787c533f3f685eab2888451554f3497cb123"
+    }
+   },
+   "forest_F3_weave_w3p5": {
+    "seed": 600016,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 15.06623947606941,
+     "max_decisions": 151,
+     "wind_seed": 600101,
+     "wind_mean": [
+      0.0,
+      -3.5,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -4.568293313838491,
+       -3.927717019275522,
+       1.435743095236302
+      ],
+      "orientation": [
+       0.9994196268524045,
+       -0.01408361907571021,
+       0.016243646437941187,
+       -0.026423570658222068
+      ],
+      "linear_velocity": [
+       0.08954971200971842,
+       -0.09042901413795064,
+       -0.03326200793979432
+      ],
+      "angular_velocity": [
+       0.09135264851568489,
+       0.07944474408269375,
+       0.016837654038591165
+      ]
+     },
+     "reset_state_sha256": "880f1d30c553834363ce1a652a2ff8fb3a71525c5bf411aa345f076bd63189d7",
+     "initial_obs_sha256": "322e1bac90694cd78b987295d2c6992b547b53439fd4493ce15d06bd2b537452"
+    }
+   },
+   "forest_F3_weave_w7": {
+    "seed": 600017,
+    "controllers": [
+     "pid",
+     "pid_ppo",
+     "ppo_direct"
+    ],
+    "checked": [
+     "route_seconds",
+     "max_decisions",
+     "wind_seed",
+     "wind_mean",
+     "gust_scale",
+     "initial_state",
+     "reset_state_sha256",
+     "initial_obs_sha256 (pid vs pid_ppo)"
+    ],
+    "pass": true,
+    "values": {
+     "route_seconds": 15.06623947606941,
+     "max_decisions": 151,
+     "wind_seed": 600102,
+     "wind_mean": [
+      0.0,
+      -7.0,
+      0.0
+     ],
+     "gust_scale": 0.75,
+     "initial_state": {
+      "position": [
+       -4.69838233815092,
+       -4.056976448321819,
+       1.5256437605793465
+      ],
+      "orientation": [
+       0.9997333137746811,
+       -0.004390206943753555,
+       -0.012802389981208553,
+       -0.01871166007747798
+      ],
+      "linear_velocity": [
+       0.02599489540806796,
+       -0.06604779968080743,
+       -0.048829241137605985
+      ],
+      "angular_velocity": [
+       -0.07628159988038473,
+       0.026979632988854307,
+       -0.08880752325006305
+      ]
+     },
+     "reset_state_sha256": "b14120bdde17026183c829eb9be975f5d53e4ee7ad894ac20e9af31c6feac930",
+     "initial_obs_sha256": "90bd58efd4eb7dd69608c8bdd4c422e4a6ec1d3566ea69bc843c4dcdbe5a6199"
+    }
+   }
+  },
+  "record_columns": [
+   "t",
+   "pos_x",
+   "pos_y",
+   "pos_z",
+   "quat_w",
+   "quat_x",
+   "quat_y",
+   "quat_z",
+   "vel_x",
+   "vel_y",
+   "vel_z",
+   "angvel_x",
+   "angvel_y",
+   "angvel_z",
+   "ref_pos_x",
+   "ref_pos_y",
+   "ref_pos_z",
+   "ref_vel_x",
+   "ref_vel_y",
+   "ref_vel_z",
+   "rotor_saturated"
+  ],
+  "record_hz": 60
+ },
+ "rows": [
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.11830397245213714,
+   "cross_track_rmse": 0.08728735478950751,
+   "cross_track_max": 0.23836872948863236,
+   "max_deviation": 0.2924577414306245,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.3305893644966083,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 6.040091700007906,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600009,
+   "controller": "pid",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_calm__pid.npz",
+   "series_sha256": "e12b11ef96d822852639384d40b8ab10fa7e0bc11c7330d2a8edcd625c7ca46e"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.046267971190825596,
+   "cross_track_rmse": 0.040311567303932115,
+   "cross_track_max": 0.1463418483837747,
+   "max_deviation": 0.1463418483837747,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.0781947849761873,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.2983027091637886,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 6.7432756000052905,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600009,
+   "controller": "pid_ppo",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_calm__pid_ppo.npz",
+   "series_sha256": "a59dec99c786fe049f727bc17589b824b28030adb763a85c382496e0a70f16c8"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.1247794894396589,
+   "cross_track_rmse": 0.04214269539881998,
+   "cross_track_max": 0.14652760979128598,
+   "max_deviation": 0.20072201506003562,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.3977737171309335,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.362937301513952,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 7.762970900002983,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600009,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_calm__ppo_direct.npz",
+   "series_sha256": "216cd598dab1884fc634e5c4fd5e0cb97cbe8648bc6cb71bfd2a2a766607dc63"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.191666666666444,
+   "position_rmse": 0.1634702188295449,
+   "cross_track_rmse": 0.14232294029817333,
+   "cross_track_max": 0.2564732428782265,
+   "max_deviation": 0.3318400126613671,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.0911488656489188,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 7.709265800003777,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600010,
+   "controller": "pid",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_w3p5__pid.npz",
+   "series_sha256": "874949764b776c1a8e572f49c004e728d6fdb707c0b22b3c0942af8a405b3d0a"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.050701491432628754,
+   "cross_track_rmse": 0.040460731426509265,
+   "cross_track_max": 0.10320043257919868,
+   "max_deviation": 0.1499768552431931,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.0785525944970904,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.3063815071456886,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 8.135409299997264,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600010,
+   "controller": "pid_ppo",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_w3p5__pid_ppo.npz",
+   "series_sha256": "520149aa8da21b1290c911e7caa0bae509dae3561df7dafa205a92bc062726dc"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 14.258333333333164,
+   "position_rmse": 0.13096074353123255,
+   "cross_track_rmse": 0.03453149677309024,
+   "cross_track_max": 0.09393898318443472,
+   "max_deviation": 0.22447471378270942,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.3999138406167428,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.3346487995031437,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 8.346633299996029,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600010,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_w3p5__ppo_direct.npz",
+   "series_sha256": "8490c0607188b908c8bf56c4cbe9ccf17f1b47c58585aaf054ae09d90c01f9d0"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.9568787531300542,
+   "cross_track_rmse": 0.9437616211697966,
+   "cross_track_max": 1.2129986269801676,
+   "max_deviation": 1.228788943509814,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.5522798650579466,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 8.257604700003867,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600011,
+   "controller": "pid",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_w7__pid.npz",
+   "series_sha256": "f87b4dfdc3d6d45634f1eb99aaef248426b09c4a096d0d699c8886fe66d51a6f"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 16.508333333333038,
+   "position_rmse": 0.13893613862153167,
+   "cross_track_rmse": 0.13285887259166346,
+   "cross_track_max": 0.19655183513536226,
+   "max_deviation": 0.19655190773805745,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.131955501579103,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.1729141377156074,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 8.747002099989913,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600011,
+   "controller": "pid_ppo",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_w7__pid_ppo.npz",
+   "series_sha256": "e8952f261afa4956e6839e6b533faf300cc9840507abaa3d13f0a70f1cde908e"
+  },
+  {
+   "decisions": 168,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.2201551288103566,
+   "cross_track_rmse": 0.17277290963175007,
+   "cross_track_max": 0.27250486792479117,
+   "max_deviation": 0.30756459114349943,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.4761769878012793,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 3.15853883423795,
+   "flown_seconds": 16.799999999999688,
+   "env_step_wall_s": 6.792277300002752,
+   "scene": "forest",
+   "track": "F1_north_edge",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600011,
+   "controller": "ppo_direct",
+   "route_seconds": 16.763991080609905,
+   "series_file": "results/m9_demo/flights/forest/forest_F1_north_edge_w7__ppo_direct.npz",
+   "series_sha256": "c2255e892a1fa4e98d8e095b66c14266f093eaa985d423e4c861b2395fbb49f2"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.17271908285968063,
+   "cross_track_rmse": 0.10325490986756512,
+   "cross_track_max": 0.23900327511996017,
+   "max_deviation": 0.3828675808359646,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.599301550086577,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 7.700637600006303,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600012,
+   "controller": "pid",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_calm__pid.npz",
+   "series_sha256": "6ea023895051c76ce39c750efc951714faac2f36a8d0189f82a6efb8e49d348c"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.05058761447350257,
+   "cross_track_rmse": 0.039061158099029325,
+   "cross_track_max": 0.11053050845704795,
+   "max_deviation": 0.11053050845704795,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1538511839779941,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.6343413825132616,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 6.954352099986863,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600012,
+   "controller": "pid_ppo",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_calm__pid_ppo.npz",
+   "series_sha256": "327cb66924685a544c6c8d3dda34a159f0e09772380ff084c457b4464aecc049"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.10118713334549062,
+   "cross_track_rmse": 0.06820354410196339,
+   "cross_track_max": 0.1587236048606153,
+   "max_deviation": 0.16943148719647236,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.38241353241557424,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.6399836895779596,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 7.61931110000296,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600012,
+   "controller": "ppo_direct",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_calm__ppo_direct.npz",
+   "series_sha256": "3cd80e98382d6fd5f4340083c1da503f12fd294dcc2ae96c10a1fac068dafc3d"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.22518911670824077,
+   "cross_track_rmse": 0.18940455767303155,
+   "cross_track_max": 0.43392245960935005,
+   "max_deviation": 0.5181390201788464,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.6342841416650242,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 8.360720600001514,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600013,
+   "controller": "pid",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_w3p5__pid.npz",
+   "series_sha256": "096df7dae5c36f58848e7c172f442a7b5038bf5ad119b831b4a636db2d280e4c"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.0646832090168149,
+   "cross_track_rmse": 0.05522042591650535,
+   "cross_track_max": 0.1193636622913968,
+   "max_deviation": 0.13920637538873312,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.166019919243726,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.638040237330388,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 7.774940799994511,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600013,
+   "controller": "pid_ppo",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_w3p5__pid_ppo.npz",
+   "series_sha256": "e06015371656699b1dc075eee0299ce087c13e99d70f408481531c102e10d40b"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.09767291844366326,
+   "cross_track_rmse": 0.06198909862706083,
+   "cross_track_max": 0.14354594967863427,
+   "max_deviation": 0.21892519739834684,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.39234559682451864,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.6380801444248045,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 8.842079099995317,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600013,
+   "controller": "ppo_direct",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_w3p5__ppo_direct.npz",
+   "series_sha256": "37c2a5dae05444362ce3049ca8d1995b34471eb5346a0c2e75a078c7f69bf14f"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.7285651787056375,
+   "cross_track_rmse": 0.6206673751814913,
+   "cross_track_max": 1.09575974148321,
+   "max_deviation": 1.111011452191275,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.5198980028058333,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 9.401074699999299,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600014,
+   "controller": "pid",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_w7__pid.npz",
+   "series_sha256": "f37faf296f888e1f9d19587e37ff959165016ad6825fc6ccd3453480f365944c"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.12851808748136745,
+   "cross_track_rmse": 0.11186499278375614,
+   "cross_track_max": 0.2733234783948733,
+   "max_deviation": 0.2777094858282278,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.222866646268151,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.6315554024549375,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 9.296668499999214,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600014,
+   "controller": "pid_ppo",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_w7__pid_ppo.npz",
+   "series_sha256": "7a97b376591c1464c7fa7afb0349940079aadc88c785cef12d9a857307c8b9c7"
+  },
+  {
+   "decisions": 176,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 15.074999999999784,
+   "position_rmse": 0.16162255743272236,
+   "cross_track_rmse": 0.14403216968383034,
+   "cross_track_max": 0.31328161237421437,
+   "max_deviation": 0.341455024048574,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.38197704480791633,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 2.6231686052976175,
+   "flown_seconds": 17.599999999999643,
+   "env_step_wall_s": 7.675036700005876,
+   "scene": "forest",
+   "track": "F2_sw_corner",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    1.0,
+    0.0
+   ],
+   "case_seed": 600014,
+   "controller": "ppo_direct",
+   "route_seconds": 17.577522118676242,
+   "series_file": "results/m9_demo/flights/forest/forest_F2_sw_corner_w7__ppo_direct.npz",
+   "series_sha256": "895e03d9964ba3c3c5d4aa6c1ad63505e3098716c4c46be7165ec094e8409104"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.2434563145721375,
+   "cross_track_rmse": 0.11997890084829006,
+   "cross_track_max": 0.2925937791860194,
+   "max_deviation": 0.5738840607177513,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.1256490696317882,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 5.790604000008898,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600015,
+   "controller": "pid",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_calm__pid.npz",
+   "series_sha256": "eb83cc49379679ea9cd86be4fc308d1abb3a0a5d9f4066853781f591ae917064"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 12.55833333333326,
+   "position_rmse": 0.054939515659569775,
+   "cross_track_rmse": 0.04103693279067669,
+   "cross_track_max": 0.10228300970672412,
+   "max_deviation": 0.10782292217714606,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.1973387942408884,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.1813911762830875,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 6.655467399992631,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600015,
+   "controller": "pid_ppo",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_calm__pid_ppo.npz",
+   "series_sha256": "bd529e39e11162ef92db7d2a79c89c8b107919a17c45cb50ecfbfa106eda1873"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 12.55833333333326,
+   "position_rmse": 0.13460413310384506,
+   "cross_track_rmse": 0.08831768277990346,
+   "cross_track_max": 0.17508485505912605,
+   "max_deviation": 0.2516481671076649,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.3687037421970178,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.0885348941150836,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 6.070441899995785,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "calm",
+   "wind_speed": 0.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600015,
+   "controller": "ppo_direct",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_calm__ppo_direct.npz",
+   "series_sha256": "e77e5dc01bd2df88e4d8451f210d8c14655e29c067021ff9f8e9f0553be4f3e4"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.25384084071661944,
+   "cross_track_rmse": 0.139296020330493,
+   "cross_track_max": 0.34634634157619015,
+   "max_deviation": 0.44337618959995734,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.119373743969243,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 6.545255200006068,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600016,
+   "controller": "pid",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_w3p5__pid.npz",
+   "series_sha256": "2cee4e54e58743a0d15d9b0087793c92674677af947860fade8e72277584f5c3"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 12.55833333333326,
+   "position_rmse": 0.07267632645044585,
+   "cross_track_rmse": 0.04774801778189185,
+   "cross_track_max": 0.09952730847930225,
+   "max_deviation": 0.1810322167033004,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.2126587495109102,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.1964245118606722,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 7.413348200003384,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600016,
+   "controller": "pid_ppo",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_w3p5__pid_ppo.npz",
+   "series_sha256": "cb8bcd1bfa361d1d6e12dae929e2fbb92a2f5a6db3e5f87a52cb92c211a5ed14"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 12.55833333333326,
+   "position_rmse": 0.13624326024178576,
+   "cross_track_rmse": 0.07550765477637113,
+   "cross_track_max": 0.14068356083714037,
+   "max_deviation": 0.2525714757141973,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.39509162474547,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.1032697334841066,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 9.566615499992622,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "w3p5",
+   "wind_speed": 3.5,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600016,
+   "controller": "ppo_direct",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_w3p5__ppo_direct.npz",
+   "series_sha256": "3320b95aa07b148223aa35c895d4a7dd2608645285ba3173f8a90aa812d8e840"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": false,
+   "completion_time": null,
+   "position_rmse": 0.7035109150998359,
+   "cross_track_rmse": 0.5426691620400806,
+   "cross_track_max": 0.908447495958487,
+   "max_deviation": 1.162836937271778,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.0,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 0.8971408452986827,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 6.691732999999658,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600017,
+   "controller": "pid",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_w7__pid.npz",
+   "series_sha256": "d8d03753361654b17115ddd681ebe6aded1f5c80661624f5ceac289c8978d9e6"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 12.55833333333326,
+   "position_rmse": 0.15468647019421516,
+   "cross_track_rmse": 0.10344066555996709,
+   "cross_track_max": 0.18126383007353516,
+   "max_deviation": 0.24978724019573373,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 1.2437714006727105,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.1652055877355234,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 6.228129600000102,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600017,
+   "controller": "pid_ppo",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_w7__pid_ppo.npz",
+   "series_sha256": "15ad330eb3af49453b3948a596f48f3d27bfaa0ddaa2c4acea74973477690e5b"
+  },
+  {
+   "decisions": 151,
+   "failed": false,
+   "failure_reason": null,
+   "completed": true,
+   "completion_time": 12.55833333333326,
+   "position_rmse": 0.2694890548971414,
+   "cross_track_rmse": 0.14300264352868539,
+   "cross_track_max": 0.27574169166882734,
+   "max_deviation": 0.5374437852651536,
+   "saturation_rate": 0.0,
+   "action_norm_mean": 0.5316472526713713,
+   "ground_contact_too_low": false,
+   "obstacle_contact": false,
+   "contact_samples_60hz": 0,
+   "first_contact_t": null,
+   "first_contact_obstacle": null,
+   "min_clearance_m": 1.0760187103412022,
+   "flown_seconds": 15.099999999999783,
+   "env_step_wall_s": 5.440772100002505,
+   "scene": "forest",
+   "track": "F3_weave",
+   "wind": "w7",
+   "wind_speed": 7.0,
+   "wind_direction_xy": [
+    0.0,
+    -1.0
+   ],
+   "case_seed": 600017,
+   "controller": "ppo_direct",
+   "route_seconds": 15.06623947606941,
+   "series_file": "results/m9_demo/flights/forest/forest_F3_weave_w7__ppo_direct.npz",
+   "series_sha256": "35c1e895a92caa280a1d24367edd5cd44da618f38292bb2e70210b30be573bb3"
+  }
+ ]
+}

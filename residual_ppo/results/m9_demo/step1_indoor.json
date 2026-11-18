@@ -1,0 +1,166 @@
+{
+ "label": "descriptive demo, not eval-v1",
+ "scene": "indoor",
+ "usd": "sim_scene/dij3d_boxes.usd",
+ "deactivated": [
+  "/World/Cube"
+ ],
+ "checks_line": "22/22 OK (18 modules + 1 tests + 3 assets) -> PASS",
+ "git": {
+  "head": "bb6b563b6a93928c2a423c5fb94e24da154d53d9",
+  "branch": "claire/drone-simulation",
+  "residual_ppo_status": [
+   "M residual_ppo/SHARED_MANIFEST.json",
+   " M residual_ppo/results/m8/check_direct_env.json",
+   " M residual_ppo/tools/sync_shared.py",
+   "?? residual_ppo/demo/",
+   "?? residual_ppo/notebooks/",
+   "?? residual_ppo/results/m8/hold_diagnostic_vx1.csv",
+   "?? residual_ppo/results/m8/hold_diagnostic_zero.csv",
+   "?? residual_ppo/results/m8/hold_m8b_T1.csv",
+   "?? residual_ppo/results/m8/hold_m8b_T2.csv",
+   "?? residual_ppo/results/m8/hold_m8b_T3.csv",
+   "?? residual_ppo/results/m8/hold_m8b_T4.csv",
+   "?? residual_ppo/results/m9_demo/",
+   "?? residual_ppo/runs/"
+  ]
+ },
+ "isaac_sim": "6.2.0-rc.14+release.52805.02189a84.gl",
+ "hardware": {
+  "platform": "Windows-11-10.0.26200-SP0",
+  "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+  "gpu": "NVIDIA GeForce RTX 5070 Ti, 617.42, 16303 MiB"
+ },
+ "versions": {
+  "python": "3.12.14",
+  "numpy": "2.3.1",
+  "gymnasium": "1.2.3",
+  "numpy_file": "<ISAAC_ROOT>\\extscache\\omni.kit.pip_archive-0.0.0+187cf21b.wx64.cp312\\pip_prebundle\\numpy\\__init__.py"
+ },
+ "total_mass_kg": 1.6186144351959229,
+ "hesai": {
+  "root": "/World/iris/body/HESAI_XT32_SD10",
+  "prims": 258,
+  "rigid_body_prims": 0,
+  "mass_api_prims": 0,
+  "hesai_mass_contribution_kg": 0
+ },
+ "physics_dt": 0.008333333333333333,
+ "decimation": 12,
+ "physics_scenes": [
+  "/World/PhysicsScene"
+ ],
+ "check_track": {
+  "points": [
+   [
+    -4.75,
+    -6.0,
+    2.0
+   ],
+   [
+    -4.75,
+    -2.0,
+    2.0
+   ]
+  ],
+  "duration_s": 8.893598899705935,
+  "min_clearance_m": 3.8257303520910715
+ },
+ "geometry_file": "geometry_indoor.json",
+ "geometry_sha256": "837a73d553ba0ef2461bd716f27c0192cbd06733cfe700222dd50e525ae1e491",
+ "flights": {
+  "calm": {
+   "seed": 600900,
+   "comparison": {
+    "physics_steps": [
+     1068,
+     1068
+    ],
+    "rows_bit_identical": true,
+    "first_differing_step": null,
+    "fields_equal": {
+     "decisions": true,
+     "terminated": true,
+     "truncated": true,
+     "reason": true,
+     "completed": true
+    },
+    "final_state_bit_identical": true,
+    "pass": true
+   },
+   "decisions": 89,
+   "end": null,
+   "completed": true,
+   "env_step_wall_s": 2.167233199987095,
+   "decisions_per_s": 41.06618521741452,
+   "rows_60hz": 535,
+   "mean_wind_mps": 0.0,
+   "rows_sha256_A": "cf05118626cddb26d5da428c63967878fc32a1fd6d7f9d30535b89ee1699d457",
+   "rows_sha256_B": "cf05118626cddb26d5da428c63967878fc32a1fd6d7f9d30535b89ee1699d457"
+  },
+  "w7": {
+   "seed": 600901,
+   "comparison": {
+    "physics_steps": [
+     1068,
+     1068
+    ],
+    "rows_bit_identical": true,
+    "first_differing_step": null,
+    "fields_equal": {
+     "decisions": true,
+     "terminated": true,
+     "truncated": true,
+     "reason": true,
+     "completed": true
+    },
+    "final_state_bit_identical": true,
+    "pass": true
+   },
+   "decisions": 89,
+   "end": null,
+   "completed": false,
+   "env_step_wall_s": 2.8833133000007365,
+   "decisions_per_s": 30.867266488167367,
+   "rows_60hz": 535,
+   "mean_wind_mps": 7.0,
+   "rows_sha256_A": "d73baf265232b888164221bab4ed59bf542344401ccbcdb944c56e3a7e17ff18",
+   "rows_sha256_B": "d73baf265232b888164221bab4ed59bf542344401ccbcdb944c56e3a7e17ff18"
+  }
+ },
+ "checks": [
+  {
+   "id": "S1 mass",
+   "pass": true,
+   "detail": "total_mass_kg 1.6186144 (expected 1.618614); HESAI 0 kg"
+  },
+  {
+   "id": "S2 dt/decimation",
+   "pass": true,
+   "detail": "dt 0.008333333333333333 s (1/120 = 0.008333333333333333), decimation 12, decision rate 10.000 Hz"
+  },
+  {
+   "id": "S3 scene",
+   "pass": true,
+   "detail": "/World/BoxWarehouse active=True, /World/Cube active=False, physics scenes ['/World/PhysicsScene']"
+  },
+  {
+   "id": "S4 check-track clearance",
+   "pass": true,
+   "detail": "min clearance 3.826 m over 81 points; duration 8.89 s"
+  },
+  {
+   "id": "S5 zero correction == PID (calm)",
+   "pass": true,
+   "detail": "1068 physics steps, rows bit-identical True, final state True, fields {'decisions': True, 'terminated': True, 'truncated': True, 'reason': True, 'completed': True}; 89 decisions, end truncated, mean wind 0.000 m/s; 60 Hz rows 535; rate 41.1 decisions/s"
+  },
+  {
+   "id": "S6 zero correction == PID (w7)",
+   "pass": true,
+   "detail": "1068 physics steps, rows bit-identical True, final state True, fields {'decisions': True, 'terminated': True, 'truncated': True, 'reason': True, 'completed': True}; 89 decisions, end truncated, mean wind 7.000 m/s; 60 Hz rows 535; rate 30.9 decisions/s"
+  }
+ ],
+ "passed": 6,
+ "checks_total": 6,
+ "result": "PASS"
+}
