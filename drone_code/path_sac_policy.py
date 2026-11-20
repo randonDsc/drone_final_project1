@@ -34,11 +34,10 @@ import numpy as np
 
 import path_sac_config
 import hover_task
-import sim_config
 
 from controller import PIDController
 from state_estimation import quaternion_multiply
-from wind import quaternion_to_matrix
+from wind import DirectionSwing, quaternion_to_matrix
 
 
 FRAME_SIZE = 32
@@ -116,8 +115,8 @@ class ReferencePID:
 
         target = p_ref + (kd/kp) * v_ref + a_ref * (1/kp or mass/kp)
 
-    turns its horizontal output into 0.6 e_p + 1.2 e_v + a_ref, and its height
-    output into m g + 10 e_z + 5 e_vz + m a_z,ref: position and velocity feedback
+    turns its horizontal output into kp e_p + kd e_v + a_ref, and its height
+    output into m g + kp e_z + kd e_vz + m a_z,ref: position and velocity feedback
     on the tracking errors, with acceleration feedforward. So the PID is commanded
     the same v_ref the reward measures, through its existing interface.
 
@@ -209,28 +208,20 @@ class ReferencePID:
 
         return wrap_angle(euler_angles(R) + error)
 
-    def acceleration_capped(self, state, command, desired):
-        """Whether the lead target's horizontal demand reached the PID's cap.
+    def acceleration_capped(self):
+        """Whether the lead target's demand reached the thrust envelope.
 
         The discarded integrator call has no lead in it, so it cannot see this
-        itself. Rebuilds the demand from the desired tilt, as the PID formed it.
+        itself. Reads what the PID recorded on the last read(), the lead-target
+        call; call it after read() and before integrate(). Horizontal or vertical
+        both count: either one means the integrators must not grow.
         """
-        R = quaternion_to_matrix(state["orientation"])
+        limits = self.pid.limits
 
-        vertical = max(
-            command[0] * max(float(R[2, 2]), 0.5) / self.mass,
-            0.5 * hover_task.GRAVITY,
-        )
+        if limits is None:
+            return False
 
-        forward = vertical * np.tan(desired[1])
-        sideways = -np.tan(desired[0]) * np.hypot(forward, vertical)
-
-        cap = min(
-            path_sac_config.PID_ACCELERATION_CAP,
-            vertical * np.tan(np.deg2rad(sim_config.MAX_TILT_DEGREES)),
-        )
-
-        return bool(np.hypot(forward, sideways) >= 0.98 * cap)
+        return bool(limits["xy_capped"] or limits["vertical_capped"])
 
 
 def build_frame(state, sample, desired_attitude_angles, pid_command, hover_thrust,
@@ -467,6 +458,8 @@ class PathCore:
         self.time = 0.0
         self.saturated = False
         self.direction_rate = 0.0
+        self.swing = None
+        self.authority_lost_seconds = 0.0
         self.action = np.zeros(4, dtype=np.float32)
         self.previous_action = self.action.copy()
         self.correction = np.zeros(4)
@@ -487,6 +480,10 @@ class PathCore:
         wind = dict(wind)
         self.direction_rate = wind.pop("direction_rate")
 
+        intensity = wind.pop("turbulence_intensity", None)
+        swing_std = wind.pop("swing_std", None)
+        swing_timescale = wind.pop("swing_timescale", None)
+
         field = self.sim.wind
         field.gust_timescale = float(
             profile.get("gust_timescale", self.base_gust_timescale)
@@ -494,7 +491,30 @@ class PathCore:
         field.local_gust_timescale = float(
             profile.get("local_gust_timescale", self.base_local_gust_timescale)
         )
+
+        if intensity is not None:
+            # Gust size grows with the wind: horizontal gust std = intensity *
+            # mean speed. The base gust std sets the shape (vertical, local).
+            speed = float(np.hypot(*np.asarray(wind["mean_wind"])[:2]))
+            wind["gust_scale"] = (
+                intensity * speed / max(float(field.base_gust_std[0]), 1e-9)
+            )
+
         field.reset_episode(**wind)
+
+        # Swinging wind: its own OU heading, from the episode's seed. It also
+        # carries direction_rate, which then turns the central direction.
+        self.swing = None
+
+        if swing_std is not None and (swing_std > 0 or self.direction_rate):
+            self.swing = DirectionSwing(
+                field.mean_wind,
+                swing_std,
+                swing_timescale,
+                seed=[wind["seed"], 2],
+                turn_rate=self.direction_rate,
+            )
+            field.mean_wind = self.swing.mean_wind
 
     def sample(self):
         return self.reference.sample(self.time)
@@ -551,7 +571,10 @@ class PathCore:
         """One physics step; returns whether the mixer clipped a rotor."""
         sim = self.sim
 
-        if self.direction_rate != 0.0:
+        if self.swing is not None:
+            # Swing around the central direction; gusts fluctuate on top.
+            sim.wind.mean_wind = self.swing.step(sim.dt)
+        elif self.direction_rate != 0.0:
             # Turn the mean wind; gusts keep fluctuating around it.
             angle = self.direction_rate * sim.dt
             c, s = np.cos(angle), np.sin(angle)
@@ -569,7 +592,7 @@ class PathCore:
             sample,
             sim.dt,
             self.saturated
-            or self.pid.acceleration_capped(state, command, self.desired),
+            or self.pid.acceleration_capped(),
         )
 
         # u_final = u_PID + delta_u_SAC, added once, before the mixer.
@@ -580,7 +603,27 @@ class PathCore:
         self.saturated = bool(saturated)
         self.time += sim.dt
 
+        # How long, without a break, the mixer could not deliver the torque.
+        if getattr(sim, "torque_fits", True):
+            self.authority_lost_seconds = 0.0
+        else:
+            self.authority_lost_seconds += sim.dt
+
         return self.saturated
+
+    def failure_reason(self, state, target_position, limits):
+        """hover_task.failure_reason, plus loss of control authority: the mixer
+        unable to deliver the requested torque for max_authority_loss_seconds
+        in a row."""
+        reason = hover_task.failure_reason(state, target_position, limits)
+
+        if reason is None and (
+            self.authority_lost_seconds
+            > limits.get("max_authority_loss_seconds", np.inf)
+        ):
+            reason = "lost_authority"
+
+        return reason
 
 
 class PathTrace:

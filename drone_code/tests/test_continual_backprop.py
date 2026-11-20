@@ -249,11 +249,6 @@ class Presets(unittest.TestCase):
         with using_run("flight1"):
             self.assertEqual(path_sac_config.stage_for_step(10**9)["name"], "full")
 
-        with using_run("flight2"):
-            self.assertEqual(
-                path_sac_config.stage_for_step(1_500_000)["name"], "strong_ramp"
-            )
-
     def test_saved_runs_match_their_presets(self):
         """The presets reproduce what flight1 and flight2 were trained with."""
         for name in ("flight1", "flight2"):

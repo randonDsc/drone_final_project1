@@ -56,10 +56,12 @@ TRAIN_RUNS = {
     },
 
     # flight1 continued into 2 to 14 m/s wind. Trained 2026-11-08 to 11-10.
+    # Its "strong_wind" curriculum was removed with the old stages (2026-11-19);
+    # this entry now points at "base" only so the config stays valid.
     "flight2": {
         "mode": "finetune",
         "resume_model": "runs/flight_sac/flight1/final_model.zip",
-        "curriculum": "strong_wind",
+        "curriculum": "base",
         "total_timesteps": 2_500_000,
     },
 
@@ -95,7 +97,7 @@ TRAIN_RUN = "flight6_cbp"
 # None starts TRAIN_RUN as its entry says. A resume must match the run's saved
 # contract exactly. Stop training with Ctrl+C, which saves interrupted_*;
 # closing the window loses everything since the last checkpoint.
-RESUME = None
+RESUME = "latest"
 
 # The same for every run.
 TRAIN_COMMON = {
@@ -135,16 +137,16 @@ PATH_EVAL = {
 PATH_NAV = {
     # "pid" or "pid_sac". pid_sac stops with an error if the model is missing or
     # incompatible; it never quietly flies PID only.
-    "mode": "pid_sac",
+    "mode": "pid",
 
     "run_name": "flight1",
 
     # Model .zip, or None for the run's final_model.zip.
     "model": None,
 
-    # A name from EVAL_WIND_PROFILES.
-    "wind_profile": "training_range",
-    "seed": 18,
+    # A name from EVAL_WIND_PROFILES or NAV_WIND_PROFILES.
+    "wind_profile": "gusty_top",
+    "seed": 8,
 
     "gui": True,
 }
@@ -262,7 +264,9 @@ REWARD = {
     "unsafe_rate": 0.5,                # ((rate - soft) / soft)^2 above soft
     "route_deviation": 1.0,            # ((error - soft) / soft)^2 above soft
 
-    "soft_tilt_degrees": 20.0,
+    # Was 20. In 16-22 m/s wind the drone needs 15-29 degrees just to hold
+    # position, so the cost starts above that.
+    "soft_tilt_degrees": 35.0,
     "soft_rate": 3.0,                  # [rad/s]
     "soft_deviation": 1.0,             # [m]
 
@@ -281,12 +285,21 @@ PERSISTENT_SATURATION_DECISIONS = 5
 # cost_cap / (1 - gamma), the most any continued flight could ever cost, so
 # crashing can never beat continuing. There is no contact sensor: in the open scene
 # the only thing to hit is the ground, so min_height stands in for a crash.
+#
+# Failure is judged by what happens to the drone, not by effort: touching the
+# controller's 80% thrust envelope is normal in gusts and only costs (saturation).
+# Changed 2026-11-19 for the pole-placement PID: tilt 45 -> 60 degrees (the
+# controller itself may now ask for 45; past 60 is beyond its cap and beyond the
+# 55.8 degrees that still holds height), the fixed 7 m/s speed limit removed (it
+# matched the old 5 m/s request cap; out-of-bounds catches being blown away), and
+# loss of control authority added: the mixer unable to deliver the requested
+# torque at any total thrust (thrust_envelope.mix) for this long without a break.
 FAILURE = {
     "max_position_error": 3.0,     # [m] from the reference point
     "min_height": 0.5,             # [m] world Z
-    "max_tilt_degrees": 45.0,
-    "max_speed": 7.0,              # [m/s]
+    "max_tilt_degrees": 60.0,
     "max_angular_speed": 6.0,      # [rad/s]
+    "max_authority_loss_seconds": 0.5,
 }
 
 # Arrival: within these of the final point for dwell seconds.
@@ -321,24 +334,25 @@ BASE_WIND = {
     "local_gust_std": (0.3, 0.3, 0.15),    # [m/s], multiplied by gust scale
 }
 
-# controller.py caps horizontal demand at 1.5 m/s^2, and drag is 0.018 * v^2 N on
-# 1.62 kg. In the "full" stage: 2 m/s into 7 m/s wind is 0.9 m/s^2 of drag, and
-# accelerating or turning at 0.6 m/s^2 still fits under the cap.
+# Training wind, sized for the pole-placement PID and thrust envelope (2026-11-19).
+# Measured PID-only (Isaac Sim): route RMSE about 5 cm at 6 m/s, 11 cm at 10,
+# 21 cm at 14, no failures, and a slowly turning wind is easy for it (its integral
+# follows anything slower than about 0.4 rad/s). So training uses no calm or light
+# wind, and the more realistic wind of hover_task.sample_wind_extras:
+#   turbulence_intensity: gust std as a share of the mean speed, so gusts grow
+#       with the wind (open country about 0.1, around obstacles 0.2-0.3). It
+#       replaces gust_scale_range, which is still drawn but not used.
+#   swing: the wind keeps a central direction and swings left and right around it
+#       (std in degrees, changing every timescale seconds), fast: 0.3-1.5 s.
+#       direction_rate stays 0.
+# Mean wind rises to 22 m/s. Holding 22 m/s steady takes about 5.5 m/s^2, inside
+# the PID's integral (6 m/s^2, about 23 m/s) and the thrust envelope (9.8 m/s^2,
+# about 29 m/s); with 25% gusts the strongest moments (about 30+ m/s) go past
+# both, so the top stages include moments no controller here can fully hold.
+# Earlier stages (old PID, 0-14 m/s, slowly turning wind) are in git history;
+# models trained on them are refused by the PID contract anyway.
 #
-# Past the cap, only SAC holds the drone: the PID's 1.5 m/s^2 is about 8.7 degrees
-# of tilt, cancelling about 11.5 m/s of steady wind, and the residual's pitch
-# torque (0.03 N m against the PID's 0.2 N m/rad) adds about 8.6 degrees more.
-# Together that cancels about 16 m/s with no margin, so the strong-wind stages
-# stop at 14 m/s mean. These are estimates from the settings, not measurements.
-#
-# flight1 trained through "full" (1,500,000 steps). The strong-wind stages were
-# added after it and reached by fine-tuning (flight2). They keep the full route
-# mix, and their uniform speed range still covers the old 2 to 7 m/s, so the
-# earlier wind is not forgotten.
-#
-# A stage applies until the total training step reaches until_step. direction_rate
-# is how fast the mean wind turns [rad/s]. CURRICULA, below the stages, says
-# which stages each run uses.
+# A stage applies until the total training step reaches until_step.
 # Route limits of the last three stages, which differ only in wind.
 FULL_ROUTE = {
     "weights": {
@@ -380,10 +394,13 @@ STAGES = (
             "hover_seconds_range": (4.0, 8.0),
         },
         "wind": {
-            "no_wind_probability": 0.5,
-            "mean_speed_range": (0.0, 2.0),
-            "gust_scale_range": (0.0, 0.25),
+            "no_wind_probability": 0.0,
+            "mean_speed_range": (10.0, 14.0),
+            "gust_scale_range": (0.0, 0.0),
             "direction_rate_range": (0.0, 0.0),
+            "turbulence_intensity_range": (0.1, 0.2),
+            "swing_degrees_range": (5.0, 15.0),
+            "swing_timescale_range": (0.6, 1.5),
         },
     },
     {
@@ -407,10 +424,13 @@ STAGES = (
             "hover_seconds_range": (3.0, 6.0),
         },
         "wind": {
-            "no_wind_probability": 0.2,
-            "mean_speed_range": (0.0, 4.0),
-            "gust_scale_range": (0.0, 0.5),
-            "direction_rate_range": (0.0, 0.05),
+            "no_wind_probability": 0.0,
+            "mean_speed_range": (12.0, 17.0),
+            "gust_scale_range": (0.0, 0.0),
+            "direction_rate_range": (0.0, 0.0),
+            "turbulence_intensity_range": (0.15, 0.2),
+            "swing_degrees_range": (10.0, 20.0),
+            "swing_timescale_range": (0.5, 1.2),
         },
     },
     {
@@ -434,44 +454,27 @@ STAGES = (
             "hover_seconds_range": (2.0, 5.0),
         },
         "wind": {
-            "no_wind_probability": 0.1,
-            "mean_speed_range": (1.0, 6.0),
-            "gust_scale_range": (0.25, 0.75),
-            "direction_rate_range": (0.0, 0.1),
+            "no_wind_probability": 0.0,
+            "mean_speed_range": (14.0, 20.0),
+            "gust_scale_range": (0.0, 0.0),
+            "direction_rate_range": (0.0, 0.0),
+            "turbulence_intensity_range": (0.15, 0.25),
+            "swing_degrees_range": (10.0, 25.0),
+            "swing_timescale_range": (0.4, 1.0),
         },
     },
     {
         "name": "full",
-        "until_step": 1_500_000,
-        "route": FULL_ROUTE,
-        "wind": {
-            "no_wind_probability": 0.1,
-            "mean_speed_range": (2.0, 7.0),
-            "gust_scale_range": (0.5, 1.0),
-            "direction_rate_range": (0.0, 0.2),
-        },
-    },
-    {
-        # Step up first, so the model meets 10 m/s before 14.
-        "name": "strong_ramp",
-        "until_step": 1_800_000,
-        "route": FULL_ROUTE,
-        "wind": {
-            "no_wind_probability": 0.05,
-            "mean_speed_range": (2.0, 10.0),
-            "gust_scale_range": (0.5, 1.0),
-            "direction_rate_range": (0.0, 0.2),
-        },
-    },
-    {
-        "name": "strong",
         "until_step": None,
         "route": FULL_ROUTE,
         "wind": {
-            "no_wind_probability": 0.05,
-            "mean_speed_range": (2.0, 14.0),
-            "gust_scale_range": (0.5, 1.0),
-            "direction_rate_range": (0.0, 0.2),
+            "no_wind_probability": 0.0,
+            "mean_speed_range": (16.0, 22.0),
+            "gust_scale_range": (0.0, 0.0),
+            "direction_rate_range": (0.0, 0.0),
+            "turbulence_intensity_range": (0.15, 0.25),
+            "swing_degrees_range": (10.0, 25.0),
+            "swing_timescale_range": (0.3, 0.8),
         },
     },
 )
@@ -479,11 +482,8 @@ STAGES = (
 # Named in TRAIN_RUNS. Saved contracts store the stages in full, so changing one
 # here makes resuming a run trained on it refuse; add a new curriculum instead.
 CURRICULA = {
-    # flight1, flight6_*: the first four stages, and "full" never ends.
-    "base": STAGES[:3] + ({**STAGES[3], "until_step": None},),
-
-    # flight2: all six. "full" ends at 1,500,000, where flight1 stopped.
-    "strong_wind": STAGES,
+    # The four stages above; "full" never ends.
+    "base": STAGES,
 }
 
 # ---------- SAC ----------
@@ -570,8 +570,8 @@ EVAL_ROUTE_STAGE = "full"
 # training_range: new seeds from flight1's final ("full") training distribution.
 # unseen_gusts: faster, stronger gusts than training ever used.
 # outside_range: mean wind above anything flight1 trained on (inside flight2's).
-# strong_range: the top of the "strong" stage, on new seeds.
-# beyond_strong: mean wind above anything in the "strong" stage.
+# strong_range: the top of the old "strong" stage, on new seeds.
+# beyond_strong: mean wind above anything in the old "strong" stage.
 EVAL_WIND_PROFILES = {
     "training_range": {
         "no_wind_probability": 0.0,
@@ -605,7 +605,78 @@ EVAL_WIND_PROFILES = {
         "gust_scale_range": (0.5, 1.0),
         "direction_rate_range": (0.0, 0.2),
     },
+    # training_range with the mean wind's direction held fixed for the whole
+    # flight. Gusts still vary around it.
+    "steady_direction": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (2.0, 7.0),
+        "gust_scale_range": (0.5, 1.0),
+        "direction_rate_range": (0.0, 0.0),
+    },
+    # The top of the current training wind, and past it. Same swinging,
+    # speed-scaled gusty wind as the training stages.
+    "gusty_top": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (18.0, 22.0),
+        "gust_scale_range": (0.0, 0.0),
+        "direction_rate_range": (0.0, 0.0),
+        "turbulence_intensity_range": (0.15, 0.25),
+        "swing_degrees_range": (10.0, 25.0),
+        "swing_timescale_range": (0.3, 0.8),
+    },
+    "beyond_gusty": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (22.0, 25.0),
+        "gust_scale_range": (0.0, 0.0),
+        "direction_rate_range": (0.0, 0.0),
+        "turbulence_intensity_range": (0.15, 0.25),
+        "swing_degrees_range": (10.0, 25.0),
+        "swing_timescale_range": (0.3, 0.8),
+    },
 }
+
+# Wind profiles for navigate_path_sac.py only. eval_path_sac.py does not loop over
+# these, so adding one here does not change the evaluation set.
+NAV_WIND_PROFILES = {
+    # Exactly 4 m/s mean wind, direction fixed for the flight, normal gusts on top.
+    "fixed_4": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (4.0, 4.0),
+        "gust_scale_range": (0.5, 1.0),
+        "direction_rate_range": (0.0, 0.0),
+    },
+    # 10 m/s from one central direction, swinging about +-20 degrees and changing
+    # every 1.5 s, with gusts of 20% of the wind speed (2 m/s std).
+    "gusty_10": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (10.0, 10.0),
+        "gust_scale_range": (0.0, 0.0),
+        "direction_rate_range": (0.0, 0.0),
+        "turbulence_intensity_range": (0.2, 0.2),
+        "swing_degrees_range": (20.0, 20.0),
+        "swing_timescale_range": (1.5, 1.5),
+    },
+    # The same at 15 m/s: gusts 3 m/s std.
+    "gusty_15": {
+        "no_wind_probability": 0.0,
+        "mean_speed_range": (15.0, 15.0),
+        "gust_scale_range": (0.0, 0.0),
+        "direction_rate_range": (0.0, 0.0),
+        "turbulence_intensity_range": (0.2, 0.2),
+        "swing_degrees_range": (20.0, 20.0),
+        "swing_timescale_range": (1.5, 1.5),
+    },
+}
+
+
+def wind_profile(name):
+    """A wind profile by name, from EVAL_WIND_PROFILES or NAV_WIND_PROFILES."""
+    profiles = {**EVAL_WIND_PROFILES, **NAV_WIND_PROFILES}
+
+    if name not in profiles:
+        raise KeyError(f"Unknown wind profile: {name}")
+
+    return profiles[name]
 
 # ---------- Dijkstra route ----------
 
@@ -634,10 +705,13 @@ NAVIGATION_SCENE = "original"
 NAVIGATION = {
     **NAVIGATION_SCENES[NAVIGATION_SCENE],
 
-    "speed": 0.8,                      # [m/s]
-    "acceleration": 0.5,               # [m/s^2]
-    "lateral_acceleration": 0.5,       # [m/s^2]
-    "vertical_speed": 0.5,             # [m/s]
+    # Requested route limits. The planner also trims them to the thrust envelope's
+    # planning budget (1.98 m/s^2 combined, 1.40 each along / across the path);
+    # these stay under it. Earlier: 0.8 m/s, 0.5, 0.5, 0.5.
+    "speed": 2.0,                      # [m/s]
+    "acceleration": 1.2,               # [m/s^2]
+    "lateral_acceleration": 1.2,       # [m/s^2]
+    "vertical_speed": 1.2,             # [m/s]
 
     # Corners are rounded by up to this, and only where every chord passes the
     # planner's own line_of_sight check. Otherwise the corner stays sharp, and the

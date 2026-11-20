@@ -133,7 +133,8 @@ def failure_reason(state, target_position, limits):
     ):
         return "excessive_tilt"
 
-    if np.linalg.norm(state["linear_velocity"]) > limits["max_speed"]:
+    # Optional: path flight has no fixed speed limit.
+    if np.linalg.norm(state["linear_velocity"]) > limits.get("max_speed", np.inf):
         return "too_fast"
 
     if np.linalg.norm(state["angular_velocity"]) > limits["max_angular_speed"]:
@@ -223,7 +224,7 @@ def sample_stage_wind(rng, stage):
     if calm:
         speed, gust_scale, rate = 0.0, 0.0, 0.0
 
-    return {
+    wind = {
         "mean_wind": np.array([
             speed * np.cos(direction),
             speed * np.sin(direction),
@@ -233,6 +234,53 @@ def sample_stage_wind(rng, stage):
         "seed": seed,
         "direction_rate": rate,
     }
+    wind.update(sample_wind_extras(seed, stage, calm))
+
+    return wind
+
+
+# Optional profile keys. A profile without them draws exactly as before.
+WIND_EXTRA_KEYS = (
+    "turbulence_intensity_range",
+    "swing_degrees_range",
+    "swing_timescale_range",
+)
+
+
+def sample_wind_extras(seed, stage, calm=False):
+    """The optional parts of a wind profile, for one episode.
+
+    turbulence_intensity_range: gust standard deviation as a share of the mean
+        speed (gusts grow with the wind, as real turbulence does). Replaces
+        gust_scale; see path_sac_policy.PathCore.apply_wind.
+    swing_degrees_range, swing_timescale_range: the mean wind keeps a central
+        direction and swings left and right around it (wind.DirectionSwing):
+        standard deviation [deg] and how quickly it changes [s].
+
+    Drawn from the episode's own wind seed, not from rng, so adding these keys
+    never shifts the route or start drawn after the wind.
+    """
+    if not any(key in stage for key in WIND_EXTRA_KEYS):
+        return {}
+
+    rng = np.random.default_rng([seed, 1])
+    intensity = float(rng.uniform(*stage.get("turbulence_intensity_range", (0.0, 0.0))))
+    swing = float(np.deg2rad(rng.uniform(*stage.get("swing_degrees_range", (0.0, 0.0)))))
+    timescale = float(rng.uniform(*stage.get("swing_timescale_range", (1.0, 1.0))))
+
+    if calm:
+        intensity, swing = 0.0, 0.0
+
+    extras = {}
+
+    if "turbulence_intensity_range" in stage:
+        extras["turbulence_intensity"] = intensity
+
+    if "swing_degrees_range" in stage:
+        extras["swing_std"] = swing
+        extras["swing_timescale"] = timescale
+
+    return extras
 
 
 def sample_initial_state(rng, task):

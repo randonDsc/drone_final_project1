@@ -64,8 +64,10 @@ class Pid(unittest.TestCase):
     def test_integral_stops_at_its_limit(self):
         pid = PIDController()
 
+        # 0.1 m low: small enough that the command stays under the vertical
+        # acceleration cap, which would otherwise stop the integral first.
         for _ in range(5000):
-            command(pid, (0.3, 0.0, 1.8), 0.1)
+            command(pid, (0.3, 0.0, 1.9), 0.1)
 
         limit = pid.gains["height"]["integral_limit"]
         self.assertAlmostEqual(pid.height_integral, limit)
