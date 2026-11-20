@@ -151,9 +151,9 @@ def read_scene_geometry(stage, body_position):
     # allowing the vehicle to yaw without losing clearance.
     radius = float(np.hypot(extent[0], extent[1]))
 
-    tilt = np.deg2rad(sim_config.MAX_TILT_DEGREES)
+    tilt = np.deg2rad(sim_config.PLANNING_TILT_DEGREES)
 
-    # Reserve additional space for the controller's allowed tilt.
+    # Reserve additional space for the tilt planned flight uses.
     half_size = np.array([
         radius + extent[2] * np.sin(tilt),
         radius + extent[2] * np.sin(tilt),

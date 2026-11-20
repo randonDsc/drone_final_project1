@@ -39,8 +39,17 @@ MAX_EXPANDED_NODES = 1_000_000
 # and some position-tracking error.
 SAFETY_MARGIN = 0.01
 
-# Used by both the controller and the drone-envelope estimate.
-MAX_TILT_DEGREES = 10.0
+# Tilt the planner reserves clearance for when it inflates obstacles
+# (mapping.py). Planned routes ask for far less than this: at the navigation
+# speeds the reference needs about 3 degrees, and 10 m/s of wind adds about 7.
+# Separate from MAX_TILT_DEGREES, the controller's hard cap, which only strong
+# corrections reach. Raising it widens every obstacle, mostly upward.
+PLANNING_TILT_DEGREES = 10.0
+
+# The controller's hard tilt cap. Inside it, the tilt a flight can use comes from
+# THRUST_ENVELOPE (about 45 degrees holding height). The cap matters when
+# descending, where the budget alone would allow up to about 70 degrees.
+MAX_TILT_DEGREES = 45.0
 
 # Your confirmed launch platform.
 #
@@ -62,9 +71,42 @@ WAYPOINT_SPEED = 0.4
 WAYPOINT_DWELL = 0.25
 
 # Desired speed limits used by the controller.
-# These limit requested velocities, not measured velocities.
-MAX_XY_SPEED = 5
-MAX_Z_SPEED = 5
+# These limit requested velocities, not measured velocities. Inside them, the
+# THRUST_ENVELOPE below decides: a request is scaled, keeping its direction, to the
+# fastest steady speed the budget sustains that way. With 80% of the thrust that
+# is about 29.6 m/s level and 19.1 m/s straight up in still air, so these two are
+# the envelope's own corners.
+MAX_XY_SPEED = 29.0
+MAX_Z_SPEED = 19.0
+
+# One thrust budget shared by every axis; see thrust_envelope.py. Each limit is
+# recomputed every control step from what the others are using: the more the drone
+# climbs, the less it may accelerate sideways, and the reverse. Priority is
+# attitude > vertical > horizontal, so running out means drifting, not sinking.
+#
+# Reference values, 1.62 kg, 28.3 N maximum, usable_fraction 0.8 (22.6 N):
+#   holding height:            horizontal up to 9.9 m/s^2 (45 degrees)
+#   climbing at +2 m/s^2:      horizontal up to 7.4 m/s^2
+#   climbing at +3 m/s^2:      horizontal up to 5.6 m/s^2
+#   climbing at +4 m/s^2, cap: horizontal down to min_xy_acceleration, 2.0
+# Earlier fixed caps: 1.5 m/s^2 horizontal, 10 degrees, 5 m/s, no vertical cap.
+THRUST_ENVELOPE = {
+    # Share of the motors' total thrust the position loops may use. The rest is
+    # kept for attitude torque: at full collective it leaves each rotor 1.4 N,
+    # about 1.2 N m of roll and 0.7 N m of pitch.
+    "usable_fraction": 0.8,
+
+    # Vertical acceleration limits [m/s^2]. Down cannot exceed g (thrust >= 0).
+    "max_up_acceleration": 4.0,
+    "max_down_acceleration": 5.0,
+
+    # Climbing never takes so much that horizontal keeps less than this [m/s^2].
+    "min_xy_acceleration": 2.0,
+
+    # Planning (path_reference.TimedReference with an envelope): references
+    # leave this much acceleration free for feedback and wind [m/s^2].
+    "planning_reserve_acceleration": 2.0,
+}
 
 # Stop with a diagnostic error if a waypoint never settles.
 WAYPOINT_TIMEOUT = 180.0
@@ -171,32 +213,43 @@ PROPELLER_DRIVE_MAX_TORQUE = 0.1
 
 # ---------- Flight controller ----------
 
-# Gains for controller.PIDController. kp and kd are the previous PD values,
-# unchanged. The integral gains are starting values from stability limits, not
-# from flight: each is well inside its loop's limit, ki < kp * kd for the
-# horizontal loop and ki < kp * kd / mass for height. Fixed for a whole SAC run.
+# Gains for controller.PIDController, by pole placement (2026-11-19). Each loop
+# is treated as a double integrator, inertia * s^2, so the closed loop is
+#
+#     inertia s^3 + kd s^2 + kp s + ki = inertia (s^2 + 2 zeta w s + w^2)(s + r w)
+#
+# giving kd = inertia (2 zeta + r) w, kp = inertia (1 + 2 zeta r) w^2,
+# ki = inertia r w^3. Chosen poles (w [rad/s], zeta, r):
+#   roll/pitch  10, 0.8,  -    inertia 0.0345 / 0.031 kg m^2 (estimate)
+#   yaw          3, 0.8,  0.2  inertia 0.063 kg m^2
+#   horizontal   2, 0.85, 0.2  inertia 1 (output is acceleration)
+#   height       3, 0.85, 0.25 inertia 1.62 kg
+# Outer loops are 5x slower than attitude. Earlier hand-set gains: height
+# 10/3/5, xy 0.6/0.15/1.2, attitude kp (0.2, 0.2, 0.1), ki yaw 0.02, kd 0.05.
+# Fixed for a whole SAC run: any change makes saved models incompatible.
 #
 # integral_limit is in the units the integrator adds to its loop's output.
 # integral_zone is the largest error that still integrates.
 PID = {
     # Height: error [m] to vertical force [N]. Runs in the world frame.
     "height": {
-        "kp": 10.0,                # [N/m]
-        "ki": 3.0,                 # [N/(m s)]
-        "kd": 5.0,                 # [N/(m/s)]
+        "kp": 20.78,               # [N/m]
+        "ki": 10.94,               # [N/(m s)]
+        "kd": 9.48,                # [N/(m/s)]
         "integral_limit": 3.0,     # [N]
         "integral_zone": 0.5,      # [m]
     },
 
     # Horizontal: error [m] to acceleration [m/s^2], then to a tilt target.
-    # World frame, because wind acts in world axes. The limit is about 10 m/s
-    # of steady wind by the drag model, and controller.py caps the total at
-    # 1.5 m/s^2.
+    # World frame, because wind acts in world axes. THRUST_ENVELOPE caps the
+    # total. The integral alone holds steady wind with no position error: 6 m/s^2
+    # is the drag of about 23 m/s of wind by the drag model. It was 1.2 under the
+    # old fixed 1.5 m/s^2 cap, which left 14 m/s wind 0.2 m off target.
     "xy": {
-        "kp": 0.6,                 # [1/s^2]
-        "ki": 0.15,                # [1/s^3]
-        "kd": 1.2,                 # [1/s]
-        "integral_limit": 1.2,     # [m/s^2]
+        "kp": 5.36,                # [1/s^2]
+        "ki": 1.6,                 # [1/s^3]
+        "kd": 3.8,                 # [1/s]
+        "integral_limit": 6.0,     # [m/s^2]
         "integral_zone": 2.0,      # [m]
     },
 
@@ -204,9 +257,9 @@ PID = {
     # pitch need no integral, since the horizontal loop already trims their
     # steady error. Yaw has no outer loop, so it has one.
     "attitude": {
-        "kp": (0.2, 0.2, 0.1),     # [N m/rad]
-        "ki": (0.0, 0.0, 0.02),    # [N m/(rad s)]
-        "kd": (0.05, 0.05, 0.05),  # [N m/(rad/s)]
+        "kp": (3.275, 3.275, 0.748),   # [N m/rad]
+        "ki": (0.0, 0.0, 0.34),        # [N m/(rad s)]
+        "kd": (0.524, 0.524, 0.34),    # [N m/(rad/s)]
         "integral_limit": (0.02, 0.02, 0.02),  # [N m]
         "integral_zone": 0.35,     # [rad]
     },

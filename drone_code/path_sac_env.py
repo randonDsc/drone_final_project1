@@ -72,6 +72,14 @@ class PathSacEnv(gym.Env):
         self.stage_name = None
         self.trace = PathTrace()
 
+        # Planned and flown traces in the viewport, only when rendering.
+        self.view = None
+
+        if self.render_sim:
+            from trace_view import TraceView
+
+            self.view = TraceView()
+
     def set_training_step(self, step):
         """Total training steps so far; chooses the curriculum stage."""
         self.training_step = int(step)
@@ -118,6 +126,10 @@ class PathSacEnv(gym.Env):
             initial["angular_velocity"],
             np.full(4, core.hover_motor_speed),
         )
+
+        if self.view is not None:
+            self.view.begin(reference.path)
+            self.view.record(initial["position"], reference.path[0])
 
         self.stage_name = stage["name"]
         self.decisions = 0
@@ -178,6 +190,9 @@ class PathSacEnv(gym.Env):
             if hover_task.state_is_valid(truth):
                 sample = core.sample()
 
+                if self.view is not None:
+                    self.view.record(truth["position"], sample.position)
+
                 terms = physics_terms(
                     truth, sample, core.desired, core.omega_ref, self.reward
                 )
@@ -198,12 +213,15 @@ class PathSacEnv(gym.Env):
 
         sample = core.sample()
 
-        reason = hover_task.failure_reason(
+        reason = core.failure_reason(
             truth, sample.position, path_sac_config.FAILURE
         )
 
         terminated = reason is not None
         truncated = not terminated and self.decisions >= self.max_decisions
+
+        if terminated and self.view is not None:
+            self.view.mark_failure(truth["position"])
 
         share = saturated_steps / max(simulated_steps, 1)
         self.saturated_streak = (

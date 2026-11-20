@@ -2,10 +2,14 @@
 
     /c/isaacsim/python.bat drone_code/train_path_sac.py
 
-Takes no arguments: set path_sac_config.PATH_TRAIN first. mode "fresh" starts a new
-randomly initialized model and refuses a folder that already has one. mode "resume"
-continues resume_model, and refuses a missing or incompatible one. When resuming,
-total_timesteps is the total to reach.
+Takes no arguments: set path_sac_config.TRAIN_RUN (and RESUME to continue one)
+first. mode "fresh" starts a new randomly initialized model and refuses a folder
+that already has one. "resume" continues a model of the same run, and refuses a
+missing or incompatible one. "finetune" continues resume_model's weights, replay
+buffer, and step count in a new run folder under that run's curriculum; only the
+policy contract must match. When resuming or fine-tuning, total_timesteps is the
+total to reach. A run with continual_backprop trains with
+continual_backprop.ContinualBackpropSAC; every other run with plain SAC.
 
 Saves under runs/flight_sac/<run_name>/: checkpoints/, final_* or interrupted_* or
 crashed_*, TensorBoard logs, logs/progress_<time>.csv, logs/log_<time>.txt,
@@ -20,22 +24,29 @@ from isaacsim import SimulationApp
 import path_sac_config
 
 
-run = path_sac_config.train_settings()
+try:
+    run = path_sac_config.train_settings()
+except ValueError as error:
+    raise SystemExit(str(error))
 
 project_dir = Path(__file__).resolve().parents[1]
 run_dir = project_dir / path_sac_config.RUN_DIR / run["run_name"]
 checkpoint_dir = run_dir / "checkpoints"
 
-if run["mode"] not in ("fresh", "resume"):
-    raise SystemExit('PATH_TRAIN mode must be "fresh" or "resume".')
+if run["mode"] not in ("fresh", "resume", "finetune"):
+    raise SystemExit(
+        f'{run["run_name"]}: mode must be "fresh", "resume", or "finetune".'
+    )
 
 checkpoint = None
 buffer_path = None
 
 # Report these now, not after Isaac Sim has started.
-if run["mode"] == "resume":
+if run["mode"] in ("resume", "finetune"):
     if not run["resume_model"]:
-        raise SystemExit('Mode "resume" needs resume_model in PATH_TRAIN.')
+        raise SystemExit(
+            f'{run["run_name"]}: mode "{run["mode"]}" needs a resume_model.'
+        )
 
     checkpoint = project_dir / run["resume_model"]
     buffer_path = path_sac_config.replay_buffer_path_for(checkpoint)
@@ -43,7 +54,11 @@ if run["mode"] == "resume":
     if not checkpoint.is_file():
         raise SystemExit(f"Checkpoint not found: {checkpoint}")
 
-    problem = path_sac_config.incompatibility(checkpoint, check_training=True)
+    # Fine-tuning changes the training settings on purpose, so only the policy
+    # (observations, residual limits, PID) has to match.
+    problem = path_sac_config.incompatibility(
+        checkpoint, check_training=run["mode"] == "resume"
+    )
 
     if problem:
         raise SystemExit(problem)
@@ -51,11 +66,11 @@ if run["mode"] == "resume":
     if not buffer_path.is_file() and not run["allow_empty_replay_buffer"]:
         raise SystemExit(
             f"Replay buffer not found: {buffer_path}\n"
-            "Set allow_empty_replay_buffer in PATH_TRAIN to continue with an "
+            "Set allow_empty_replay_buffer in TRAIN_COMMON to continue with an "
             "empty one."
         )
 
-else:
+if run["mode"] in ("fresh", "finetune"):
     existing = [
         *run_dir.glob("*_model.zip"),
         *checkpoint_dir.glob("flight_sac_*.zip"),
@@ -63,8 +78,8 @@ else:
 
     if existing:
         raise SystemExit(
-            f"{run_dir} already holds a model. Use a new run_name, or set mode "
-            '"resume" with resume_model in PATH_TRAIN.'
+            f"{run_dir} already holds a model. Set RESUME = \"latest\" to "
+            "continue it, or copy its TRAIN_RUNS entry under a new name."
         )
 
 # SimulationApp must exist before any omni, pxr, or isaacsim.core import.
@@ -76,7 +91,6 @@ def write_json(path, value):
 
 
 def main():
-    from stable_baselines3 import SAC
     from stable_baselines3.common.callbacks import BaseCallback
     from stable_baselines3.common.logger import Logger, make_output_format
     from stable_baselines3.common.monitor import Monitor
@@ -84,6 +98,16 @@ def main():
 
     from path_sac_env import make_path_sac_env
     from hover_env import SimulationClosed
+    from continual_backprop import ContinualBackpropSAC
+
+    sac_settings = path_sac_config.sac_settings()
+    cbp_settings = path_sac_config.continual_backprop_settings()
+
+    # Without CBP this is plain SAC, so runs without it train exactly as before.
+    if cbp_settings is None:
+        from stable_baselines3 import SAC
+    else:
+        SAC = ContinualBackpropSAC
 
     def save_all(model, stem, buffer_stem):
         """Write complete files, then move them into place, so a crash during a
@@ -188,8 +212,19 @@ def main():
             model = SAC.load(
                 str(checkpoint),
                 env=venv,
-                device=path_sac_config.SAC["device"],
+                device=sac_settings["device"],
             )
+
+            # Loading rebuilds the saved network, whatever the config says, so a
+            # fine-tune cannot quietly change layer sizes.
+            saved = model.policy_kwargs.get("net_arch")
+            wanted = sac_settings["policy_kwargs"]["net_arch"]
+
+            if json.loads(json.dumps(saved)) != json.loads(json.dumps(wanted)):
+                raise SystemExit(
+                    f"{checkpoint} has layers {saved}, but {run['run_name']} "
+                    f"asks for {wanted}. Layer sizes need a fresh run."
+                )
 
             if buffer_path.is_file():
                 model.load_replay_buffer(str(buffer_path))
@@ -204,8 +239,12 @@ def main():
             # Generators are not saved, so draw from a new stream, not a repeat.
             model.set_random_seed(run["seed"] + model.num_timesteps + 1)
 
+            action = "Fine-tuning" if run["mode"] == "finetune" else "Resumed"
+            stage = path_sac_config.stage_for_step(model.num_timesteps)["name"]
+
             print(
-                f"Resumed {checkpoint} at {model.num_timesteps} steps.",
+                f"{action} {checkpoint} at {model.num_timesteps} steps, "
+                f"curriculum stage {stage}.",
                 flush=True,
             )
         else:
@@ -214,9 +253,17 @@ def main():
                 venv,
                 seed=run["seed"],
                 verbose=1,
-                **path_sac_config.SAC,
+                **sac_settings,
             )
             print("Started a new randomly initialized model.", flush=True)
+
+        if cbp_settings is not None:
+            model.attach_continual_backprop(cbp_settings)
+            print(
+                f"Continual Backprop on {len(model.continual_backprop.layers)} "
+                "hidden layers.",
+                flush=True,
+            )
 
         env.set_training_step(model.num_timesteps)
 

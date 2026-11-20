@@ -20,8 +20,9 @@ from isaacsim.core.prims import Articulation, RigidPrim
 
 import sim_config
 
-from drone_diagnostics import cross, read_total_com_in_body_frame
+from drone_diagnostics import read_total_com_in_body_frame
 from motor import MotorModel
+from thrust_envelope import mix
 from wind import GustingWind
 
 
@@ -453,41 +454,22 @@ class DroneSim:
                 self.vehicle_bodies,
             )
 
-        force = np.array([
-            0.0,
-            0.0,
-            total_thrust,
-        ])
-
-        # Shift torque reference from full-vehicle COM to body origin.
-        desired_wrench[1:] += cross(
-            com_offset,
-            force,
-        )
-
         if not np.all(np.isfinite(desired_wrench)):
             raise ValueError(
                 "Controller returned invalid values: "
                 f"{desired_wrench}"
             )
 
-        rotor_thrusts = np.linalg.solve(
+        rotor_thrusts, saturated, torque_fits = mix(
             self.allocation_matrix,
-            desired_wrench,
-        )
-
-        saturated = bool(
-            np.any(rotor_thrusts < 0.0)
-            or np.any(rotor_thrusts > self.max_rotor_thrust)
-        )
-
-        # Clipping means the exact requested wrench may not
-        # be achievable. Keep logging the saturation flag.
-        rotor_thrusts = np.clip(
-            rotor_thrusts,
-            0.0,
             self.max_rotor_thrust,
+            desired_wrench,
+            com_offset,
         )
+
+        # False when no total thrust delivers the requested torque: out of
+        # control authority. Read by path_sac_policy.PathCore for failure.
+        self.torque_fits = torque_fits
 
         # T = kf * omega^2  ->  omega = sqrt(T / kf).
         speeds = np.sqrt(

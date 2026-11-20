@@ -230,6 +230,13 @@ def run_dijkstra_part(simulation_app):
         policies = controllers()
         flights = []
 
+        view = None
+
+        if run["gui"]:
+            from trace_view import TraceView
+
+            view = TraceView()
+
         for profile_name, profile in path_sac_config.EVAL_WIND_PROFILES.items():
             for name, policy in policies.items():
                 for seed in seeds:
@@ -243,7 +250,8 @@ def run_dijkstra_part(simulation_app):
                         "route_seconds": route.reference.duration,
                         "controller": name,
                         **fly_route(
-                            core, route, policy, wind, profile, run["gui"]
+                            core, route, policy, wind, profile, run["gui"],
+                            view=view,
                         ),
                     })
 

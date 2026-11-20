@@ -26,8 +26,10 @@ model_path = project_dir / (run["model"] or run_dir / "final_model.zip")
 if run["mode"] not in ("pid", "pid_sac"):
     raise SystemExit('PATH_NAV mode must be "pid" or "pid_sac".')
 
-if run["wind_profile"] not in path_sac_config.EVAL_WIND_PROFILES:
-    raise SystemExit(f"Unknown wind profile: {run['wind_profile']}")
+try:
+    path_sac_config.wind_profile(run["wind_profile"])
+except KeyError as error:
+    raise SystemExit(str(error))
 
 if run["mode"] == "pid_sac":
     if not model_path.is_file():
@@ -70,7 +72,15 @@ def main():
 
         print(f"Control mode: {run['mode']}", flush=True)
 
-        profile = path_sac_config.EVAL_WIND_PROFILES[run["wind_profile"]]
+        profile = path_sac_config.wind_profile(run["wind_profile"])
+
+        # Planned route (green) and flown trace (blue to red by tracking error).
+        view = None
+
+        if run["gui"]:
+            from trace_view import TraceView
+
+            view = TraceView()
 
         metrics = fly_route(
             core,
@@ -79,6 +89,7 @@ def main():
             draw_wind(run["seed"], run["wind_profile"]),
             profile,
             run["gui"],
+            view=view,
         )
 
         print(json.dumps(metrics, indent=2), flush=True)

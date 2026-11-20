@@ -20,6 +20,7 @@ import numpy as np
 
 import path_sac_config
 import hover_task
+import thrust_envelope
 
 from path_sac_policy import PathCore, PathTrace
 from path_reference import TimedReference, round_corners
@@ -103,6 +104,10 @@ def plan_route(sim, simulation_app, log=print):
         locked=(1,) if has_launch else (),
     )
 
+    # The same thrust budget the controller flies with, so the planned speeds and
+    # accelerations are ones it can follow with its reserve to spare.
+    envelope = thrust_envelope.for_target(sim.base_target())
+
     reference = TimedReference(
         points,
         settings["speed"],
@@ -112,6 +117,14 @@ def plan_route(sim, simulation_app, log=print):
         start_hold=settings["start_hold"],
         end_hold=settings["settle_seconds"],
         spacing=path_sac_config.EPISODE["spacing"],
+        envelope=envelope,
+    )
+
+    log(
+        "Thrust envelope for planning: acceleration up to "
+        f"{envelope.planning_acceleration():.2f} m/s^2, level speed up to "
+        f"{envelope.planning_speed((1.0, 0.0, 0.0)):.1f} m/s, climb up to "
+        f"{envelope.planning_speed((0.0, 0.0, 1.0)):.1f} m/s"
     )
 
     launch_end = (
@@ -165,8 +178,11 @@ class ObstacleMonitor:
             return True
 
 
-def fly_route(core, route, policy, wind, profile, render, log=print):
-    """One flight; policy None flies PID only. Returns the metrics dictionary."""
+def fly_route(core, route, policy, wind, profile, render, log=print, view=None):
+    """One flight; policy None flies PID only. Returns the metrics dictionary.
+
+    view: a trace_view.TraceView to draw the planned and flown traces, or None.
+    """
     sim = core.sim
     settings = path_sac_config.NAVIGATION
 
@@ -188,6 +204,9 @@ def fly_route(core, route, policy, wind, profile, render, log=print):
 
     core.begin(route.reference)
     core.apply_wind(wind, profile)
+
+    if view is not None:
+        view.begin(route.reference.path)
 
     trace = PathTrace()
 
@@ -232,10 +251,17 @@ def fly_route(core, route, policy, wind, profile, render, log=print):
         state = sim.read_drone_state()
         sample = core.sample()
 
-        reason = hover_task.failure_reason(state, sample.position, limits)
+        if view is not None:
+            view.record(state["position"], sample.position)
+
+        reason = core.failure_reason(state, sample.position, limits)
 
         if reason is not None:
             log(f"Flight failed at t={core.time:.2f} s: {reason}")
+
+            if view is not None:
+                view.mark_failure(state["position"])
+
             break
 
         core.completion.update(
@@ -254,6 +280,10 @@ def fly_route(core, route, policy, wind, profile, render, log=print):
                 collided = True
                 reason = "collision"
                 log(f"Collision at t={core.time:.2f} s, {position}")
+
+                if view is not None:
+                    view.mark_failure(position)
+
                 break
 
     metrics = trace.metrics(
@@ -278,5 +308,5 @@ def draw_wind(seed, profile_name):
     """One wind realization, fixed by seed for both modes."""
     return hover_task.sample_stage_wind(
         np.random.default_rng(seed),
-        path_sac_config.EVAL_WIND_PROFILES[profile_name],
+        path_sac_config.wind_profile(profile_name),
     )

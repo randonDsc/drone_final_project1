@@ -56,8 +56,23 @@ class TimedReference:
         end_hold=0.0,
         spacing=0.05,
         min_speed=0.05,
+        envelope=None,
     ):
-        """speed, acceleration, ...: limits [m/s, m/s^2]. Holds are in seconds."""
+        """speed, acceleration, ...: limits [m/s, m/s^2]. Holds are in seconds.
+
+        envelope: a thrust_envelope.ThrustEnvelope, or None. With one, the
+        profile also stays inside what the drone can fly with the controller's
+        reserve left over: at each point the speed is at most the envelope's
+        planning speed along the path's direction, so climbing segments get less
+        speed than level ones, and the tangential and lateral accelerations are
+        each at most planning_acceleration / sqrt(2), so together they fit in
+        any direction. The given limits still apply when they are lower.
+        """
+        if envelope is not None:
+            share = envelope.planning_acceleration() / np.sqrt(2.0)
+            acceleration = min(float(acceleration), share)
+            lateral_acceleration = min(float(lateral_acceleration), share)
+
         self.path = densify(points, spacing)
         count = len(self.path)
 
@@ -92,11 +107,18 @@ class TimedReference:
 
         curvature = np.linalg.norm(bends, axis=1)
 
-        limit = np.minimum.reduce([
+        limits = [
             np.full(count, float(speed)),
             np.sqrt(lateral_acceleration / np.maximum(curvature, 1e-9)),
             vertical_speed / np.maximum(np.abs(tangents[:, 2]), 1e-9),
-        ])
+        ]
+
+        if envelope is not None:
+            limits.append(np.array([
+                envelope.planning_speed(tangent) for tangent in tangents
+            ]))
+
+        limit = np.minimum.reduce(limits)
         limit = np.maximum(limit, min_speed)
 
         # Forward then backward pass: v^2 changes by at most 2 a ds per segment.

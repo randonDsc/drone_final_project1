@@ -101,6 +101,62 @@ def drag_forces(relative_velocities, areas, air_density, drag_coefficient):
     )
 
 
+class DirectionSwing:
+    """Mean wind that keeps a central direction and swings left and right.
+
+    The heading offset from the central direction is an OU process, the same
+    kind as the gusts:
+
+        a = exp(-dt / timescale)
+        offset = a * offset + swing_std * sqrt(1 - a*a) * normal()
+        mean_wind = speed * (cos(center + offset), sin(center + offset), z)
+
+    so it wanders back and forth around the center with standard deviation
+    swing_std [rad], changing direction about every timescale seconds, and is
+    always pulled back toward the center. turn_rate [rad/s] can still turn the
+    center itself. Speed is unchanged; gusts add speed changes on top.
+    """
+
+    def __init__(self, mean_wind, swing_std, timescale, seed, turn_rate=0.0):
+        mean_wind = np.asarray(mean_wind, dtype=float).reshape(3)
+
+        if swing_std < 0 or timescale <= 0:
+            raise ValueError("swing_std must be >= 0 and timescale > 0.")
+
+        self.speed = float(np.hypot(mean_wind[0], mean_wind[1]))
+        self.center = float(np.arctan2(mean_wind[1], mean_wind[0]))
+        self.vertical = float(mean_wind[2])
+        self.swing_std = float(swing_std)
+        self.timescale = float(timescale)
+        self.turn_rate = float(turn_rate)
+        self.rng = np.random.default_rng(seed)
+
+        # Start somewhere in the swing, not always at the center.
+        self.offset = self.swing_std * self.rng.normal()
+
+    @property
+    def mean_wind(self):
+        angle = self.center + self.offset
+
+        return np.array([
+            self.speed * np.cos(angle),
+            self.speed * np.sin(angle),
+            self.vertical,
+        ])
+
+    def step(self, dt):
+        """Advance by dt seconds; return the new mean wind."""
+        a = np.exp(-float(dt) / self.timescale)
+
+        self.offset = (
+            a * self.offset
+            + self.swing_std * np.sqrt(1.0 - a * a) * self.rng.normal()
+        )
+        self.center += self.turn_rate * float(dt)
+
+        return self.mean_wind
+
+
 class GustingWind:
     """Time-varying wind field and its drag wrench on one rigid body.
 
